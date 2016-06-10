@@ -57,8 +57,11 @@ subprojects {
         testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
 
         compile 'org.slf4j:slf4j-api:1.7.21'
+        compile 'ch.qos.logback:logback-classic:1.1.7'
 
         testCompile 'junit:junit:4.12'
+        testCompile 'org.assertj:assertj-core:3.4.1'
+        testCompile 'org.assertj:assertj-joda-time:2.0.0'
     }
 }
 
