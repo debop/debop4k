@@ -6,13 +6,13 @@
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
 
-package debop4k.core.utils
+package debop4k.data
 
-object ObjectEx {
+/**
+ * @author debop sunghyouk.bae@gmail.com
+ */
+object JdbcDrivers {
 
-    fun equal(x: Any?, y: Any?): Boolean {
-        return (x != null) && x.equals(y)
-    }
+    val H2_DRIVER_CLASS_NAME = "org.h2.Driver"
+
 }
-
-fun Any?.equals(y: Any?): Boolean = this != null && this.equals(y)

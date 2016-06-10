@@ -6,13 +6,20 @@
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
 
-package debop4k.core.utils
+package debop4k.core.io
 
-object ObjectEx {
+import java.io.InputStream
 
-    fun equal(x: Any?, y: Any?): Boolean {
-        return (x != null) && x.equals(y)
-    }
+/**
+ * @author debop sunghyouk.bae@gmail.com
+ */
+object StreamEx {
+
 }
 
-fun Any?.equals(y: Any?): Boolean = this != null && this.equals(y)
+fun InputStream?.readText(): String? {
+    if (this == null)
+        return null
+
+    return this.bufferedReader().readText()
+}

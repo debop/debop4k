@@ -27,4 +27,5 @@ include 'services:webservice'
 rootProject.name = 'debop4k-parent'
 
 include 'debop4k-core'
+include 'debop4k-data'
 
