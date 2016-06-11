@@ -9,6 +9,7 @@
 package debop4k.core.io
 
 import java.io.InputStream
+import java.nio.charset.Charset
 
 /**
  * @author debop sunghyouk.bae@gmail.com
@@ -17,9 +18,16 @@ object StreamEx {
 
 }
 
-fun InputStream?.readText(): String? {
-    if (this == null)
-        return null
-
+/**
+ * Input Stream 전체를 읽어 문자열로 반환합니다.
+ */
+fun InputStream.readText(): String? {
     return this.bufferedReader().readText()
+}
+
+/**
+ * Input Stream 전체를 읽어 문자열 리스트로 반환합니다.
+ */
+fun InputStream.readLines(charset: Charset = Charsets.UTF_8): List<String> {
+  return this.bufferedReader(charset).readLines()
 }

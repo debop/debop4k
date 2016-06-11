@@ -5,18 +5,23 @@
  * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
+@file:JvmName("StringEx")
 
 package debop4k.core.utils
 
+val UNIX_LINE_SEPARATOR = "\n"
 
 public fun CharSequence.isEmpty(): Boolean {
-    return this.trim().length == 0;
+  return trim().length == 0;
 }
 
 public fun CharSequence?.isNull(): Boolean = this == null
 
 public fun CharSequence?.isNullOrEmpty(): Boolean =
-        this == null || this.trim().length == 0
+    this == null || trim().length == 0
 
 public fun CharSequence?.nonEmpty(): Boolean =
-        this != null && this.trim().length > 0
+    this != null && trim().length > 0
+
+val CharSequence.lastChar: Char
+  get() = if (this.isEmpty()) 0.toChar() else this.get(length - 1)

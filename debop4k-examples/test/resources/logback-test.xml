@@ -18,7 +18,7 @@
     </encoder>
   </appender>
 
-  <logger name="debop4k.core" level="TRACE"/>
+  <logger name="debop4k.examples" level="TRACE"/>
 
   <root level="INFO">
     <appender-ref ref="console"/>

@@ -16,27 +16,27 @@ import org.slf4j.LoggerFactory
 
 class StringExTest {
 
-    private val log = LoggerFactory.getLogger(this.javaClass)
+  private val log = LoggerFactory.getLogger(this.javaClass)
 
-    @Test
-    fun testIsNull() {
-        val a: String? = null
-        assertThat(a.isNull()).isTrue()
+  @Test
+  fun testIsNull() {
+    val a: String? = null
+    assertThat(a.isNull()).isTrue()
 
-        val b: String? = "non null"
-        assertThat(b.isNull()).isFalse()
+    val b: String? = "non null"
+    assertThat(b.isNull()).isFalse()
 
-        log.debug("Success isNull test")
-    }
+    log.debug("Success isNull test")
+  }
 
-    @Test
-    fun testNonEmpty() {
-        val a: String? = null
-        assertThat(a.nonEmpty()).isFalse()
+  @Test
+  fun testNonEmpty() {
+    val a: String? = null
+    assertThat(a.nonEmpty()).isFalse()
 
-        val b: String? = "non null"
-        assertThat(b.nonEmpty()).isTrue()
+    val b: String? = "non null"
+    assertThat(b.nonEmpty()).isTrue()
 
-        log.debug("Success nonEmpty test")
-    }
+    log.debug("Success nonEmpty test")
+  }
 }

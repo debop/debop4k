@@ -28,4 +28,6 @@ rootProject.name = 'debop4k-parent'
 
 include 'debop4k-core'
 include 'debop4k-data'
+include 'debop4k-examples'
+include 'debop4k-units'
 
