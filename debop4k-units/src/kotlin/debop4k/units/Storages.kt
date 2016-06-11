@@ -42,16 +42,16 @@ enum class StorageUnit(val abbr: String, val factor: Long) {
 
 open class Storage(val bytes: Long = 0) : Comparable<Storage>, Serializable {
 
-  public operator fun plus(that: Storage): Storage = Storage(bytes + that.bytes)
-  public operator fun plus(scala: Long): Storage = Storage(bytes + scala)
-  public operator fun minus(that: Storage): Storage = Storage(bytes - that.bytes)
-  public operator fun minus(scala: Long): Storage = Storage(bytes - scala)
+  operator fun plus(that: Storage): Storage = Storage(bytes + that.bytes)
+  operator fun plus(scala: Long): Storage = Storage(bytes + scala)
+  operator fun minus(that: Storage): Storage = Storage(bytes - that.bytes)
+  operator fun minus(scala: Long): Storage = Storage(bytes - scala)
 
-  public operator fun times(that: Storage): Storage = Storage(bytes * that.bytes)
-  public operator fun times(scala: Long): Storage = Storage(bytes * scala)
+  operator fun times(that: Storage): Storage = Storage(bytes * that.bytes)
+  operator fun times(scala: Long): Storage = Storage(bytes * scala)
 
-  public operator fun div(that: Storage): Storage = Storage(bytes / that.bytes)
-  public operator fun div(scala: Long): Storage = Storage(bytes / scala)
+  operator fun div(that: Storage): Storage = Storage(bytes / that.bytes)
+  operator fun div(scala: Long): Storage = Storage(bytes / scala)
 
   override fun compareTo(other: Storage): Int = if (bytes > other.bytes) 1 else -1
 

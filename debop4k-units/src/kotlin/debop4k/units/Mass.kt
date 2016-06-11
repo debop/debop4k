@@ -85,7 +85,7 @@ open class Mass(var gram: Double) : Comparable<Mass>, Serializable {
   }
 
   companion object {
-    private val log = LoggerFactory.getLogger(javaClass)
+    private val log = LoggerFactory.getLogger(Mass::class.java)
 
     val ZERO = Mass(0.0)
     val POSITIVE_INF = Mass(Double.POSITIVE_INFINITY)
