@@ -8,6 +8,7 @@
 
 package debop4k.examples.kotlintypes
 
+import com.google.common.base.Objects
 import io.kotlintest.specs.FunSpec
 
 class KotlinTypeExample : FunSpec() {
@@ -37,5 +38,62 @@ class KotlinTypeExample : FunSpec() {
       val emp = Employee("Dmitry", null)
       emp.countryName() shouldBe "Unknown"
     }
+
+    test("Safe cast: as?") {
+      class Person(val firstName: String, val lastName: String) {
+        override fun equals(other: Any?): Boolean {
+          // as?  == if (is Type) type else null
+          val otherPerson = other as? Person ?: return false
+          return otherPerson.hashCode() == hashCode()
+//          return if(other is Person) other.hashCode() == hashCode() else false
+        }
+
+        override fun hashCode(): Int = Objects.hashCode(firstName, lastName)
+      }
+
+      val p1 = Person("Dmitry", "Jemerov")
+      val p2 = Person("Dmitry", "Jemerov")
+
+      (p1 == p2) shouldBe true
+      p1.equals("Dmitry") shouldBe false
+    }
+
+    test("let function - nullable 인자를 쉽게 다루기") {
+      // foo?.let {  it... }
+      //   if foo != null  -> run lambda
+      //   else foo == null  -> nothing hanppen
+
+      // nothing happen
+      val p: Person? = null
+      p?.let { p -> fail("nothing happen!!! for null object") }
+    }
+
+    test("nullable type check ?:") {
+      data class Person(val name: String?)
+
+      fun yellAsSafe(person: Person) {
+        println((person.name ?: "Nobody").toUpperCase() + "!!!")
+      }
+      yellAsSafe(Person(null))
+    }
+
+
+    test("Inheritance for nullable or not-null") {
+      class StringPrinter : StringProcessor {
+        override fun process(value: String) {
+          println(value)
+        }
+      }
+
+      class NullableStringPrinter : StringProcessor {
+        override fun process(value: String?) {
+          if (value != null) {
+            println(value)
+          }
+        }
+      }
+    }
   }
+
+
 }
