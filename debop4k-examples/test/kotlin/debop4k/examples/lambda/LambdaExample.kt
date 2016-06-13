@@ -164,6 +164,51 @@ class LambdaExample : FunSpec() {
 
       println(alphabet())
     }
+
+    test("Lambda return by a label") {
+
+      fun lookForAlice(people: List<Person>) {
+        people.forEach {
+          if (it.name == "Alice") return      // return@forEach
+        }
+        println("Alice might be somewhere")
+      }
+    }
+
+    test("Lambda this expression") {
+
+      // 중첩된 lambda 식에서, this 를 지정하기 위해 label 을 사용한다.
+      val str = StringBuilder().apply sb@{
+        listOf(1, 2, 3).apply {
+          this@sb.append(this.toString())
+        }
+      }.toString()
+
+      println(str)
+      str shouldBe "[1, 2, 3]"
+    }
+
+    test("람다 식 대신 Anonymous Function 사용하기") {
+      fun lookForAlice(people: List<Person>) {
+        // 람다 식 방식
+//        people.forEach { person ->
+//          if (person.name == "Alice") return
+//          println("${person.name} is not Alice")
+//        }
+        // Anonymous Function
+        people.forEach(fun(person) {
+          if (person.name == "Alice") return  // 이 return 은 Lambda 와는 달리 함수에 대한 return 이므로, 모든 people 에 대해 순환합니다.
+          println("${person.name} is not Alice")
+        })
+      }
+
+      // Anonymous Function 은 람다식과는 달리 함수의 반환 수형을 직접 정의할 수 있다.
+      val people = listOf(Person("debop", 49), Person("midoogi", 48))
+      people.filter(fun(person): Boolean {
+        return person.age < 30
+      })
+      people.filter(fun(person) = person.age < 30)
+    }
   }
 
 }
