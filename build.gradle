@@ -54,6 +54,7 @@ subprojects {
         mavenLocal()
         jcenter()
         mavenCentral()
+        maven { url "http://dl.bintray.com/kotlin/exposed" }
     }
 
     // In this section you declare the dependencies for your production and test code
@@ -63,14 +64,16 @@ subprojects {
         testCompile "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
         testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
 
+        compile 'org.slf4j:slf4j-api:1.7.21'
+        compile 'ch.qos.logback:logback-classic:1.1.7'
+
         compile 'nl.komponents.kovenant:kovenant:3.2.+'
         compile "uy.klutter:klutter-core:1.18.+"
         compile "uy.klutter:klutter-json-jackson:1.18.+"
         compile "uy.klutter:klutter-reflect:1.18.+"
         compile "uy.kohesive.injekt:injekt-core:1.16.+"
 
-        compile 'org.slf4j:slf4j-api:1.7.21'
-        compile 'ch.qos.logback:logback-classic:1.1.7'
+        compile "org.jetbrains.exposed:exposed:0.5.0"
 
         testCompile 'junit:junit:4.12'
         testCompile 'org.assertj:assertj-core:3.4.1'
