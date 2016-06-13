@@ -107,12 +107,18 @@ class GenericsExample : FunSpec() {
     }
 
     test("Covariance: preserved Subtyping Relationship") {
+      fun <T> copyData(source: List<out T>, dest: MutableList<T>) {
+        for (item in source) {
+          dest.add(item)
+        }
+      }
+
+      val ints = listOf(1, 2, 3)
+      val target = mutableListOf<Any>()
+      copyData(ints, target)
+      target.size shouldBe ints.size
     }
-
   }
 
-  interface Producer<out T> {
-    fun produce(): T
-  }
 
 }
