@@ -77,6 +77,8 @@ subprojects {
 
         compile "joda-time:joda-time:2.9.4"
 
+        compile 'org.eclipse.collections:eclipse-collections:7.1.0'
+
         testCompile 'junit:junit:4.12'
         testCompile 'org.assertj:assertj-core:3.4.1'
         testCompile 'org.assertj:assertj-joda-time:2.0.0'

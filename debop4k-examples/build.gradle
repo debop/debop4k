@@ -6,3 +6,9 @@
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
 
+
+dependencies {
+
+    compile 'com.google.code.gson:gson:2.6.2'
+
+}
