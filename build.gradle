@@ -13,15 +13,18 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
+        maven { url "https://repo.spring.io/plugins-release" }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:3.1.+'
+        classpath "org.springframework.build.gradle:propdeps-plugin:0.0.7"
     }
 }
 
 allprojects {
     apply plugin: 'maven'
+    apply plugin: 'propdeps'
+    apply plugin: 'propdeps-maven'
 
     group = 'com.github.debop'
     version = '0.0.1-SNAPSHOT'
@@ -31,7 +34,6 @@ subprojects {
 
     apply plugin: 'java'
     apply plugin: 'kotlin'
-    apply plugin: 'nebula.optional-base'
 
     compileJava {
         sourceCompatibility = 1.6
@@ -70,11 +72,11 @@ subprojects {
         compile 'org.slf4j:slf4j-api:1.7.+'
         runtime 'ch.qos.logback:logback-classic:1.1.+'
 
-        compile 'nl.komponents.kovenant:kovenant:3.2.+'
-        compile "uy.klutter:klutter-core:1.18.+", optional
-        compile "uy.klutter:klutter-json-jackson:1.18.+", optional
-        compile "uy.klutter:klutter-reflect:1.18.+", optional
-        compile "uy.kohesive.injekt:injekt-core:1.16.+", optional
+        optional 'nl.komponents.kovenant:kovenant:3.2.+'
+        optional "uy.klutter:klutter-core:1.18.+"
+        optional "uy.klutter:klutter-json-jackson:1.18.+"
+        optional "uy.klutter:klutter-reflect:1.18.+"
+        optional "uy.kohesive.injekt:injekt-core:1.16.+"
 
         compile "org.jetbrains.exposed:exposed:0.5.0"
 
