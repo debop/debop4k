@@ -70,7 +70,7 @@ open class Mass(var gram: Double) : Comparable<Mass>, Serializable {
 
     if (display > TON_IN_GRAM) {
       display /= TON_IN_GRAM
-      unit = MassUnit.Gram
+      unit = MassUnit.Ton
       return "%.1f %s".format(display * Math.signum(gram), unit.abbr)
     }
 
