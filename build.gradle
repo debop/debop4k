@@ -68,7 +68,7 @@ subprojects {
         testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
 
         compile 'org.slf4j:slf4j-api:1.7.+'
-        compile 'ch.qos.logback:logback-classic:1.1.+'
+        runtime 'ch.qos.logback:logback-classic:1.1.+'
 
         compile 'nl.komponents.kovenant:kovenant:3.2.+'
         compile "uy.klutter:klutter-core:1.18.+", optional
