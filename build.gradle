@@ -20,10 +20,7 @@ buildscript {
 }
 
 allprojects {
-    apply plugin: 'java'
-    apply plugin: 'kotlin'
     apply plugin: 'maven'
-    apply plugin: 'idea'
 
     group = 'com.github.debop'
     version = '0.0.1-SNAPSHOT'
@@ -36,6 +33,12 @@ allprojects {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+}
+
+subprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'kotlin'
 
     sourceSets {
         main.java.srcDirs = ['src/java']
@@ -46,9 +49,7 @@ allprojects {
         test.kotlin.srcDirs = ['test/kotlin']
         test.resources.srcDirs = ['test/resources']
     }
-}
 
-subprojects {
     // In this section you declare where to find the dependencies of your project
     repositories {
         mavenLocal()
@@ -87,7 +88,7 @@ subprojects {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.13'
+    gradleVersion = '2.14'
 }
 
 
