@@ -8,7 +8,10 @@
 
 package debop4k.examples.functions
 
+import debop4k.examples.asyncs.runAsync
+import org.junit.Test
 import org.slf4j.LoggerFactory
+import java.util.concurrent.*
 
 /**
  * @author debop sunghyouk.bae@gmail.com
@@ -49,5 +52,15 @@ class ExtensionFunctionExample {
   fun saveUser2(user: User) {
     user.validateBeforeSave()
     // Save
+  }
+
+  @Test
+  fun executorExecute() {
+    val executor = Executors.newFixedThreadPool(4)
+    log.debug("run methods...")
+    executor.runAsync {
+      log.debug("I was execute asynchronous.")
+    }
+    log.debug("call runAsync")
   }
 }

@@ -5,20 +5,16 @@
  * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
-@file:JvmName("asyncs")
+@file:JvmName("Asyncs")
 
-package debop4k.examples
+package debop4k.examples.asyncs
 
 import java.util.concurrent.*
 
-public fun Executor.execute(action: () -> Unit) {
+public fun Executor.runAsync(action: () -> Unit) {
   execute { action() }
 }
 
-public fun Executor.executeAll(actions: List<() -> Unit>) {
+public fun Executor.runAsyncAll(actions: List<() -> Unit>) {
   actions.forEach { action -> execute { action() } }
-}
-
-public fun Executor.invoke(action: () -> Unit) {
-  execute(run { action })
 }
