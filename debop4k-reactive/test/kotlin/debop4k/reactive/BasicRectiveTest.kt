@@ -1,6 +1,5 @@
 package debop4k.reactive
 
-import debop4k.reactive.kotlin.defferedObservable
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.mockito.Mockito.*
@@ -203,7 +202,7 @@ class BasicRectiveTest : AbstractReactiveTest() {
     verify(a, times(1)).received(1)
     verify(a, times(1)).received(1)
 
-    defferedObservable { Observable.just(3, 4) }.subscribe(received())
+    deferredObservable { Observable.just(3, 4) }.subscribe(received())
     verify(a, times(1)).received(3)
     verify(a, times(1)).received(4)
   }

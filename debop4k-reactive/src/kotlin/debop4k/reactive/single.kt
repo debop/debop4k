@@ -1,6 +1,6 @@
 @file:JvmName("single")
 
-package debop4k.reactive.kotlin
+package debop4k.reactive
 
 import rx.Single
 import rx.SingleSubscriber

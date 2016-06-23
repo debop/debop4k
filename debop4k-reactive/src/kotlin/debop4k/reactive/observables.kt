@@ -1,6 +1,6 @@
 @file:JvmName("observables")
 
-package debop4k.reactive.kotlin
+package debop4k.reactive
 
 import rx.Observable
 import rx.Observable.OnSubscribe
@@ -12,10 +12,10 @@ fun <T> emptyObservable(): Observable<T> = Observable.empty()
 fun <T> observable(body: OnSubscribe<T>): Observable<T> = Observable.create(body)
 fun <T> observable(body: (s: Subscriber<in T>) -> Unit): Observable<T> = Observable.create(body)
 
-fun <T> defferedObservable(observableFactory: () -> Observable<T>): Observable<T> =
+fun <T> deferredObservable(observableFactory: () -> Observable<T>): Observable<T> =
     Observable.defer(observableFactory)
 
-fun <T> defferedObservable(observableFactory: Func0<Observable<T>>): Observable<T> =
+fun <T> deferredObservable(observableFactory: Func0<Observable<T>>): Observable<T> =
     Observable.defer(observableFactory)
 
 private fun <T> Iterator<T>.toIterable() = object : Iterable<T> {
@@ -35,6 +35,7 @@ fun IntArray.toObservable(): Observable<Int> = this.toList().toObservable()
 fun LongArray.toObservable(): Observable<Long> = this.toList().toObservable()
 fun FloatArray.toObservable(): Observable<Float> = this.toList().toObservable()
 fun DoubleArray.toObservable(): Observable<Double> = this.toList().toObservable()
+fun <T> Array<out T>.toObservable(): Observable<T> = Observable.from(this)
 
 fun IntProgression.toObservable(): Observable<Int> {
   if (step == 1 && last.toLong() - first < Integer.MAX_VALUE)
