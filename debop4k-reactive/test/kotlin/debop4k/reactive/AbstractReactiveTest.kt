@@ -18,10 +18,11 @@ abstract class AbstractReactiveTest {
     MockitoAnnotations.initMocks(this)
   }
 
-  fun <T> received() = { result: T? -> a.received(result) }
+  @Suppress("BASE_WITH_NULLABLE_UPPER_BOUND")
+  fun <T> received(): (T?) -> Unit = { result: T? -> a.received(result) }
 
   interface ScriptAssertion {
-    fun error(e: Throwable)
+    fun error(e: Throwable?)
     fun received(e: Any?)
   }
 
