@@ -5,14 +5,9 @@
  * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
+@file:JvmName("objects")
 
 package debop4k.core.utils
 
-object ObjectEx {
 
-    fun equal(x: Any?, y: Any?): Boolean {
-        return (x != null) && x.equals(y)
-    }
-}
-
-fun Any?.equals(y: Any?): Boolean = this != null && this.equals(y)
+fun <T> uninitialized() = null as T

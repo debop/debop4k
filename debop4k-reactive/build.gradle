@@ -1,0 +1,6 @@
+dependencies {
+    compile project(':debop4k-core')
+
+    compile "io.reactivex:rxjava:1.1.+"
+
+}

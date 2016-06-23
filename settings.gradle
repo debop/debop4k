@@ -30,4 +30,5 @@ include 'debop4k-core'
 include 'debop4k-data'
 include 'debop4k-examples'
 include 'debop4k-units'
+include 'debop4k-reactive'
 

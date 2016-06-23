@@ -5,7 +5,7 @@
  * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
-@file:JvmName("StringEx")
+@file:JvmName("strings")
 
 package debop4k.core.utils
 
