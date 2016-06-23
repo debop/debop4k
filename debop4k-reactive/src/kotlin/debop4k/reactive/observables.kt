@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2016. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+ * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+ * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+ * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+ * Vestibulum commodo. Ut rhoncus gravida arcu.
+ */
+
 @file:JvmName("observables")
 
 package debop4k.reactive
@@ -97,6 +105,9 @@ fun <T, R> List<Observable<T>>.zip(zipFunction: (args: List<T>) -> R): Observabl
   return Observable.zip(this, { zipFunction(it.asList() as List<T>) })
 }
 
+/**
+ * Java 수형으로 casting 하는 것이 여의치 않을 때에는 cast<Int>() 같이 사용하면 된다.
+ */
 inline fun <reified R : Any> Observable<*>.cast(): Observable<R> = cast(R::class.java)
 
 

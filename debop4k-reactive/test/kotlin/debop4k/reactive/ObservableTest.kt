@@ -1,8 +1,19 @@
+/*
+ * Copyright (c) 2016. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+ * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+ * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+ * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+ * Vestibulum commodo. Ut rhoncus gravida arcu.
+ */
+
 package debop4k.reactive
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import rx.Observable
+import rx.exceptions.OnErrorNotImplementedException
+import rx.observers.TestSubscriber
+import java.util.concurrent.atomic.*
 
 /**
  * @author sunghyouk.bae@gmail.com
@@ -36,7 +47,7 @@ class ObservableTest : AbstractReactiveTest() {
   }
 
   @Test
-  fun testFold() {
+  fun testFoldAndMap() {
 
     val result = observable<String> { subscriber ->
       subscriber.onNext("H")
@@ -54,4 +65,170 @@ class ObservableTest : AbstractReactiveTest() {
     assertThat(result).isEqualTo("Hello")
   }
 
+  @Test
+  fun iteratorObservable() {
+    val list = listOf(1, 2, 3).iterator().toObservable().toList().toBlocking().single()
+    assertThat(list).isEqualTo(listOf(1, 2, 3))
+  }
+
+  @Test
+  fun intProgressionStep1Empty() {
+    val range = (1..1).toObservable().toList().toBlocking().first()
+    assertThat(range).isEqualTo(listOf(1))
+  }
+
+  @Test
+  fun intProgressionStep1() {
+    val range = (1..10).toObservable().toList().toBlocking().first()
+    assertThat(range).isEqualTo((1..10).toList())
+  }
+
+  @Test
+  fun intProgressionDownTo() {
+    val range = (10 downTo 1).toObservable().toList().toBlocking().first()
+    assertThat(range).isEqualTo((10 downTo 1).toList())
+  }
+
+  @Test
+  fun intProgressionOverflow() {
+    val range = (-10..Int.MAX_VALUE)
+        .toObservable()
+        .skip(Int.MAX_VALUE)
+        .map { Int.MAX_VALUE - it }
+        .toList()
+        .toBlocking()
+        .first()
+    assertThat(range).isEqualTo((10 downTo 0).toList())
+  }
+
+  @Test
+  fun filterNotNull() {
+    val o = listOf(1, null).toObservable().filterNotNull()
+    o.toList().forEach {
+      assertThat(it).isEqualTo(listOf(1))
+    }
+  }
+
+  @Test
+  fun requireNoNullsWithoutNulls() {
+    (listOf(1, 2) as List<Int?>).toObservable().requireNoNulls().subscribe()
+  }
+
+  @Test(expected = OnErrorNotImplementedException::class)
+  fun requireNoNullsWithNulls() {
+    (listOf(1, null) as List<Int?>).toObservable().requireNoNulls().subscribe()
+  }
+
+  @Test
+  fun testWithIndex() {
+    val expected = listOf(IndexedValue(0, "a"),
+                          IndexedValue(1, "b"),
+                          IndexedValue(2, "c"))
+
+    listOf("a", "b", "c")
+        .toObservable()
+        .withIndex()
+        .toList()
+        .forEach {
+          assertThat(it).isEqualTo(expected)
+        }
+  }
+
+  @Test fun `withIndex() 는 복수의 subscriber에서 공유되면 안됩니다`() {
+    val o: Observable<IndexedValue<String>> = listOf("a", "b", "c").toObservable().withIndex()
+
+    val subscriber1 = TestSubscriber<IndexedValue<String>>()
+    val subscriber2 = TestSubscriber<IndexedValue<String>>()
+
+    o.subscribe(subscriber1)
+    o.subscribe(subscriber2)
+
+    subscriber1.awaitTerminalEvent()
+    subscriber1.assertValues(IndexedValue(0, "a"), IndexedValue(1, "b"), IndexedValue(2, "c"))
+
+    subscriber2.awaitTerminalEvent()
+    subscriber2.assertValues(IndexedValue(0, "a"), IndexedValue(1, "b"), IndexedValue(2, "c"))
+  }
+
+  @Test
+  fun testFold() {
+    listOf(1, 2, 3).toObservable().fold(0) { acc, n -> acc + n }.single().forEach {
+      assertThat(it).isEqualTo(6)
+    }
+  }
+
+  @Test
+  fun kotlinSequence() {
+    generateSequence(0) { it + 1 }.toObservable().take(10).toList().forEach {
+      assertThat(it).isEqualTo((0..9).toList())
+    }
+  }
+
+  @Test
+  fun infinite_iterable() {
+    val generated = AtomicInteger()
+    generateSequence { generated.incrementAndGet() }
+        .toObservable()
+        .take(100)
+        .toList()
+        .subscribe()
+
+    assertThat(generated.get()).isEqualTo(100)
+  }
+
+  @Test
+  fun testFlatMapSequence() {
+    val actual = listOf(1, 2, 3)
+        .toObservable()
+        .flatMapSequence { listOf(it, it + 1, it + 2).asSequence() }
+        .toList()
+        .toBlocking()
+        .single()
+
+    val expected = listOf(1, 2, 3, 2, 3, 4, 3, 4, 5)
+
+    assertThat(actual).isEqualTo(expected)
+  }
+
+  @Test
+  fun testCombineLatest() {
+    val list = listOf(1, 2, 3, 2, 3, 4, 3, 4, 5)
+
+    val actual = list.map { it.toSingletonObservable() }.combineLatest { it }.toBlocking().first()
+
+    assertThat(actual).isEqualTo(list)
+  }
+
+  @Test
+  fun testZip() {
+    val list = listOf(1, 2, 3, 2, 3, 4, 3, 4, 5)
+    val actual = list.map { it.toSingletonObservable() }.zip { it }.toBlocking().first()
+    assertThat(actual).isEqualTo(list)
+  }
+
+  @Test
+  fun testCast() {
+    val source = Observable.just<Any>(1, 2)
+    val observable = source.cast<Int>()
+    val subscriber = TestSubscriber<Int>()
+
+    observable.subscribe(subscriber)
+
+    subscriber.apply {
+      this.assertValues(1, 2)
+      this.assertNoErrors()
+      this.assertCompleted()
+    }
+  }
+
+  @Test
+  fun testCastWithWrongType() {
+    val source = Observable.just<Any>(1, 2)
+    val observable = source.cast<String>()
+    val subscriber = TestSubscriber<Any>()
+
+    observable.subscribe(subscriber)
+
+    subscriber.assertError(ClassCastException::class.java)
+  }
 }
