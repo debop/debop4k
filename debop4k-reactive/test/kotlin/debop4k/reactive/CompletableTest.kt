@@ -18,11 +18,9 @@ import org.junit.Test
 import rx.Completable
 import rx.Single
 import java.util.*
-import java.util.concurrent.*
+import java.util.concurrent.Callable
 
-/**
- * @author debop sunghyouk.bae@gmail.com
- */
+
 class CompletableTest : AbstractReactiveTest() {
 
   @Test
