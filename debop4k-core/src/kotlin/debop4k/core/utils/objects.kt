@@ -18,6 +18,7 @@ package debop4k.core.utils
 
 /**
  * kotlin 수형 중 nullable 이 아니게 선언된 변수의 초기화를 수행할 때 사용합니다.
+ * 다른 방법으로는 lateinit 예약어를 사용 할 수도 있습니다.
  * <code>
  *   var person:Person = uninitialized()
  * </code>
