@@ -21,9 +21,7 @@ import java.io.Serializable
 /**
  * @author debop sunghyouk.bae@gmail.com
  */
-interface ValueObject : Serializable {
-
-}
+interface ValueObject : Serializable
 
 abstract class AbstractValueObject : ValueObject {
 

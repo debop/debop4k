@@ -18,7 +18,7 @@ import org.junit.Test
 import rx.Observable
 import rx.exceptions.OnErrorNotImplementedException
 import rx.observers.TestSubscriber
-import java.util.concurrent.atomic.*
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * @author sunghyouk.bae@gmail.com
@@ -78,14 +78,14 @@ class ObservableTest : AbstractReactiveTest() {
 
   @Test
   fun intProgressionStep1Empty() {
-    val range = (1..1).toObservable().toList().toBlocking().first()
+    val range = (1 .. 1).toObservable().toList().toBlocking().first()
     assertThat(range).isEqualTo(listOf(1))
   }
 
   @Test
   fun intProgressionStep1() {
-    val range = (1..10).toObservable().toList().toBlocking().first()
-    assertThat(range).isEqualTo((1..10).toList())
+    val range = (1 .. 10).toObservable().toList().toBlocking().first()
+    assertThat(range).isEqualTo((1 .. 10).toList())
   }
 
   @Test
@@ -96,7 +96,7 @@ class ObservableTest : AbstractReactiveTest() {
 
   @Test
   fun intProgressionOverflow() {
-    val range = (-10..Int.MAX_VALUE)
+    val range = (-10 .. Int.MAX_VALUE)
         .toObservable()
         .skip(Int.MAX_VALUE)
         .map { Int.MAX_VALUE - it }
@@ -165,7 +165,7 @@ class ObservableTest : AbstractReactiveTest() {
   @Test
   fun kotlinSequence() {
     generateSequence(0) { it + 1 }.toObservable().take(10).toList().forEach {
-      assertThat(it).isEqualTo((0..9).toList())
+      assertThat(it).isEqualTo((0 .. 9).toList())
     }
   }
 
@@ -237,5 +237,5 @@ class ObservableTest : AbstractReactiveTest() {
     subscriber.assertError(ClassCastException::class.java)
   }
 
-  // TODO: RxKotlin의 ExtensionTest#testSwitchOnNext() 구현 필요
+
 }
