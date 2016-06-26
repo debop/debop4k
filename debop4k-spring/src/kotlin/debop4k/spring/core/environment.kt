@@ -11,12 +11,21 @@
  * limitations under the License.
  */
 
-rootProject.name = 'debop4k-parent'
+@file:JvmName("environment")
 
-include 'debop4k-core'
-include 'debop4k-data'
-include 'debop4k-examples'
-include 'debop4k-units'
-include 'debop4k-reactive'
-include 'debop4k-spring'
+package debop4k.spring.core
+
+import org.springframework.core.env.PropertyResolver
+
+operator fun PropertyResolver.get(key: String): String? = this.getProperty(key)
+
+operator fun PropertyResolver.get(key: String, defaultValue: String): String
+    = this.getProperty(key, defaultValue)
+
+operator fun <T> PropertyResolver.get(key: String, targetType: Class<T>): T?
+    = this.getProperty(key, targetType)
+
+operator fun <T> PropertyResolver.get(key: String, targetType: Class<T>, defaultValue: T): T
+    = this.getProperty(key, targetType, defaultValue)
+
 
