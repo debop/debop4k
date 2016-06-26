@@ -17,6 +17,11 @@ package debop4k.spring.beans
 
 import org.springframework.beans.BeanInstantiationException
 import org.springframework.beans.BeanUtils
+import org.springframework.beans.BeansException
+import org.springframework.beans.PropertyAccessorUtils
+import org.springframework.core.MethodParameter
+import java.beans.PropertyDescriptor
+import java.beans.PropertyEditor
 import java.lang.reflect.Constructor
 import java.lang.reflect.Method
 
@@ -54,3 +59,61 @@ fun Class<*>.findDeclaredMethodWithMinimalParameters(methodName: String): Method
 
 
 fun String.resolveSignature(clazz: Class<*>): Method = BeanUtils.resolveSignature(this, clazz)
+
+fun Class<*>.getPropertyDescriptors(): Array<PropertyDescriptor>
+    = BeanUtils.getPropertyDescriptors(this)
+
+fun Class<*>.getPropertyDescriptor(propertyName: String): PropertyDescriptor
+    = BeanUtils.getPropertyDescriptor(this, propertyName)
+
+fun Method.findPropertyForMethod(): PropertyDescriptor
+    = BeanUtils.findPropertyForMethod(this)
+
+fun Method.findPropertyForMethod(clazz: Class<*>): PropertyDescriptor
+    = BeanUtils.findPropertyForMethod(this, clazz)
+
+fun Class<*>.findEditorByConvention(): PropertyEditor
+    = BeanUtils.findEditorByConvention(this)
+
+fun String.findPropertyType(vararg beanClasses: Class<*>): Class<*>
+    = BeanUtils.findPropertyType(this, *beanClasses)
+
+fun PropertyDescriptor.getWriteMethodParameter(): MethodParameter
+    = BeanUtils.getWriteMethodParameter(this)
+
+fun Class<*>.isSimpleProperty(): Boolean = BeanUtils.isSimpleProperty(this)
+
+fun Class<*>.isSimpleValueType(): Boolean = BeanUtils.isSimpleValueType(this)
+
+@Throws(BeansException::class)
+fun Any.copyProperties(target: Any): Unit = BeanUtils.copyProperties(this, target)
+
+@Throws(BeansException::class)
+fun Any.copyProperties(target: Any, vararg ignoredProperties: String): Unit
+    = BeanUtils.copyProperties(this, target, *ignoredProperties)
+
+@Throws(BeansException::class)
+fun Any.copyProperties(target: Any, editable: Class<*>): Unit
+    = BeanUtils.copyProperties(this, target, editable)
+
+//@Throws(BeansException::class)
+//fun Any.copyProperties(target: Any, editable: Class<*>, vararg ignoredProperties:String): Unit
+//    = BeanUtils.copyProperties(this, target, editable, *ignoredProperties)
+
+fun String.getPropertyName(): String = PropertyAccessorUtils.getPropertyName(this)
+
+fun String.isNestedOrIndexedProperty(): Boolean = PropertyAccessorUtils.isNestedOrIndexedProperty(this)
+
+fun String.getFirstNestedPropertySeparatorIndex(): Int
+    = PropertyAccessorUtils.getFirstNestedPropertySeparatorIndex(this)
+
+fun String.getLastNestedPropertySeparatorIndex(): Int
+    = PropertyAccessorUtils.getLastNestedPropertySeparatorIndex(this)
+
+fun String.matchesProperty(propertyPath: String): Boolean
+    = PropertyAccessorUtils.matchesProperty(this, propertyPath)
+
+fun String.canonicalPropertyName(): String = PropertyAccessorUtils.canonicalPropertyName(this)
+
+fun Array<String>.canonicalPropertyNames(): Array<String>
+    = PropertyAccessorUtils.canonicalPropertyNames(this)
