@@ -26,3 +26,5 @@ operator fun<P1, P2, R> Function2<P1, P2, R>.invoke(p1: P1, partial2: Partial<P2
 operator fun<P1, P2, R> Function2<P1, P2, R>.invoke(partial1: Partial<P1> = partial(), p2: P2): (P1) -> R {
   return { p1: P1 -> this(p1, p2) }
 }
+
+// TODO: 구현 필요

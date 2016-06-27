@@ -22,3 +22,5 @@ fun <P1, P2, R> Function2<P1, P2, R>.reverse(): (P2, P1) -> R {
 fun <P1, P2, P3, R> Function3<P1, P2, P3, R>.reverse(): (P3, P2, P1) -> R {
   return { p3: P3, p2: P2, p1: P1 -> this(p1, p2, p3) }
 }
+
+// TODO: 구현 필요
