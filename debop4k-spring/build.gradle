@@ -13,6 +13,8 @@
 
 dependencies {
 
+    compile project(":debop4k-core")
+
     compile("org.springframework:spring-core:$springVersion") {
         exclude group: 'commons-logging', module: 'commons-logging'
     }

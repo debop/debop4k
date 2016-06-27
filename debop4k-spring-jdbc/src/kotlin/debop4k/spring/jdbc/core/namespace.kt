@@ -1,12 +1,9 @@
 /*
- * Copyright 2016 Sunghyouk Bae<sunghyouk.bae@gmail.com>
- *
+ * Copyright (c) 2016. sunghyouk.bae@gmail.com
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
  * http://www.apache.org/licenses/LICENSE-2.0
- *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,9 +13,9 @@
 
 package debop4k.spring.jdbc.core
 
-import org.funktionale.option.Option
-import org.funktionale.option.Option.None
-import org.funktionale.option.Option.Some
+import debop4k.core.functional.Option
+import debop4k.core.functional.Option.None
+import debop4k.core.functional.Option.Some
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcOperations
 import org.springframework.jdbc.core.ResultSetExtractor
@@ -39,10 +36,12 @@ fun <T> emptyResultToNull(body: () -> T): T? = try {
 /**
  * 결과 레코드가 없는 [ResultSet]에 대해 [None] 값을 반환합니다.
  */
-fun <T> emptyResultToOption(body: () -> T): Option<T> = try {
-  Some(body())
-} catch(e: EmptyResultDataAccessException) {
-  None
+fun <T> emptyResultToOption(body: () -> T): Option<T> {
+  return try {
+    Some(body())
+  } catch(e: EmptyResultDataAccessException) {
+    None
+  }
 }
 
 fun <T> rowMapperObject(rowMapper: (ResultSet, Int) -> T): RowMapper<T>

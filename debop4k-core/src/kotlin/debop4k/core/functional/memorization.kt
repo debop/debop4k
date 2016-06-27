@@ -16,7 +16,6 @@
 package debop4k.core.functional
 
 import org.eclipse.collections.impl.map.mutable.ConcurrentHashMap
-import org.funktionale.option.toOption
 
 
 private interface MemorizedCall<F, R> {
