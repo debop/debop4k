@@ -14,12 +14,23 @@
  * limitations under the License.
  */
 
-package debop4k.core.utils
+package debop4k.spring.jdbc.core.config
+
+import debop4k.spring.jdbc.core.config.ExecutionValue.INIT
+import org.springframework.jdbc.datasource.init.ScriptUtils
 
 /**
- * var 로 선언된 필드 중 non null 수형에 대해 초기화 값을 지정하고자 할 때 사용합니다.
- * 특히 ```@Autowired```, ```@Inject``` var 수형에 사용하기 좋다.
- * @see lateinit
- * @see Delegates.nonNull
+ * Embeded Database 에 대한 설정을 수행하는 정보를 표현합니다.
+ * @author sunghyouk.bae@gmail.com
  */
-fun <T> uninitialized(): T = null as T
+class EmbeddedDatabaseTag {
+
+  val scripts: MutableList<ScriptTag> = arrayListOf()
+
+  fun script(location: String,
+             encoding: String? = null,
+             separator: String = ScriptUtils.DEFAULT_STATEMENT_SEPARATOR,
+             execution: ExecutionValue = INIT) {
+    scripts.add(ScriptTag(location, encoding, separator, execution))
+  }
+}

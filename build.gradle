@@ -33,6 +33,9 @@ allprojects {
 
     group = 'com.github.debop'
     version = '0.0.1-SNAPSHOT'
+
+    ext.springVersion = '4.2.6.RELEASE'
+    ext.funktionaleVersion = '0.8'
 }
 
 subprojects {
@@ -71,8 +74,12 @@ subprojects {
         testCompile "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
         testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
 
+        // functional programming for kotlin
+        compile "org.funktionale:funktionale:$funktionaleVersion"
+
         compile 'org.slf4j:slf4j-api:1.7.+'
         runtime 'ch.qos.logback:logback-classic:1.1.+'
+        compile 'javax.inject:javax.inject:1'
 
         optional 'nl.komponents.kovenant:kovenant:3.2.+'
         optional "uy.klutter:klutter-core:1.18.+"

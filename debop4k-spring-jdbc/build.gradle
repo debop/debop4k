@@ -1,0 +1,10 @@
+dependencies {
+    compile project(":debop4k-core")
+    compile project(":debop4k-spring")
+
+    compile "org.springframework:spring-jdbc:$springVersion"
+    compile "org.springframework:spring-tx:$springVersion"
+
+    testCompile "org.springframework:spring-test:$springVersion"
+    testCompile "com.h2database:h2:1.4.192"
+}

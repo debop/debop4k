@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-package debop4k.core.utils
+@file:JvmName("annotation")
 
-/**
- * var 로 선언된 필드 중 non null 수형에 대해 초기화 값을 지정하고자 할 때 사용합니다.
- * 특히 ```@Autowired```, ```@Inject``` var 수형에 사용하기 좋다.
- * @see lateinit
- * @see Delegates.nonNull
- */
-fun <T> uninitialized(): T = null as T
+package debop4k.spring.beans
+
+import org.springframework.beans.annotation.AnnotationBeanUtils
+import org.springframework.util.StringValueResolver
+
+fun Annotation.copyPropertiesToBean(bean: Any, vararg excludedProperties: String)
+    = AnnotationBeanUtils.copyPropertiesToBean(this, bean, *excludedProperties)
+
+fun Annotation.copyPropertiesToBean(bean: Any, resolver: StringValueResolver, vararg excludedProperties: String)
+    = AnnotationBeanUtils.copyPropertiesToBean(this, bean, resolver, *excludedProperties)

@@ -1,9 +1,12 @@
 /*
- * Copyright (c) 2016. sunghyouk.bae@gmail.com
+ * Copyright 2016 Sunghyouk Bae<sunghyouk.bae@gmail.com>
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -11,12 +14,16 @@
  * limitations under the License.
  */
 
-dependencies {
+@file:JvmName("beanfactory")
 
-    compile("org.springframework:spring-core:$springVersion") {
-        exclude group: 'commons-logging', module: 'commons-logging'
-    }
+package debop4k.spring.beans
 
-    compile "org.springframework:spring-context:$springVersion"
-    testCompile "org.springframework:spring-test:$springVersion"
-}
+import org.springframework.beans.factory.BeanFactory
+
+operator fun BeanFactory.get(name: String): Any = getBean(name)
+
+operator fun <T> BeanFactory.get(requiredType: Class<T>): T = getBean(requiredType)
+
+operator fun <T> BeanFactory.get(name: String, requiredType: Class<T>): T = getBean(name, requiredType)
+
+operator fun BeanFactory.get(name: String, vararg args: Any): Any = getBean(name, *args)
