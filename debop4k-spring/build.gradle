@@ -11,12 +11,14 @@
  * limitations under the License.
  */
 
-rootProject.name = 'debop4k-parent'
+dependencies {
 
-include 'debop4k-core'
-include 'debop4k-data'
-include 'debop4k-examples'
-include 'debop4k-units'
-include 'debop4k-reactive'
-include 'debop4k-spring'
+    ext.springVersion = '4.2.6.RELEASE'
 
+    compile("org.springframework:spring-core:springVersion") {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
+
+    compile "org.springframework:spring-context:$springVersion"
+    testCompile "org.springframework:spring-test:$springVersion"
+}

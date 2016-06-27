@@ -11,12 +11,16 @@
  * limitations under the License.
  */
 
-rootProject.name = 'debop4k-parent'
+@file:JvmName("beanfactory")
 
-include 'debop4k-core'
-include 'debop4k-data'
-include 'debop4k-examples'
-include 'debop4k-units'
-include 'debop4k-reactive'
-include 'debop4k-spring'
+package debop4k.spring.beans.factory
 
+import org.springframework.beans.factory.BeanFactory
+
+operator fun BeanFactory.get(name: String): Any = getBean(name)
+
+operator fun <T> BeanFactory.get(requiredType: Class<T>): T = getBean(requiredType)
+
+operator fun <T> BeanFactory.get(name: String, requiredType: Class<T>): T = getBean(name, requiredType)
+
+operator fun BeanFactory.get(name: String, vararg args: Any): Any = getBean(name, *args)

@@ -11,12 +11,23 @@
  * limitations under the License.
  */
 
-rootProject.name = 'debop4k-parent'
+@file:JvmName("springutils")
 
-include 'debop4k-core'
-include 'debop4k-data'
-include 'debop4k-examples'
-include 'debop4k-units'
-include 'debop4k-reactive'
-include 'debop4k-spring'
+package debop4k.spring.util
 
+import org.springframework.util.StopWatch
+
+fun stopWatch(id: String = "", body: StopWatch.() -> Unit): StopWatch {
+  val watch = StopWatch()
+  watch.body()
+  return watch
+}
+
+fun <T> StopWatch.task(name: String = "", body: () -> T): T {
+  start(name)
+  try {
+    return body()
+  } finally {
+    stop()
+  }
+}

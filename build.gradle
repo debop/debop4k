@@ -1,9 +1,14 @@
 /*
- * Copyright (c) 2016. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) 2016. sunghyouk.bae@gmail.com
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 buildscript {
@@ -31,8 +36,7 @@ allprojects {
 }
 
 subprojects {
-
-//    apply plugin: 'java'
+    apply plugin: 'java'
     apply plugin: 'kotlin'
 
     compileJava {
@@ -55,15 +59,12 @@ subprojects {
         test.resources.srcDirs = ['test/resources']
     }
 
-    // In this section you declare where to find the dependencies of your project
     repositories {
-        mavenLocal()
         jcenter()
         mavenCentral()
         maven { url "http://dl.bintray.com/kotlin/exposed" }
     }
 
-    // In this section you declare the dependencies for your production and test code
     dependencies {
         compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 
@@ -104,7 +105,6 @@ artifacts {
 test {
     jvmArgs "-XX:MaxPermSize=512m"
 }
-
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.14'
