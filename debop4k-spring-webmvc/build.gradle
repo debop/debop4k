@@ -1,0 +1,5 @@
+dependencies {
+    compile project(":debop4k-core")
+    compile project(":debop4k-spring")
+    compile "org.springframework:spring-webmvc:$springVersion"
+}

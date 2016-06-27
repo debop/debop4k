@@ -85,11 +85,9 @@ subprojects {
         optional "uy.klutter:klutter-core:1.18.+"
         optional "uy.klutter:klutter-json-jackson:1.18.+"
         optional "uy.klutter:klutter-reflect:1.18.+"
-        optional "uy.kohesive.injekt:injekt-core:1.16.+"
+//        optional "uy.kohesive.injekt:injekt-core:1.16.+"
 
         compile "org.jetbrains.exposed:exposed:0.5.0"
-
-        compile "joda-time:joda-time:2.9.+"
 
         testCompile 'junit:junit:4.12'
         testCompile 'org.assertj:assertj-core:3.4.1'
