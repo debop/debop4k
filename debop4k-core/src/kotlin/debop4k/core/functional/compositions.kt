@@ -11,9 +11,16 @@
  * limitations under the License.
  */
 
-dependencies {
+@file:JvmName("composition")
 
-    compile 'org.eclipse.collections:eclipse-collections:7.1.0'
-    compile "joda-time:joda-time:2.9.+"
-    compile "com.google.guava:guava:19.+"
+package debop4k.core.functional
+
+infix fun<T, K, R> Function1<T, K>.andThen(f: (K) -> R): (T) -> R = forwardCompose(f)
+
+infix fun<T, K, R> Function1<T, K>.forwardCompose(f: (K) -> R): (T) -> R {
+  return { t: T -> f(this(t)) }
+}
+
+infix fun<K, R, T> Function1<K, R>.compose(f: (T) -> K): (T) -> R {
+  return { t: T -> this(f(t)) }
 }

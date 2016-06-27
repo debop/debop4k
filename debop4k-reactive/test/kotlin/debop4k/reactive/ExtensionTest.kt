@@ -13,9 +13,9 @@
 
 package debop4k.reactive
 
-import debop4k.core.utils.asList
-import debop4k.core.utils.fastListOf
-import debop4k.core.utils.intArrayListOf
+import debop4k.core.collections.asList
+import debop4k.core.collections.fastListOf
+import debop4k.core.collections.intArrayListOf
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.mockito.Mockito
@@ -23,7 +23,7 @@ import org.mockito.Mockito.*
 import rx.Notification
 import rx.Observable
 import rx.schedulers.TestScheduler
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.*
 import kotlin.test.fail
 
 class ExtensionTest : AbstractReactiveTest() {

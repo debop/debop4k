@@ -11,9 +11,19 @@
  * limitations under the License.
  */
 
-dependencies {
+@file:JvmName("currying")
 
-    compile 'org.eclipse.collections:eclipse-collections:7.1.0'
-    compile "joda-time:joda-time:2.9.+"
-    compile "com.google.guava:guava:19.+"
+package debop4k.core.functional
+
+
+fun<T1, T2, R> Function2<T1, T2, R>.curried(): (T1) -> (T2) -> R {
+  return { t1: T1 -> { t2: T2 -> this(t1, t2) } }
+}
+
+fun<T1, T2, T3, R> Function3<T1, T2, T3, R>.curried(): (T1) -> (T2) -> (T3) -> R {
+  return { t1: T1 -> { t2: T2 -> { t3: T3 -> this(t1, t2, t3) } } }
+}
+
+fun<T1, T2, T3, T4, R> Function4<T1, T2, T3, T4, R>.curried(): (T1) -> (T2) -> (T3) -> (T4) -> R {
+  return { t1: T1 -> { t2: T2 -> { t3: T3 -> { t4: T4 -> this(t1, t2, t3, t4) } } } }
 }

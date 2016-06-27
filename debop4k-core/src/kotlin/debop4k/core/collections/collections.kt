@@ -11,9 +11,14 @@
  * limitations under the License.
  */
 
-dependencies {
+@file:JvmName("extensions")
 
-    compile 'org.eclipse.collections:eclipse-collections:7.1.0'
-    compile "joda-time:joda-time:2.9.+"
-    compile "com.google.guava:guava:19.+"
-}
+package debop4k.core.collections
+
+fun <T> List<T>.tail(): List<T> = this.drop(1)
+
+infix fun <T> T.prependTo(list: List<T>): List<T> = listOf(this) + list
+
+infix fun <T> MutableList<T>.prepend(element: T): List<T> = listOf(element) + this
+
+fun <T> MutableList<T>.plus(vararg elements: T): List<T> = this.plus(listOf(*elements))

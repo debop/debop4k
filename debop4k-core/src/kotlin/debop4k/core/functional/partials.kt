@@ -11,9 +11,18 @@
  * limitations under the License.
  */
 
-dependencies {
+@file:JvmName("partials")
 
-    compile 'org.eclipse.collections:eclipse-collections:7.1.0'
-    compile "joda-time:joda-time:2.9.+"
-    compile "com.google.guava:guava:19.+"
+package debop4k.core.functional
+
+class Partial<T>
+
+fun <T> partial(): Partial<T> = Partial()
+
+operator fun<P1, P2, R> Function2<P1, P2, R>.invoke(p1: P1, partial2: Partial<P2> = partial()): (P2) -> R {
+  return { p2: P2 -> this(p1, p2) }
+}
+
+operator fun<P1, P2, R> Function2<P1, P2, R>.invoke(partial1: Partial<P1> = partial(), p2: P2): (P1) -> R {
+  return { p1: P1 -> this(p1, p2) }
 }

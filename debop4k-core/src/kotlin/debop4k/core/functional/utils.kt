@@ -11,9 +11,10 @@
  * limitations under the License.
  */
 
-dependencies {
+@file:JvmName("utils")
 
-    compile 'org.eclipse.collections:eclipse-collections:7.1.0'
-    compile "joda-time:joda-time:2.9.+"
-    compile "com.google.guava:guava:19.+"
-}
+package debop4k.core.functional
+
+fun <T> identity(): (T) -> T = { t: T -> t }
+
+fun <T, R> constant(r: R): (T) -> R = { t: T -> r }

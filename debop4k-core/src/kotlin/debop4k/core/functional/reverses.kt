@@ -11,9 +11,14 @@
  * limitations under the License.
  */
 
-dependencies {
+@file:JvmName("reverses")
 
-    compile 'org.eclipse.collections:eclipse-collections:7.1.0'
-    compile "joda-time:joda-time:2.9.+"
-    compile "com.google.guava:guava:19.+"
+package debop4k.core.functional
+
+fun <P1, P2, R> Function2<P1, P2, R>.reverse(): (P2, P1) -> R {
+  return { p2: P2, p1: P1 -> this(p1, p2) }
+}
+
+fun <P1, P2, P3, R> Function3<P1, P2, P3, R>.reverse(): (P3, P2, P1) -> R {
+  return { p3: P3, p2: P2, p1: P1 -> this(p1, p2, p3) }
 }
