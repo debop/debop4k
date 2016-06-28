@@ -27,7 +27,7 @@ buildscript {
 }
 
 allprojects {
-    apply plugin: 'maven'
+    apply plugin: 'maven-publish'
     apply plugin: 'propdeps'
     apply plugin: 'propdeps-maven'
     apply plugin: 'propdeps-idea'

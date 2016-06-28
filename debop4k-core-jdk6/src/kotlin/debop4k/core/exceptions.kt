@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 
-@file:JvmName("jodatimeExtensions")
+@file:JvmName("exceptions")
 
-package debop4k.timeperiod
+package debop4k.core
 
+import java.lang.reflect.InvocationTargetException
 
+fun unwrapInvokeException(rawException: Throwable): Throwable
+    = if (rawException is InvocationTargetException) rawException.cause!! else rawException
+
+fun unwrapInvokeException(rawException: Exception): Throwable
+    = if (rawException is InvocationTargetException) rawException.cause!! else rawException

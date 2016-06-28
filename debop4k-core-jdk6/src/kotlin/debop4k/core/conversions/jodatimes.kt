@@ -14,8 +14,18 @@
  * limitations under the License.
  */
 
-@file:JvmName("jodatimeExtensions")
+@file:JvmName("jodatimes")
 
-package debop4k.timeperiod
+package debop4k.core.conversions
+
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
+import org.joda.time.format.DateTimeFormatter
+import org.joda.time.format.ISODateTimeFormat
 
 
+fun utcNow(): DateTime = DateTime.now(DateTimeZone.UTC)
+
+fun isoDateFormat(): DateTimeFormatter = ISODateTimeFormat.dateTime()
+
+fun DateTime.toISOString(): String = isoDateFormat().print(this)
