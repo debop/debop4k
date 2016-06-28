@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.H2
 import org.springframework.transaction.PlatformTransactionManager
+import org.springframework.transaction.support.TransactionTemplate
 import javax.sql.DataSource
 
 @Configuration
@@ -36,4 +37,8 @@ open class DataConfiguration {
     return DataSourceTransactionManager(dataSource())
   }
 
+  @Bean
+  open fun transactionTemplate(): TransactionTemplate {
+    return TransactionTemplate(transactionManager())
+  }
 }

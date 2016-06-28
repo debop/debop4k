@@ -3,3 +3,4 @@ CREATE TABLE IF NOT EXISTS test_bean (
   description VARCHAR(1024),
   create_date TIMESTAMP DEFAULT current_timestamp
 );
+DELETE FROM test_bean;
