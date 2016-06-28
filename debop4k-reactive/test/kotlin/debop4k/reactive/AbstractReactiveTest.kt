@@ -1,6 +1,6 @@
 package debop4k.reactive
 
-import debop4k.core.utils.uninitialized
+import debop4k.core.uninitialized
 import org.junit.Before
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations

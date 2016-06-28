@@ -8,8 +8,8 @@
 
 package kesti4k.core.utils
 
-import debop4k.core.utils.isNull
-import debop4k.core.utils.nonEmpty
+import debop4k.core.isNull
+import debop4k.core.nonEmpty
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.slf4j.LoggerFactory

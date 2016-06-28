@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-package debop4k.core.utils
+package debop4k.core
 
-val UNIX_LINE_SEPARATOR = "\n"
+const val UNIX_LINE_SEPARATOR = "\n"
 
-public fun CharSequence.isEmpty(): Boolean {
-  return trim().length == 0;
-}
+public fun CharSequence.isEmpty(): Boolean = trim().length == 0
 
-public fun CharSequence?.isNull(): Boolean = this == null
 
-public fun CharSequence?.isNullOrEmpty(): Boolean =
-    this == null || trim().length == 0
+fun CharSequence?.isNull(): Boolean = this == null
 
-public fun CharSequence?.nonEmpty(): Boolean =
-    this != null && trim().length > 0
+fun CharSequence?.isNullOrEmpty(): Boolean = this == null || trim().length == 0
+
+public fun CharSequence?.nonEmpty(): Boolean = this != null && trim().length > 0
 
 val CharSequence.lastChar: Char
   get() = if (this.isEmpty()) 0.toChar() else this.get(length - 1)

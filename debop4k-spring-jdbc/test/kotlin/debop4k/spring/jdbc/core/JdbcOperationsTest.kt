@@ -1,6 +1,6 @@
 package debop4k.spring.jdbc.core
 
-import debop4k.core.utils.uninitialized
+import debop4k.core.uninitialized
 import debop4k.spring.jdbc.AbstractJdbcTest
 import debop4k.spring.jdbc.config.DataConfiguration
 import org.assertj.core.api.Assertions.assertThat

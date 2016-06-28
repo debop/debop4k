@@ -1,0 +1,5 @@
+dependencies {
+    compile project(':debop4k-core')
+
+    compile "joda-time:joda-time:2.9.+"
+}

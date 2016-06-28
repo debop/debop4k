@@ -40,7 +40,7 @@ class OperatorExample : FunSpec() {
   fun MutablePoint.assign(value: MutablePoint) {
     this.x = value.x
     this.y = value.y
-    }
+  }
 
   data class Rectangle(val leftTop: MutablePoint, val rightBottom: MutablePoint)
 
@@ -50,13 +50,14 @@ class OperatorExample : FunSpec() {
       1    -> rightBottom.assign(value)
       else -> throw IndexOutOfBoundsException("Invalid coordinate $index")
     }
-    }
+  }
 
   // operator : in 에 대응된다.
+  // p in r
   operator fun Rectangle.contains(p: Point): Boolean {
     return p.x in leftTop.x until rightBottom.x &&
            p.y in rightBottom.y until leftTop.y
-    }
+  }
 
   init {
     test("Operator overloading") {

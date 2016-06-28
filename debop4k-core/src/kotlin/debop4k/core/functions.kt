@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2015 sunghyouk.bae@gmail.com
+ * Copyright 2016 Sunghyouk Bae<sunghyouk.bae@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,5 @@
 
 package debop4k.core
 
-fun Any?.shouldNotBeNull(name: String) {
-    if (this == null)
-        throw RuntimeException("$name 값이 null 이 아니여야 합니다.")
-}
 
-fun String?.shouldNotBeNullOrEmpty(name: String) {
-    if (this.isNullOrEmpty())
-        throw IllegalArgumentException("$name should not be null or empty")
-}
+fun <T> (() -> T).exec(): T = this.invoke()

@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 
-package debop4k.core.utils
+@file:JvmName("jodatimeExtensions")
 
-/**
- * var 로 선언된 필드 중 non null 수형에 대해 초기화 값을 지정하고자 할 때 사용합니다.
- * 특히 ```@Autowired```, ```@Inject``` var 수형에 사용하기 좋다.
- * @see lateinit
- * @see Delegates.nonNull
- */
-fun <T> uninitialized(): T = null as T
+package debop4k.timeperiod
+
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
+import org.joda.time.format.DateTimeFormatter
+import org.joda.time.format.ISODateTimeFormat
+
+
+fun utcNow(): DateTime = DateTime.now(DateTimeZone.UTC)
+
+fun isoDateFormat(): DateTimeFormatter = ISODateTimeFormat.dateTime()
+
+fun DateTime.toISOString(): String = isoDateFormat().print(this)

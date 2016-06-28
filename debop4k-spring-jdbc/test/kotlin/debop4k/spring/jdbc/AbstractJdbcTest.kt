@@ -1,6 +1,6 @@
 package debop4k.spring.jdbc
 
-import debop4k.core.utils.uninitialized
+import debop4k.core.uninitialized
 import debop4k.spring.jdbc.core.extract
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

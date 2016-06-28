@@ -30,6 +30,7 @@ allprojects {
     apply plugin: 'maven'
     apply plugin: 'propdeps'
     apply plugin: 'propdeps-maven'
+    apply plugin: 'propdeps-idea'
 
     group = 'com.github.debop'
     version = '0.0.1-SNAPSHOT'
@@ -42,9 +43,22 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'kotlin'
 
-    compileJava {
-        sourceCompatibility = '1.6'
-        targetCompatibility = '1.6'
+    if (name.endsWith("jdk8")) {
+        println("Project ${name} set to JDK 8")
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    } else if (name.endsWith("jdk7")) {
+        println("Project ${name} set to JDK 7")
+        sourceCompatibility = JavaVersion.VERSION_1_7
+        targetCompatibility = JavaVersion.VERSION_1_7
+    } else if (name.endsWith("jdk6")) {
+        println("Project ${name} set to JDK 6")
+        sourceCompatibility = JavaVersion.VERSION_1_6
+        targetCompatibility = JavaVersion.VERSION_1_6
+    } else {
+        println("Project ${name} set to JDK 6 (default, likely pom-only project)")
+        sourceCompatibility = JavaVersion.VERSION_1_6
+        targetCompatibility = JavaVersion.VERSION_1_6
     }
 
     compileTestJava {
@@ -60,6 +74,17 @@ subprojects {
         test.java.srcDirs = ['test/java']
         test.kotlin.srcDirs = ['test/kotlin']
         test.resources.srcDirs = ['test/resources']
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+        options.incremental = true
+        options.compilerArgs << '-Xlint:unchecked'
+    }
+
+    idea.module {
+        downloadJavadoc = false
+        downloadSources = true
     }
 
     repositories {
@@ -79,12 +104,7 @@ subprojects {
         compile 'javax.inject:javax.inject:1'
 
         optional 'nl.komponents.kovenant:kovenant:3.2.+'
-        optional "uy.klutter:klutter-core:1.18.+"
-        optional "uy.klutter:klutter-json-jackson:1.18.+"
-        optional "uy.klutter:klutter-reflect:1.18.+"
-//        optional "uy.kohesive.injekt:injekt-core:1.16.+"
-
-        compile "org.jetbrains.exposed:exposed:0.5.0"
+        optional "org.jetbrains.exposed:exposed:0.5.0"
 
         testCompile 'junit:junit:4.12'
         testCompile 'org.assertj:assertj-core:3.4.1'
