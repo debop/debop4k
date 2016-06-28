@@ -21,4 +21,5 @@ include 'debop4k-reactive'
 include 'debop4k-spring'
 include 'debop4k-spring-jdbc'
 include 'debop4k-spring-webmvc'
+include 'debop4k-spring-security'
 

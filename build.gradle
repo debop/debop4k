@@ -34,7 +34,7 @@ allprojects {
     group = 'com.github.debop'
     version = '0.0.1-SNAPSHOT'
 
-    ext.springVersion = '4.2.6.RELEASE'
+    ext.springVersion = '4.3.0.RELEASE'
     ext.funktionaleVersion = '0.8'
 }
 
