@@ -56,9 +56,9 @@ subprojects {
         sourceCompatibility = JavaVersion.VERSION_1_6
         targetCompatibility = JavaVersion.VERSION_1_6
     } else {
-        println("Project ${name} set to JDK 6 (default, likely pom-only project)")
-        sourceCompatibility = JavaVersion.VERSION_1_6
-        targetCompatibility = JavaVersion.VERSION_1_6
+        println("Project ${name} set to JDK 8 (default, likely pom-only project)")
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     compileTestJava {

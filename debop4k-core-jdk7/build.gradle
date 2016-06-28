@@ -1,0 +1,6 @@
+dependencies {
+
+    compile project(":debop4k-core-jdk6")
+    optional 'de.ruedigermoeller:fst:2.47'
+
+}
