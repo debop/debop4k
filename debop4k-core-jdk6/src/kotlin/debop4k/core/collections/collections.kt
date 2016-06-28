@@ -1,12 +1,9 @@
 /*
- * Copyright 2016 Sunghyouk Bae<sunghyouk.bae@gmail.com>
- *
+ * Copyright (c) 2016. sunghyouk.bae@gmail.com
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
  * http://www.apache.org/licenses/LICENSE-2.0
- *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,13 +11,14 @@
  * limitations under the License.
  */
 
-@file:JvmName("extensions")
+@file:JvmName("collectionExtensions")
 
 package debop4k.core.collections
 
-import java.util.concurrent.atomic.AtomicReference
+import java.util.concurrent.atomic.*
 
-fun <T> List<T>.tail(): List<T> = this.drop(1)
+fun <T> Collection<T>.head(): T? = if (this.size > 0) this.elementAt(0) else null
+fun <T> Collection<T>.tail(): List<T> = this.drop(1)
 
 infix fun <T> T.prependTo(list: List<T>): List<T> = listOf(this) + list
 

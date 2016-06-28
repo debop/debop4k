@@ -1,12 +1,9 @@
 /*
- * Copyright 2016 Sunghyouk Bae<sunghyouk.bae@gmail.com>
- *
+ * Copyright (c) 2016. sunghyouk.bae@gmail.com
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
  * http://www.apache.org/licenses/LICENSE-2.0
- *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,7 +11,7 @@
  * limitations under the License.
  */
 
-@file:JvmName("typeconversions")
+@file:JvmName("converters")
 
 package debop4k.core.conversions
 
@@ -194,6 +191,7 @@ private val primitiveConversion = fun TypeConverters.ExactConverter.(value: Any)
   is Date -> when (toType) {
     Date::class.java -> value
     DateTime::class.java -> DateTime(value.time)
+    Int::class.java, java.lang.Integer::class.java -> value.time.toInt()
     Long::class.java, java.lang.Long::class.java -> value.time
     String::class.java -> DateTime(value.time).toISOString()
     else -> throw IllegalStateException("Unknown conversion from $fromType to $toType")
@@ -201,30 +199,53 @@ private val primitiveConversion = fun TypeConverters.ExactConverter.(value: Any)
   is DateTime -> when (toType) {
     DateTime::class.java -> value
     Date::class.java -> value.toDate()
+    Int::class.java, java.lang.Integer::class.java -> value.millis.toInt()
     Long::class.java, java.lang.Long::class.java -> value.millis
     String::class.java -> value.toISOString()
     else -> throw IllegalStateException("Unknown conversion from $fromType to $toType")
   }
 
-//  is ByteArray -> when (toType) {
-//
-//  }
-//
-//  is Enum<*> -> when (toType) {
-//
-//  }
-//
-//  is File -> when (toType) {
-//
-//  }
-//
-//  is URL -> when (toType) {
-//
-//  }
-//
-//  is URI -> when (toType) {
-//
-//  }
+  is ByteArray -> when (toType) {
+    ByteArray::class.java -> value
+    String::class.java -> value.toString(Charsets.UTF_8)
+    else -> throw IllegalStateException("Unknown conversion from $fromType to $toType")
+  }
+
+  is Enum<*> -> when (toType) {
+    String::class.java -> value.name
+    Byte::class.java, java.lang.Byte::class.java,
+    Int::class.java, java.lang.Integer::class.java,
+    Long::class.java, java.lang.Long::class.java -> value.ordinal.toByte()
+    else -> {
+      val toErased = toType.erasedType()
+      if (toErased.isEnum) {
+        val ecls = toErased as Class<Enum<*>>
+        ecls.enumConstants.filter { it.name == value }.first() ?: IllegalStateException("Unknown Enum conversion from ${fromType} to ${toType}, no matching value: $value")
+      } else {
+        throw IllegalStateException("Unknown conversion from $fromType to $toType")
+      }
+    }
+  }
+
+  is File -> when (toType) {
+    File::class.java -> value
+    String::class.java -> value.absolutePath
+    else -> throw IllegalStateException("Unknown conversion from $fromType to $toType")
+  }
+
+  is URL -> when (toType) {
+    URL::class.java -> value
+    String::class.java -> value.toString()
+    URI::class.java -> value.toURI()
+    else -> throw IllegalStateException("Unknown conversion from $fromType to $toType")
+  }
+
+  is URI -> when (toType) {
+    URI::class.java -> value
+    String::class.java -> value.toString()
+    URL::class.java -> value.toURL()
+    else -> throw IllegalStateException("Unknown conversion from $fromType to $toType")
+  }
 
   else -> throw IllegalArgumentException("No primitive conversion for $fromType to $toType for value $value")
 
@@ -309,9 +330,59 @@ private val primitiveConversionPredicate = fun(fromType: Type, toType: Type): Bo
       else -> false
     }
 
+    Date::class.java.isAssignableFrom(fromType) -> when (toType) {
+      Date::class.java,
+      DateTime::class.java,
+      Int::class.java, java.lang.Integer::class.java,
+      Long::class.java, java.lang.Long::class.java,
+      String::class.java -> true
+      else -> false
+    }
+
+    DateTime::class.java.isAssignableFrom(fromType) -> when (toType) {
+      Date::class.java,
+      DateTime::class.java,
+      Int::class.java, java.lang.Integer::class.java,
+      Long::class.java, java.lang.Long::class.java,
+      String::class.java -> true
+      else -> false
+    }
+
+    fromType == ByteArray::class.java -> when (toType) {
+      ByteArray::class.java, String::class.java -> true
+      else -> false
+    }
+
+    Enum::class.isAssignableFrom(fromType) -> when (toType) {
+      String::class.java,
+      Byte::class.java,
+      Int::class.java, java.lang.Integer::class.java,
+      Long::class.java, java.lang.Long::class.java -> true
+      else -> {
+        val toErased = toType.erasedType()
+        if (toErased.isEnum && TypeConversionConfig.permiteEnumToEnum) {
+          true
+        } else {
+          false
+        }
+      }
+    }
+
+    fromType == File::class.java -> when (toType) {
+      File::class.java,
+      String::class.java -> true
+      else -> false
+    }
+
+    fromType == URI::class.java || fromType == URL::class.java -> when (toType) {
+      URI::class.java,
+      URL::class.java,
+      String::class.java -> true
+      else -> false
+    }
+
     else -> false
 
   }
-
 }
 

@@ -1,12 +1,9 @@
 /*
- * Copyright 2016 Sunghyouk Bae<sunghyouk.bae@gmail.com>
- *
+ * Copyright (c) 2016. sunghyouk.bae@gmail.com
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
  * http://www.apache.org/licenses/LICENSE-2.0
- *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,13 +47,10 @@ fun Double.coerce(min: Double, max: Double): Double = this.min(min).max(max)
 
 
 val DEFAULT_DECIMAL_FORMAT = DecimalFormat("#,##0.#")
-
-fun Long.toHuman(): String {
-  // units 의 Storage 와 같은 형식이다
-  return DEFAULT_DECIMAL_FORMAT.format(this)
-}
-
-fun Int.toHuman(): String = this.toLong().toHuman()
+/**
+ * 숫자를 인간이 보기 편하도록 보여준다
+ */
+fun Number.toHuman(): String = DEFAULT_DECIMAL_FORMAT.format(this.toDouble())
 
 
 
