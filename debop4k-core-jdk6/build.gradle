@@ -1,5 +1,7 @@
 dependencies {
 
+    compile "org.springframework:spring-core:$springVersion"
+
     compile 'org.eclipse.collections:eclipse-collections:7.1.0'
     compile "joda-time:joda-time:2.9.+"
     compile "com.google.guava:guava:19.+"
@@ -12,5 +14,8 @@ dependencies {
     compile 'org.apache.commons:commons-compress:1.11'
     compile 'org.apache.commons:commons-collections4:4.1'
     compile 'commons-io:commons-io:2.4'
+
+    compile "org.xerial.snappy:snappy-java:1.1.+"
+
 
 }

@@ -29,34 +29,34 @@ import org.eclipse.collections.impl.set.mutable.UnifiedSet
 
 // Primitive array
 
-fun ByteArrayList.asList(): List<Byte> = this.toArray().asList()
 fun ByteArray.toByteArrayList(): ByteArrayList = ByteArrayList.newListWith(*this)
+fun ByteArrayList.asList(): List<Byte> = this.toArray().asList()
 fun byteArrayListOf(vararg values: Byte): ByteArrayList = ByteArrayList.newListWith(*values)
 
-fun CharArrayList.asList(): List<Char> = this.toArray().asList()
 fun CharArray.toCharArrayList(): CharArrayList = CharArrayList.newListWith(*this)
+fun CharArrayList.asList(): List<Char> = this.toArray().asList()
 fun charArrayListOf(vararg values: Char): CharArrayList = CharArrayList.newListWith(*values)
 
-fun ShortArrayList.asList(): List<Short> = this.toArray().asList()
 fun ShortArray.toShortArrayList(): ShortArrayList = ShortArrayList.newListWith(*this)
+fun ShortArrayList.asList(): List<Short> = this.toArray().asList()
 fun shortArrayListOf(vararg values: Short): ShortArrayList = ShortArrayList.newListWith(*values)
 
-fun IntArrayList.asList(): List<Int> = this.toArray().asList()
+fun Sequence<Int>.toIntArrayList(): IntArrayList = IntArrayList.newListWith(*this.toList().toIntArray())
 fun IntArray.toIntArrayList(): IntArrayList = IntArrayList.newListWith(*this)
+fun IntArrayList.asList(): List<Int> = this.toArray().asList()
 fun intArrayListOf(vararg values: Int): IntArrayList = IntArrayList.newListWith(*values)
 
-fun LongArrayList.asList(): List<Long> = this.toArray().asList()
 fun LongArray.toLongArrayList(): LongArrayList = LongArrayList.newListWith(*this)
+fun LongArrayList.asList(): List<Long> = this.toArray().asList()
 fun longArrayListOf(vararg values: Long): LongArrayList = LongArrayList.newListWith(*values)
 
 
-fun FloatArrayList.asList(): List<Float> = this.toArray().asList()
 fun FloatArray.toFloatArrayList(): FloatArrayList = FloatArrayList.newListWith(*this)
+fun FloatArrayList.asList(): List<Float> = this.toArray().asList()
 fun floatArrayListOf(vararg values: Float): FloatArrayList = FloatArrayList.newListWith(*values)
 
-
-fun DoubleArrayList.asList(): List<Double> = this.toArray().asList()
 fun DoubleArray.toDoubleArrayList(): DoubleArrayList = DoubleArrayList.newListWith(*this)
+fun DoubleArrayList.asList(): List<Double> = this.toArray().asList()
 fun doubleArrayListOf(vararg values: Double): DoubleArrayList = DoubleArrayList.newListWith(*values)
 
 

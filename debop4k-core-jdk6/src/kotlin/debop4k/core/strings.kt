@@ -1,9 +1,12 @@
 /*
- * Copyright (c) 2016. sunghyouk.bae@gmail.com
+ * Copyright 2016 Sunghyouk Bae<sunghyouk.bae@gmail.com>
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,6 +17,8 @@
 
 package debop4k.core
 
+import org.springframework.util.StringUtils
+
 const val UNIX_LINE_SEPARATOR = "\n"
 
 public fun CharSequence.isEmpty(): Boolean = trim().length == 0
@@ -23,7 +28,9 @@ fun CharSequence?.isNull(): Boolean = this == null
 
 fun CharSequence?.isNullOrEmpty(): Boolean = this == null || trim().length == 0
 
-public fun CharSequence?.nonEmpty(): Boolean = this != null && trim().length > 0
+fun CharSequence?.nonEmpty(): Boolean = this != null && trim().length > 0
+
+fun CharSequence?.hasText(): Boolean = this != null && trim().length > 0
 
 val CharSequence.lastChar: Char
   get() = if (this.isEmpty()) 0.toChar() else this.get(length - 1)
@@ -92,3 +99,13 @@ inline fun String.whenEndsWith(postfixes: List<String>, doWithRest: (String) -> 
   }
   return false
 }
+
+// Spring Core 의 StringUtils
+
+fun String.replace(oldPattern: String, newPattern: String): String
+    = StringUtils.replace(this, oldPattern, newPattern)
+
+fun String.tokenizeToStringArray(delimiters: String,
+                                 trimToken: Boolean = true,
+                                 ignoreEmptyTokens: Boolean = true): Array<String>
+    = StringUtils.tokenizeToStringArray(this, delimiters, trimToken, ignoreEmptyTokens)

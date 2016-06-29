@@ -1,9 +1,12 @@
 /*
- * Copyright (c) 2016. sunghyouk.bae@gmail.com
+ * Copyright 2016 Sunghyouk Bae<sunghyouk.bae@gmail.com>
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -13,7 +16,9 @@
 
 package debop4k.core
 
+import org.springframework.util.NumberUtils
 import java.text.DecimalFormat
+import java.text.NumberFormat
 
 fun Int.min(other: Int = Int.MAX_VALUE): Int = Math.min(this, other)
 fun Int.max(other: Int = Int.MIN_VALUE): Int = Math.max(this, other)
@@ -53,4 +58,14 @@ val DEFAULT_DECIMAL_FORMAT = DecimalFormat("#,##0.#")
 fun Number.toHuman(): String = DEFAULT_DECIMAL_FORMAT.format(this.toDouble())
 
 
+// SpringFramework 의  NumberUtils
+
+fun <T : Number> Number.toTargetClass(clazz: Class<T>): T
+    = NumberUtils.convertNumberToTargetClass(this, clazz)
+
+fun <T : Number> String.parseNumber(clazz: Class<T>): T
+    = NumberUtils.parseNumber(this, clazz)
+
+fun <T : Number> String.parseNumber(clazz: Class<T>, format: NumberFormat): T
+    = NumberUtils.parseNumber(this, clazz, format)
 
