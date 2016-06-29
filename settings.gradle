@@ -27,5 +27,6 @@ include 'debop4k-spring-webmvc'
 include 'debop4k-spring-security'
 include 'debop4k-examples'
 include 'debop4k-timeperiod'
-
+include 'debop4k-netflix-graph-jdk6'
+include 'debop4k-netflix-graph'
 

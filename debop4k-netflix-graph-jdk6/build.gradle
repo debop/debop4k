@@ -1,0 +1,6 @@
+dependencies {
+
+    compile project(":debop4k-core-jdk6")
+    compile "com.netflix.nfgraph:netflix-graph:1.5+"
+
+}

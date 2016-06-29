@@ -103,8 +103,8 @@ subprojects {
         runtime 'ch.qos.logback:logback-classic:1.1.+'
         compile 'javax.inject:javax.inject:1'
 
-        optional 'nl.komponents.kovenant:kovenant:3.2.+'
-        optional "org.jetbrains.exposed:exposed:0.5.0"
+//        optional 'nl.komponents.kovenant:kovenant:3.2.+'
+//        optional "org.jetbrains.exposed:exposed:0.5.0"
 
         testCompile 'junit:junit:4.12'
         testCompile 'org.assertj:assertj-core:3.4.1'

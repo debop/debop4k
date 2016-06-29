@@ -1,0 +1,6 @@
+dependencies {
+
+    compile project(":debop4k-core")
+    compile project(":debop4k-netflix-graph-jdk6")
+
+}
