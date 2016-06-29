@@ -18,6 +18,8 @@
 
 package debop4k.core
 
+import java.math.BigInteger
+
 /**
  * var 로 선언된 필드 중 non null 수형에 대해 초기화 값을 지정하고자 할 때 사용합니다.
  * 특히 ```@Autowired```, ```@Inject``` var 수형에 사용하기 좋다.
@@ -71,3 +73,62 @@ fun <T : Any, R : Any> Collection<T?>.whenAnyNotNull(block: (Collection<T>) -> R
   }
 }
 
+
+fun Any?.asInt(dv: Int = 0): Int {
+  if (this == null) return dv
+
+  return when (this) {
+    is Number -> this.toInt()
+    is String -> this.toInt()
+    else -> try {
+      this.asDouble(dv.toDouble()).toInt()
+    } catch(ignored: Exception) {
+      dv
+    }
+  }
+}
+
+fun Any?.asLong(dv: Long = 0L): Long {
+  if (this == null) return dv
+
+  return when (this) {
+    is Number -> this.toLong()
+    is String -> this.toLong()
+    else -> try {
+      this.asDouble(dv.toDouble()).toLong()
+    } catch(ignored: Exception) {
+      dv
+    }
+  }
+}
+
+fun Any?.asDouble(dv: Double = 0.0): Double {
+  if (this == null) return dv
+
+  return when (this) {
+    is Number -> this.toDouble()
+    is String -> this.toDouble()
+    is Char -> this.toDouble()
+    else -> {
+      return try {
+        this.toString().toDouble()
+      } catch(ignored: Exception) {
+        dv
+      }
+    }
+  }
+}
+
+fun Any?.asBigInt(dv: BigInteger = BigInteger.ZERO): BigInteger {
+  if (this == null) return dv
+
+  return when (this) {
+    is BigInteger -> this
+    is Number -> BigInteger.valueOf(this.toLong())
+    else -> try {
+      BigInteger.valueOf(this.asLong(dv.toLong()))
+    } catch(ignored: Exception) {
+      dv
+    }
+  }
+}

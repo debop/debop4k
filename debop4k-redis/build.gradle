@@ -1,0 +1,4 @@
+dependencies {
+    compile project(":debop4k-core")
+    compile project(":debop4k-redis-java6")
+}

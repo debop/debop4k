@@ -68,4 +68,3 @@ fun <T : Number> String.parseNumber(clazz: Class<T>): T
 
 fun <T : Number> String.parseNumber(clazz: Class<T>, format: NumberFormat): T
     = NumberUtils.parseNumber(this, clazz, format)
-

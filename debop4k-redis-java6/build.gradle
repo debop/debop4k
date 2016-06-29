@@ -1,0 +1,4 @@
+dependencies {
+    compile project(":debop4k-core")
+    compile 'org.redisson:redisson:2.2.16'
+}

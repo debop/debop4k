@@ -18,7 +18,10 @@ include 'debop4k-core-jdk7'
 include 'debop4k-core-jdk8'
 include 'debop4k-core'
 
+include 'debop4k-data-jdk6'
+include 'debop4k-data-jdk7'
 include 'debop4k-data'
+
 include 'debop4k-units'
 include 'debop4k-reactive'
 include 'debop4k-spring'
@@ -29,4 +32,6 @@ include 'debop4k-examples'
 include 'debop4k-timeperiod'
 include 'debop4k-netflix-graph-jdk6'
 include 'debop4k-netflix-graph'
+include 'debop4k-redis-java6'
+include 'debop4k-redis'
 

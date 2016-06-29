@@ -1,0 +1,7 @@
+dependencies {
+
+    // for Java 6
+    optional 'com.zaxxer:HikariCP-java6:2.3.13'
+
+    testCompile "com.h2database:h2:1.4.192"
+}

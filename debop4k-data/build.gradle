@@ -1,15 +1,5 @@
-/*
- * Copyright (c) 2016. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
- */
-
 dependencies {
     compile project(':debop4k-core')
-
-    compile "com.zaxxer:HikariCP:2.4.6"
-
-    testCompile "com.h2database:h2:1.4.192"
+    compile project(":debop4k-data-jdk6")
+    compile project(":debop4k-data-jdk7")
 }
