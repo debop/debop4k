@@ -1,4 +1,0 @@
-dependencies {
-    compile project(":debop4k-core-jdk6")
-    compile project(":debop4k-core-jdk7")
-}

@@ -1,4 +1,4 @@
 dependencies {
     compile project(":debop4k-core-java6")
-    compile 'org.redisson:redisson:2.2.16'
+    compile project(":debop4k-core-java7")
 }
