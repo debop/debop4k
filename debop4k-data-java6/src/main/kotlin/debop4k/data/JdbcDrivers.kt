@@ -21,6 +21,6 @@ package debop4k.data
  */
 object JdbcDrivers {
 
-    val H2_DRIVER_CLASS_NAME = "org.h2.Driver"
-
+  const val H2_DRIVER_CLASS_NAME: String = "org.h2.Driver"
+  const val HSQL_DRIVER_CLASS_NAME: String = "org.hsql.Driver"
 }
