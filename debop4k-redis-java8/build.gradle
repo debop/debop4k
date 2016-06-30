@@ -1,6 +1,6 @@
 dependencies {
-    compile project(":debop4k-core")
+
+    compile project(":debop4k-core-java8")
     compile project(":debop4k-redis-java6")
     compile project(":debop4k-redis-java7")
-    compile project(":debop4k-redis-java8")
 }

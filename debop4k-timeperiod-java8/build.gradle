@@ -1,0 +1,7 @@
+dependencies {
+
+    compile project(':debop4k-core-java8')
+    compile project(":debop4k-timeperiod-java7")
+
+    compile "joda-time:joda-time:2.9.+"
+}

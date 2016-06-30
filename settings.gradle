@@ -23,6 +23,7 @@ include 'debop4k-timeperiod'
 
 include 'debop4k-data-java6'
 include 'debop4k-data-java7'
+include 'debop4k-data-java8'
 include 'debop4k-data'
 
 include 'debop4k-spring'
@@ -33,6 +34,12 @@ include 'debop4k-spring-security'
 include 'debop4k-reactive'
 
 include 'debop4k-redis-java6'
+include 'debop4k-redis-java7'
+include 'debop4k-redis-java8'
 include 'debop4k-redis'
 
 include 'debop4k-examples'
+include 'debop4k-timeperiod-java6'
+include 'debop4k-timeperiod-java7'
+include 'debop4k-timeperiod-java8'
+
