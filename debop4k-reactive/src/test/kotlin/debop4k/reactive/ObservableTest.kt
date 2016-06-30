@@ -121,7 +121,7 @@ class ObservableTest : AbstractReactiveTest() {
 
   @Test(expected = OnErrorNotImplementedException::class)
   fun requireNoNullsWithNulls() {
-    (listOf(1, null) as List<Int?>).toObservable().requireNoNulls().subscribe()
+    listOf(1, null).toObservable().requireNoNulls().subscribe()
   }
 
   @Test
