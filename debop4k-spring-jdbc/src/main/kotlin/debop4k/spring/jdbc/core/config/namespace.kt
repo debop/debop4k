@@ -56,6 +56,8 @@ fun embeddedDatabase(type: EmbeddedDatabaseType = H2,
 
   return EmbeddedDatabaseBuilder()
       .setType(type)
+      .generateUniqueName(true)
+      .generateUniqueName(true)
       .addScripts(*scripts.toTypedArray<String>())
       .build()
 }

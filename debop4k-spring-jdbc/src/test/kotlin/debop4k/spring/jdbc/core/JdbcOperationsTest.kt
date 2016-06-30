@@ -6,13 +6,13 @@ import debop4k.spring.jdbc.config.DataConfiguration
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.transaction.annotation.Transactional
 import java.sql.*
+import javax.inject.Inject
 import javax.sql.DataSource
 
 @RunWith(SpringJUnit4ClassRunner::class)
@@ -20,8 +20,8 @@ import javax.sql.DataSource
 @Transactional
 open class JdbcOperationsTest : AbstractJdbcTest() {
 
-  @Autowired var dataSource: DataSource = uninitialized()
-  @Autowired var template: JdbcTemplate = uninitialized()
+  @Inject var dataSource: DataSource = uninitialized()
+  @Inject var template: JdbcTemplate = uninitialized()
 
   private val select1: String = "$select where id = 1"
   private val selectIdPython = "$selectId where description = 'python'"

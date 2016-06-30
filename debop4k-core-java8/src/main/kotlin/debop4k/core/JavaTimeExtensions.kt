@@ -30,10 +30,16 @@ fun utcNowTime(): Instant = Instant.now()
  * Make a date formatter for ISO Date Time 'yyyy-MM-dd`T`hh:mm:ss.SSSZ'
  * @return DateTimeFormatter configured for ISO Date Time format
  */
-fun isoDateFormat(): DateTimeFormatter = DateTimeFormatter.ISO_INSTANT
+val ISODateFormatter: DateTimeFormatter = DateTimeFormatter.ISO_INSTANT
 
 /**
  * Convert the Instant into a String in the ISO Date Time format 'yyyy-MM-dd`T`hh:mm:ss.SSSZ'
  * @return String representing the Instant in ISO Date Time format
  */
-fun Temporal.toIsoString(): String = isoDateFormat().format(this)
+fun Temporal.toIsoString(): String = ISODateFormatter.format(this)
+
+fun Temporal.toLocaleString(): String = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(this)
+
+fun Temporal.toIsoDateString(): String = DateTimeFormatter.ISO_DATE.format(this)
+
+fun Temporal.toIsoTimeString(): String = DateTimeFormatter.ISO_TIME.format(this)

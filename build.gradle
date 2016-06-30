@@ -43,17 +43,16 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'kotlin'
 
-
-    if (name.endsWith("jdk8")) {
-        println("Project ${name} set to JDK 8")
+    if (name.endsWith("java8")) {
+        println("Project ${name} set to Java 8")
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
-    } else if (name.endsWith("jdk7")) {
-        println("Project ${name} set to JDK 7")
+    } else if (name.endsWith("java7")) {
+        println("Project ${name} set to Java 7")
         sourceCompatibility = JavaVersion.VERSION_1_7
         targetCompatibility = JavaVersion.VERSION_1_7
-    } else if (name.endsWith("jdk6")) {
-        println("Project ${name} set to JDK 6")
+    } else if (name.endsWith("java6")) {
+        println("Project ${name} set to Java 6")
         sourceCompatibility = JavaVersion.VERSION_1_6
         targetCompatibility = JavaVersion.VERSION_1_6
     } else {
