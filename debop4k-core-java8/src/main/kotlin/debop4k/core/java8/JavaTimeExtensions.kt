@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package debop4k.core
+package debop4k.core.java8
 
 import java.time.Instant
 import java.time.format.DateTimeFormatter

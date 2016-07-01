@@ -45,16 +45,23 @@ fun Sequence<Int>.toIntArrayList(): IntArrayList = IntArrayList.newListWith(*thi
 fun IntArray.toIntArrayList(): IntArrayList = IntArrayList.newListWith(*this)
 fun IntArrayList.asList(): List<Int> = this.toArray().asList()
 fun intArrayListOf(vararg values: Int): IntArrayList = IntArrayList.newListWith(*values)
+fun intArrayListOf(iterable: Iterable<Int>): IntArrayList {
+  val array = IntArrayList.newListWith()
+  iterable.forEach { array.add(it) }
+  return array
+}
 
+fun Sequence<Long>.toLongArrayList(): LongArrayList = LongArrayList.newListWith(*this.toList().toLongArray())
 fun LongArray.toLongArrayList(): LongArrayList = LongArrayList.newListWith(*this)
 fun LongArrayList.asList(): List<Long> = this.toArray().asList()
 fun longArrayListOf(vararg values: Long): LongArrayList = LongArrayList.newListWith(*values)
 
-
+fun Sequence<Float>.toFloatArrayList(): FloatArrayList = FloatArrayList.newListWith(*this.toList().toFloatArray())
 fun FloatArray.toFloatArrayList(): FloatArrayList = FloatArrayList.newListWith(*this)
 fun FloatArrayList.asList(): List<Float> = this.toArray().asList()
 fun floatArrayListOf(vararg values: Float): FloatArrayList = FloatArrayList.newListWith(*values)
 
+fun Sequence<Double>.toDoubleArrayList(): DoubleArrayList = DoubleArrayList.newListWith(*this.toList().toDoubleArray())
 fun DoubleArray.toDoubleArrayList(): DoubleArrayList = DoubleArrayList.newListWith(*this)
 fun DoubleArrayList.asList(): List<Double> = this.toArray().asList()
 fun doubleArrayListOf(vararg values: Double): DoubleArrayList = DoubleArrayList.newListWith(*values)
@@ -69,6 +76,8 @@ fun <T> fastListOf(): FastList<T> = emptyFastList()
 fun <T> fastListOf(vararg elements: T): FastList<T> {
   return if (elements.size == 0) FastList.newList() else FastList.newListWith(*elements)
 }
+
+fun <T> fastListOf(iterable: Iterable<T>): FastList<T> = FastList.newList(iterable)
 
 // Unified Set
 fun <T> Array<out T>.toUnifiedSet(): UnifiedSet<T> = UnifiedSet.newSetWith(*this)
