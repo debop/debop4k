@@ -1,17 +1,13 @@
 package debop4k.units.java;
 
-import com.github.debop.siunits.Mass;
+import debop4k.units.Mass;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import static com.github.debop.siunits.masses.*;
+import static debop4k.units.masses.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class MassTest extends AbstractUnitTest {
-
-  private Logger log = LoggerFactory.getLogger(MassTest.class);
 
   @Test
   public void convertMassUnit() {

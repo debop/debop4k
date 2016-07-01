@@ -1,15 +1,12 @@
 package debop4k.units.java;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import static com.github.debop.siunits.Storage.parse;
-import static com.github.debop.siunits.storages.*;
+import static debop4k.units.Storage.parse;
+import static debop4k.units.storages.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class StorageTest extends AbstractUnitTest {
-
-  private Logger log = LoggerFactory.getLogger(MassTest.class);
 
   @Test
   public void convertStorageUnit() {

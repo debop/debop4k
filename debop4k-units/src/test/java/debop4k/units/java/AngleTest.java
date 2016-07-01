@@ -1,18 +1,15 @@
 package debop4k.units.java;
 
-import com.github.debop.siunits.Angle;
-import com.github.debop.siunits.AngleUnit;
+import debop4k.units.Angle;
+import debop4k.units.AngleUnit;
 import org.assertj.core.data.Offset;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import static com.github.debop.siunits.angles.toDegree;
-import static com.github.debop.siunits.angles.toRadian;
+import static debop4k.units.angles.toDegree;
+import static debop4k.units.angles.toRadian;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AngleTest extends AbstractUnitTest {
-
-  private Logger log = LoggerFactory.getLogger(MassTest.class);
 
   @Test
   public void testConvert() {
