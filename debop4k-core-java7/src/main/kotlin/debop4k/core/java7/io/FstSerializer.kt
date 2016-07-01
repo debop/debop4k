@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package debop4k.core.io.serializer.jdk7
+package debop4k.core.java7.io
 
 import debop4k.core.io.emptyByteArray
 import debop4k.core.io.serializers.Serializer
