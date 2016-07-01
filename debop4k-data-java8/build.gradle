@@ -4,5 +4,6 @@ dependencies {
     compile project(":debop4k-data-java7")
 
     optional "com.zaxxer:HikariCP:2.4.6"
+
     testCompile "com.h2database:h2:1.4.192"
 }

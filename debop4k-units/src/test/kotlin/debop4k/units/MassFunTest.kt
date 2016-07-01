@@ -19,8 +19,8 @@ class MassFunTest : FunSpec() {
 
     test("gram to gram") {
 
-      5.0.gram().gram shouldBe (5.0 plusOrMinus 1.0e-8)
-      Double.POSITIVE_INFINITY.gram().gram shouldBe Double.POSITIVE_INFINITY
+      5.0.toGram().gram shouldBe (5.0 plusOrMinus 1.0e-8)
+      Double.POSITIVE_INFINITY.toGram().gram shouldBe Double.POSITIVE_INFINITY
       Mass.POSITIVE_INF.gram shouldBe Double.POSITIVE_INFINITY
     }
   }

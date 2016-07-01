@@ -3,10 +3,10 @@ package debop4k.timeperiod
 import org.slf4j.LoggerFactory
 
 /**
- * @author sunghyouk.bae@gmail.com
+ * Created by debop
  */
 abstract class AbstractTimePeriodTest {
 
-  private val log = LoggerFactory.getLogger(javaClass)
+  protected val log = LoggerFactory.getLogger(javaClass)
 
 }

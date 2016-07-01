@@ -2,4 +2,5 @@ dependencies {
     compile project(':debop4k-core')
     compile project(":debop4k-data-java6")
     compile project(":debop4k-data-java7")
+    compile project(":debop4k-data-java8")
 }
