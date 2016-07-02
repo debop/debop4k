@@ -18,6 +18,7 @@
 
 package debop4k.core.io
 
+import org.slf4j.LoggerFactory
 import org.springframework.util.FastByteArrayOutputStream
 import java.io.BufferedInputStream
 import java.io.ByteArrayInputStream
@@ -25,6 +26,8 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.nio.ByteBuffer
 import java.nio.charset.Charset
+
+private val log = LoggerFactory.getLogger("streams")
 
 fun emptyByteArray() = ByteArray(0)
 
@@ -91,7 +94,7 @@ fun ByteArray.toOutputStream(): FastByteArrayOutputStream {
 }
 
 fun ByteArray.readLines(cs: Charset = Charsets.UTF_8): List<String>
-    = this.toInputStream().readLines()
+    = this.toInputStream().readLines(cs)
 
 fun String.toInputStream(cs: Charset = Charsets.UTF_8): InputStream
     = this.toByteArray(cs).toInputStream()
