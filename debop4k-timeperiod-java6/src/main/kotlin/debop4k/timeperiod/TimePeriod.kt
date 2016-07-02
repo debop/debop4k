@@ -10,7 +10,7 @@ import org.joda.time.Duration
  * 기간을 나타냅니다.
  * @author Sunghyouk Bae <sunghyouk.bae@gmail.com>
  */
-interface ITimePeriod {
+interface ITimePeriod : Comparable<ITimePeriod> {
 
   val start: DateTime
 
@@ -29,6 +29,10 @@ class TimePeriod(override val start: DateTime,
                  override val end: DateTime,
                  override val readOnly: Boolean = false) : ITimePeriod {
 
+  override fun compareTo(other: ITimePeriod): Int
+      = start.compareTo(other.start)
+
+  operator fun rangeTo(endIncluded: ITimePeriod): ClosedRange<ITimePeriod> = TODO()
 
   companion object {
 
