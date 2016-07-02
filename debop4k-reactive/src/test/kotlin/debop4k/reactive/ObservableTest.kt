@@ -18,7 +18,7 @@ import org.junit.Test
 import rx.Observable
 import rx.exceptions.OnErrorNotImplementedException
 import rx.observers.TestSubscriber
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.*
 
 /**
  * @author sunghyouk.bae@gmail.com
@@ -28,6 +28,7 @@ class ObservableTest : AbstractReactiveTest() {
   @Test
   fun testCreation() {
     val o0 = emptyObservable<Int>()
+
     observable<Int> { s ->
       s.onNext(1)
       s.onNext(777)

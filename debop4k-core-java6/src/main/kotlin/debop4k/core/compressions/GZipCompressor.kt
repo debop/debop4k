@@ -20,8 +20,7 @@ import debop4k.core.io.toOutputStream
 import org.springframework.util.FastByteArrayOutputStream
 import java.io.BufferedInputStream
 import java.io.ByteArrayInputStream
-import java.util.zip.GZIPInputStream
-import java.util.zip.GZIPOutputStream
+import java.util.zip.*
 
 /**
  * GZip 알고리즘을 이용한 압축/복원
@@ -42,8 +41,6 @@ class GZipCompressor : Compressor {
 
   override fun decompress(input: ByteArray): ByteArray {
     if (input.isEmpty()) return byteArrayOf()
-
-    val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
 
     BufferedInputStream(ByteArrayInputStream(input), DEFAULT_BUFFER_SIZE).use { bis ->
       GZIPInputStream(bis).use { gzip ->

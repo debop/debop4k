@@ -15,6 +15,7 @@
  */
 
 @file:JvmName("converters")
+@file:Suppress("CAST_NEVER_SUCCEEDS")
 
 package debop4k.core.conversions
 
@@ -40,12 +41,12 @@ object TypeConversionConfig {
   }
 }
 
-public interface SelfRegisteringConverters {
+interface SelfRegisteringConverters {
   fun registerInfo(conversion: TypeConverters)
 }
 
 @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
-public class TypeConverters(val parent: TypeConverters? = null) {
+class TypeConverters(val parent: TypeConverters? = null) {
 
   private val specialConverters = fastListOf<AskToConverter>()
   private val exactConvertersMap = unifiedMapOf<Pair<Type, Type>, ExactConverter>()
@@ -258,6 +259,7 @@ private val primitiveConversion = fun TypeConverters.ExactConverter.(value: Any)
 private val primitiveConversionPredicate = fun(fromType: Type, toType: Type): Boolean {
 
   val fromErased = fromType.erasedType()
+
   return when {
     String::class.isAssignableFrom(fromType) -> when (toType) {
       String::class.java,
