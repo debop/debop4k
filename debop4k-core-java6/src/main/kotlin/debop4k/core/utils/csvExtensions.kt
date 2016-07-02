@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:JvmName("csv")
+@file:JvmName("csvExtensions")
 
 package debop4k.core.utils
 

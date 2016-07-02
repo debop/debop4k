@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:JvmName("hashExtensions")
 
 package debop4k.core.utils
 
@@ -28,9 +29,9 @@ fun Any?.hash(): Int = this?.hashCode() ?: 0
  */
 object HashEx {
 
-  private const val ZERO_HASN = 0
-  private const val DEFAULT_HASH = 1
-  private const val FACTOR = 31
+  const val ZERO_HASN = 0
+  const val DEFAULT_HASH = 1
+  const val FACTOR = 31
 
   private fun computeInternal(x: Any?): Int = x?.hashCode() ?: ZERO_HASN
 

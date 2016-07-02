@@ -16,6 +16,7 @@
 
 package debop4k.core.utils
 
+import debop4k.core.collections.charArrayListOf
 import debop4k.core.collections.intArrayListOf
 import org.eclipse.collections.impl.list.mutable.primitive.CharArrayList
 
@@ -43,17 +44,16 @@ object KoreanString {
    * 문자열 내에서 할글 자소를 분해하여 초/중/종성 으로 제공합니다.
    * 예: 한국 -> ㅎㅏㄴㄱㅜㄱ
    */
-  fun getJasoLetter(target: String): String {
-    if (target.isNullOrBlank())
+  fun getJasoLetter(text: String): String {
+    if (text.isNullOrBlank())
       return ""
 
-    val letters = StringBuilder(target.length * 3)
-
+    val letters = StringBuilder(text.length * 3)
 
     var i = 0
-    val length = target.length
+    val length = text.length
     while (i < length) {
-      val char = target[i].toInt()
+      val char = text[i].toInt()
       if (char in KOREAN_RANGE) {
         val initIndex = char - 0xAC00
 
@@ -76,9 +76,9 @@ object KoreanString {
 
   fun getChosung(text: String): CharArrayList {
     if (text.isNullOrBlank())
-      return CharArrayList.newListWith()
+      return charArrayListOf()
 
-    val chosungs = CharArrayList.newListWith()
+    val chosungs = charArrayListOf()
 
     var i = 0
     val length = text.length
