@@ -1,8 +1,26 @@
+/*
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 @file:JvmName("masses")
 
 package debop4k.units
 
+import org.slf4j.LoggerFactory
 import java.io.Serializable
+
+private val log = lazy { LoggerFactory.getLogger("masses") }
 
 const val MILLIGRAM_IN_GRAM: Double = 1.0 / 1000.0
 const val GRAM_IN_GRAM: Double = 1.0
@@ -38,7 +56,7 @@ enum class MassUnit(val unitName: String, val factor: Double) {
         lower = lower.dropLast(1)
       }
       return MassUnit.values().find { it.unitName == lower }
-          ?: throw NumberFormatException("Unknown Mess unit. unit=$unitStr")
+             ?: throw NumberFormatException("Unknown Mess unit. unit=$unitStr")
     }
   }
 }
@@ -63,16 +81,16 @@ data class Mass(val gram: Double = 0.0) : Comparable<Mass>, Serializable {
     else -> throw UnsupportedOperationException("Unknown Mass unit. unit=$unit")
   }
 
-  operator final fun plus(other: Mass): Mass = Mass(gram + other.gram)
-  operator final fun minus(other: Mass): Mass = Mass(gram - other.gram)
+  operator fun plus(other: Mass): Mass = Mass(gram + other.gram)
+  operator fun minus(other: Mass): Mass = Mass(gram - other.gram)
 
-  operator final fun times(scalar: Double): Mass = Mass(gram * scalar)
-  operator final fun times(other: Mass): Mass = Mass(gram * other.gram)
+  operator fun times(scalar: Double): Mass = Mass(gram * scalar)
+  operator fun times(other: Mass): Mass = Mass(gram * other.gram)
 
-  operator final fun div(scalar: Double): Mass = Mass(gram / scalar)
-  operator final fun div(other: Mass): Mass = Mass(gram / other.gram)
+  operator fun div(scalar: Double): Mass = Mass(gram / scalar)
+  operator fun div(other: Mass): Mass = Mass(gram / other.gram)
 
-  operator final fun unaryMinus(): Mass = Mass(-gram)
+  operator fun unaryMinus(): Mass = Mass(-gram)
 
   fun toHuman(): String {
     var unit = MassUnit.GRAM
@@ -99,14 +117,12 @@ data class Mass(val gram: Double = 0.0) : Comparable<Mass>, Serializable {
 
   companion object {
 
-//    private val log = LoggerFactory.getLogger(MassUnit::class.java)
-
-    final val ZERO: Mass = Mass(0.0)
-    final val MAX_VALUE = Mass(Double.MAX_VALUE)
-    final val MIN_VALUE = Mass(Double.MIN_VALUE)
-    final val POSITIVE_INF: Mass = Mass(Double.POSITIVE_INFINITY)
-    final val NEGATIVE_INF: Mass = Mass(Double.NEGATIVE_INFINITY)
-    final val NaN: Mass = Mass(Double.NaN)
+    @JvmField val ZERO: Mass = Mass(0.0)
+    @JvmField val MAX_VALUE = Mass(Double.MAX_VALUE)
+    @JvmField val MIN_VALUE = Mass(Double.MIN_VALUE)
+    @JvmField val POSITIVE_INF: Mass = Mass(Double.POSITIVE_INFINITY)
+    @JvmField val NEGATIVE_INF: Mass = Mass(Double.NEGATIVE_INFINITY)
+    @JvmField val NaN: Mass = Mass(Double.NaN)
 
     /**
      * Static constructor

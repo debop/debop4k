@@ -1,11 +1,10 @@
 /*
- * Copyright 2016 Sunghyouk Bae<sunghyouk.bae@gmail.com>
- *
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -55,10 +54,10 @@ infix inline fun <T> T.with(block: T.() -> Unit): T {
   return this
 }
 
-infix inline fun<T : Any, R : Any> T?.whenNotNull(thenDo: (T) -> R?): R?
+infix inline fun <T : Any, R : Any> T?.whenNotNull(thenDo: (T) -> R?): R?
     = if (this == null) null else thenDo(this)
 
-infix inline fun<T : Any, R : Any> T?.withNotNull(thenDo: T.() -> R?): R?
+infix inline fun <T : Any, R : Any> T?.withNotNull(thenDo: T.() -> R?): R?
     = if (this == null) null else this.thenDo()
 
 fun <T : Any, R : Any> Collection<T?>.whenAllNotNull(block: (Collection<T>) -> R) {
@@ -74,6 +73,7 @@ fun <T : Any, R : Any> Collection<T?>.whenAnyNotNull(block: (Collection<T>) -> R
 }
 
 
+@JvmOverloads
 fun Any?.asInt(dv: Int = 0): Int {
   if (this == null) return dv
 
@@ -88,6 +88,7 @@ fun Any?.asInt(dv: Int = 0): Int {
   }
 }
 
+@JvmOverloads
 fun Any?.asLong(dv: Long = 0L): Long {
   if (this == null) return dv
 
@@ -102,6 +103,7 @@ fun Any?.asLong(dv: Long = 0L): Long {
   }
 }
 
+@JvmOverloads
 fun Any?.asDouble(dv: Double = 0.0): Double {
   if (this == null) return dv
 
@@ -119,6 +121,7 @@ fun Any?.asDouble(dv: Double = 0.0): Double {
   }
 }
 
+@JvmOverloads
 fun Any?.asBigInt(dv: BigInteger = BigInteger.ZERO): BigInteger {
   if (this == null) return dv
 
