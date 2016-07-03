@@ -1,13 +1,30 @@
+/*
+ * Copyright (c) 2016. sunghyouk.bae@gmail.com
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 dependencies {
 
-    compile "org.springframework:spring-core:$springVersion"
+    compile("org.springframework:spring-core:$springVersion") {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
 
     compile 'org.eclipse.collections:eclipse-collections:7.1.0'
-    compile "joda-time:joda-time:2.9.+"
     compile "com.google.guava:guava:19.+"
+    compile "joda-time:joda-time:2.9.+"
 
-    optional "de.ruedigermoeller:fst:1.63"
+    compile "de.ruedigermoeller:fst:1.63"
+    compile "org.xerial.snappy:snappy-java:1.1.+"
 
+    // apache commons
     compile 'commons-codec:commons-codec:1.10'
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'org.apache.commons:commons-math3:3.6.1'
@@ -16,5 +33,10 @@ dependencies {
     compile 'org.apache.commons:commons-csv:1.4'
     compile 'commons-io:commons-io:2.4'
 
-    compile "org.xerial.snappy:snappy-java:1.1.+"
+    // Json
+    optional 'com.google.code.gson:gson:2.6.+'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.7.+'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.7.+'
+    compile 'com.fasterxml.jackson.module:jackson-module-kotlin:2.7.+'
+
 }
