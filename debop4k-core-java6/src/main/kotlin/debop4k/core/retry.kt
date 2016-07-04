@@ -18,7 +18,7 @@
 package debop4k.core
 
 import debop4k.core.functional.Option
-import debop4k.core.functional.either.Either
+import debop4k.core.functional.eithers.Either
 
 const val DEFAULT_DELAY = 500
 

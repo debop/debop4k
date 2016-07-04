@@ -1,11 +1,10 @@
 /*
- * Copyright 2016 Sunghyouk Bae<sunghyouk.bae@gmail.com>
- *
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,9 +18,9 @@ package debop4k.core.functional
 import debop4k.core.collections.prependTo
 import debop4k.core.functional.Option.None
 import debop4k.core.functional.Option.Some
-import debop4k.core.functional.either.Either
-import debop4k.core.functional.either.Either.Left
-import debop4k.core.functional.either.Either.Right
+import debop4k.core.functional.eithers.Either
+import debop4k.core.functional.eithers.Either.Left
+import debop4k.core.functional.eithers.Either.Right
 import java.util.*
 
 /**

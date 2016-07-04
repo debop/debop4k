@@ -1,11 +1,10 @@
 /*
- * Copyright 2016 Sunghyouk Bae<sunghyouk.bae@gmail.com>
- *
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,18 +15,18 @@
 
 @file:JvmName("either")
 
-package debop4k.core.functional.either
+package debop4k.core.functional.eithers
 
 import com.google.common.base.Objects
 import debop4k.core.collections.prependTo
 import debop4k.core.functional.Option
 import debop4k.core.functional.Option.None
 import debop4k.core.functional.Option.Some
-import debop4k.core.functional.either.Either.Left
-import debop4k.core.functional.either.Either.Right
+import debop4k.core.functional.eithers.Either.Left
+import debop4k.core.functional.eithers.Either.Right
 import java.util.*
 
-sealed class Either<out L, out R> {
+public sealed class Either<out L, out R> {
 
   fun left(): LeftProjection<L, R> = LeftProjection(this)
   fun right(): RightProjection<L, R> = RightProjection(this)
@@ -40,14 +39,14 @@ sealed class Either<out L, out R> {
 
   fun<X> fold(fl: (L) -> X, fr: (R) -> X): X {
     return when (this) {
-      is Left<L, R>  -> fl(this.l)
+      is Left<L, R> -> fl(this.l)
       is Right<L, R> -> fr(this.r)
     }
   }
 
   fun swap(): Either<R, L> {
     return when (this) {
-      is Left<L, R>  -> Right(this.l)
+      is Left<L, R> -> Right(this.l)
       is Right<L, R> -> Left(this.r)
     }
   }
@@ -85,7 +84,7 @@ sealed class Either<out L, out R> {
 }
 
 fun<T> Either<T, T>.merge(): T = when (this) {
-  is Left<T, T>  -> this.l
+  is Left<T, T> -> this.l
   is Right<T, T> -> this.r
   else           -> throw UnsupportedOperationException()
 }
@@ -105,13 +104,13 @@ fun <T, L, R> List<T>.traverse(f: (T) -> Either<L, R>): Either<L, List<R>> {
     val either: Either<L, R> = f(i)
     when (either) {
       is Right -> either.right().map(accumulator) { head: R, tail: List<R> -> head prependTo tail }
-      is Left  -> Left(either.l)
+      is Left -> Left(either.l)
       else     -> throw UnsupportedOperationException()
     }
   }
 }
 
-fun <L, R> List<Either<L, R>>.sequantial(): Either<L, List<R>> = traverse { it }
+fun <L, R> List<Either<L, R>>.sequantial(): Either<L, List<R>> = this.traverse { it }
 
 /**
  * LeftProjection
@@ -153,7 +152,7 @@ class LeftProjection<out L, out R>(val e: Either<L, R>) {
 }
 
 fun <L, R, X> LeftProjection<L, R>.flatMap(f: (L) -> Either<X, R>): Either<X, R> = when (e) {
-  is Left<L, R>  -> f(e.l)
+  is Left<L, R> -> f(e.l)
   is Right<L, R> -> Right<X, R>(e.r)
 }
 
@@ -206,7 +205,7 @@ class RightProjection<out L, out R>(val e: Either<L, R>) {
 }
 
 fun <X, L, R> RightProjection<L, R>.flatMap(f: (R) -> Either<L, X>): Either<L, X> = when (e) {
-  is Left<L, R>  -> Left(e.l)
+  is Left<L, R> -> Left(e.l)
   is Right<L, R> -> f(e.r)
 }
 

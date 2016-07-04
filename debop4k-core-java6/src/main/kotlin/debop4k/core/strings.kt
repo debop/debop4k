@@ -1,11 +1,10 @@
 /*
- * Copyright 2016 Sunghyouk Bae<sunghyouk.bae@gmail.com>
- *
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +19,8 @@ package debop4k.core
 
 import org.springframework.util.StringUtils
 
+const val EMPTY_STRING = ""
+const val NULL_STRING = "<null>"
 const val UNIX_LINE_SEPARATOR = "\n"
 
 public fun CharSequence.isEmpty(): Boolean = trim().length == 0
@@ -99,6 +100,22 @@ inline fun String.whenEndsWith(postfixes: List<String>, doWithRest: (String) -> 
     }
   }
   return false
+}
+
+/**
+ * 문자열의 문자들 중 유니크한 문자열로만 필터링해서 문자열로 반환합니다.
+ */
+fun String.unique(): String {
+  val sb = StringBuilder()
+  sb.append("a")
+  sb.contains('a')
+
+  for (char in this) {
+    if (char != ' ' && !sb.contains(char)) {
+      sb.append(char)
+    }
+  }
+  return sb.toString()
 }
 
 // Spring Core 의 StringUtils
