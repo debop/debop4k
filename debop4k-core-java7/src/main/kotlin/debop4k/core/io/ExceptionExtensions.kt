@@ -1,7 +1,7 @@
 @file:JvmName("exceptionExtensions")
 @file:Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "NOTHING_TO_INLINE")
 
-package debop4k.core.java7
+package debop4k.core.io
 
 /**
  * Appends the specified exception to the exceptions that were

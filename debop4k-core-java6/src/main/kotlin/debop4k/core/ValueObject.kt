@@ -26,7 +26,7 @@ interface ValueObject : Serializable
 abstract class AbstractValueObject : ValueObject {
 
   override fun equals(other: Any?): Boolean {
-    return super.equals(other)
+    return (other?.javaClass == this.javaClass && other?.hashCode() == hashCode()) ?: false
   }
 
   override fun hashCode(): Int {

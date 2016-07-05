@@ -16,7 +16,7 @@
 
 @file:JvmName("paths")
 
-package debop4k.core.java7.io
+package debop4k.core.io
 
 import java.nio.file.Files
 import java.nio.file.Path

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package debop4k.core.java7.io
+package debop4k.core.io.serializers.java7
 
 import debop4k.core.io.emptyByteArray
 import debop4k.core.io.serializers.Serializer
@@ -24,7 +24,7 @@ import org.springframework.util.FastByteArrayOutputStream
 /**
  * @author sunghyouk.bae@gmail.com
  */
-class FstSerializer(val conf: FSTConfiguration = FSTConfiguration.createDefaultConfiguration()) : Serializer {
+class FstJava7Serializer(val conf: FSTConfiguration = FSTConfiguration.createDefaultConfiguration()) : Serializer {
 
   override fun serialize(graph: Any?): ByteArray {
     if (graph == null)

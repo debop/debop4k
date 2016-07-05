@@ -17,8 +17,11 @@ dependencies {
 
     // for Java 6
     compile 'com.zaxxer:HikariCP-java6:2.3.13'
+    optional 'org.apache.tomcat:tomcat-jdbc:7.0.59'
 
     testCompile "com.h2database:h2:1.4.192"
-    testCompile "mysql:mysql-connector-mxj:5.0.12"
-    testCompile 'ru.yandex.qatools.embed:postgresql-embedded:1.15'
+    testCompile 'org.hsqldb:hsqldb:2.3.4'
+
+    testCompile 'mysql:mysql-connector-java:6.0.2'
+    testCompile 'org.postgresql:postgresql:9.4.1208.jre6'
 }

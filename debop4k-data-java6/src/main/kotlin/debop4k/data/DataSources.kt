@@ -18,12 +18,24 @@ package debop4k.data
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import debop4k.core.min
+import debop4k.data.factory.HikariDataSourceFactory
+import org.eclipse.collections.impl.map.mutable.ConcurrentHashMap
 import javax.sql.DataSource
 
 /**
  * @author debop sunghyouk.bae@gmail.com
  */
 object DataSources {
+
+  private val processCount = Runtime.getRuntime().availableProcessors()
+  val MAX_POOL_SIZE: Int = processCount * 16
+  val MIN_POOL_SIZE: Int = processCount
+  val MIN_IDLE_SIZE: Int = 2 min processCount
+
+  private val dataSourceCache = ConcurrentHashMap<DatabaseSetting, DataSource>()
+
+  private val dataSourceFactory = HikariDataSourceFactory()
 
   fun of(driverClassName: String,
          jdbcUrl: String,
@@ -34,4 +46,19 @@ object DataSources {
 
     return HikariDataSource(config)
   }
+
+  fun of(setting: DatabaseSetting): DataSource {
+    return dataSourceCache.getIfAbsentPut(setting, dataSourceFactory.create(setting))
+  }
+
+  fun ofEmbeddedH2() = of(h2Mem)
+  fun ofEmbeddedHsql() = of(hsqlMem)
+
+  val h2Mem = DatabaseSetting(driverClassName = JdbcDrivers.DRIVER_CLASS_H2,
+                              jdbcUrl = "jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE;MVCC=TRUE;")
+
+  val hsqlMem = DatabaseSetting(driverClassName = JdbcDrivers.DRIVER_CLASS_HSQL,
+                                jdbcUrl = "jdbc:hsqldb:mem:test",
+                                username = "sa",
+                                testQuery = "SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS")
 }

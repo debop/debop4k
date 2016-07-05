@@ -21,6 +21,90 @@ package debop4k.data
  */
 object JdbcDrivers {
 
-  const val H2_DRIVER_CLASS_NAME: String = "org.h2.Driver"
-  const val HSQL_DRIVER_CLASS_NAME: String = "org.hsql.Driver"
+  /**
+   * H2 DataSource class name
+   */
+  const val DATASOURCE_CLASS_H2 = "org.h2.jdbcx.JdbcDataSource"
+  /**
+   * H2 Jdbc driver class name
+   */
+  const val DRIVER_CLASS_H2 = "org.h2.Driver"
+  /**
+   * H2 hibernate dialect
+   */
+  const val DIALECT_H2 = "org.hibernate.dialect.H2Dialect"
+
+  /**
+   * hsqldb DB DataSource class name
+   */
+  const val DATASOURCE_CLASS_HSQL = "org.hsqldb.jdbc.JDBCDataSource"
+  /**
+   * hsqldb Jdbc driver class name
+   */
+  const val DRIVER_CLASS_HSQL = "org.hsqldb.jdbc.JDBCDriver"
+  /**
+   * hsqldb hibernate dialect
+   */
+  const val DIALECT_HSQL = "org.hibernate.dialect.HSQLDialect"
+
+  /**
+   * MySQL DB DataSource class name
+   */
+  const val DATASOURCE_CLASS_MYSQL = "com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
+  /**
+   * MySQL Jdbc driver class name
+   */
+  const val DRIVER_CLASS_MYSQL = "com.mysql.jdbc.Driver"
+  /**
+   * MySQL hibernate dialect
+   */
+  const val DIALECT_MYSQL = "org.hibernate.dialect.MySQL5InnoDBDialect"
+
+  /**
+   * Maria DB DataSource class name
+   */
+  const val DRIVER_CLASS_MARIADB = "org.mariadb.jdbc.Driver"
+
+  /**
+   * PostgreSql DB DataSource class name
+   */
+  const val DATASOURCE_CLASS_POSTGRESQL = "org.postgresql.ds.PGSimpleDataSource"
+  /**
+   * PostgreSql Jdbc driver class name
+   */
+  const val DRIVER_CLASS_POSTGRESQL = "org.postgresql.Driver"
+  /**
+   * PostgreSql hibernate dialect for Postgresql 9.4 or higher
+   */
+  const val DIALECT_POSTGRESQL = "org.hibernate.dialect.PostgreSQL94Dialect"
+  /**
+   * PostgreSql hibernate dialect for Postgresql 9.0 or higher
+   */
+  const val DIALECT_POSTGRESQL9 = "org.hibernate.dialect.PostgreSQL9Dialect"
+  /**
+   * PostgreSql hibernate dialect for Postgresql 8.2 or higher
+   */
+  const val DIALECT_POSTGRESQL82 = "org.hibernate.dialect.PostgreSQL82Dialect"
+
+
+  /**
+   * Oracle DB DataSource class name
+   */
+  const val DATASOURCE_CLASS_ORACLE = "oracle.jdbc.pool.OracleDataSource"
+  /**
+   * Oracle Jdbc driver class name
+   */
+  const val DRIVER_CLASS_ORACLE = "oracle.jdbc.driver.OracleDriver"
+  /**
+   * hibernate dialect for Oracle 12c or higher
+   */
+  const val DIALECT_ORACLE12 = "org.hibernate.dialect.Oracle12cDialect"
+  /**
+   * hibernate dialect for Oracle 9i or higher
+   */
+  const val DIALECT_ORACLE9i = "org.hibernate.dialect.Oracle9iDialect"
+  /**
+   * hibernate dialect for Oracle 10g or higher
+   */
+  const val DIALECT_ORACLE10g = "org.hibernate.dialect.Oracle10gDialect"
 }

@@ -1,6 +1,6 @@
 @file:JvmName("autocloseableExtensions")
 
-package debop4k.core.java7
+package debop4k.core.io
 
 /**
  * Executes the given [block] function on this resource and then closes it down correctly whether an exception
