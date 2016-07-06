@@ -1,11 +1,10 @@
 /*
- * Copyright 2016 Sunghyouk Bae<sunghyouk.bae@gmail.com>
- *
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +13,7 @@
  * limitations under the License.
  */
 
-package debop4k.core.io
+package debop4k.core.io.stream
 
 import org.slf4j.LoggerFactory
 import org.springframework.util.FastByteArrayOutputStream
@@ -27,9 +26,9 @@ import java.nio.charset.Charset
 
 private val log = LoggerFactory.getLogger("streams")
 
-public fun emptyByteArray() = ByteArray(0)
+fun emptyByteArray() = ByteArray(0)
 
-public fun emptyInputStream(): InputStream = ByteArrayInputStream(emptyByteArray())
+fun emptyInputStream(): InputStream = ByteArrayInputStream(emptyByteArray())
 
 /**
  * [InputStream] 을 읽어 [OutputStream] 에 씁니다.
@@ -42,8 +41,7 @@ fun InputStream.copyToOutputStream(output: OutputStream): InputStream {
     if (read > 0) {
       output.write(buffer, 0, read)
     }
-  }
-  while (read > 0)
+  } while (read > 0)
   output.flush()
 
   return this

@@ -13,28 +13,19 @@
  * limitations under the License.
  */
 
-package debop4k.core.compressions
+@file:Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "UNCHECKED_CAST", "NOTHING_TO_INLINE")
+
+package debop4k.core.java8.utils
+
+import java.util.stream.*
 
 /**
- * 압축/복원을 수행합니다.
- * @author sunghyouk.bae@gmail.com
+ * Returns an [IntStream] of UTF-16 character code values from this sequence.
+ * Surrogate pairs are represented as pair of consecutive chars.
  */
-interface Compressor {
+inline fun CharSequence.chars(): IntStream = (this as java.lang.CharSequence).chars()
 
-  /**
-   * 지정된 바이트 배열을 압축합니다.
-   *
-   * @param 압축을 푼 바이트 배열
-   * @return input 압축된 바이트 배열
-   */
-  fun compress(input: ByteArray): ByteArray
-
-  /**
-   * 압축된 바이트 배열을 압축을 풉니다.
-   *
-   * @param input 압축된 바이트 배열
-   * @return 압축을 푼 바이트 배열
-   */
-  fun decompress(input: ByteArray): ByteArray
-
-}
+/**
+ * Returns an [IntStream] of UTF code point values from this sequence.
+ */
+inline fun CharSequence.codePoints(): IntStream = (this as java.lang.CharSequence).codePoints()

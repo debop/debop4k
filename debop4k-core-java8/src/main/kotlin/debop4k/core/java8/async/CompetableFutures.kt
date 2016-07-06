@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 
-@file:JvmName("CompletableFutureExtensions")
-
 package debop4k.core.java8.async
 
 import java.util.concurrent.*
