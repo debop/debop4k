@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
  * @author sunghyouk.bae@gmail.com
  */
 @ConfigurationProperties(prefix = "debop4k.datasource")
-data class HikariDataSourceProperties(
+public data class HikariDataSourceProperties(
 
     var driverClassName: String? = uninitialized(),
     var jdbcUrl: String? = uninitialized(),
@@ -23,7 +23,7 @@ data class HikariDataSourceProperties(
     var flyway: Flyway? = uninitialized(),
     var postgres: Postgres? = uninitialized()
 
-                                     ) {
+                                            ) {
 
 
   data class Flyway(var clearDatabase: Boolean = false,
