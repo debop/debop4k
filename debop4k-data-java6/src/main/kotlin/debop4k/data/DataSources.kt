@@ -37,6 +37,7 @@ object DataSources {
 
   private val dataSourceFactory = HikariDataSourceFactory()
 
+  @JvmStatic
   fun of(driverClassName: String,
          jdbcUrl: String,
          username: String? = null,
@@ -47,18 +48,19 @@ object DataSources {
     return HikariDataSource(config)
   }
 
+  @JvmStatic
   fun of(setting: DatabaseSetting): DataSource {
     return dataSourceCache.getIfAbsentPut(setting, dataSourceFactory.create(setting))
   }
 
-  fun ofEmbeddedH2() = of(h2Mem)
-  fun ofEmbeddedHsql() = of(hsqlMem)
+  @JvmStatic fun ofEmbeddedH2() = of(h2Mem)
+  @JvmStatic fun ofEmbeddedHsql() = of(hsqlMem)
 
-  val h2Mem = DatabaseSetting(driverClassName = JdbcDrivers.DRIVER_CLASS_H2,
-                              jdbcUrl = "jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE;MVCC=TRUE;")
+  @JvmStatic val h2Mem = DatabaseSetting(driverClassName = JdbcDrivers.DRIVER_CLASS_H2,
+                                         jdbcUrl = "jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE;MVCC=TRUE;")
 
-  val hsqlMem = DatabaseSetting(driverClassName = JdbcDrivers.DRIVER_CLASS_HSQL,
-                                jdbcUrl = "jdbc:hsqldb:mem:test",
-                                username = "sa",
-                                testQuery = "SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS")
+  @JvmStatic val hsqlMem = DatabaseSetting(driverClassName = JdbcDrivers.DRIVER_CLASS_HSQL,
+                                           jdbcUrl = "jdbc:hsqldb:mem:test",
+                                           username = "sa",
+                                           testQuery = "SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS")
 }

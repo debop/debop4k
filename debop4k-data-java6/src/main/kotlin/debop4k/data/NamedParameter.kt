@@ -1,3 +1,5 @@
+@file:JvmName("parameters")
+
 package debop4k.data
 
 import debop4k.core.AbstractValueObject

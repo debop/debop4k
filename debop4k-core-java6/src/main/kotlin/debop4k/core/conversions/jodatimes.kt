@@ -13,9 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-@file:JvmName("jodatimes")
-
 package debop4k.core.conversions
 
 import org.joda.time.DateTime

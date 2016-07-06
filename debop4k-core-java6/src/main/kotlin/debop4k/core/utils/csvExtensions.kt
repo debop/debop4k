@@ -13,9 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-@file:JvmName("csvExtensions")
-
 package debop4k.core.utils
 
 import debop4k.core.collections.fastListOf

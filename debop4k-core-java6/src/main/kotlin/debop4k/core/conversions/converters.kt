@@ -13,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-@file:JvmName("converters")
 @file:Suppress("CAST_NEVER_SUCCEEDS")
 
 package debop4k.core.conversions

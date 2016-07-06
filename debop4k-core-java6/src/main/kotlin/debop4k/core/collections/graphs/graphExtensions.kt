@@ -1,6 +1,4 @@
-@file:JvmName("graphFunctions")
-
-package debop4k.core.collections
+package debop4k.core.collections.graphs
 
 import org.eclipse.collections.impl.factory.Sets
 import org.eclipse.collections.impl.list.mutable.FastList

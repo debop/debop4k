@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 
-@file:JvmName("retry")
-
 package debop4k.core
 
 import debop4k.core.functional.Option

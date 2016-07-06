@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:JvmName("bytebufferExtensions")
-
 package debop4k.core.io
 
 import java.nio.ByteBuffer

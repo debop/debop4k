@@ -13,9 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-@file:JvmName("compressorExtensions")
-
 package debop4k.core.compressions
 
 import debop4k.core.io.toByteArray

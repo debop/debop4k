@@ -13,9 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-@file:JvmName("eclipsecollections")
-
 package debop4k.core.collections
 
 import org.eclipse.collections.impl.list.mutable.FastList

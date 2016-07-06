@@ -12,9 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-@file:JvmName("strings")
-
 package debop4k.core
 
 import org.springframework.util.StringUtils

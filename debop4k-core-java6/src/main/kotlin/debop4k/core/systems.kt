@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:JvmName("systems")
-
 package debop4k.core
 
 object SystemEx {

@@ -13,9 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-@file:JvmName("assertions")
-
 package debop4k.core
 
 inline fun <T> T.assertBy(assertion: (T) -> Unit): T {

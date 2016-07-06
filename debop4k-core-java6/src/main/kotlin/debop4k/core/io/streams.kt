@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:JvmName("streams")
-
 package debop4k.core.io
 
 import org.slf4j.LoggerFactory
@@ -29,9 +27,9 @@ import java.nio.charset.Charset
 
 private val log = LoggerFactory.getLogger("streams")
 
-fun emptyByteArray() = ByteArray(0)
+public fun emptyByteArray() = ByteArray(0)
 
-fun emptyInputStream(): InputStream = ByteArrayInputStream(emptyByteArray())
+public fun emptyInputStream(): InputStream = ByteArrayInputStream(emptyByteArray())
 
 /**
  * [InputStream] 을 읽어 [OutputStream] 에 씁니다.
