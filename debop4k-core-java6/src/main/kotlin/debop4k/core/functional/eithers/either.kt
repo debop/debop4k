@@ -12,9 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-@file:JvmName("either")
-
 package debop4k.core.functional.eithers
 
 import com.google.common.base.Objects

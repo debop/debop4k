@@ -18,6 +18,7 @@ package debop4k.core
 import debop4k.core.functional.Option
 import debop4k.core.functional.eithers.Either
 
+
 const val DEFAULT_DELAY = 500
 
 class Successful<T>(val predicate: (T) -> Boolean) {

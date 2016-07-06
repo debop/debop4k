@@ -9,14 +9,14 @@ import java.io.Serializable
  *
  * @author sunghyouk.bae@gmail.com
  */
-data class DatabaseSetting(val host: String = "localhost",
-                           val driverClassName: String = "",
-                           val jdbcUrl: String = "",
-                           val username: String = "",
-                           val password: String = "",
-                           val maxPoolSize: Int = DataSources.MAX_POOL_SIZE,
-                           val minIdleSize: Int = DataSources.MIN_IDLE_SIZE,
-                           val testQuery: String? = "SELECT 1") : Serializable {
+data class DatabaseSetting(var host: String = "localhost",
+                           var driverClassName: String = "",
+                           var jdbcUrl: String = "",
+                           var username: String = "",
+                           var password: String = "",
+                           var maxPoolSize: Int = DataSources.MAX_POOL_SIZE,
+                           var minIdleSize: Int = DataSources.MIN_IDLE_SIZE,
+                           var testQuery: String? = "SELECT 1") : Serializable {
 
   val props: MutableMap<String, String>? = Maps.mutable.of<String, String>()
 }

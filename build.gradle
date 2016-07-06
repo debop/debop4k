@@ -109,6 +109,10 @@ subprojects {
         testCompile 'org.assertj:assertj-core:3.4.+'
         testCompile 'org.assertj:assertj-joda-time:2.0.0'
         testCompile 'io.kotlintest:kotlintest:1.2.+'
+
+        testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion") {
+            exclude(module: 'commons-logging')
+        }
     }
 }
 
