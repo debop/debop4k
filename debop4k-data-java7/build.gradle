@@ -15,10 +15,10 @@ dependencies {
     compile project(":debop4k-core-java7")
 
     compile(project(":debop4k-data-java6")) {
-        exclude group: 'com.zaxxer', module: 'HikariCP-java6'
+        exclude(module: 'HikariCP-java6')
     }
 
-    compile "com.zaxxer:HikariCP:2.4.6"
+    compile "com.zaxxer:HikariCP:$hikaricp_version"
 
-    testCompile "com.h2database:h2:1.4.192"
+    testCompile "com.h2database:h2:$h2_version"
 }

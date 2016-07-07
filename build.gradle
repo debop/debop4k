@@ -15,17 +15,25 @@
 
 buildscript {
 
-    ext.kotlinVersion = '1.0.3'
-
     repositories {
         jcenter()
         mavenCentral()
         maven { url "https://repo.spring.io/plugins-release" }
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.springframework.build.gradle:propdeps-plugin:0.0.7"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version"
     }
+}
+
+group = 'com.github.debop'
+version = '0.0.1-SNAPSHOT'
+
+if (project.hasProperty('prod')) {
+    apply from: 'gradle/profile_prod.gradle'
+} else {
+    apply from: 'gradle/profile_dev.gradle'
 }
 
 subprojects {
@@ -35,13 +43,6 @@ subprojects {
     apply plugin: 'propdeps'
     apply plugin: 'propdeps-maven'
     apply plugin: 'propdeps-idea'
-
-    group = 'com.github.debop'
-    version = '0.0.1-SNAPSHOT'
-
-    ext.springVersion = '4.3.0.RELEASE'
-    ext.springBootVersion = '1.3.5.RELEASE'
-
 
     if (name.endsWith("java8")) {
         println("Project ${name} set to Java 8")
@@ -82,9 +83,13 @@ subprojects {
         from sourceSets.main.allSource
     }
 
+    compileJava.dependsOn processResources
+//    processResources.dependsOn cleanResources
+
     artifacts.archives packageSources
 
     test {
+        ignoreFailures true
         jvmArgs "-XX:MaxPermSize=512m"
     }
 
@@ -95,22 +100,22 @@ subprojects {
     }
 
     dependencies {
-        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-        compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+        compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-        testCompile "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
-        testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+        testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+        testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 
-        compile 'org.slf4j:slf4j-api:1.7.+'
-        compile 'ch.qos.logback:logback-classic:1.1.+'
-        compile 'javax.inject:javax.inject:1'
+        compile "org.slf4j:slf4j-api:$slf4j_version"
+        compile "ch.qos.logback:logback-classic:$logback_version"
+        compile "javax.inject:javax.inject:$javax_inject_version"
 
-        testCompile 'junit:junit:4.12'
-        testCompile 'org.assertj:assertj-core:3.4.+'
-        testCompile 'org.assertj:assertj-joda-time:2.0.0'
-        testCompile 'io.kotlintest:kotlintest:1.2.+'
+        testCompile "junit:junit:$junit_version"
+        testCompile "org.assertj:assertj-core:$assertj_core_version"
+        testCompile "org.assertj:assertj-joda-time:$assertj_joda_time_version"
+        testCompile "io.kotlintest:kotlintest:$kotlintest_version"
 
-        testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion") {
+        testCompile("org.springframework.boot:spring-boot-starter-test:$spring_boot_version") {
             exclude(module: 'commons-logging')
         }
     }

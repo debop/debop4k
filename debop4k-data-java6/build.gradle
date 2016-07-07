@@ -16,11 +16,11 @@ dependencies {
     compile project(":debop4k-core-java6")
 
     // for Java 6
-    compile 'com.zaxxer:HikariCP-java6:2.3.13'
-    optional 'org.apache.tomcat:tomcat-jdbc:7.0.59'
+    compile "com.zaxxer:HikariCP-java6:$hikaricp_java6_version"
+    optional "org.apache.tomcat:tomcat-jdbc:$tomcat_jdbc_version"
 
-    compile "org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion"
-    optional "org.springframework.boot:spring-boot-configuration-processor:$springBootVersion"
+    compile "org.springframework.boot:spring-boot-starter-jdbc:$spring_boot_version"
+    optional "org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version"
 
     testCompile "com.h2database:h2:1.4.192"
     testCompile 'org.hsqldb:hsqldb:2.3.4'

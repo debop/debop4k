@@ -2,7 +2,7 @@ dependencies {
     compile project(":debop4k-core")
     compile project(":debop4k-spring")
 
-    compile 'org.springframework.security:spring-security-web:4.1.0.RELEASE'
-    compile 'org.springframework.security:spring-security-config:4.1.0.RELEASE'
+    compile "org.springframework.security:spring-security-web:$spring_security_version"
+    compile "org.springframework.security:spring-security-config:$spring_security_version"
 
 }

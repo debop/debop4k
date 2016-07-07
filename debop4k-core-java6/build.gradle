@@ -13,13 +13,13 @@
 
 dependencies {
 
-    compile("org.springframework:spring-core:$springVersion") {
+    compile("org.springframework:spring-core:$spring_version") {
         exclude group: 'commons-logging', module: 'commons-logging'
     }
 
-    compile 'org.eclipse.collections:eclipse-collections:7.1.0'
-    compile "com.google.guava:guava:19.+"
-    compile "joda-time:joda-time:2.9.+"
+    compile "org.eclipse.collections:eclipse-collections:$eclipse_collections_version"
+    compile "com.google.guava:guava:$guava_version"
+    compile "joda-time:joda-time:$joda_time_version"
 
     compile "de.ruedigermoeller:fst:1.63"
     compile "org.xerial.snappy:snappy-java:1.1.+"

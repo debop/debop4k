@@ -2,8 +2,8 @@ dependencies {
     compile project(":debop4k-core")
     compile project(":debop4k-spring")
 
-    compile 'javax.servlet:javax.servlet-api:3.1.0'
+    compile "javax.servlet:javax.servlet-api:$javax_servlet_api_version"
 
-    optional "org.springframework:spring-web:$springVersion"
-    optional "org.springframework:spring-webmvc:$springVersion"
+    optional "org.springframework:spring-web:$spring_version"
+    optional "org.springframework:spring-webmvc:$spring_version"
 }

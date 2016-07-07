@@ -14,6 +14,6 @@
 dependencies {
     compile project(':debop4k-core')
 
-    compile "io.reactivex:rxjava:1.1.+"
-//    compile 'com.github.davidmoten:rxjava-jdbc:0.7.+'
+    compile "io.reactivex:rxjava:$rxjava_version"
+    compile "com.github.davidmoten:rxjava-jdbc:$rxjava_jdbc_version"
 }

@@ -2,5 +2,5 @@ dependencies {
 
     compile project(':debop4k-core-java6')
 
-    compile "joda-time:joda-time:2.9.+"
+    compile "joda-time:joda-time:$joda_time_version"
 }
