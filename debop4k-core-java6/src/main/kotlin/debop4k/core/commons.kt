@@ -71,6 +71,21 @@ fun <T : Any, R : Any> Collection<T?>.whenAnyNotNull(block: (Collection<T>) -> R
 
 
 @JvmOverloads
+fun Any?.asByte(dv: Byte = 0): Byte {
+  if (this == null) return dv
+
+  return when (this) {
+    is Number -> this.toByte()
+    is String -> this.toByte()
+    else -> try {
+      this.asDouble(dv.toDouble()).toByte()
+    } catch(ignored: Exception) {
+      dv
+    }
+  }
+}
+
+@JvmOverloads
 fun Any?.asInt(dv: Int = 0): Int {
   if (this == null) return dv
 

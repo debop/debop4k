@@ -27,7 +27,7 @@ interface Compressor {
    * @param 압축을 푼 바이트 배열
    * @return input 압축된 바이트 배열
    */
-  fun compress(input: ByteArray): ByteArray
+  fun compress(input: ByteArray?): ByteArray
 
   /**
    * 압축된 바이트 배열을 압축을 풉니다.
@@ -35,6 +35,6 @@ interface Compressor {
    * @param input 압축된 바이트 배열
    * @return 압축을 푼 바이트 배열
    */
-  fun decompress(input: ByteArray): ByteArray
+  fun decompress(input: ByteArray?): ByteArray
 
 }

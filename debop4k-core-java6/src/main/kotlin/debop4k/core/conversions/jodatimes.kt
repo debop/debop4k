@@ -20,14 +20,23 @@ import org.joda.time.DateTimeConstants
 import org.joda.time.DateTimeZone
 import org.joda.time.format.DateTimeFormatter
 import org.joda.time.format.ISODateTimeFormat
+import java.sql.Timestamp
 
 // yyyy-MM-dd'T'HH:mm:ss.SSSZZ
 val JODA_DEFAULT_DATETIME_FORMATTER = ISODateTimeFormat.dateTime()
 
 
+fun DateTime.asUtc(): DateTime = this.toDateTime(DateTimeZone.UTC)
+@JvmOverloads
+fun DateTime.asLocal(tz: DateTimeZone = DateTimeZone.getDefault()): DateTime = this.toDateTime(tz)
+
+fun DateTime.asTimestamp(): Timestamp = Timestamp(this.millis)
+
+
 fun utcNow(): DateTime = DateTime.now(DateTimeZone.UTC)
 
 fun DateTime.toISOString(): String = JODA_DEFAULT_DATETIME_FORMATTER.print(this)
+fun DateTime.toISODateHourMinuteSecond(): String = ISODateTimeFormat.dateHourMinuteSecond().print(this)
 
 fun String.toDateTime(formatter: DateTimeFormatter = JODA_DEFAULT_DATETIME_FORMATTER): DateTime {
   if (this.isNullOrBlank())

@@ -16,6 +16,7 @@ dependencies {
     compile(project(":debop4k-core-java6")) {
         exclude group: 'de.ruedigermoeller', module: 'fst'
     }
-    compile 'de.ruedigermoeller:fst:2.47'
+
+    compile "de.ruedigermoeller:fst:$fst_java7_version"
 
 }

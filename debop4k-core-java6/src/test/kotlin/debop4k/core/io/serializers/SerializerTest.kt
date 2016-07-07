@@ -16,7 +16,7 @@
 package debop4k.core.io.serializers
 
 import debop4k.core.AbstractCoreTest
-import debop4k.core.collections.fastListOf
+import debop4k.core.collections.eclipseCollections.fastListOf
 import debop4k.core.io.serializers.java6.FstSerializer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test

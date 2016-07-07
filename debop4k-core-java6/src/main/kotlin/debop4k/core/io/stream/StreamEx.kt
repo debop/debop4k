@@ -15,6 +15,7 @@
 
 package debop4k.core.io.stream
 
+import debop4k.core.emptyByteArray
 import org.slf4j.LoggerFactory
 import org.springframework.util.FastByteArrayOutputStream
 import java.io.BufferedInputStream
@@ -26,9 +27,7 @@ import java.nio.charset.Charset
 
 private val log = LoggerFactory.getLogger("streams")
 
-fun emptyByteArray() = ByteArray(0)
-
-fun emptyInputStream(): InputStream = ByteArrayInputStream(emptyByteArray())
+fun emptyInputStream(): InputStream = ByteArrayInputStream(emptyByteArray)
 
 /**
  * [InputStream] 을 읽어 [OutputStream] 에 씁니다.
@@ -41,7 +40,8 @@ fun InputStream.copyToOutputStream(output: OutputStream): InputStream {
     if (read > 0) {
       output.write(buffer, 0, read)
     }
-  } while (read > 0)
+  }
+  while (read > 0)
   output.flush()
 
   return this

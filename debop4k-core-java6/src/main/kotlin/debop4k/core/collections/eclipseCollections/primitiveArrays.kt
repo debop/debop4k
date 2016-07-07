@@ -12,11 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package debop4k.core.collections
+package debop4k.core.collections.eclipseCollections
 
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.eclipse.collections.impl.list.mutable.primitive.*
 import org.eclipse.collections.impl.map.mutable.UnifiedMap
+import org.eclipse.collections.impl.parallel.ParallelIterate
 import org.eclipse.collections.impl.set.mutable.UnifiedSet
 
 //
@@ -100,4 +101,11 @@ fun <K, V> unifiedMapOf(vararg pairs: Pair<K, V>): UnifiedMap<K, V> {
     map.put(k, v)
   }
   return map
+}
+
+
+// Parallel collector
+
+fun <T, V> Iterable<T>.parallelCollect(selector: (T) -> V): Iterable<V> {
+  return ParallelIterate.collect(this, selector, true)
 }

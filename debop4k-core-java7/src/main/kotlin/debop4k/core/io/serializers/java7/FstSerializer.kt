@@ -15,8 +15,8 @@
 
 package debop4k.core.io.serializers.java7
 
+import debop4k.core.emptyByteArray
 import debop4k.core.io.serializers.Serializer
-import debop4k.core.io.stream.emptyByteArray
 import org.nustaq.serialization.FSTConfiguration
 import org.springframework.util.FastByteArrayOutputStream
 
@@ -27,7 +27,7 @@ class FstSerializer(val conf: FSTConfiguration = FSTConfiguration.createDefaultC
 
   override fun serialize(graph: Any?): ByteArray {
     if (graph == null)
-      return emptyByteArray()
+      return emptyByteArray
 
     FastByteArrayOutputStream().use { bos ->
       val oos = conf.getObjectOutput(bos)

@@ -18,7 +18,7 @@ dependencies {
         exclude(module: 'HikariCP-java6')
     }
 
-    compile "com.zaxxer:HikariCP:$hikaricp_version"
+    compile "com.zaxxer:HikariCP:$hikaricp_java7_version"
 
     testCompile "com.h2database:h2:$h2_version"
 }

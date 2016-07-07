@@ -18,8 +18,8 @@
 package debop4k.core.conversions
 
 import debop4k.core.*
-import debop4k.core.collections.fastListOf
-import debop4k.core.collections.unifiedMapOf
+import debop4k.core.collections.eclipseCollections.fastListOf
+import debop4k.core.collections.eclipseCollections.unifiedMapOf
 import org.joda.time.DateTime
 import java.io.File
 import java.lang.reflect.Type

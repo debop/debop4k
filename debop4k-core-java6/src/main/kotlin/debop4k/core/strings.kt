@@ -14,6 +14,7 @@
  */
 package debop4k.core
 
+import org.apache.commons.codec.binary.Hex
 import org.springframework.util.StringUtils
 
 const val EMPTY_STRING = ""
@@ -34,6 +35,12 @@ fun CharSequence?.hasText(): Boolean = this != null && trim().length > 0
 val CharSequence.lastChar: Char
   get() = if (this.isEmpty()) 0.toChar() else this.get(length - 1)
 
+fun ByteArray.toUtf8String(): String = this.toString(Charsets.UTF_8)
+
+// Hex String
+fun ByteArray.toHexString(): String = Hex.encodeHexString(this)
+
+fun String.fromHexString(): ByteArray = Hex.decodeHex(this.toCharArray())
 
 fun String.dropLast(count: Int = 1): String = this.substring(0, this.length - count)
 fun String.dropFirst(count: Int = 1): String = this.substring(count)

@@ -27,7 +27,6 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static debop4k.core.collections.EclipseCollectionExKt.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -37,22 +36,22 @@ public class EclipseCollectionExtensionsTest {
 
   @Test
   public void testArrayListOf() {
-    IntArrayList intArrayList = intArrayListOf(1, 2, 3, 4, 5);
+    IntArrayList intArrayList = debop4k.core.collections.eclipseCollections.PrimitiveArraysKt.intArrayListOf(1, 2, 3, 4, 5);
     assertThat(intArrayList.size()).isEqualTo(5);
     assertThat(intArrayList.contains(4)).isTrue();
     assertThat(intArrayList.contains(0)).isFalse();
 
-    LongArrayList longArrayList = longArrayListOf(1, 2, 3, 4, 5);
+    LongArrayList longArrayList = debop4k.core.collections.eclipseCollections.PrimitiveArraysKt.longArrayListOf(1, 2, 3, 4, 5);
     assertThat(longArrayList.size()).isEqualTo(5);
     assertThat(longArrayList.contains(4)).isTrue();
     assertThat(longArrayList.contains(0)).isFalse();
 
-    FloatArrayList floatArrayList = floatArrayListOf(1, 2, 3, 4, 5);
+    FloatArrayList floatArrayList = debop4k.core.collections.eclipseCollections.PrimitiveArraysKt.floatArrayListOf(1, 2, 3, 4, 5);
     assertThat(floatArrayList.size()).isEqualTo(5);
     assertThat(floatArrayList.contains(4)).isTrue();
     assertThat(floatArrayList.contains(0)).isFalse();
 
-    DoubleArrayList doubleArrayList = doubleArrayListOf(1, 2, 3, 4, 5);
+    DoubleArrayList doubleArrayList = debop4k.core.collections.eclipseCollections.PrimitiveArraysKt.doubleArrayListOf(1, 2, 3, 4, 5);
     assertThat(doubleArrayList.size()).isEqualTo(5);
     assertThat(doubleArrayList.contains(4)).isTrue();
     assertThat(doubleArrayList.contains(0)).isFalse();
@@ -60,32 +59,32 @@ public class EclipseCollectionExtensionsTest {
 
   @Test
   public void testAsList() {
-    List<Integer> ints = asList(intArrayListOf(1, 2, 3, 4, 5));
+    List<Integer> ints = debop4k.core.collections.eclipseCollections.PrimitiveArraysKt.asList(debop4k.core.collections.eclipseCollections.PrimitiveArraysKt.intArrayListOf(1, 2, 3, 4, 5));
     assertThat(ints).hasSize(5).contains(1, 2, 3, 4, 5);
 
-    List<Long> longs = asList(longArrayListOf(1, 2, 3, 4, 5));
+    List<Long> longs = debop4k.core.collections.eclipseCollections.PrimitiveArraysKt.asList(debop4k.core.collections.eclipseCollections.PrimitiveArraysKt.longArrayListOf(1, 2, 3, 4, 5));
     assertThat(longs).hasSize(5).contains(1L, 2L, 3L, 4L, 5L);
   }
 
   @Test
   public void testFastListOf() {
-    FastList<Object> empty = fastListOf();
+    FastList<Object> empty = debop4k.core.collections.eclipseCollections.PrimitiveArraysKt.fastListOf();
     assertThat(empty).isEmpty();
 
-    FastList<Integer> ints = fastListOf(1, 2, 3, 4, 5);
+    FastList<Integer> ints = debop4k.core.collections.eclipseCollections.PrimitiveArraysKt.fastListOf(1, 2, 3, 4, 5);
     assertThat(ints).isNotEmpty().contains(1, 2, 3, 4, 5);
   }
 
   @Test
   public void testUnifiedSetOf() {
-    UnifiedSet<Integer> set = unifiedSetOf(1, 2, 3, 3, 3);
+    UnifiedSet<Integer> set = debop4k.core.collections.eclipseCollections.PrimitiveArraysKt.unifiedSetOf(1, 2, 3, 3, 3);
     assertThat(set).hasSize(3).contains(1, 2, 3);
   }
 
   @Test
   @SuppressWarnings("unchecked")
   public void testUnifiedMapOf() {
-    UnifiedMap<Integer, String> map = unifiedMapOf(new Pair(1, "a"), new Pair(2, "b"), new Pair(3, "c"));
+    UnifiedMap<Integer, String> map = debop4k.core.collections.eclipseCollections.PrimitiveArraysKt.unifiedMapOf(new Pair(1, "a"), new Pair(2, "b"), new Pair(3, "c"));
     assertThat(map.size()).isEqualTo(3);
     assertThat(map.get(1)).isEqualTo("a");
     assertThat(map.get(2)).isEqualTo("b");

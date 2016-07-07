@@ -1,6 +1,9 @@
 package debop4k.core.collections
 
 import debop4k.core.AbstractCoreTest
+import debop4k.core.collections.eclipseCollections.fastListOf
+import debop4k.core.collections.eclipseCollections.intArrayListOf
+import debop4k.core.collections.eclipseCollections.toIntArrayList
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import kotlin.test.fail

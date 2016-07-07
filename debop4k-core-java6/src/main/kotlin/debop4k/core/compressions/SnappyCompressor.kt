@@ -15,6 +15,7 @@
 
 package debop4k.core.compressions
 
+import debop4k.core.emptyByteArray
 import org.xerial.snappy.Snappy
 
 /**
@@ -23,13 +24,17 @@ import org.xerial.snappy.Snappy
  */
 public sealed class SnappyCompressor : Compressor {
 
-  override fun compress(input: ByteArray): ByteArray {
-    if (input.size == 0) return byteArrayOf()
+  override fun compress(input: ByteArray?): ByteArray {
+    if (input == null || input.isEmpty())
+      return emptyByteArray
+
     return Snappy.compress(input)
   }
 
-  override fun decompress(input: ByteArray): ByteArray {
-    if (input.size == 0) return byteArrayOf()
+  override fun decompress(input: ByteArray?): ByteArray {
+    if (input == null || input.isEmpty())
+      return emptyByteArray
+
     return Snappy.uncompress(input)
   }
 
