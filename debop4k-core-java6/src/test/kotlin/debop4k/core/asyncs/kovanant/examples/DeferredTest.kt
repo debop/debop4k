@@ -13,15 +13,20 @@
  * limitations under the License.
  */
 
-dependencies {
+package debop4k.core.asyncs.kovanant.examples
 
-    compile(project(":debop4k-core-java6")) {
-        exclude(module: 'debop4k-fst-java6')
-        exclude(module: 'fst')
+import debop4k.core.asyncs.kovenantEx.await
+import nl.komponents.kovenant.task
+import org.junit.Test
 
+class DeferredTest {
+
+  @Test fun testTask() {
+    val promise = task {
+      println("async task is starting...")
+      Thread.sleep(100L)
+      println("async task is completed")
     }
-
-    compile project(":debop4k-fst-java7")
-    compile "de.ruedigermoeller:fst:$fst_java7_version"
-
+    await(promise)
+  }
 }

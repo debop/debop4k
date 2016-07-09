@@ -13,36 +13,41 @@
  * limitations under the License.
  */
 
-package debop4k.core.io.serializers.java7
+package debop4k.fst
 
-import debop4k.core.emptyByteArray
 import debop4k.core.io.serializers.Serializer
 import org.nustaq.serialization.FSTConfiguration
-import org.springframework.util.FastByteArrayOutputStream
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+
 
 /**
- * @author sunghyouk.bae@gmail.com
+ * FST Library 를 이용한 Java 6용 Serializer
+ * @author debop sunghyouk.bae@gmail.com
  */
 class FstSerializer(val conf: FSTConfiguration = FSTConfiguration.createDefaultConfiguration()) : Serializer {
 
   override fun serialize(graph: Any?): ByteArray {
     if (graph == null)
-      return emptyByteArray
+      return byteArrayOf()
 
-    FastByteArrayOutputStream().use { bos ->
+    ByteArrayOutputStream().use { bos ->
       val oos = conf.getObjectOutput(bos)
       oos.writeObject(graph)
       oos.flush()
-      return bos.toByteArrayUnsafe()
+
+      return bos.toByteArray()
     }
   }
 
   @Suppress("UNCHECKED_CAST")
-  override fun <T> deserialize(bytes: ByteArray): T? {
-    if (bytes.isEmpty())
+  override fun <T> deserialize(data: ByteArray): T? {
+    if (data == null || data.isEmpty())
       return null as T
 
-    val ois = conf.getObjectInput(bytes)
-    return ois.readObject() as T
+    ByteArrayInputStream(data).use { bis ->
+      val ois = conf.getObjectInput(bis)
+      return ois.readObject() as T
+    }
   }
 }

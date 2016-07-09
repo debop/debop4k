@@ -13,15 +13,11 @@
  * limitations under the License.
  */
 
-dependencies {
+package debop4k.core.io.serializers
 
-    compile(project(":debop4k-core-java6")) {
-        exclude(module: 'debop4k-fst-java6')
-        exclude(module: 'fst')
+interface Serializer {
 
-    }
+  fun serialize(graph: Any?): ByteArray
 
-    compile project(":debop4k-fst-java7")
-    compile "de.ruedigermoeller:fst:$fst_java7_version"
-
+  fun <T> deserialize(bytes: ByteArray): T?
 }

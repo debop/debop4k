@@ -1,0 +1,48 @@
+/*
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package debop4k.core.asyncs.kovanant.examples
+
+import nl.komponents.kovenant.Kovenant
+import nl.komponents.kovenant.jvm.asExecutorService
+import org.junit.Test
+import java.util.concurrent.*
+
+class ExecutorsTest {
+
+  @Test fun testExecutors() {
+    val executorService = Kovenant.context.workerContext.dispatcher.asExecutorService()
+
+    val tasks = Array(5) { x -> Callable { Pair(25 - x, fib(25 - x)) } }.toList()
+
+    val (n, fib) = executorService.invokeAny(tasks)
+    println("invokeAny: fib($n) = $fib")
+    println()
+
+    val results = executorService.invokeAll(tasks)
+    results.forEach { future ->
+      val (i, res) = future.get()
+      println("invokeAll: fib($i) = $res")
+    }
+  }
+
+  fun fib(n: Int): Int {
+    if (n < 0) throw IllegalArgumentException("negative numbers not allowed")
+    return when (n) {
+      0, 1 -> 1
+      else -> fib(n - 1) + fib(n - 2)
+    }
+  }
+}
