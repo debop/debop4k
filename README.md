@@ -1,4 +1,4 @@
-# debop4k
+# debop4k [![Build Status](https://travis-ci.org/debop/debop4k.png)](https://travis-ci.org/debop/debop4k)
 
 Common Utility for Kotlin JVM
 
