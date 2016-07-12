@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package debop4k.core.collections
 
 import debop4k.core.AbstractCoreTest
@@ -12,7 +27,7 @@ class CollectionExtensionsTest : AbstractCoreTest() {
 
   @Test fun convertToListOfGroupsWithoutConsumingGroup() {
     run {
-      val listOfGroups: List<List<Int>> = (1 .. 10).asSequence().batch(2).toList()
+      val listOfGroups: List<List<Int>> = (1..10).asSequence().batch(2).toList()
       assertThat(listOfGroups).hasSize(5)
       assertThat(listOfGroups[0]).isEqualTo(listOf(1, 2))
       assertThat(listOfGroups[1]).isEqualTo(listOf(3, 4))
@@ -21,7 +36,7 @@ class CollectionExtensionsTest : AbstractCoreTest() {
       assertThat(listOfGroups[4]).isEqualTo(listOf(9, 10))
     }
     run {
-      val listOfGroups: List<List<Int>> = (1 .. 10).asIterable().batch(3).toList()
+      val listOfGroups: List<List<Int>> = (1..10).asIterable().batch(3).toList()
       assertThat(listOfGroups).hasSize(4)
       assertThat(listOfGroups[0]).isEqualTo(listOf(1, 2, 3))
       assertThat(listOfGroups[1]).isEqualTo(listOf(4, 5, 6))
@@ -33,7 +48,7 @@ class CollectionExtensionsTest : AbstractCoreTest() {
   @Test fun lazyBatchSequenceWithoutConsumingGroup() {
     run {
       var count = 0
-      val listOfGroups = (1 .. 10).lazyBatch(2) { group: Sequence<Int> ->
+      (1..10).lazyBatch(2) { group: Sequence<Int> ->
         count++
         if (count == 5) {
           assertThat(group.toList()).isEqualTo(listOf(9, 10))
@@ -44,7 +59,7 @@ class CollectionExtensionsTest : AbstractCoreTest() {
 
     run {
       var count = 0
-      val listOfGroups = (1 .. 10).lazyBatch(3) { group: Sequence<Int> ->
+      (1..10).lazyBatch(3) { group: Sequence<Int> ->
         count++
         if (count == 4) {
           assertThat(group.toList()).isEqualTo(listOf(10))
@@ -62,7 +77,7 @@ class CollectionExtensionsTest : AbstractCoreTest() {
                                     intArrayListOf(9, 10))
     run {
       var count = 0
-      val listOfGroups = (1 .. 10).lazyBatch(2) { group: Sequence<Int> ->
+      (1..10).lazyBatch(2) { group: Sequence<Int> ->
         val groupAsIntArrayList = group.toIntArrayList()
         assertThat(groupAsIntArrayList).isEqualTo(expectedGroups[count++])
       }
@@ -70,7 +85,7 @@ class CollectionExtensionsTest : AbstractCoreTest() {
 
     run {
       var count = 0
-      val listOfGroups = (1 .. 10).lazyBatch(2) { group: Sequence<Int> ->
+      (1..10).lazyBatch(2) { group: Sequence<Int> ->
         val groupAsIntArrayList = group.toIntArrayList()
         assertThat(groupAsIntArrayList).isEqualTo(expectedGroups[count++])
       }
@@ -79,7 +94,7 @@ class CollectionExtensionsTest : AbstractCoreTest() {
 
   @Test fun specificCase() {
     run {
-      val listOfGroups: List<List<Int>> = (1 .. 10).batch(3).toList()
+      val listOfGroups: List<List<Int>> = (1..10).batch(3).toList()
       assertThat(listOfGroups).hasSize(4)
       assertThat(listOfGroups[0]).isEqualTo(listOf(1, 2, 3))
       assertThat(listOfGroups[1]).isEqualTo(listOf(4, 5, 6))
@@ -87,7 +102,7 @@ class CollectionExtensionsTest : AbstractCoreTest() {
       assertThat(listOfGroups[3]).isEqualTo(listOf(10))
     }
     run {
-      val listOfGroups: List<List<Int>> = (1 .. 10).batch(3).toList()
+      val listOfGroups: List<List<Int>> = (1..10).batch(3).toList()
       assertThat(listOfGroups).hasSize(4)
       assertThat(listOfGroups[0]).isEqualTo(listOf(1, 2, 3))
       assertThat(listOfGroups[1]).isEqualTo(listOf(4, 5, 6))
@@ -122,11 +137,11 @@ class CollectionExtensionsTest : AbstractCoreTest() {
   }
 
   @Test fun groupsOfExactSize() {
-    testRunAsStream((1 .. 15).toList(), 5, 3)
+    testRunAsStream((1..15).toList(), 5, 3)
   }
 
   @Test fun groupsOfOddSize() {
-    testRunAsStream((1 .. 18).toList(), 5, 4)
+    testRunAsStream((1..18).toList(), 5, 4)
   }
 
   @Test fun groupsOfLessThanBatchSize() {
