@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Copyright (c) 2016. KESTI co, ltd
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,22 +30,27 @@ class CSVReader(val lineReader: LineReader,
   private val parser = CSVParser(format)
   private val log = LoggerFactory.getLogger(javaClass)
 
+  private val emptyStringList = listOf<String>()
+
   fun readNext(): List<String>? {
 
     tailrec fun parseNext(lineReader: LineReader, leftOver: String? = null): List<String>? {
       val nextLine = lineReader.readLineWithTerminator()
-      if (nextLine == null) {
-        if (leftOver.isNullOrEmpty()) {
-          throw MalformedCSVException("Malformed Input:$leftOver")
+
+      return if (nextLine == null) {
+        if (!leftOver.isNullOrBlank()) {
+          throw MalformedCSVException("Malformed Input: [$leftOver]")
         } else {
-          return null
+          null
         }
       } else {
-        val line = leftOver ?: "" + nextLine
+        val line = (leftOver ?: "") + nextLine
         val result = parser.parseLine(line)
-        when (result) {
-          null -> return parseNext(lineReader, line)
-          else -> return result
+
+        if (result == null) {
+          return parseNext(lineReader, line)
+        } else {
+          return result
         }
       }
     }
@@ -59,9 +64,9 @@ class CSVReader(val lineReader: LineReader,
     private var _next: List<String>? = null
 
     override fun hasNext(): Boolean = when (_next) {
-      null -> {
+      null, emptyStringList -> {
         _next = readNext()
-        _next != null
+        (_next != null) && (_next != emptyStringList)
       }
       else -> true
     }
@@ -69,9 +74,9 @@ class CSVReader(val lineReader: LineReader,
     override fun next(): List<String> = when (_next) {
       null -> readNext() ?: throw NoSuchElementException("next on empty iterator")
       else -> {
-        val _row = _next
+        val tmp = _next
         _next = null
-        _row!!
+        tmp!!
       }
     }
   }
@@ -81,13 +86,15 @@ class CSVReader(val lineReader: LineReader,
   }
 
   fun toSequenceWithHeaders(): Sequence<Map<String, String>> {
-    val headers = readNext()
+    val headers = readNext() ?: listOf()
     return iterator().asSequence().map { line ->
-      headers?.zip(line)?.toMap()!!
-    } ?: sequenceOf<Map<String, String>>()
+      headers.zip(line).toMap()
+    }
   }
 
-  fun toSequence(): Sequence<List<String>> = iterator().asSequence()
+  fun toSequence(): Sequence<List<String>> {
+    return generateSequence<List<String>> { readNext() }
+  }
 
   fun all(): List<List<String>> = toSequence().toList()
 
@@ -96,12 +103,16 @@ class CSVReader(val lineReader: LineReader,
 
   fun allWithOrderedHeaders(): Pair<List<String>, List<Map<String, String>>> {
     val headers = readNext() ?: listOf()
-    val lines = toSequenceWithHeaders()
+    log.debug("headers={}", headers?.joinToString())
+
+    val lines = iterator().asSequence().map { line ->
+      headers.zip(line).toMap()
+    }
     return Pair(headers, lines.toList())
   }
 
   override fun close(): Unit {
-    log.debug("close lineReader")
+//    log.debug("close lineReader")
     try {
       lineReader.close()
     } catch(ignored: Exception) {
@@ -118,11 +129,11 @@ class CSVReader(val lineReader: LineReader,
 
     @JvmOverloads
     fun open(file: File,
-             encoding: Charset = DEFAULT_CHARSET,
+             cs: Charset = DEFAULT_CHARSET,
              format: CSVFormat = DEFAULT_CSVFORMAT): CSVReader {
       val fs = FileInputStream(file)
       try {
-        return open(InputStreamReader(fs, encoding), format)
+        return open(InputStreamReader(fs, cs), format)
       } catch(e: UnsupportedEncodingException) {
         fs.close()
         throw e
@@ -131,9 +142,9 @@ class CSVReader(val lineReader: LineReader,
 
     @JvmOverloads
     fun open(filename: String,
-             encoding: Charset = DEFAULT_CHARSET,
+             cs: Charset = DEFAULT_CHARSET,
              format: CSVFormat = DEFAULT_CSVFORMAT): CSVReader {
-      return open(File(filename), encoding, format)
+      return open(File(filename), cs, format)
     }
   }
 

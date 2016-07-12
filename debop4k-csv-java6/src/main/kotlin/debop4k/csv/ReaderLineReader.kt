@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Copyright (c) 2016. KESTI co, ltd
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -34,18 +34,18 @@ class ReaderLineReader(val reader: Reader) : LineReader {
 
     loop@ do {
       val c = bufferedReader.read()
-      when (c) {
-        -1 -> if (sb.length == 0) {
+
+      if (c == -1) {
+        if (sb.length == 0) {
           return null
         } else {
           break@loop
         }
-        else -> {
-          sb.append(c.toChar())
-          if (c.toChar().isLineFeed())
-            break@loop
-        }
       }
+
+      sb.append(c.toChar())
+      if (c.toChar() in CSV_SEPARATORS)
+        break@loop
 
       if (c.toChar() == '\r') {
         bufferedReader.mark(1)
@@ -56,7 +56,8 @@ class ReaderLineReader(val reader: Reader) : LineReader {
           else -> bufferedReader.reset()
         }
       }
-    } while (true)
+    }
+    while (true)
 
     return sb.toString()
   }
