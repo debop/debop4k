@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. KESTI co, ltd
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,6 +15,7 @@
 
 package debop4k.csv
 
+import org.slf4j.LoggerFactory
 import java.io.BufferedReader
 import java.io.Reader
 
@@ -24,6 +25,8 @@ import java.io.Reader
  * @author debop sunghyouk.bae@gmail.com
  */
 class ReaderLineReader(val reader: Reader) : LineReader {
+
+  private val log = LoggerFactory.getLogger(javaClass)
 
   val bufferedReader: BufferedReader = BufferedReader(reader)
 
@@ -56,14 +59,17 @@ class ReaderLineReader(val reader: Reader) : LineReader {
           else -> bufferedReader.reset()
         }
       }
-    }
-    while (true)
+    } while (true)
 
     return sb.toString()
   }
 
   override fun close() {
-    bufferedReader.close()
-    reader.close()
+    try {
+      bufferedReader.close()
+      reader.close()
+    } catch(ignored: Exception) {
+      log.warn("Fail to close reader.", ignored)
+    }
   }
 }

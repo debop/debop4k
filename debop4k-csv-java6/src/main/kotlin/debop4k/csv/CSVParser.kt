@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. KESTI co, ltd
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,6 +15,7 @@
 
 package debop4k.csv
 
+import org.eclipse.collections.impl.list.mutable.FastList
 import org.slf4j.LoggerFactory
 
 /**
@@ -24,10 +25,10 @@ class CSVParser(val format: CSVFormat = DEFAULT_CSVFORMAT) {
 
   private val log = LoggerFactory.getLogger(javaClass)
 
-  private val emptyLineList = listOf("")
-  private val emptyStringList = listOf<String>()
+  private val emptyLineList = FastList.newListWith("")
+  private val emptyStringList = FastList.newList<String>()
 
-  fun parseLine(input: String): List<String>? {
+  fun parseLine(input: String): FastList<String>? {
     val parsedResult = parse(input, format.escapeChar, format.delimiter, format.quoteChar)
     val ignoreLine = parsedResult == emptyLineList && format.treatEmptyLineAsNull
     return if (ignoreLine) emptyStringList else parsedResult
@@ -45,9 +46,9 @@ class CSVParser(val format: CSVFormat = DEFAULT_CSVFORMAT) {
     private const val QuoteEnd = 5
     private const val QuotedField = 6
 
-    fun parse(input: String, escapeChar: Char, delimiter: Char, quoteChar: Char): List<String>? {
+    fun parse(input: String, escapeChar: Char, delimiter: Char, quoteChar: Char): FastList<String>? {
       val buf = input.toCharArray()
-      var fields = mutableListOf<String>()
+      var fields = FastList.newList<String>()
       var field = StringBuilder()
       var state = Start
       var pos: Int = 0
@@ -299,7 +300,7 @@ class CSVParser(val format: CSVFormat = DEFAULT_CSVFORMAT) {
       return when (state) {
         Delimiter -> {
           fields.add("")
-          fields.toList()
+          fields
         }
         QuotedField -> {
           null
@@ -310,7 +311,7 @@ class CSVParser(val format: CSVFormat = DEFAULT_CSVFORMAT) {
               Field, QuoteEnd -> fields.add(field.toString())
             }
           }
-          fields.toList()
+          fields
         }
       }
     }

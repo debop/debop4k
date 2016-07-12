@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. KESTI co, ltd
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,6 +15,7 @@
 
 package debop4k.csv
 
+import org.eclipse.collections.impl.list.mutable.FastList
 import org.slf4j.LoggerFactory
 import java.io.*
 import java.nio.charset.Charset
@@ -30,11 +31,12 @@ class CSVReader(val lineReader: LineReader,
   private val parser = CSVParser(format)
   private val log = LoggerFactory.getLogger(javaClass)
 
-  private val emptyStringList = listOf<String>()
+  private val EMPTY_STRINGLIST = listOf<String>()
+  private fun emptyStringList() = FastList.newList<String>()
 
   fun readNext(): List<String>? {
 
-    tailrec fun parseNext(lineReader: LineReader, leftOver: String? = null): List<String>? {
+    tailrec fun parseNext(lineReader: LineReader, leftOver: String? = null): FastList<String>? {
       val nextLine = lineReader.readLineWithTerminator()
 
       return if (nextLine == null) {
@@ -64,9 +66,9 @@ class CSVReader(val lineReader: LineReader,
     private var _next: List<String>? = null
 
     override fun hasNext(): Boolean = when (_next) {
-      null, emptyStringList -> {
+      null, EMPTY_STRINGLIST -> {
         _next = readNext()
-        (_next != null) && (_next != emptyStringList)
+        (_next != null) && (_next != EMPTY_STRINGLIST)
       }
       else -> true
     }
@@ -86,7 +88,7 @@ class CSVReader(val lineReader: LineReader,
   }
 
   fun toSequenceWithHeaders(): Sequence<Map<String, String>> {
-    val headers = readNext() ?: listOf()
+    val headers = readNext() ?: emptyStringList()
     return iterator().asSequence().map { line ->
       headers.zip(line).toMap()
     }
@@ -102,7 +104,7 @@ class CSVReader(val lineReader: LineReader,
       = allWithOrderedHeaders().component2()
 
   fun allWithOrderedHeaders(): Pair<List<String>, List<Map<String, String>>> {
-    val headers = readNext() ?: listOf()
+    val headers = readNext() ?: emptyStringList()
     log.debug("headers={}", headers?.joinToString())
 
     val lines = iterator().asSequence().map { line ->
@@ -112,11 +114,10 @@ class CSVReader(val lineReader: LineReader,
   }
 
   override fun close(): Unit {
-//    log.debug("close lineReader")
     try {
       lineReader.close()
     } catch(ignored: Exception) {
-      log.warn("error occurred in close.", ignored)
+      log.warn("Fail to close.", ignored)
     }
   }
 
