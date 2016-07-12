@@ -15,7 +15,7 @@
 
 @file:JvmName("KovenantUtils")
 
-package debop4k.core.asyncs.kovenantEx
+package debop4k.core.asyncs
 
 import nl.komponents.kovenant.Promise
 import nl.komponents.kovenant.task
@@ -30,30 +30,42 @@ fun <V> async(body: () -> V): Promise<V, Exception> {
 }
 
 /**
- * [Promise] 컬렉션이 모두 완료될 때까지 기다립니다.
+ * [Promise] 이 모두 완료될 때까지 기다립니다.
  */
-fun <V, E> await(promise: Promise<V, E>): Unit {
+fun <V, E> Promise<V, E>.ready(): Promise<V, E> {
   val latch = CountDownLatch(1)
-  promise success { latch.countDown() }
-  promise fail { latch.countDown() }
+  this always { latch.countDown() }
   latch.await()
+  return this
 }
 
-fun <V, E> awaitAll(promises: Collection<Promise<V, E>>): Unit {
+/**
+ * [Promise] 컬렉션이 모두 완료될 때까지 기다립니다.
+ */
+fun readyAll(vararg promises: Promise<*, *>) {
   val latch = CountDownLatch(promises.size)
   promises.forEach { p ->
-    p success { latch.countDown() }
-    p fail { latch.countDown() }
+    p always { latch.countDown() }
   }
   latch.await()
 }
 
-fun <V, E> result(promise: Promise<V, E>): V {
-  await(promise)
-  return promise.get()
+fun <V, E> readyAll(promises: Collection<Promise<V, E>>): Unit {
+  val latch = CountDownLatch(promises.size)
+  promises.forEach { p ->
+    p always { latch.countDown() }
+  }
+  latch.await()
+}
+
+/**
+ * [Promise] 이 모두 완료될 때까지 기다립니다.
+ */
+fun <V, E> Promise<V, E>.result(): V {
+  return this.ready().get()
 }
 
 fun <V, E> resultAll(promises: Collection<Promise<V, E>>): Collection<V> {
-  awaitAll(promises)
+  readyAll(promises)
   return promises.map { it.get() }
 }

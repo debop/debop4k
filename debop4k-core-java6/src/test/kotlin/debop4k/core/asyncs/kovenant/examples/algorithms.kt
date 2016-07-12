@@ -13,20 +13,15 @@
  * limitations under the License.
  */
 
-package debop4k.core.asyncs.kovanant.examples
+package debop4k.core.asyncs.kovenant.examples
 
-import debop4k.core.asyncs.kovenantEx.await
-import nl.komponents.kovenant.task
-import org.junit.Test
-
-class DeferredTest {
-
-  @Test fun testTask() {
-    val promise = task {
-      println("async task is starting...")
-      Thread.sleep(100L)
-      println("async task is completed")
-    }
-    await(promise)
+/**
+ * @author debop sunghyouk.bae@gmail.com
+ */
+fun fib(n: Int): Int {
+  if (n < 0) throw IllegalArgumentException("negative numbers not allowed")
+  return when (n) {
+    0, 1 -> 1
+    else -> fib(n - 1) + fib(n - 2)
   }
 }

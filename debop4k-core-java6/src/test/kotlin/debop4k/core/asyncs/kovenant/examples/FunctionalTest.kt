@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 
-package debop4k.core.asyncs.kovanant.examples
+package debop4k.core.asyncs.kovenant.examples
 
-import debop4k.core.asyncs.kovenantEx.await
+import debop4k.core.asyncs.ready
 import nl.komponents.kovenant.Promise
 import nl.komponents.kovenant.functional.apply
 import nl.komponents.kovenant.functional.bind
@@ -28,7 +28,7 @@ class FunctionalTest {
   @Test fun testApply() {
     val p = Promise.of(21) apply Promise.of({ x: Int -> x * 2 })
     p success { println(it) }
-    await(p)
+    p.ready()
   }
 
   @Test fun testBind() {
@@ -40,7 +40,7 @@ class FunctionalTest {
       println("Fail: ${it.message}")
     }
 
-    await(p)
+    p.ready()
   }
 
   private fun divide(a: Int, b: Int): Promise<Int, Exception> {
@@ -53,7 +53,7 @@ class FunctionalTest {
 
   @Test fun testMap() {
     val p = Promise.of(21) map { it * 2 } success { println(it) }
-    await(p)
+    p.ready()
   }
 
   @Test fun testUnwrap() {
@@ -61,6 +61,6 @@ class FunctionalTest {
     val promise: Promise<Int, Exception> = nested.unwrap()
 
     promise success { println(it) }
-    await(promise)
+    promise.ready()
   }
 }

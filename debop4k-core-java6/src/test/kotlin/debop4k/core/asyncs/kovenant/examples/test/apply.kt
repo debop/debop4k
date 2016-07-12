@@ -13,40 +13,39 @@
  * limitations under the License.
  */
 
-package debop4k.core.asyncs.kovanant.examples.test
+package debop4k.core.asyncs.kovenant.examples.test
 
 import nl.komponents.kovenant.DirectDispatcher
 import nl.komponents.kovenant.Kovenant
 import nl.komponents.kovenant.Promise
-import nl.komponents.kovenant.functional.map
+import nl.komponents.kovenant.functional.apply
 import nl.komponents.kovenant.testMode
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.fail
 
-class MapTest {
-
+class ApplyTest {
   @Before fun setup() {
     Kovenant.testMode {
       fail(it.message)
     }
   }
 
-  @Test fun mapSuccess() {
+  @Test fun bindSuccess() {
     var result = 0
-    Promise.of(13) map { it + 2 } success { result = it }
-    assertEquals(15, result, "should chain")
+    Promise.of(13) apply Promise.of({ i: Int -> i * 2 }) success { result = it }
+    assertEquals(26, result, "should chain")
   }
 
-  @Test fun mapFail() {
+  @Test fun bindFail() {
     var count = 0
-    Promise.of(13) map { throw Exception() } fail { count++ }
+    Promise.of(13) apply Promise.ofFail<(Int) -> Int, Exception>(Exception()) fail { count++ }
     assertEquals(1, count, "should report a failure")
   }
 }
 
-class MapContextTest {
+class ApplyContextTest {
 
   val alternativeContext = Kovenant.context {
     callbackContext.dispatcher = DirectDispatcher.instance
@@ -54,17 +53,17 @@ class MapContextTest {
   }
 
   @Test fun defaultContext() {
-    val p = Promise.of(13).map { it + 2 }
+    val p = Promise.of(13) apply Promise.of({ i: Int -> i + 2 })
     assertEquals(Kovenant.context, p.context, "Expected the default context")
   }
 
   @Test fun alternativeContext() {
-    val p = Promise.of(13, alternativeContext).map { it + 2 }
+    val p = Promise.of(13, alternativeContext) apply Promise.of({ i: Int -> i + 2 })
     assertEquals(alternativeContext, p.context, "Expected the default context")
   }
 
   @Test fun specifiedContext() {
-    val p = Promise.of(13).map(alternativeContext) { it + 2 }
+    val p = Promise.of(13).apply(alternativeContext, Promise.of({ i: Int -> i + 2 }))
     assertEquals(alternativeContext, p.context, "Expected the default context")
   }
 }

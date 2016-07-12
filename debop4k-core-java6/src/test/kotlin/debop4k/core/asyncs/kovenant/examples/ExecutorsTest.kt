@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package debop4k.core.asyncs.kovanant.examples
+package debop4k.core.asyncs.kovenant.examples
 
 import nl.komponents.kovenant.Kovenant
 import nl.komponents.kovenant.jvm.asExecutorService
@@ -35,14 +35,6 @@ class ExecutorsTest {
     results.forEach { future ->
       val (i, res) = future.get()
       println("invokeAll: fib($i) = $res")
-    }
-  }
-
-  fun fib(n: Int): Int {
-    if (n < 0) throw IllegalArgumentException("negative numbers not allowed")
-    return when (n) {
-      0, 1 -> 1
-      else -> fib(n - 1) + fib(n - 2)
     }
   }
 }

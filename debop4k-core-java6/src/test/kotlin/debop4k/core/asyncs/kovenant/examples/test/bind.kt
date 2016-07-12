@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package debop4k.core.asyncs.kovanant.examples.test
+package debop4k.core.asyncs.kovenant.examples.test
 
 import nl.komponents.kovenant.DirectDispatcher
 import nl.komponents.kovenant.Kovenant
