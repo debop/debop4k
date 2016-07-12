@@ -90,7 +90,7 @@ subprojects {
 
     test {
         ignoreFailures true
-        jvmArgs "-XX:MaxPermSize=512m"
+        jvmArgs "-Xmx:2048m" // "-XX:MaxPermSize=512m"
     }
 
     repositories {
