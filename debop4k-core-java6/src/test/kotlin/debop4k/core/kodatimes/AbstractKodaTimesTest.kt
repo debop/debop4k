@@ -15,6 +15,7 @@
 
 package debop4k.core.kodatimes
 
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 /**
@@ -22,6 +23,6 @@ import org.slf4j.LoggerFactory
  */
 abstract class AbstractKodaTimesTest {
 
-  protected val log by lazy { LoggerFactory.getLogger(javaClass) }
+  protected val log: Logger by lazy { LoggerFactory.getLogger(javaClass) }
 
 }

@@ -13,14 +13,14 @@
  * limitations under the License.
  */
 
+@file:JvmName("Asyncs")
+
 package debop4k.core.asyncs
 
 import nl.komponents.kovenant.Promise
 import nl.komponents.kovenant.task
 import org.joda.time.Duration
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+import java.util.concurrent.*
 
 
 /**
@@ -35,7 +35,7 @@ object Asyncs {
   val duration: Duration = Duration.standardMinutes(15)
 
   fun <T> async(body: () -> T): Promise<T, Exception> {
-    return task { body () }
+    return task { body() }
   }
 
   fun <T> await(promise: Promise<T, *>): Unit {

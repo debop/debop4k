@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-@file:JvmName("KovenantUtils")
+@file:JvmName("KovenantExtensions")
 
 package debop4k.core.asyncs
 
@@ -50,6 +50,9 @@ fun readyAll(vararg promises: Promise<*, *>) {
   latch.await()
 }
 
+/**
+ * 모든 [Promise] 가 끝나기를 기다립니다.
+ */
 fun <V, E> readyAll(promises: Collection<Promise<V, E>>): Unit {
   val latch = CountDownLatch(promises.size)
   promises.forEach { p ->
@@ -59,12 +62,15 @@ fun <V, E> readyAll(promises: Collection<Promise<V, E>>): Unit {
 }
 
 /**
- * [Promise] 이 모두 완료될 때까지 기다립니다.
+ * [Promise]이 완료될 때까지 기다렸다가 결과를 반환합니다.
  */
 fun <V, E> Promise<V, E>.result(): V {
   return this.ready().get()
 }
 
+/**
+ * [Promise] 컬렉션이 모두 완료될 때까지 기다렸다가 결과를 반환합니다.
+ */
 fun <V, E> resultAll(promises: Collection<Promise<V, E>>): Collection<V> {
   readyAll(promises)
   return promises.map { it.get() }
