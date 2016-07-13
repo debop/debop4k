@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Copyright (c) 2016. KESTI co, ltd
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,6 +19,8 @@ import java.io.Closeable
 import java.io.IOException
 
 /**
+ * Line Reader
+ *
  * @author debop sunghyouk.bae@gmail.com
  */
 interface LineReader : Closeable {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Copyright (c) 2016. KESTI co, ltd
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,12 +23,13 @@ import org.slf4j.LoggerFactory
  */
 class CSVParser(val format: CSVFormat = DEFAULT_CSVFORMAT) {
 
-  private val log = LoggerFactory.getLogger(javaClass)
+  private val log = LoggerFactory.getLogger(CSVParser::class.java)
 
   private val emptyLineList = FastList.newListWith("")
   private val emptyStringList = FastList.newList<String>()
 
   fun parseLine(input: String): FastList<String>? {
+    log.trace("parse line. input={}", input)
     val parsedResult = parse(input, format.escapeChar, format.delimiter, format.quoteChar)
     val ignoreLine = parsedResult == emptyLineList && format.treatEmptyLineAsNull
     return if (ignoreLine) emptyStringList else parsedResult
@@ -36,7 +37,7 @@ class CSVParser(val format: CSVFormat = DEFAULT_CSVFORMAT) {
 
   companion object {
 
-    private val log = LoggerFactory.getLogger(javaClass)
+    private val log = LoggerFactory.getLogger(CSVParser::class.java)
 
     private const val Start = 0
     private const val Field = 1
@@ -48,7 +49,7 @@ class CSVParser(val format: CSVFormat = DEFAULT_CSVFORMAT) {
 
     fun parse(input: String, escapeChar: Char, delimiter: Char, quoteChar: Char): FastList<String>? {
       val buf = input.toCharArray()
-      var fields = FastList.newList<String>()
+      val fields = FastList.newList<String>()
       var field = StringBuilder()
       var state = Start
       var pos: Int = 0

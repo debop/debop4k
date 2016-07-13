@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Copyright (c) 2016. KESTI co, ltd
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,6 +38,7 @@ class CSVReader(val lineReader: LineReader,
 
     tailrec fun parseNext(lineReader: LineReader, leftOver: String? = null): FastList<String>? {
       val nextLine = lineReader.readLineWithTerminator()
+      log.trace("read next line. nextLine={}", nextLine)
 
       return if (nextLine == null) {
         if (!leftOver.isNullOrBlank()) {
@@ -48,7 +49,7 @@ class CSVReader(val lineReader: LineReader,
       } else {
         val line = (leftOver ?: "") + nextLine
         val result = parser.parseLine(line)
-
+        log.trace("parsed line={}", result)
         if (result == null) {
           return parseNext(lineReader, line)
         } else {
@@ -105,7 +106,7 @@ class CSVReader(val lineReader: LineReader,
 
   fun allWithOrderedHeaders(): Pair<List<String>, List<Map<String, String>>> {
     val headers = readNext() ?: emptyStringList()
-    log.debug("headers={}", headers?.joinToString())
+    log.trace("headers={}", headers?.joinToString())
 
     val lines = iterator().asSequence().map { line ->
       headers.zip(line).toMap()
