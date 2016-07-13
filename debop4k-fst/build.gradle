@@ -14,5 +14,6 @@
  */
 
 dependencies {
+    compile project(":debop4k-fst-java7")
     compile project(":debop4k-fst-java8")
 }
