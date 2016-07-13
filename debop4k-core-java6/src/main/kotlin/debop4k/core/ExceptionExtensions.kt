@@ -12,18 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:JvmName("ExceptionExtensions")
+package debop4k.core
 
-package debop4k.core.io
+import java.lang.reflect.InvocationTargetException
 
-import java.nio.ByteBuffer
+fun unwrapInvokeException(rawException: Throwable): Throwable
+    = if (rawException is InvocationTargetException) rawException.cause!! else rawException
 
-fun ByteBuffer.toByteArray(): ByteArray {
-  if (this.hasArray()) {
-    return this.duplicate().array()
-  } else {
-    val bytes = ByteArray(this.remaining())
-    this.get(bytes, 0, bytes.size)
-    return bytes
-  }
-}
-
+fun unwrapInvokeException(rawException: Exception): Throwable
+    = if (rawException is InvocationTargetException) rawException.cause!! else rawException

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Copyright (c) 2016. KESTI co, ltd
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,9 +26,9 @@ import java.io.Reader
  */
 class ReaderLineReader(val reader: Reader) : LineReader {
 
-  private val log = LoggerFactory.getLogger(javaClass)
+  private val log = LoggerFactory.getLogger(ReaderLineReader::class.java)
 
-  val bufferedReader: BufferedReader = BufferedReader(reader)
+  val bufferedReader = BufferedReader(reader)
 
   private fun Char.isLineFeed(): Boolean = CSV_SEPARATORS.contains(this)
 

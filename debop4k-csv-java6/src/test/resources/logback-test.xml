@@ -25,7 +25,7 @@
     </encoder>
   </appender>
 
-  <logger name="debop4k.csv" level="TRACE"/>
+  <logger name="debop4k.csv" level="DEBUG"/>
 
   <root level="INFO">
     <appender-ref ref="console"/>

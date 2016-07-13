@@ -12,8 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:JvmName("FunctionExtensions")
+package debop4k.core
 
-dependencies {
-    compile project(':debop4k-core')
-    compile project(":debop4k-data-java8")
-}
+
+fun <T> (() -> T).exec(): T = this.invoke()

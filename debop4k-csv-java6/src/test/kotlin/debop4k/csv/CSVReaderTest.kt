@@ -43,7 +43,7 @@ class CSVReaderTest {
       }
     }
     assertEquals("abcdef", res.joinToString(separator = "") { it })
-    println(res.joinToString(separator = ""))
+    log.debug(res.joinToString(separator = ""))
   }
 
   @Test fun constructorWithFilename() {
@@ -54,7 +54,7 @@ class CSVReaderTest {
       }
     }
     assertEquals("abcdef", res.joinToString(separator = "") { it })
-    println(res.joinToString(separator = ""))
+    log.debug(res.joinToString(separator = ""))
   }
 
   @Test fun constructedWithCSVFormat() {
@@ -153,7 +153,7 @@ class CSVReaderTest {
     CSVReader.open(FileReader("src/test/resources/backslash-escape.csv"),
                    format = format).use { reader ->
       reader.forEach { fields ->
-        println("fields=$fields")
+        log.debug("fields=$fields")
         res += fields
       }
     }
@@ -165,7 +165,7 @@ class CSVReaderTest {
 
     CSVReader.open(FileReader("src/test/resources/issue30.csv")).use { reader ->
       reader.forEach { fields ->
-        println("fields=$fields")
+        log.debug("fields=$fields")
         res += fields
       }
     }
@@ -204,7 +204,7 @@ class CSVReaderTest {
     var res = mutableListOf<List<String>>()
     CSVReader.open("src/test/resources/line-breaks.csv").use { reader ->
       reader.forEach { fields ->
-        println("fields=$fields")
+        log.debug("fields=$fields")
         res.add(fields)
       }
     }

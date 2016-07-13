@@ -12,7 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package debop4k.core
+@file:JvmName("ByteBufferExtensions")
 
+package debop4k.core.io
 
-fun <T> (() -> T).exec(): T = this.invoke()
+import java.nio.ByteBuffer
+
+fun ByteBuffer.toByteArray(): ByteArray {
+  if (this.hasArray()) {
+    return this.duplicate().array()
+  } else {
+    val bytes = ByteArray(this.remaining())
+    this.get(bytes, 0, bytes.size)
+    return bytes
+  }
+}
+

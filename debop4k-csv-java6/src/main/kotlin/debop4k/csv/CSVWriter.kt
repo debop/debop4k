@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Copyright (c) 2016. KESTI co, ltd
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,6 +15,7 @@
 
 package debop4k.csv
 
+import org.slf4j.LoggerFactory
 import java.io.*
 import java.nio.charset.Charset
 
@@ -23,6 +24,8 @@ import java.nio.charset.Charset
  */
 class CSVWriter(val writer: Writer,
                 val format: CSVFormat = DEFAULT_CSVFORMAT) : Closeable {
+
+  private val log = LoggerFactory.getLogger(CSVWriter::class.java)
 
   private val printWriter = PrintWriter(writer)
   private val quoteMinimalSpace = arrayOf('\r', '\n', format.quoteChar, format.delimiter)
@@ -82,7 +85,6 @@ class CSVWriter(val writer: Writer,
       }
     }
 
-
     fun printField(field: String): Unit {
       if (shouldQuote(field, format.quoting)) {
         printWriter.print(format.quoteChar)
@@ -106,6 +108,7 @@ class CSVWriter(val writer: Writer,
     while (hasNext) {
       val next = iterator.next()
       if (next != null) {
+        log.trace("print field. field={}", next)
         printField(next.toString())
       }
       hasNext = iterator.hasNext()
