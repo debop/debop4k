@@ -12,6 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:JvmName("StringExtensions")
+
 package debop4k.core
 
 import org.apache.commons.codec.binary.Hex
