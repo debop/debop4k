@@ -13,9 +13,22 @@
  * limitations under the License.
  */
 
-dependencies {
+package debop4k.timeperiod.models
 
-    compile project(":debop4k-core")
-    compile project(":debop4k-timeperiod-java8")
+/**
+ * @author debop sunghyouk.bae@gmail.com
+ */
+enum class Quarter {
 
+  /** 1/4 분기  */
+  FIRST,
+
+  /** 2/4 분기  */
+  SECOND,
+
+  /** 3/4 분기  */
+  THIRD,
+
+  /** 4/4 분기  */
+  FOURTH;
 }

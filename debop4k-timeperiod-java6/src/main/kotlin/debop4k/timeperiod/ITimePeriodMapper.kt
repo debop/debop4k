@@ -13,9 +13,21 @@
  * limitations under the License.
  */
 
-dependencies {
+package debop4k.timeperiod
 
-    compile project(":debop4k-core")
-    compile project(":debop4k-timeperiod-java8")
+import org.joda.time.DateTime
+import java.io.Serializable
 
+/**
+ * @author debop sunghyouk.bae@gmail.com
+ */
+interface ITimePeriodMapper : Serializable {
+
+  fun mapStart(moment: DateTime): DateTime
+
+  fun mapEnd(moment: DateTime): DateTime
+
+  fun unmapStart(moment: DateTime): DateTime
+
+  fun unmapEnd(moment: DateTime): DateTime
 }

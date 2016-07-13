@@ -13,9 +13,33 @@
  * limitations under the License.
  */
 
-dependencies {
+package debop4k.timeperiod
 
-    compile project(":debop4k-core")
-    compile project(":debop4k-timeperiod-java8")
+import org.joda.time.DateTime
+import org.joda.time.Duration
+
+interface ITimeBlock : ITimePeriod {
+
+  override var start: DateTime
+
+  override var end: DateTime
+
+  override var duration: Duration
+    get() = Duration(start, end)
+    set(duration: Duration) {
+      end = start + duration
+    }
+
+  fun durationFromStart(duration: Duration) {
+    end = start + duration
+  }
+
+  fun durationFromEnd(duration: Duration) {
+    start = end - duration
+  }
+
+  fun nextBlock(offset: Duration): ITimeBlock = TODO()
+
+  fun prevBlock(offset: Duration): ITimeBlock = TODO()
 
 }

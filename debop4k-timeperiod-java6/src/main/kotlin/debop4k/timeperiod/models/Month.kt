@@ -13,9 +13,23 @@
  * limitations under the License.
  */
 
-dependencies {
+package debop4k.timeperiod.models
 
-    compile project(":debop4k-core")
-    compile project(":debop4k-timeperiod-java8")
+/**
+ * @author debop sunghyouk.bae@gmail.com
+ */
+enum class Month {
 
+  JANUARY,
+  FEBURARY,
+  MARCH,
+  APRIL,
+  MAY,
+  JUNE,
+  JULY,
+  AUGUST,
+  SEPTEMBER,
+  OCTOBER,
+  NOVEMBER,
+  DECEMBER;
 }

@@ -13,9 +13,22 @@
  * limitations under the License.
  */
 
-dependencies {
+package debop4k.timeperiod
 
-    compile project(":debop4k-core")
-    compile project(":debop4k-timeperiod-java8")
+/**
+ * @author debop sunghyouk.bae@gmail.com
+ */
+open class PeriodContext {
 
+  companion object {
+    val TIME_CALENDAR_KEY: String = PeriodContext::class.java.name + ".Current"
+  }
+
+  object Current {
+
+    var calendar: ITimeCalendar
+      get() = TODO()
+      set(calendar: ITimeCalendar) = TODO()
+
+  }
 }

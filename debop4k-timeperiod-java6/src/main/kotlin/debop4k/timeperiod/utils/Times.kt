@@ -13,9 +13,15 @@
  * limitations under the License.
  */
 
-dependencies {
+@file:JvmName("Times")
 
-    compile project(":debop4k-core")
-    compile project(":debop4k-timeperiod-java8")
+package debop4k.timeperiod.utils
 
-}
+import debop4k.timeperiod.models.YearWeek
+import org.joda.time.DateTime
+
+fun daysInMonth(year: Int, monthOfYear: Int): Int = TODO()
+
+fun weekOfYear(moment: DateTime): YearWeek = TODO()
+
+fun startOfYearWeek(weekyear: Int, weekOfWeekyear: Int): YearWeek = TODO()

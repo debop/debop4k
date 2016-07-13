@@ -13,9 +13,15 @@
  * limitations under the License.
  */
 
-dependencies {
+package debop4k.core
 
-    compile project(":debop4k-core")
-    compile project(":debop4k-timeperiod-java8")
+/**
+ * @author debop sunghyouk.bae@gmail.com
+ */
+enum class SortDirection {
+
+  ASC,
+
+  DESC
 
 }

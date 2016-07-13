@@ -13,9 +13,21 @@
  * limitations under the License.
  */
 
-dependencies {
+package debop4k.timeperiod
 
-    compile project(":debop4k-core")
-    compile project(":debop4k-timeperiod-java8")
+import org.joda.time.DateTime
+import org.joda.time.Duration
 
+/**
+ * @author debop sunghyouk.bae@gmail.com
+ */
+interface ITimePeriodChain : ITimePeriodContainer {
+
+  val head: ITimePeriod
+
+  val last: ITimePeriod
+
+  fun assertSpaceBefore(moment: DateTime, duration: Duration): Unit
+
+  fun assertSpaceAfter(moment: DateTime, duration: Duration): Unit
 }

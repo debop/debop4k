@@ -13,9 +13,10 @@
  * limitations under the License.
  */
 
-dependencies {
+package debop4k.timeperiod.models
 
-    compile project(":debop4k-core")
-    compile project(":debop4k-timeperiod-java8")
-
-}
+/**
+ * 주차를 표현합니다.
+ * @author debop sunghyouk.bae@gmail.com
+ */
+data class YearWeek(val weekyear: Int, val weekOfWeekyear: Int) {}

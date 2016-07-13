@@ -13,9 +13,30 @@
  * limitations under the License.
  */
 
-dependencies {
+package debop4k.timeperiod.models
 
-    compile project(":debop4k-core")
-    compile project(":debop4k-timeperiod-java8")
+/**
+ * @author debop sunghyouk.bae@gmail.com
+ */
+enum class DayOfWeek(val value: Int, val description: String) {
+
+  MONDAY(1, "월"),
+
+  TUESDAY(2, "화"),
+
+  WEDNESDAY(3, "수"),
+
+  THURSDAY(4, "목"),
+
+  FRIDAY(5, "금"),
+
+  SATURDAY(6, "토"),
+
+  SUNDAY(7, "일");
+
+
+  companion object {
+    fun of(dayOfWeek: Int): DayOfWeek = values()[dayOfWeek - 1]
+  }
 
 }
