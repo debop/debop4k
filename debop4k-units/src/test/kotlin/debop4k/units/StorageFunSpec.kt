@@ -1,9 +1,23 @@
+/*
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package debop4k.units
 
 import io.kotlintest.matchers.be
-import io.kotlintest.specs.FunSpec
 
-class StorageFunSpec : FunSpec() {
+class StorageFunSpec : AbstractUnitFunSpec() {
   init {
 
     test("convert Storage Unit") {
@@ -43,18 +57,25 @@ class StorageFunSpec : FunSpec() {
       a + b shouldEqual 300.toBytes()
       b - a shouldEqual 100.toBytes()
     }
+
     test("arithmetic - times/div") {
       val a = Storage(100.0)
       val b = Storage(200.0)
 
       a * 2 shouldEqual b
       b / 2 shouldEqual a
+
+      2 * a shouldEqual b
     }
 
     test("compare") {
       1.7.toKBytes().compareTo(1.7.toBytes()) should be gt 0
       1.2.toMBytes().compareTo(1.2.toKBytes()) should be gt 0
       1.1.toMBytes().compareTo(0.9.toGBytes()) should be lt 0
+
+      (1.7.toKBytes() > 1.7.toBytes()) shouldBe true
+      (1.2.toMBytes() > 1.2.toKBytes()) shouldBe true
+      (1.1.toMBytes() < 0.9.toGBytes()) shouldBe true
     }
   }
 }

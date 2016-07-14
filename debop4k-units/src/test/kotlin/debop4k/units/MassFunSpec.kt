@@ -1,12 +1,26 @@
+/*
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package debop4k.units
 
 import debop4k.units.java.AbstractUnitTest
 import debop4k.units.java.MassTest
-import io.kotlintest.specs.FunSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.slf4j.LoggerFactory
 
-class MassFunSpec : FunSpec() {
+class MassFunSpec : AbstractUnitFunSpec() {
 
   private val log = LoggerFactory.getLogger(MassTest::class.java)
 
@@ -14,17 +28,18 @@ class MassFunSpec : FunSpec() {
     test("convertMassUnit") {
       val millis = 1.0.toMilligram()
       val mg = millis.inMilligram()
-      assertThat(mg).isEqualTo(1.0)
 
-      assertThat(1.0.toMilligram().inMilligram()).isEqualTo(1.0)
-      assertThat(1.0.toGram().inGram()).isEqualTo(1.0)
-      assertThat(1.toKilogram().inKilogram()).isEqualTo(1.0)
-      assertThat(1.toTon().inTon()).isEqualTo(1.0)
+      mg shouldEqual 1.0
 
-      assertThat(1000.0.toMilligram().inGram()).isEqualTo(1.0)
-      assertThat(1.0.toMilligram().inGram()).isEqualTo(1 / 1000.0)
-      assertThat(1.toGram().inMilligram()).isEqualTo(1000.0)
-      assertThat(1.toKilogram().inGram()).isEqualTo(1000.0)
+      1.0.toMilligram().inMilligram() shouldEqual 1.0
+      1.0.toGram().inGram() shouldEqual 1.0
+      1.toKilogram().inKilogram() shouldEqual 1.0
+      1.toTon().inTon() shouldEqual 1.0
+
+      1000.0.toMilligram().inGram() shouldEqual 1.0
+      1.0.toMilligram().inGram() shouldEqual 1.0e-3
+      1.toGram().inMilligram() shouldEqual 1000.0
+      1.toKilogram().inGram() shouldEqual 1000.0
     }
 
     test("toHuman") {
@@ -34,13 +49,19 @@ class MassFunSpec : FunSpec() {
 
       assertThat(10050.toGram().toHuman()).isEqualTo("10.1 kg")
       //    assertThat(gram(Integer.MAX_VALUE).toHuman()).isEqualTo("2147.5 ton");
+
+      900.toMilligram().toHuman() shouldBe "900.0 mg"
+      10.5.toKilogram().toHuman() shouldBe "10.5 kg"
+      10.56.toKilogram().toHuman() shouldBe "10.6 kg"
+      10050.toGram().toHuman() shouldBe "10.1 kg"
+      2.11.toTon().toHuman() shouldEqual "2.1 ton"
     }
 
     test("parsing") {
-      assertThat(Mass.parse("142.0 mg").inGram()).isEqualTo(142.toMilligram().inGram(), AbstractUnitTest.offset)
-      assertThat(Mass.parse("0.1 g").inGram()).isEqualTo(0.1.toGram().inGram(), AbstractUnitTest.offset)
-      assertThat(Mass.parse("10000.1 g").inGram()).isEqualTo(10000.1.toGram().inGram(), AbstractUnitTest.offset)
-      assertThat(Mass.parse("78.4 kg").inGram()).isEqualTo(78.4.toKilogram().inGram(), AbstractUnitTest.offset)
+      Mass.parse("142.0 mg").inGram() shouldEqual (142.toMilligram().inGram() plusOrMinus TOLERANCE)
+      Mass.parse("0.1 g").inGram() shouldEqual (0.1.toGram().inGram() plusOrMinus TOLERANCE)
+      Mass.parse("10000.1 g").inGram() shouldEqual (10000.1.toGram().inGram() plusOrMinus TOLERANCE)
+      Mass.parse("78.4 kg").inGram() shouldEqual (78.4.toKilogram().inGram() plusOrMinus TOLERANCE)
 
       shouldThrow<NumberFormatException> {
         Mass.parse("100.bottles")
@@ -55,8 +76,11 @@ class MassFunSpec : FunSpec() {
     }
 
     test("negative") {
-      assertThat((-132).toGram().inGram()).isEqualTo(-132.0, AbstractUnitTest.offset)
-      assertThat((-2).toKilogram().toHuman()).isEqualTo("-2.0 kg")
+      val a = -132
+      a.toGram().inGram() shouldBe (-132.0 plusOrMinus AbstractUnitTest.TOLERANCE)
+
+      val b = -2
+      b.toKilogram().toHuman() shouldBe "-2.0 kg"
     }
 
     test("same hashCode") {
@@ -64,20 +88,24 @@ class MassFunSpec : FunSpec() {
       val j = 4.toKilogram()
       val k = 4.0.toKilogram()
 
-      assertThat(i.hashCode()).isEqualTo(j.hashCode())
-      assertThat(j.hashCode()).isEqualTo(k.hashCode())
+      i.hashCode() shouldEqual j.hashCode()
+      j.hashCode() shouldEqual k.hashCode()
     }
+
     test("compare") {
-      assertThat(4.1.toKilogram()).isGreaterThan(3.9.toKilogram())
-      assertThat((-1.2).toGram()).isLessThan((-0.2).toGram())
-      assertThat((-1.2).toGram()).isGreaterThan((-2.5).toGram())
+      (4.1.toKilogram() > 3.9.toKilogram()) shouldBe true
+      ((-1.2).toGram() < (-0.2).toGram()) shouldBe true
+      ((-1.2).toGram() > (-2.5).toGram()) shouldBe true
     }
 
     test("arithmetics") {
-      assertThat(1.toKilogram().plus(2.toKilogram())).isEqualTo(3000.toGram())
-      assertThat(1.toKilogram().minus(2.toKilogram())).isEqualTo((-1).toKilogram())
-      assertThat(4.toKilogram().times(2.0)).isEqualTo(8.toKilogram())
-      assertThat(4.toKilogram().div(2.0)).isEqualTo(2.toKilogram())
+      1.toKilogram() + 2.toKilogram() shouldEqual 3000.toGram()
+      1.toKilogram() - 2.toKilogram() shouldEqual (-1).toKilogram()
+      4.toKilogram() * 2.0 shouldEqual 8.toKilogram()
+      4.toKilogram() / 2.0 shouldEqual 2.toKilogram()
+
+      2.1 * 4.toKilogram() shouldEqual 8.4.toKilogram()
+      5 * 4.toKilogram() shouldEqual 20.toKilogram()
     }
   }
 }

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-@file:JvmName("masses")
+@file:JvmName("Masses")
 
 package debop4k.units
 
@@ -32,10 +32,14 @@ fun Int.toGram(): Mass = Mass.of(this.toDouble(), MassUnit.GRAM)
 fun Int.toKilogram(): Mass = Mass.of(this.toDouble(), MassUnit.KILOGRAM)
 fun Int.toTon(): Mass = Mass.of(this.toDouble(), MassUnit.TON)
 
+operator fun Int.times(m: Mass): Mass = m.times(this.toDouble())
+
 fun Double.toMilligram(): Mass = Mass.of(this, MassUnit.MILLIGRAM)
 fun Double.toGram(): Mass = Mass.of(this, MassUnit.GRAM)
 fun Double.toKilogram(): Mass = Mass.of(this, MassUnit.KILOGRAM)
 fun Double.toTon(): Mass = Mass.of(this, MassUnit.TON)
+
+operator fun Double.times(m: Mass): Mass = m.times(this)
 
 /**
  * 질량/무게 (Mass/Weight) 단위를 표현합니다.
@@ -99,7 +103,7 @@ data class Mass(val gram: Double = 0.0) : Comparable<Mass>, Serializable {
     if (display > TON_IN_GRAM) {
       display /= TON_IN_GRAM
       unit = MassUnit.TON
-      return "%1.f %s".format(display * Math.signum(gram), unit.unitName)
+      return "%.1f %s".format(display * Math.signum(gram), unit.unitName)
     }
 
     if (display < GRAM_IN_GRAM) {

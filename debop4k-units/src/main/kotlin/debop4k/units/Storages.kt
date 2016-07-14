@@ -1,4 +1,19 @@
-@file:JvmName("storages")
+/*
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@file:JvmName("Storages")
 
 package debop4k.units
 
@@ -14,6 +29,7 @@ fun Int.toXBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.XBYTE)
 fun Int.toZBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.ZBYTE)
 fun Int.toYBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.YBYTE)
 
+operator fun Int.times(storage: Storage): Storage = storage.times(this)
 
 fun Long.toBytes(): Storage = Storage(this.toDouble())
 fun Long.toKBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.KBYTE)
@@ -25,6 +41,7 @@ fun Long.toXBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.XBYTE)
 fun Long.toZBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.ZBYTE)
 fun Long.toYBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.YBYTE)
 
+operator fun Long.times(storage: Storage): Storage = storage.times(this)
 
 fun Double.toBytes(): Storage = Storage(this)
 fun Double.toKBytes(): Storage = Storage.of(this, StorageUnit.KBYTE)
@@ -35,6 +52,8 @@ fun Double.toPBytes(): Storage = Storage.of(this, StorageUnit.PBYTE)
 fun Double.toXBytes(): Storage = Storage.of(this, StorageUnit.XBYTE)
 fun Double.toZBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.ZBYTE)
 fun Double.toYBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.YBYTE)
+
+operator fun Double.times(storage: Storage): Storage = storage.times(this)
 
 
 /**
@@ -61,7 +80,7 @@ enum class StorageUnit(val unitName: String, val factor: Double) {
         upper = upper.dropLast(1)
       }
       return StorageUnit.values().find { it.unitName == upper }
-          ?: throw NumberFormatException("Unknown Storage unit. unit=$unitStr")
+             ?: throw NumberFormatException("Unknown Storage unit. unit=$unitStr")
     }
   }
 }
