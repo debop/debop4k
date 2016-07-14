@@ -34,17 +34,17 @@ interface ITimePeriod : Comparable<ITimePeriod>, Serializable {
 
   val readOnly: Boolean
 
-  fun hasStart(): Boolean
-  fun hasEnd(): Boolean
-  fun hasPeriod(): Boolean
-  fun isMoment(): Boolean
-  fun isAnyTime(): Boolean
+  fun hasStart(): Boolean = start != MinPeriodTime
+  fun hasEnd(): Boolean = end != MaxPeriodTime
+  fun hasPeriod(): Boolean = hasStart() && hasEnd()
+  fun isMoment(): Boolean = start == end
+  fun isAnyTime(): Boolean = !hasStart() && !hasEnd()
 
-  fun setup(newStart: DateTime, newEnd: DateTime)
+  fun setup(newStart: DateTime = MinPeriodTime, newEnd: DateTime = MaxPeriodTime)
 
-  fun copy(): ITimePeriod
+  fun copy(): ITimePeriod = copy(Duration.ZERO)
   fun copy(offset: Duration = Duration.ZERO): ITimePeriod
-  fun move(): Unit
+  fun move(): Unit = move(Duration.ZERO)
   fun move(offset: Duration = Duration.ZERO): Unit
 
   fun isSamePeriod(other: ITimePeriod): Boolean
@@ -56,7 +56,8 @@ interface ITimePeriod : Comparable<ITimePeriod>, Serializable {
   fun reset(): Unit
 
   fun relation(other: ITimePeriod): PeriodRelation
-  fun intersection(other: ITimePeriod): ITimePeriod
-  fun union(other: ITimePeriod): ITimePeriod
+  fun intersection(other: ITimePeriod): ITimePeriod?
+  fun union(other: ITimePeriod): ITimePeriod?
+
 }
 

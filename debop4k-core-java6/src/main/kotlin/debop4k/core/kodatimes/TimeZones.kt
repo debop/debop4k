@@ -15,8 +15,8 @@
 
 package debop4k.timeperiod.utils
 
-import org.eclipse.collections.api.map.MutableMap
-import org.eclipse.collections.api.set.MutableSet
+import org.eclipse.collections.api.map.ImmutableMap
+import org.eclipse.collections.api.set.ImmutableSet
 import org.eclipse.collections.impl.factory.Maps
 import org.eclipse.collections.impl.factory.Sets
 import org.joda.time.DateTimeZone
@@ -26,41 +26,38 @@ import org.joda.time.DateTimeZone
  */
 object TimeZones {
 
-  val ZoneIds: MutableSet<String> = Sets.mutable.ofAll(DateTimeZone.getAvailableIDs())!!
-  val ZoneOffsets: MutableMap<String, Int> = buildZoneOffsets()
-  val Offsets: MutableSet<Int> = Sets.mutable.withAll(ZoneOffsets.values)!!
+  val ZoneIds: ImmutableSet<String> = Sets.immutable.ofAll(DateTimeZone.getAvailableIDs())!!
+  val ZoneOffsets: ImmutableMap<String, Int> = buildZoneOffsets()
+  val Offsets: ImmutableSet<Int> = Sets.immutable.withAll(ZoneOffsets.valuesView())
   val Zones = buildZone()
 
 
-  fun getTimeZoneIds(offset: Int): Set<String> {
-    val results = Sets.mutable.of<String>()
-
-    for ((key, value) in ZoneOffsets.entries) {
-      if (value === offset) {
-        results.add(key)
-      }
-    }
-    return results
+  fun getTimeZoneIds(offset: Int): ImmutableSet<String> {
+    return ZoneOffsets
+        .select { key: String, value: Int -> value == offset }
+        .collectValues { key: String, value: Int -> key }
+        .toSet()
+        .toImmutable()
   }
 
-  fun getSameOffsetTimeZoneIds(zoneId: String): Set<String> {
+  fun getSameOffsetTimeZoneIds(zoneId: String): ImmutableSet<String> {
     val zone = DateTimeZone.forID(zoneId)
     return getTimeZoneIds(zone.getOffset(0))
   }
 
-  private fun buildZoneOffsets(): MutableMap<String, Int> {
+  private fun buildZoneOffsets(): ImmutableMap<String, Int> {
     val map = Maps.mutable.of<String, Int>()
     for (id in ZoneIds) {
       map.put(id, DateTimeZone.forID(id).getOffset(0))
     }
-    return map
+    return map.toImmutable()
   }
 
-  private fun buildZone(): MutableSet<DateTimeZone> {
+  private fun buildZone(): ImmutableSet<DateTimeZone> {
     val sets = Sets.mutable.of<DateTimeZone>()
     for (id in DateTimeZone.getAvailableIDs()) {
       sets.add(DateTimeZone.forID(id))
     }
-    return sets
+    return sets.toImmutable()
   }
 }

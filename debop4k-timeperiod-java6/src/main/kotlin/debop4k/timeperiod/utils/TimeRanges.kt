@@ -19,4 +19,6 @@ package debop4k.timeperiod.utils
  * @author debop sunghyouk.bae@gmail.com
  */
 object TimeRanges {
+
+
 }

@@ -57,7 +57,7 @@ interface ITimePeriodCollection : ITimePeriodContainer {
   fun intersectionPeriods(moment: DateTime): MutableList<ITimePeriod>
 
   /**
-   * 지정한 target 기간과 교집합이 존재하는 TimePeriod를 열거합니다.
+   * 지정한 moment 기간과 교집합이 존재하는 TimePeriod를 열거합니다.
    */
   fun intersectionPeriods(target: ITimePeriod): MutableList<ITimePeriod>
 

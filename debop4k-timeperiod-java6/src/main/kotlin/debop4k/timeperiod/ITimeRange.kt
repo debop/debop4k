@@ -16,7 +16,6 @@
 package debop4k.timeperiod
 
 import org.joda.time.DateTime
-import org.joda.time.Duration
 
 /**
  * 기간을 나타내는 Interface
@@ -29,11 +28,6 @@ interface ITimeRange : ITimePeriod {
 
   override var end: DateTime
 
-  override var duration: Duration
-    get() = Duration(start, end)
-    set(duration: Duration) {
-      end = start + duration
-    }
 
   /** 시작시각을 지정된 시각으로 설정합니다. 시작시각 이전이여야 합니다.  */
   fun expandStartTo(moment: DateTime)

@@ -15,6 +15,7 @@
 
 package debop4k.timeperiod
 
+import debop4k.core.kodatimes.abs
 import org.joda.time.DateTime
 import org.joda.time.Duration
 
@@ -25,21 +26,17 @@ interface ITimeBlock : ITimePeriod {
   override var end: DateTime
 
   override var duration: Duration
-    get() = Duration(start, end)
-    set(duration: Duration) {
-      end = start + duration
-    }
 
-  fun durationFromStart(duration: Duration) {
-    end = start + duration
-  }
+  fun setup(ns: DateTime, nd: Duration)
 
-  fun durationFromEnd(duration: Duration) {
-    start = end - duration
-  }
+  fun durationFromStart(nd: Duration)
 
-  fun nextBlock(offset: Duration): ITimeBlock = TODO()
+  fun durationFromEnd(nd: Duration)
 
-  fun prevBlock(offset: Duration): ITimeBlock = TODO()
+  fun nextBlock(offset: Duration): ITimeBlock
+      = TimeBlock.of(end + offset.abs(), duration, readOnly)
+
+  fun prevBlock(offset: Duration): ITimeBlock
+      = TimeBlock.of(duration, start - offset.abs(), readOnly)
 
 }

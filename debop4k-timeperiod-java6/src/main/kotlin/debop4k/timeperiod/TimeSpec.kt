@@ -78,11 +78,12 @@ val Weekdays = arrayOf<DayOfWeek>(DayOfWeek.MONDAY,
                                   DayOfWeek.FRIDAY)
 
 val WeekdayList: ImmutableList<DayOfWeek> = Lists.immutable.of(*Weekdays)
-
 /** 주말 요일  */
 val Weekends = arrayOf<DayOfWeek>(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
-
 val WeekendList: ImmutableList<DayOfWeek> = Lists.immutable.of(*Weekends)
+
+fun DayOfWeek.isWeekday(): Boolean = WeekdayList.contains(this)
+fun DayOfWeek.isWeekend(): Boolean = WeekendList.contains(this)
 
 /** 한 주의 첫번째 주중 요일 (월요일)  */
 val FirstWorkingDayOfWeek = DayOfWeek.MONDAY

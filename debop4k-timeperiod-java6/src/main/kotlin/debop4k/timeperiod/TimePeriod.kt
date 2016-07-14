@@ -16,6 +16,7 @@
 package debop4k.timeperiod
 
 import debop4k.timeperiod.models.PeriodRelation
+import debop4k.timeperiod.utils.*
 import org.joda.time.DateTime
 import org.joda.time.Duration
 
@@ -23,99 +24,115 @@ import org.joda.time.Duration
 /**
  * Time Period
  */
-class TimePeriod(override val start: DateTime,
-                 override val end: DateTime,
-                 override val readOnly: Boolean = false) : ITimePeriod {
+open class TimePeriod(override var start: DateTime = MinPeriodTime,
+                      override var end: DateTime = MaxPeriodTime,
+                      override val readOnly: Boolean = false) : ITimePeriod {
 
   companion object {
 
+    @JvmStatic
+    fun of(src: ITimePeriod): TimePeriod
+        = TimePeriod(src.start, src.end, src.readOnly)
+
+    @JvmStatic
+    @JvmOverloads
+    fun of(start: DateTime = MinPeriodTime,
+           end: DateTime = MaxPeriodTime,
+           readOnly: Boolean = false): TimePeriod
+        = TimePeriod(start, end, readOnly)
+
+    @JvmStatic
     fun of(moment: DateTime, readOnly: Boolean = false): TimePeriod
         = TimePeriod(moment, moment, readOnly)
 
+    @JvmStatic
+    @JvmOverloads
     fun of(start: DateTime, duration: Duration, readOnly: Boolean = false): TimePeriod
         = TimePeriod(start, start.plus(duration), readOnly)
   }
 
-  override fun hasStart(): Boolean {
-    throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
 
-  override fun hasEnd(): Boolean {
-    throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override var duration: Duration
+    get() = Duration(start, end)
+    set(d: Duration) {
+      assertMutable()
+      require(d.millis > 0, { "Duration 은 0보다 커야 합니다." })
 
-  override fun hasPeriod(): Boolean {
-    throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
-
-  override fun isMoment(): Boolean {
-    throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
-
-  override fun isAnyTime(): Boolean {
-    throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+      if (hasStart()) {
+        end = start + d
+      }
+    }
 
   override fun setup(newStart: DateTime, newEnd: DateTime) {
-    throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
-
-  override fun copy(): ITimePeriod {
-    throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    if (newStart < newEnd) {
+      start = newStart
+      end = newEnd
+    } else {
+      start = newEnd
+      end = newStart
+    }
   }
 
   override fun copy(offset: Duration): ITimePeriod {
-    throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+    if (offset.millis == 0L) {
+      return TimePeriod.of(this)
+    }
+    val s = if (hasStart()) start + offset else start
+    val e = if (hasEnd()) end + offset else end
 
-  override fun move() {
-    throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    return TimePeriod(s, e, readOnly)
   }
 
   override fun move(offset: Duration) {
-    throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    if (offset.millis == 0L) return
+    assertMutable()
+
+    if (hasStart()) start += offset
+    if (hasEnd()) end += offset
   }
 
   override fun isSamePeriod(other: ITimePeriod): Boolean {
-    throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    return (start == other.start) && (end == other.end)
   }
 
   override fun hasInside(moment: DateTime): Boolean {
-    throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    return hasInsideWith(moment)
   }
 
   override fun hasInside(other: ITimePeriod): Boolean {
-    throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    return hasInsideWith(other)
   }
 
   override fun intersectsWith(other: ITimePeriod): Boolean {
-    throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    return intersectWith(other)
   }
 
   override fun overlapsWith(other: ITimePeriod): Boolean {
-    throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    return overlapWith(other)
   }
 
   override fun reset() {
-    throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    assertMutable()
+    start = MinPeriodTime
+    end = MaxPeriodTime
   }
 
   override fun relation(other: ITimePeriod): PeriodRelation {
-    throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    return this.relation(other)
   }
 
-  override fun intersection(other: ITimePeriod): ITimePeriod {
-    throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+  override fun intersection(other: ITimePeriod): ITimePeriod? {
+    return this.intersectRange(other)
   }
 
-  override fun union(other: ITimePeriod): ITimePeriod {
-    throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+  override fun union(other: ITimePeriod): ITimePeriod? {
+    return this.unionRange(other)
   }
 
-  override fun compareTo(other: ITimePeriod): Int
-      = start.compareTo(other.start)
+  override fun compareTo(other: ITimePeriod): Int {
+    return start.compareTo(other.start)
+  }
 
   operator fun rangeTo(endIncluded: ITimePeriod): ClosedRange<ITimePeriod> = TODO()
-
 
 }

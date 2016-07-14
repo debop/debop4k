@@ -23,9 +23,9 @@ import org.joda.time.Duration
  */
 interface ITimePeriodChain : ITimePeriodContainer {
 
-  val head: ITimePeriod
+  val head: ITimePeriod? get() = if (isEmpty()) null else periods.first()
 
-  val last: ITimePeriod
+  val last: ITimePeriod? get() = if (isEmpty()) null else periods.last()
 
   fun assertSpaceBefore(moment: DateTime, duration: Duration): Unit
 

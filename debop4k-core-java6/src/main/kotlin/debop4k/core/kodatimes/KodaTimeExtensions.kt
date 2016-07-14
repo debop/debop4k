@@ -15,6 +15,8 @@
 
 package debop4k.core.kodatimes
 
+import debop4k.timeperiod.utils.TimeZones
+import org.eclipse.collections.api.set.ImmutableSet
 import org.joda.time.*
 import org.joda.time.base.AbstractInstant
 import org.joda.time.format.DateTimeFormat
@@ -22,11 +24,17 @@ import org.joda.time.format.ISODateTimeFormat
 import java.sql.Timestamp
 import java.util.*
 
+val DefaultTimeZone: DateTimeZone = DateTimeZone.getDefault()
 
-fun Date.toDateTime(): DateTime = DateTime(this.time)
+@JvmOverloads
+fun Date?.toDateTime(zone: DateTimeZone = DefaultTimeZone): DateTime? = DateTime(this?.time) ?: null
+
 fun Date.toLocalDateTime(): LocalDateTime = LocalDateTime.fromDateFields(this)
 fun Date.toLocalDate(): LocalDate = LocalDate.fromDateFields(this)
 fun Date.toLocalTime(): LocalTime = LocalTime.fromDateFields(this)
+
+@JvmOverloads
+fun Timestamp?.toDateTime(zone: DateTimeZone = DefaultTimeZone): DateTime? = DateTime(this?.time) ?: null
 
 fun AbstractInstant.dateTimeUTC(): DateTime = this.toDateTime(DateTimeZone.UTC)
 fun AbstractInstant.mutableDateTimeUTC(): MutableDateTime = this.toMutableDateTime(DateTimeZone.UTC)
@@ -44,6 +52,12 @@ fun Int.years(): Period = Period.years(this)
 fun Int.times(builder: DurationBuilder): DurationBuilder = DurationBuilder(builder.period.multipliedBy(this))
 fun Int.times(period: Period): Period = period.multipliedBy(this)
 
+@JvmOverloads
+fun Int.asDateTime(zone: DateTimeZone = DefaultTimeZone): DateTime = DateTime(this, zone)
+
+fun Int.dayCountOfYear(): Int = asDate(this + 1).minusMillis(1).dayOfYear
+
+
 fun Long.millis(): DurationBuilder = DurationBuilder(Period.millis(this.toInt()))
 fun Long.seconds(): DurationBuilder = DurationBuilder(Period.seconds(this.toInt()))
 fun Long.minutes(): DurationBuilder = DurationBuilder(Period.minutes(this.toInt()))
@@ -56,6 +70,10 @@ fun Long.years(): Period = Period.years(this.toInt())
 
 fun Long.times(builder: DurationBuilder): DurationBuilder = DurationBuilder(builder.period.multipliedBy(this.toInt()))
 fun Long.times(period: Period): Period = period.multipliedBy(this.toInt())
+
+@JvmOverloads
+fun Long.asDateTime(zone: DateTimeZone = DefaultTimeZone): DateTime = DateTime(this, zone)
+
 
 /**
  * String extensions
@@ -87,6 +105,13 @@ fun String.toLocalTime(pattern: String? = null): LocalTime? = try {
 } catch(ignored: Exception) {
   null
 }
+
+fun String.asDateTimeByPattern(pattern: String): DateTime? {
+  if (!this.isNullOrBlank())
+    return DateTime.parse(this, DateTimeFormat.forPattern(pattern))
+  return null
+}
+
 
 fun dateTimeFromJson(json: String): DateTime = DateTime(json)
 fun dateTimeOf(year: Int, month: Int, day: Int): DateTime = DateTime(year, month, day, 0, 0)
@@ -147,9 +172,16 @@ fun DateTime.dayInterval(): Interval {
   return Interval(start, start + 1.days())
 }
 
+val UnixEpoch = DateTime(0, DateTimeZone.UTC)
+
 fun now(): DateTime = DateTime.now()
+fun now(zone: DateTimeZone): DateTime = DateTime.now(zone)
+fun nowUtc(): DateTime = DateTime.now(DateTimeZone.UTC)
 fun tomorrow(): DateTime = now().tomorrow()
 fun yesterday(): DateTime = now().yesterday()
+fun today(): DateTime = now().withTimeAtStartOfDay()
+fun noon(): DateTime = today() + 12.hours()
+fun zeroTime(): DateTime = UnixEpoch
 
 fun nextSecond(): DateTime = now().plusSeconds(1)
 fun nextMinute(): DateTime = now().plusMinutes(1)
@@ -167,6 +199,16 @@ fun lastWeek(): DateTime = now().minusWeeks(1)
 fun lastMonth(): DateTime = now().minusMonths(1)
 fun lastYear(): DateTime = now().minusYears(1)
 
+@JvmOverloads
+fun asDate(year: Int,
+           monthOfYear: Int = 1,
+           dayOfMonth: Int = 1,
+           hourOfDay: Int = 0,
+           minuteOfHour: Int = 0,
+           secondOfMinute: Int = 0,
+           millisOfSecond: Int = 0): DateTime {
+  return DateTime(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond)
+}
 
 operator fun LocalDateTime.minus(builder: DurationBuilder): LocalDateTime = this.minus(builder.period)
 operator fun LocalDateTime.plus(builder: DurationBuilder): LocalDateTime = this.plus(builder.period)
@@ -269,3 +311,11 @@ infix fun ReadableInterval.step(instant: ReadablePeriod): List<DateTime> {
   }
   return acc
 }
+
+fun DateTimeZone.timeZoneOffset(): Int = this.getOffset(0)
+fun String.timeZoneOffset(): Int = DateTimeZone.forID(this).timeZoneOffset()
+fun Int.timeZoneForOffsetMillis(): DateTimeZone = DateTimeZone.forOffsetMillis(this)
+
+fun availableTimeZone(): ImmutableSet<DateTimeZone> = TimeZones.Zones
+fun availableOffsetMillis(): ImmutableSet<Int> = TimeZones.Offsets
+

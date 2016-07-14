@@ -16,13 +16,14 @@
 package debop4k.timeperiod
 
 import debop4k.core.SortDirection
+import debop4k.core.SortDirection.ASC
 import org.eclipse.collections.api.list.MutableList
 import org.joda.time.DateTime
 
 /**
  * @author debop sunghyouk.bae@gmail.com
  */
-interface ITimePeriodContainer : List<ITimePeriod>, ITimePeriod {
+interface ITimePeriodContainer : kotlin.collections.MutableList<ITimePeriod>, ITimePeriod {
 
   val periods: MutableList<ITimePeriod>
 
@@ -40,11 +41,11 @@ interface ITimePeriodContainer : List<ITimePeriod>, ITimePeriod {
 
   fun removeIf(filter: (ITimePeriod) -> Boolean): Boolean
 
-  fun sortByStart(sortDir: SortDirection): Unit
+  fun sortByStart(sortDir: SortDirection = ASC): Unit
 
-  fun sortByEnd(sortDir: SortDirection): Unit
+  fun sortByEnd(sortDir: SortDirection = ASC): Unit
 
-  fun sortByDuration(sortDir: SortDirection): Unit
+  fun sortByDuration(sortDir: SortDirection = ASC): Unit
 
   fun compare(x: ITimePeriod, y: ITimePeriod): Int
 
