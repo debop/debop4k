@@ -21,12 +21,12 @@ import org.joda.time.Duration
 /**
  * @author sunghyouk.bae@gmail.com
  */
-class TimeRange(start: DateTime = MinPeriodTime,
-                end: DateTime = MaxPeriodTime,
-                readOnly: Boolean = false) : TimePeriod(start, end, readOnly), ITimeRange {
+open class TimeRange(start: DateTime = MinPeriodTime,
+                     end: DateTime = MaxPeriodTime,
+                     readOnly: Boolean = false) : TimePeriod(start, end, readOnly), ITimeRange {
 
   companion object {
-    @JvmStatic val AnyTime: TimeRange = TimeRange()
+    @JvmStatic val AnyTime: TimeRange = TimeRange(readOnly = true)
 
     @JvmStatic
     @JvmOverloads

@@ -13,26 +13,10 @@
  * limitations under the License.
  */
 
-package debop4k.timeperiod.models
-
-import debop4k.timeperiod.utils.startTimeOfWeek
-import org.joda.time.DateTime
+package debop4k.timeperiod.timeranges
 
 /**
- * 주차를 표현합니다.
- * @author debop sunghyouk.bae@gmail.com
+ * @author sunghyouk.bae@gmail.com
  */
-data class YearWeek(val weekyear: Int, val weekOfWeekyear: Int) {
-
-  operator fun plus(weeks: Int): YearWeek {
-    return of(this.startTimeOfWeek().plusWeeks(weeks))
-  }
-
-  operator fun minus(weeks: Int): YearWeek = this.plus(-weeks)
-
-  companion object {
-
-    @JvmStatic fun of(moment: DateTime): YearWeek = YearWeek(moment.weekyear, moment.weekOfWeekyear)
-
-  }
+class WeekRange {
 }

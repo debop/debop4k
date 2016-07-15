@@ -15,6 +15,9 @@
 
 package debop4k.timeperiod.models
 
+import debop4k.timeperiod.WeekdayList
+import debop4k.timeperiod.WeekendList
+
 /**
  * @author debop sunghyouk.bae@gmail.com
  */
@@ -34,9 +37,21 @@ enum class DayOfWeek(val value: Int, val description: String) {
 
   SUNDAY(7, "일");
 
+  operator fun plus(delta: Int): DayOfWeek {
+    val amount = delta % 7
+    return of((value - 1 + (amount + 7)) % 7 + 1)
+  }
+
+  operator fun minus(delta: Int): DayOfWeek = plus(-delta)
+
+  fun isWeekday(): Boolean = WeekdayList.contains(this)
+  fun isWeekend(): Boolean = WeekendList.contains(this)
 
   companion object {
-    fun of(dayOfWeek: Int): DayOfWeek = values()[dayOfWeek - 1]
+
+    val dayOfWeekArray: Array<DayOfWeek> get() = DayOfWeek.values()
+
+    fun of(dayOfWeek: Int): DayOfWeek = dayOfWeekArray[dayOfWeek - 1]
   }
 
 }

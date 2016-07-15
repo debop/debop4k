@@ -116,12 +116,43 @@ fun String.asDateTimeByPattern(pattern: String): DateTime? {
 fun dateTimeFromJson(json: String): DateTime = DateTime(json)
 fun dateTimeOf(year: Int, month: Int, day: Int): DateTime = DateTime(year, month, day, 0, 0)
 
+fun adjustPeriod(a: DateTime, b: DateTime): Pair<DateTime, DateTime> {
+  return Pair(a min b, a max b)
+}
+
+fun adjustPeriod(m: DateTime, d: Duration): Pair<DateTime, Duration> {
+  if (d.millis >= 0)
+    return Pair(m, d)
+  return Pair(m.plus(d), d.negated())
+}
+
+fun DateTime.trimToYear(): DateTime = asDate(this.year, 1, 1)
+@JvmOverloads fun DateTime.trimToMonth(monthOfYear: Int = 1): DateTime = asDate(this.year, monthOfYear, 1)
+@JvmOverloads fun DateTime.trimToDay(dayOfMonth: Int = 1): DateTime = asDate(this.year, this.monthOfYear, dayOfMonth)
+@JvmOverloads fun DateTime.trimToHour(hourOfDay: Int = 0): DateTime
+    = trimToDay(this.dayOfMonth).withHourOfDay(hourOfDay)
+
+@JvmOverloads fun DateTime.trimToMinute(minuteOfHour: Int = 0): DateTime
+    = trimToHour(this.hourOfDay).withMinuteOfHour(minuteOfHour)
+
+@JvmOverloads fun DateTime.trimToSecond(secondOfMinute: Int = 0): DateTime
+    = trimToMinute(this.minuteOfHour).withSecondOfMinute(secondOfMinute)
+
+@JvmOverloads fun DateTime.trimToMillis(millisOfSecond: Int = 0): DateTime
+    = this.withMillisOfSecond(millisOfSecond)
+
+
 fun DateTime.startOfDay(): DateTime = this.withTimeAtStartOfDay()
 fun DateTime.startOfMonth(): DateTime = dateTimeOf(this.year, this.monthOfYear, 1)
 fun DateTime.startOfYear(): DateTime = dateTimeOf(this.year, 1, 1)
 
 operator fun DateTime.minus(builder: DurationBuilder): DateTime = this.minus(builder.period)
 operator fun DateTime.plus(builder: DurationBuilder): DateTime = this.plus(builder.period)
+
+fun DateTime.ago(duration: ReadableDuration): DateTime = this.minus(duration)
+fun DateTime.since(duration: ReadableDuration): DateTime = this.plus(duration)
+fun DateTime.from(duration: ReadableDuration): DateTime = this.plus(duration)
+fun fromNow(duration: ReadableDuration): DateTime = now().from(duration)
 
 fun DateTime.tomorrow(): DateTime = this.nextDay()
 fun DateTime.yesterday(): DateTime = this.lastDay()
@@ -199,6 +230,8 @@ fun lastWeek(): DateTime = now().minusWeeks(1)
 fun lastMonth(): DateTime = now().minusMonths(1)
 fun lastYear(): DateTime = now().minusYears(1)
 
+fun DateTime.asDate(): DateTime = this.withTimeAtStartOfDay()
+
 @JvmOverloads
 fun asDate(year: Int,
            monthOfYear: Int = 1,
@@ -260,6 +293,8 @@ infix fun Duration.max(that: Duration): Duration {
  * [Period] extensions
  */
 fun Period.ago(): DateTime = DateTime.now() - this
+
+fun Period.since(): DateTime = DateTime.now() + this
 
 fun Period.later(): DateTime = DateTime.now() + this
 fun Period.from(moment: DateTime): DateTime = moment + this

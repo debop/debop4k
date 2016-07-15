@@ -15,7 +15,8 @@
 
 package debop4k.timeperiod.models
 
-import com.sun.javaws.exceptions.InvalidArgumentException
+import debop4k.timeperiod.FirstHalfyearMonths
+import debop4k.timeperiod.SecondHalfyearMonths
 
 /**
  * @author debop sunghyouk.bae@gmail.com
@@ -28,23 +29,32 @@ enum class Halfyear(val value: Int) {
   /** 후반기  */
   Second(2);
 
-  fun plus(halfyear: Int): Halfyear {
+  operator fun plus(halfyear: Int): Halfyear {
     val amount = halfyear % 2
     return values()[(ordinal + amount + 2) % 2]
   }
 
-  fun minus(halfyear: Int): Halfyear {
+  operator fun minus(halfyear: Int): Halfyear {
     return plus(-(halfyear % 2))
   }
 
+  fun months(): IntArray = when (this) {
+    First -> FirstHalfyearMonths
+    Second -> SecondHalfyearMonths
+  }
+
   companion object {
-    /**
-     *
-     */
+
+    @JvmStatic
     fun of(halfyear: Int): Halfyear {
       if (halfyear < 1 || halfyear > 2)
-        throw InvalidArgumentException(arrayOf("Invalid value for Halfyear: $halfyear"))
+        throw IllegalArgumentException("Invalid q for Halfyear: $halfyear")
       return values()[halfyear - 1]
+    }
+
+    @JvmStatic
+    fun ofMonth(monthOfYear: Int): Halfyear {
+      return values()[(monthOfYear - 1) / 6]
     }
   }
 }

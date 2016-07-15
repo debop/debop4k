@@ -32,4 +32,23 @@ enum class Month {
   OCTOBER,
   NOVEMBER,
   DECEMBER;
+
+  operator fun plus(months: Int): Month {
+    val amount = months % 12
+    return monthArray[(ordinal + amount + 12) % 12]
+  }
+
+  operator fun minus(months: Int): Month = plus(-months)
+
+  val value: Int get() = ordinal + 1
+
+  companion object {
+    @JvmStatic val monthArray: Array<Month> = Month.values()
+
+    @JvmStatic fun of(m: Int): Month {
+      if (m < 1 || m > 12)
+        throw IllegalArgumentException("Invalid month value. 1~12")
+      return monthArray[m - 1]
+    }
+  }
 }

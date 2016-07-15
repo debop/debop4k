@@ -198,12 +198,12 @@ open class TimePeriodContainer : TimePeriod(), ITimePeriodContainer {
   }
 
   override fun toString(): String {
-    return _periods.makeString()
+    return _periods.makeString(",")
   }
 
 
   companion object {
-    @JvmStatic fun of(c: Collection<out ITimePeriod>): TimePeriodContainer {
+    @JvmStatic fun of(c: Collection<ITimePeriod>): TimePeriodContainer {
       val container = TimePeriodContainer()
       container.addAll(c)
       return container

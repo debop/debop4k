@@ -171,9 +171,9 @@ val DefaultStartOffset = EmptyDuration
 
 val DefaultEndOffset = MinNegativeDuration
 
-val DefaultTimeCalendar = TimeCalendar.of()
+val DefaultTimeCalendar = TimeCalendar.DEFAULT
 
-val EmptyOffsetTimeCalendar = TimeCalendar.emptyOffset
+val EmptyOffsetTimeCalendar = TimeCalendar.EMPTY_OFFSET
 
 
 val dateTimeComparator: Comparator<DateTime> = Comparator { dt1, dt2 -> dt1.compareTo(dt2) }

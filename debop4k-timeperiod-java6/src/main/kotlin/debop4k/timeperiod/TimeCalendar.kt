@@ -33,7 +33,9 @@ class TimeCalendar(val cfg: TimeCalendarConfig = TimeCalendarConfig.DEFAULT) : I
   }
 
   companion object {
-    val emptyOffset: TimeCalendar = of(TimeCalendarConfig.EMPTY_OFFSET)
+    val DEFAULT: TimeCalendar get() = of()
+    val EMPTY_OFFSET: TimeCalendar get() = of(TimeCalendarConfig.EMPTY_OFFSET)
+
     fun of(cfg: TimeCalendarConfig = TimeCalendarConfig.DEFAULT): TimeCalendar
         = TimeCalendar(cfg)
   }

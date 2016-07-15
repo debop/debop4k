@@ -14,6 +14,7 @@
  */
 package debop4k.core
 
+import org.apache.commons.lang3.builder.HashCodeBuilder
 import java.io.Serializable
 
 /**
@@ -23,20 +24,17 @@ interface ValueObject : Serializable
 
 abstract class AbstractValueObject : ValueObject {
 
-  override fun equals(other: Any?): Boolean {
+  open override fun equals(other: Any?): Boolean {
     return (other?.javaClass == this.javaClass && other?.hashCode() == hashCode()) ?: false
   }
 
-  override fun hashCode(): Int {
-    return super.hashCode()
+  open override fun hashCode(): Int {
+    return HashCodeBuilder.reflectionHashCode(this)
   }
 
-  override fun toString(): String {
-    return super.toString()
+  open override fun toString(): String {
+    return buildStringHelper().toString()
   }
-}
 
-interface HibernateEntity<T : Serializable> : ValueObject {
-
-  var id: T
+  open protected fun buildStringHelper(): ToStringHelper = ToStringHelper(this)
 }

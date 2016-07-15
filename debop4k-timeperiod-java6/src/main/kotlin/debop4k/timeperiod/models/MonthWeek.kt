@@ -15,24 +15,21 @@
 
 package debop4k.timeperiod.models
 
-import debop4k.timeperiod.utils.startTimeOfWeek
+import debop4k.timeperiod.utils.startTimeOfMonth
 import org.joda.time.DateTime
 
 /**
- * 주차를 표현합니다.
- * @author debop sunghyouk.bae@gmail.com
+ * @author sunghyouk.bae@gmail.com
  */
-data class YearWeek(val weekyear: Int, val weekOfWeekyear: Int) {
-
-  operator fun plus(weeks: Int): YearWeek {
-    return of(this.startTimeOfWeek().plusWeeks(weeks))
-  }
-
-  operator fun minus(weeks: Int): YearWeek = this.plus(-weeks)
+data class MonthWeek(val month: Int, val week: Int) {
 
   companion object {
+    @JvmStatic fun of(m: DateTime): MonthWeek {
+      val result = m.weekOfWeekyear - m.startTimeOfMonth().weekOfWeekyear + 1
 
-    @JvmStatic fun of(moment: DateTime): YearWeek = YearWeek(moment.weekyear, moment.weekOfWeekyear)
-
+      if (result > 0)
+        return MonthWeek(m.monthOfYear, result)
+      return MonthWeek(m.plusMonths(1).monthOfYear, result)
+    }
   }
 }

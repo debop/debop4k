@@ -26,6 +26,10 @@ import java.math.BigInteger
  */
 fun <T> uninitialized(): T = null as T
 
+fun areEquals(a: Any?, b: Any?): Boolean {
+  return (a === b) || (a != null && a == b)
+}
+
 infix inline fun <T> T.firstNotNull(factory: () -> T): T = if (this != null) this else factory()
 
 infix inline fun <T> T.verifiedBy(verifier: (T) -> Unit): T {

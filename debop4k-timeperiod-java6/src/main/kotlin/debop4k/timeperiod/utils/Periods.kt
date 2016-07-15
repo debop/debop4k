@@ -30,34 +30,28 @@ import org.slf4j.LoggerFactory
 
 private val log = LoggerFactory.getLogger("Periods")
 
-/**
- * @author debop sunghyouk.bae@gmail.com
- */
-object PeriodUtils {
+fun adjustPeriod(start: DateTime, end: DateTime): Pair<DateTime, DateTime>
+    = Pair(start min end, start max end)
 
-  fun adjustPeriod(start: DateTime, end: DateTime): Pair<DateTime, DateTime>
-      = Pair(start min end, start max end)
+fun adjustPeriod(start: DateTime, duration: Duration): Pair<DateTime, Duration> {
+  if (duration.millis >= 0) return Pair(start, duration)
+  return Pair(start + duration, -duration)
+}
 
-  fun adjustPeriod(start: DateTime, duration: Duration): Pair<DateTime, Duration> {
-    if (duration.millis >= 0) return Pair(start, duration)
-    return Pair(start + duration, -duration)
+fun assertValidPeriod(start: DateTime?, end: DateTime?) {
+  if (start != null && end != null) {
+    assert(start >= end, { "시작시각이 완료시각보다 이전이어야 합니다. start=$start, end=$end" })
   }
+}
 
-  fun assertValidPeriod(start: DateTime?, end: DateTime?) {
-    if (start != null && end != null) {
-      assert(start >= end, { "시작시각이 완료시각보다 이전이어야 합니다. start=$start, end=$end" })
-    }
+fun allItemsAreEqual(left: Iterable<ITimePeriod>, right: Iterable<ITimePeriod>): Boolean {
+  val l = left.iterator()
+  val r = right.iterator()
+  while (l.hasNext() && r.hasNext()) {
+    if (l.next() != r.next())
+      return false
   }
-
-  fun allItemsAreEqual(left: Iterable<ITimePeriod>, right: Iterable<ITimePeriod>): Boolean {
-    val l = left.iterator()
-    val r = right.iterator()
-    while (l.hasNext() && r.hasNext()) {
-      if (l.next() != r.next())
-        return false
-    }
-    return !l.hasNext() && !r.hasNext()
-  }
+  return !l.hasNext() && !r.hasNext()
 }
 
 fun DateTime.timeBlock(duration: Duration): TimeBlock = TimeBlock.of(this, duration)

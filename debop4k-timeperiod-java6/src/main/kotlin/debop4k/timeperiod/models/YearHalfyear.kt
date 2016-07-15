@@ -15,8 +15,17 @@
 
 package debop4k.timeperiod.models
 
+import debop4k.timeperiod.utils.halfyearOfMonth
+import org.joda.time.DateTime
+
 /**
  * @author debop sunghyouk.bae@gmail.com
  */
 data class YearHalfyear(val year: Int, val halfyear: Halfyear) {
+
+  companion object {
+
+    @JvmStatic
+    fun of(m: DateTime): YearHalfyear = YearHalfyear(m.year, halfyearOfMonth(m.monthOfYear))
+  }
 }

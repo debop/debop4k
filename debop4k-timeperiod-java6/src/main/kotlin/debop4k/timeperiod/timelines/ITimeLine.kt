@@ -13,26 +13,26 @@
  * limitations under the License.
  */
 
-package debop4k.timeperiod.models
+package debop4k.timeperiod.timelines
 
-import debop4k.timeperiod.utils.startTimeOfWeek
-import org.joda.time.DateTime
+import debop4k.timeperiod.ITimePeriod
+import debop4k.timeperiod.ITimePeriodCollection
+import debop4k.timeperiod.ITimePeriodContainer
+import debop4k.timeperiod.ITimePeriodMapper
+import java.io.Serializable
 
 /**
- * 주차를 표현합니다.
- * @author debop sunghyouk.bae@gmail.com
+ * @author sunghyouk.bae@gmail.com
  */
-data class YearWeek(val weekyear: Int, val weekOfWeekyear: Int) {
+interface ITimeLine : Serializable {
 
-  operator fun plus(weeks: Int): YearWeek {
-    return of(this.startTimeOfWeek().plusWeeks(weeks))
-  }
+  val periods: ITimePeriodContainer
 
-  operator fun minus(weeks: Int): YearWeek = this.plus(-weeks)
+  val limits: ITimePeriod
 
-  companion object {
+  val mapper: ITimePeriodMapper
 
-    @JvmStatic fun of(moment: DateTime): YearWeek = YearWeek(moment.weekyear, moment.weekOfWeekyear)
+  fun intersectPeriods(): ITimePeriodCollection
 
-  }
+  fun calculateCaps(): ITimePeriodCollection
 }
