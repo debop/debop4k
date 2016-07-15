@@ -26,11 +26,15 @@ import org.joda.time.DateTime
 import org.joda.time.Duration
 
 /**
+ * Calendar 기반의 [TimeRange]
+ *
  * @author sunghyouk.bae@gmail.com
  */
 open class CalendarTimeRange(val period: ITimePeriod,
                              val calendar: ITimeCalendar = TimeCalendar.DEFAULT)
-: TimeRange(calendar.mapStart(period.start), calendar.mapEnd(period.end), true) {
+: TimeRange(calendar.mapStart(period.start),
+            calendar.mapEnd(period.end),
+            true) {
 
   init {
     assertValidPeriod(calendar.mapStart(period.start), calendar.mapEnd(period.end))

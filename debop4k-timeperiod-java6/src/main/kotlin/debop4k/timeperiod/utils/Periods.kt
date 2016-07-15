@@ -60,6 +60,9 @@ fun DateTime.timeBlock(end: DateTime): TimeBlock = TimeBlock.of(this, end)
 fun DateTime.timeRange(duration: Duration): TimeRange = TimeRange.of(this, duration)
 fun DateTime.timeRange(end: DateTime): TimeRange = TimeRange.of(this, end)
 
+fun relativeYearPeriod(year: Int, yearCount: Int): TimeRange {
+  return startTimeOfYear(year).relativeYearPeriod(yearCount)
+}
 fun DateTime.relativeYearPeriod(years: Int): TimeRange {
   val startYear = this.startOfYear()
   return startYear.timeRange(startYear + years.years())
