@@ -205,11 +205,19 @@ fun ITimePeriod.unionRange(target: ITimePeriod): TimeRange {
   return TimeRange.of(start, end, this.readOnly)
 }
 
-fun ITimePeriod.assertMutable(): Unit = assert(!this.readOnly, { "ITimePeriod 가 읽기전용입니다." })
+fun ITimePeriod.assertMutable(): Unit {
+  assert(!this.readOnly, { "ITimePeriod 가 읽기전용입니다." })
+}
 
 fun ITimePeriod.periodStream(unit: PeriodUnit): LazyIterable<out ITimePeriod> = when (unit) {
   PeriodUnit.YEAR -> this.yearStream()
-
+  PeriodUnit.HALFYEAR -> this.halfyearStream()
+  PeriodUnit.QUARTER -> this.quarterStream()
+  PeriodUnit.MONTH -> this.monthStream()
+  PeriodUnit.WEEK -> this.weekStream()
+  PeriodUnit.DAY -> this.dayStream()
+  PeriodUnit.HOUR -> this.hourStream()
+  PeriodUnit.MINUTE -> this.minuteStream()
   else -> throw UnsupportedOperationException("지원하지 않는 PeriodUnit 입니다. unit=$unit")
 }
 
