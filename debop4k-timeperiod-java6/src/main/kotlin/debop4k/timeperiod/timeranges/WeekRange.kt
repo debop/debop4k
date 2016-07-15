@@ -15,8 +15,32 @@
 
 package debop4k.timeperiod.timeranges
 
+import debop4k.core.kodatimes.today
+import debop4k.timeperiod.DefaultTimeCalendar
+import debop4k.timeperiod.ITimeCalendar
+import debop4k.timeperiod.utils.startTimeOfWeek
+import org.joda.time.DateTime
+
 /**
  * @author sunghyouk.bae@gmail.com
  */
-class WeekRange {
+open class WeekRange(startTime: DateTime = today().startTimeOfWeek(),
+                     calendar: ITimeCalendar = DefaultTimeCalendar) :
+    WeekTimeRange(startTime, 1, calendar) {
+
+  constructor(weekyear: Int, weekOfWeekyear: Int, calendar: ITimeCalendar = DefaultTimeCalendar) :
+  this(startTimeOfWeek(weekyear, weekOfWeekyear), calendar)
+
+  val firstDayOfWeek: DateTime get() = start
+  val lastDayOfWeek: DateTime get() = end
+
+  fun isMultipleCanedarYears(): Boolean
+      = calendar.year(firstDayOfWeek) != calendar.year(lastDayOfWeek)
+
+  fun addWeeks(weeks: Int): WeekRange {
+    return WeekRange(start.plusWeeks(weeks), calendar)
+  }
+
+  val nextWeek: WeekRange get() = addWeeks(1)
+  val prevWeek: WeekRange get() = addWeeks(-1)
 }

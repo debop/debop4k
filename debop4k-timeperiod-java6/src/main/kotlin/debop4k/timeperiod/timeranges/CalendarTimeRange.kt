@@ -24,6 +24,7 @@ import debop4k.timeperiod.TimeRange
 import debop4k.timeperiod.utils.assertValidPeriod
 import org.joda.time.DateTime
 import org.joda.time.Duration
+import java.time.DayOfWeek
 
 /**
  * Calendar 기반의 [TimeRange]
@@ -47,6 +48,7 @@ open class CalendarTimeRange(val period: ITimePeriod,
   val startYear: Int get() = start.year
   val startMonthOfYear: Int get() = start.monthOfYear
   val startDayOfMonth: Int get() = start.dayOfMonth
+  val startDayOfWeek: DayOfWeek get() = DayOfWeek.of(start.dayOfWeek)
   val startHourOfDay: Int get() = start.hourOfDay
   val startMinuteOfHour: Int get() = start.minuteOfHour
   val startSecondOfMinute: Int get() = start.secondOfMinute
@@ -54,6 +56,7 @@ open class CalendarTimeRange(val period: ITimePeriod,
   val endYear: Int get() = end.year
   val endMonthOfYear: Int get() = end.monthOfYear
   val endDayOfMonth: Int get() = end.dayOfMonth
+  val endDayOfWeek: DayOfWeek get() = DayOfWeek.of(end.dayOfWeek)
   val endHourOfDay: Int get() = end.hourOfDay
   val endMinuteOfHour: Int get() = end.minuteOfHour
   val endSecondOfMinute: Int get() = end.secondOfMinute
