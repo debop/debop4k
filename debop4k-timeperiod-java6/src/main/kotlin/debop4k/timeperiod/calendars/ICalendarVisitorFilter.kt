@@ -2,6 +2,7 @@ package debop4k.timeperiod.calendars
 
 import debop4k.timeperiod.ITimePeriodCollection
 import debop4k.timeperiod.models.DayOfWeek
+import org.eclipse.collections.api.set.MutableSet
 import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList
 import java.io.Serializable
 
@@ -18,7 +19,7 @@ interface ICalendarVisitorFilter : Serializable {
 
   val dayOfMonths: IntArrayList
 
-  val weekOfDays: Set<DayOfWeek>
+  val weekOfDays: MutableSet<DayOfWeek>
 
   val hourOfDays: IntArrayList
 

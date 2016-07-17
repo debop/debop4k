@@ -35,7 +35,7 @@ open class CalendarVisitorFilter : AbstractValueObject(), ICalendarVisitorFilter
 
   override val dayOfMonths: IntArrayList get() = _dayOfMonths
 
-  override val weekOfDays: Set<DayOfWeek> get() = _weekOfDays
+  override val weekOfDays: MutableSet<DayOfWeek> get() = _weekOfDays
 
   override val hourOfDays: IntArrayList get() = _hourOfDays
 

@@ -3,6 +3,7 @@ package debop4k.timeperiod.timeranges
 import debop4k.core.AbstractValueObject
 import debop4k.core.ToStringHelper
 import debop4k.core.kodatimes.trimToDay
+import debop4k.core.utils.hashOf
 import debop4k.timeperiod.ITimePeriod
 import debop4k.timeperiod.MaxDaysPerMonth
 

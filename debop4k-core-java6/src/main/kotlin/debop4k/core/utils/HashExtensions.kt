@@ -1,4 +1,4 @@
-@file:JvmName("HashEx")
+@file:JvmName("HashExtensions")
 
 package debop4k.core.utils
 
