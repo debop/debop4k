@@ -14,29 +14,18 @@
  * limitations under the License.
  *
  */
-package debop4k.core
 
-import org.apache.commons.lang3.builder.HashCodeBuilder
+package debop4k.science.gis.shapes
+
+import javafx.geometry.BoundingBox
+import org.geotools.data.shapefile.shp.ShapeType
 import java.io.Serializable
 
 /**
- * @author debop sunghyouk.bae@gmail.com
+ * Created by debop
  */
-interface ValueObject : Serializable
-
-abstract class AbstractValueObject : ValueObject {
-
-  override fun equals(other: Any?): Boolean {
-    return (other?.javaClass == this.javaClass && other?.hashCode() == hashCode()) ?: false
-  }
-
-  override fun hashCode(): Int {
-    return HashCodeBuilder.reflectionHashCode(this)
-  }
-
-  override fun toString(): String {
-    return buildStringHelper().toString()
-  }
-
-  open protected fun buildStringHelper(): ToStringHelper = ToStringHelper(this)
+open class ShapeHeader(val size: Int,
+                       val version: Int,
+                       val shapeType: ShapeType,
+                       val bounds: BoundingBox) : Serializable {
 }

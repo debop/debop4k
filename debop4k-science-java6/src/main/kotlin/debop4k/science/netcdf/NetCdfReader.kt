@@ -14,29 +14,23 @@
  * limitations under the License.
  *
  */
-package debop4k.core
 
-import org.apache.commons.lang3.builder.HashCodeBuilder
-import java.io.Serializable
+package debop4k.science.netcdf
+
+import ucar.nc2.NetcdfFile
 
 /**
- * @author debop sunghyouk.bae@gmail.com
+ * Created by debop
  */
-interface ValueObject : Serializable
+open class NetCdfReader {
 
-abstract class AbstractValueObject : ValueObject {
+  companion object {
+    val CACHEFILE_EXTS = arrayOf("gbx9", "ncx3", "idx")
+    private val LINE_SEPARATOR = System.getProperty("line.separator")
+    private val TAB = "\t"
 
-  override fun equals(other: Any?): Boolean {
-    return (other?.javaClass == this.javaClass && other?.hashCode() == hashCode()) ?: false
+    @JvmStatic fun open(path: String): NetcdfFile {
+      return NetcdfFile.open(path)
+    }
   }
-
-  override fun hashCode(): Int {
-    return HashCodeBuilder.reflectionHashCode(this)
-  }
-
-  override fun toString(): String {
-    return buildStringHelper().toString()
-  }
-
-  open protected fun buildStringHelper(): ToStringHelper = ToStringHelper(this)
 }

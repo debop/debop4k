@@ -14,29 +14,22 @@
  * limitations under the License.
  *
  */
-package debop4k.core
 
-import org.apache.commons.lang3.builder.HashCodeBuilder
+package debop4k.science.gis.coords
+
 import java.io.Serializable
 
 /**
- * @author debop sunghyouk.bae@gmail.com
+ * Created by debop
  */
-interface ValueObject : Serializable
+data class GeoLocation(val latitude: Double = 0.0,
+                       val longitude: Double = 0.0) : Comparable<GeoLocation>, Serializable {
 
-abstract class AbstractValueObject : ValueObject {
-
-  override fun equals(other: Any?): Boolean {
-    return (other?.javaClass == this.javaClass && other?.hashCode() == hashCode()) ?: false
+  override fun compareTo(other: GeoLocation): Int {
+    var diff = latitude.compareTo(other.latitude)
+    if (diff == 0) {
+      diff = longitude.compareTo(other.longitude)
+    }
+    return diff
   }
-
-  override fun hashCode(): Int {
-    return HashCodeBuilder.reflectionHashCode(this)
-  }
-
-  override fun toString(): String {
-    return buildStringHelper().toString()
-  }
-
-  open protected fun buildStringHelper(): ToStringHelper = ToStringHelper(this)
 }
