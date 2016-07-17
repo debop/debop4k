@@ -28,9 +28,11 @@ interface ITimeLine : Serializable {
 
   val periods: ITimePeriodContainer
 
-  val limits: ITimePeriod
+  val limits: ITimePeriod?
 
-  val mapper: ITimePeriodMapper
+  val mapper: ITimePeriodMapper?
+
+  fun combinePeriods(): ITimePeriodCollection
 
   fun intersectPeriods(): ITimePeriodCollection
 
