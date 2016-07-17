@@ -16,7 +16,7 @@
 package debop4k.timeperiod.timeranges
 
 import debop4k.core.kodatimes.*
-import debop4k.core.utils.HashEx
+import debop4k.core.utils.hashOf
 import debop4k.timeperiod.ITimeCalendar
 import debop4k.timeperiod.ITimePeriod
 import debop4k.timeperiod.TimeCalendar
@@ -84,7 +84,7 @@ open class CalendarTimeRange(val period: ITimePeriod,
   }
 
   override fun hashCode(): Int {
-    return HashEx.compute(super.hashCode(), calendar)
+    return hashOf(super.hashCode(), calendar)
   }
 
   companion object {

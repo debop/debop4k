@@ -2,7 +2,7 @@ package debop4k.timeperiod.timelines
 
 import debop4k.core.AbstractValueObject
 import debop4k.core.ToStringHelper
-import debop4k.core.utils.HashEx
+import debop4k.core.utils.hashOf
 import debop4k.timeperiod.ITimePeriodCollection
 import debop4k.timeperiod.TimePeriodCollection
 import org.joda.time.DateTime
@@ -29,7 +29,7 @@ open class TimeLineMoment(override val moment: DateTime) :
   }
 
   override fun hashCode(): Int {
-    return HashEx.compute(moment)
+    return hashOf(moment)
   }
 
   override fun buildStringHelper(): ToStringHelper {

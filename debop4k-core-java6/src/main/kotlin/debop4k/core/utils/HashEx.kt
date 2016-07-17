@@ -15,11 +15,6 @@
 package debop4k.core.utils
 
 /**
- * 객체의 hash 값을 얻습니다.
- */
-fun Any?.hash(): Int = this?.hashCode() ?: 0
-
-/**
  * 해시코드를 생성합니다.
  *
  * @author sunghyouk.bae@gmail.com
@@ -50,9 +45,9 @@ object HashEx {
       return compute(x1, x2, x3, x3, x2, x1, x1, x2, x3)
     }
     var hash = DEFAULT_HASH
-    hash = hash * FACTOR + x1.hash()
-    hash = hash * FACTOR + x2.hash()
-    hash = hash * FACTOR + x3.hash()
+    hash = hash * FACTOR + computeInternal(x1)
+    hash = hash * FACTOR + computeInternal(x2)
+    hash = hash * FACTOR + computeInternal(x3)
 
     return hash
   }
@@ -65,7 +60,7 @@ object HashEx {
     objs.forEach { obj ->
       when (obj) {
         is Enum<*> -> hash = hash * FACTOR + obj.ordinal.hashCode()
-        else -> hash = hash * FACTOR + obj.hash()
+        else -> hash = hash * FACTOR + computeInternal(obj)
       }
     }
     return hash

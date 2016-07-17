@@ -17,7 +17,7 @@ package debop4k.timeperiod
 
 import debop4k.core.AbstractValueObject
 import debop4k.core.ToStringHelper
-import debop4k.core.utils.HashEx
+import debop4k.core.utils.hashOf
 import debop4k.timeperiod.models.PeriodRelation
 import debop4k.timeperiod.utils.*
 import org.joda.time.DateTime
@@ -146,7 +146,7 @@ open class TimePeriod(override var start: DateTime = MinPeriodTime,
   }
 
   override fun hashCode(): Int {
-    return HashEx.compute(start, end, readOnly)
+    return hashOf(start, end, readOnly)
   }
 
   override fun buildStringHelper(): ToStringHelper {
