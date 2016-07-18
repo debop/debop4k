@@ -14,23 +14,21 @@
  * limitations under the License.
  *
  */
+@file:JvmName("NetcdfExtensions")
 
 package debop4k.science.netcdf
 
 import ucar.nc2.NetcdfFile
 
+val NETCDF_CAHCE_EXTENSIONS = arrayOf("gbx9", "ncx3", "idx")
+
+fun openNetCdf(path: String): NetcdfFile = NetcdfFile.open(path)
+
+
 /**
+ * Net CDF 파일의 정보를 읽어드립니다.
  * Created by debop
  */
-open class NetCdfReader {
+class NetCdfReader {
 
-  companion object {
-    val CACHEFILE_EXTS = arrayOf("gbx9", "ncx3", "idx")
-    private val LINE_SEPARATOR = System.getProperty("line.separator")
-    private val TAB = "\t"
-
-    @JvmStatic fun open(path: String): NetcdfFile {
-      return NetcdfFile.open(path)
-    }
-  }
 }
