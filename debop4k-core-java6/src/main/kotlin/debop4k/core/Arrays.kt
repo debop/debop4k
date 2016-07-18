@@ -13,17 +13,17 @@
  * limitations under the License.
  */
 
-@file:JvmName("ArrayExtensions")
-
 package debop4k.core
 
-val emptyCharArray = CharArray(0)
-val emptyByteArray = ByteArray(0)
-val emptyIntArray = IntArray(0)
-val emptyLongArray = LongArray(0)
+val EmptyCharArray = CharArray(0)
+val EmptyByteArray = ByteArray(0)
+val EmptyIntArray = IntArray(0)
+val EmptyLongArray = LongArray(0)
+val EmptyDoubleArray = DoubleArray(0)
 
 
 fun ByteArray?.isNullOrEmpty(): Boolean = this == null || this.isEmpty()
 fun IntArray?.isNullOrEmpty(): Boolean = this == null || this.isEmpty()
 fun LongArray?.isNullOrEmpty(): Boolean = this == null || this.isEmpty()
+fun DoubleArray?.isNullOrEmpty(): Boolean = this == null || this.isEmpty()
 

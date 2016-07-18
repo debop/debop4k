@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@file:JvmName("Commons")
 
 package debop4k.core
 
@@ -28,18 +27,6 @@ fun <T> uninitialized(): T = null as T
 
 fun areEquals(a: Any?, b: Any?): Boolean {
   return (a === b) || (a != null && a == b)
-}
-
-infix inline fun <T> T.firstNotNull(factory: () -> T): T = if (this != null) this else factory()
-
-infix inline fun <T> T.verifiedBy(verifier: (T) -> Unit): T {
-  verifier(this)
-  return this
-}
-
-infix inline fun <T> T.verifiedWith(verify: T.() -> Unit): T {
-  this.verify()
-  return this
 }
 
 infix inline fun <T> T.initializedBy(initializer: (T) -> Unit): T {

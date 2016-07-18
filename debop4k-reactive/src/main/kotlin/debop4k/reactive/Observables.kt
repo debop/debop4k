@@ -84,8 +84,7 @@ fun <T : Any> Observable<T?>.requireNoNulls(): Observable<T> {
   return this.map { it ?: throw NullPointerException("null element found in rx observable") }
 }
 
-@Suppress("CAST_NEVER_SUCCEEDS")
-fun <T : Any> Observable<T?>.filterNotNull(): Observable<T> = filter { it != null } as Observable<T>
+fun <T : Any> Observable<T?>.filterNotNull(): Observable<T> = filter { it != null }.map { it as T }
 
 fun <T> Observable<T>.withIndex(): Observable<IndexedValue<T>> {
   return this.zipWith(Observable.range(0, Int.MAX_VALUE)) { value: T, index: Int ->

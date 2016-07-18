@@ -12,8 +12,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@file:JvmName("FunctionExtensions")
+
 package debop4k.core
 
+val JAVA_VERSION: String by lazy {
+  Runtime::class.java.`package`.specificationVersion
+}
+val JAVA_IMPLEMENTATION_VERSION: String by lazy {
+  Runtime::class.java.`package`.implementationVersion
+}
+val JAVA_VENDOR: String by lazy {
+  Runtime::class.java.`package`.specificationVendor
+}
+val JAVA_IMPLEMENTATION_VENDOR: String by lazy {
+  Runtime::class.java.`package`.implementationVendor
+}
 
-fun <T> (() -> T).exec(): T = this.invoke()
+val isJava8: Boolean by lazy {
+  JAVA_VERSION.toDouble() == 1.8
+}
+val isJava7: Boolean by lazy {
+  JAVA_VERSION.toDouble() == 1.7
+}
+val isJava6: Boolean by lazy {
+  JAVA_VERSION.toDouble() == 1.6
+}
+

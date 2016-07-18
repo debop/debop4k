@@ -12,8 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@file:JvmName("Assertions")
+
 package debop4k.core
+
+infix inline fun <T> T.firstNotNull(factory: () -> T): T = if (this != null) this else factory()
+
+infix inline fun <T> T.verifiedBy(verifier: (T) -> Unit): T {
+  verifier(this)
+  return this
+}
+
+infix inline fun <T> T.verifiedWith(verify: T.() -> Unit): T {
+  this.verify()
+  return this
+}
 
 inline fun <T> T.assertBy(assertion: (T) -> Unit): T {
   assertion(this)

@@ -15,13 +15,12 @@
 
 package debop4k.core.compressions
 
-import debop4k.core.emptyByteArray
+import debop4k.core.EmptyByteArray
 import debop4k.core.io.stream.toByteArray
 import org.springframework.util.FastByteArrayOutputStream
 import java.io.BufferedInputStream
 import java.io.ByteArrayInputStream
-import java.util.zip.GZIPInputStream
-import java.util.zip.GZIPOutputStream
+import java.util.zip.*
 
 /**
  * GZip 알고리즘을 이용한 압축/복원
@@ -31,7 +30,7 @@ public sealed class GZipCompressor : Compressor {
 
   override fun compress(input: ByteArray?): ByteArray {
     if (input == null || input.isEmpty())
-      return emptyByteArray
+      return EmptyByteArray
 
     FastByteArrayOutputStream().use { bos ->
       GZIPOutputStream(bos).use { gzip ->
@@ -43,7 +42,7 @@ public sealed class GZipCompressor : Compressor {
 
   override fun decompress(input: ByteArray?): ByteArray {
     if (input == null || input.isEmpty())
-      return emptyByteArray
+      return EmptyByteArray
 
     BufferedInputStream(ByteArrayInputStream(input)).use { bis ->
       GZIPInputStream(bis).use { gzip ->

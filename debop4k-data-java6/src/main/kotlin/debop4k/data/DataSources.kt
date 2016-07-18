@@ -13,14 +13,18 @@
  * limitations under the License.
  */
 
+@file:JvmName("DataSources")
+
 package debop4k.data
 
-import com.zaxxer.hikari.HikariConfig
-import com.zaxxer.hikari.HikariDataSource
 import debop4k.core.min
 import debop4k.data.factory.HikariDataSourceFactory
 import org.eclipse.collections.impl.map.mutable.ConcurrentHashMap
 import javax.sql.DataSource
+
+//
+// TODO: Extension Functions 로 바꾸자
+//
 
 /**
  * [DataSource]를 생성해주는 클래스입니다.
@@ -29,14 +33,15 @@ import javax.sql.DataSource
  */
 object DataSources {
 
-  private val processCount = Runtime.getRuntime().availableProcessors()
-  val MAX_POOL_SIZE: Int = processCount * 16
-  val MIN_POOL_SIZE: Int = processCount
-  val MIN_IDLE_SIZE: Int = 2 min processCount
+  private val processCount by lazy { Runtime.getRuntime().availableProcessors() }
+  val MAX_POOL_SIZE: Int by lazy { processCount * 16 }
+  val MIN_POOL_SIZE: Int by lazy { processCount }
+  val MIN_IDLE_SIZE: Int by lazy { 2 min processCount }
 
-  private val dataSourceCache = ConcurrentHashMap<DatabaseSetting, DataSource>()
+  private val dataSourceCache: ConcurrentHashMap<DatabaseSetting, DataSource>
+      by lazy { ConcurrentHashMap<DatabaseSetting, DataSource>() }
 
-  private val dataSourceFactory = HikariDataSourceFactory()
+  private val dataSourceFactory by lazy { HikariDataSourceFactory() }
 
   @JvmStatic
   fun of(driverClassName: String,
@@ -44,9 +49,11 @@ object DataSources {
          username: String? = null,
          password: String? = null): DataSource {
 
-    val config = HikariConfig()
+    TODO()
 
-    return HikariDataSource(config)
+//    val config = HikariConfig()
+//    // TODO()
+//    return HikariDataSource(config)
   }
 
   @JvmStatic

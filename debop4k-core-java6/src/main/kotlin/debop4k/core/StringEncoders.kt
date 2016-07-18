@@ -12,22 +12,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 @file:JvmName("StringEncoders")
 
 package debop4k.core
 
 import org.apache.commons.codec.binary.Hex
 import java.util.*
+import java.util.Base64.*
 
-val base64Encoder = Base64.getEncoder()
-val base64Decoder = Base64.getDecoder()
-val base64UrlEncoder = Base64.getUrlEncoder()
-val base64UrlDecoder = Base64.getUrlDecoder()
+val Base64Encoder: Encoder = Base64.getEncoder()
+val base64Decoder: Decoder = Base64.getDecoder()
+val Base64UrlEncoder: Encoder = Base64.getUrlEncoder()
+val Base64UrlDecoder: Decoder = Base64.getUrlDecoder()
 
-fun String.toBase64(): String = base64Encoder.encodeToString(this.toByteArray(Charsets.UTF_8))
-fun String.fromBase64(): String = base64Decoder.decode(this).toString(Charsets.UTF_8)
+fun String.toBase64(): String {
+  return Base64Encoder.encodeToString(this.toByteArray(Charsets.UTF_8))
+}
 
-fun String.toHex(): String = Hex.encodeHexString(this.toByteArray(Charsets.UTF_8))
-fun String.fromHex(): String = Hex.decodeHex(this.toCharArray()).toString(Charsets.UTF_8)
+fun String.fromBase64(): String {
+  return base64Decoder.decode(this).toString(Charsets.UTF_8)
+}
+
+fun String.toHex(): String {
+  return Hex.encodeHexString(this.toByteArray(Charsets.UTF_8))
+}
+
+fun String.fromHex(): String {
+  return Hex.decodeHex(this.toCharArray()).toString(Charsets.UTF_8)
+}
 
 

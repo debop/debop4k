@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+@file:JvmName("KodaTimes")
+
 package debop4k.core.kodatimes
 
 import debop4k.timeperiod.utils.TimeZones
@@ -27,14 +29,22 @@ import java.util.*
 val DefaultTimeZone: DateTimeZone = DateTimeZone.getDefault()
 
 @JvmOverloads
-fun Date?.toDateTime(zone: DateTimeZone = DefaultTimeZone): DateTime? = DateTime(this?.time) ?: null
+fun Date?.toDateTime(zone: DateTimeZone = DefaultTimeZone): DateTime? {
+  if (this == null)
+    return null
+  return DateTime(this.time, zone)
+}
 
 fun Date.toLocalDateTime(): LocalDateTime = LocalDateTime.fromDateFields(this)
 fun Date.toLocalDate(): LocalDate = LocalDate.fromDateFields(this)
 fun Date.toLocalTime(): LocalTime = LocalTime.fromDateFields(this)
 
 @JvmOverloads
-fun Timestamp?.toDateTime(zone: DateTimeZone = DefaultTimeZone): DateTime? = DateTime(this?.time) ?: null
+fun Timestamp?.toDateTime(zone: DateTimeZone = DefaultTimeZone): DateTime? {
+  if (this == null)
+    return null
+  return DateTime(this.time, zone)
+}
 
 fun AbstractInstant.dateTimeUTC(): DateTime = this.toDateTime(DateTimeZone.UTC)
 fun AbstractInstant.mutableDateTimeUTC(): MutableDateTime = this.toMutableDateTime(DateTimeZone.UTC)

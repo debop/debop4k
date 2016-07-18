@@ -12,11 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 @file:JvmName("StreamExtensions")
 
 package debop4k.core.io.stream
 
-import debop4k.core.emptyByteArray
+import debop4k.core.EmptyByteArray
 import org.slf4j.LoggerFactory
 import org.springframework.util.FastByteArrayOutputStream
 import java.io.BufferedInputStream
@@ -28,7 +29,7 @@ import java.nio.charset.Charset
 
 private val log = LoggerFactory.getLogger("streams")
 
-fun emptyInputStream(): InputStream = ByteArrayInputStream(emptyByteArray)
+fun emptyInputStream(): InputStream = ByteArrayInputStream(EmptyByteArray)
 
 /**
  * [InputStream] 을 읽어 [OutputStream] 에 씁니다.

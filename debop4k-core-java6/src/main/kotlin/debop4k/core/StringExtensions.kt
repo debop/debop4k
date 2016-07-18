@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 @file:JvmName("StringExtensions")
 
 package debop4k.core
@@ -21,10 +22,10 @@ import org.springframework.util.StringUtils
 
 const val EMPTY_STRING = ""
 const val NULL_STRING = "<null>"
-const val UNIX_LINE_SEPARATOR = "\n"
+const val TAB = "\t"
+val LINE_SEPARATOR: String by lazy { System.getProperty("line.separator") }
 
-public fun CharSequence.isEmpty(): Boolean = trim().length == 0
-
+fun CharSequence.isEmpty(): Boolean = trim().length == 0
 
 fun CharSequence?.isNull(): Boolean = this == null
 

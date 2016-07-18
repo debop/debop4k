@@ -40,11 +40,11 @@ class FstSerializer(val conf: FSTConfiguration = FSTConfiguration.createDefaultC
   }
 
   @Suppress("UNCHECKED_CAST")
-  override fun <T> deserialize(data: ByteArray): T? {
-    if (data == null || data.isEmpty())
+  override fun <T> deserialize(bytes: ByteArray): T? {
+    if (bytes.isEmpty())
       return null as T
 
-    ByteArrayInputStream(data).use { bis ->
+    ByteArrayInputStream(bytes).use { bis ->
       val ois = conf.getObjectInput(bis)
       return ois.readObject() as T
     }
