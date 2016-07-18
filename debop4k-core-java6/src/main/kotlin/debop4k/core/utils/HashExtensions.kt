@@ -24,14 +24,12 @@ const val DEFAULT_HASH = 1
 const val HASH_FACTOR = 31
 
 /** Hash code 값 얻기 */
-fun Any?.hash(): Int {
-  if (this == null)
-    return ZERO_HASH
-  when (this) {
+fun Any?.hash(): Int = when (this) {
+  null -> ZERO_HASH
     is Enum<*> -> this.ordinal.hashCode()
     else -> this.hashCode()
   }
-}
+
 
 /** 객체의 hash code 값 반환 */
 private fun computeHashInternal(x: Any?): Int = x?.hashCode() ?: ZERO_HASH
@@ -65,4 +63,4 @@ fun hashOf(x1: Any?, x2: Any?, x3: Any?): Int {
   hash = hash * HASH_FACTOR + x2.hash() // computeHashInternal(x2)
   hash = hash * HASH_FACTOR + x3.hash() // computeHashInternal(x3)
   return hash
-  }
+}
