@@ -21,7 +21,7 @@ package debop4k.core
 val JVM_VERSION: String by lazy {
   Runtime::class.java.`package`.specificationVersion
 }
-val JVM_IMPLENTATION_VERSION: String by lazy {
+val JVM_IMPLEMENTATION_VERSION: String by lazy {
   Runtime::class.java.`package`.implementationVersion
 }
 val JVM_VENDOR: String by lazy {
