@@ -12,8 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@file:JvmName("FunctionExtensions")
+
 package debop4k.core
 
+import java.lang.reflect.InvocationTargetException
 
-fun <T> (() -> T).exec(): T = this.invoke()
+fun unwrapInvokeException(rawException: Throwable): Throwable
+    = if (rawException is InvocationTargetException) rawException.cause!! else rawException
+
+fun unwrapInvokeException(rawException: Exception): Throwable
+    = if (rawException is InvocationTargetException) rawException.cause!! else rawException

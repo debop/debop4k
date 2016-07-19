@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-@file:JvmName("Assertions")
+
 package debop4k.core
 
 infix inline fun <T> T.firstNotNull(factory: () -> T): T = if (this != null) this else factory()

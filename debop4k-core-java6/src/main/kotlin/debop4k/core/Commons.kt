@@ -14,7 +14,6 @@
  * limitations under the License.
  *
  */
-@file:JvmName("Commons")
 
 package debop4k.core
 

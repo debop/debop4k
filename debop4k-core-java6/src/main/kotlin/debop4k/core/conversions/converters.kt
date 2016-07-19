@@ -1,11 +1,10 @@
 /*
- * Copyright 2016 Sunghyouk Bae<sunghyouk.bae@gmail.com>
- *
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -259,7 +258,7 @@ private val primitiveConversionPredicate = fun(fromType: Type, toType: Type): Bo
   val fromErased = fromType.erasedType()
 
   return when {
-    String::class.isAssignableFrom(fromType) -> when (toType) {
+    String::class.isAssignableFrom(fromErased) -> when (toType) {
       String::class.java,
       Short::class.java, java.lang.Short::class.java,
       Byte::class.java, java.lang.Byte::class.java,
@@ -279,14 +278,14 @@ private val primitiveConversionPredicate = fun(fromType: Type, toType: Type): Bo
       else -> toType.erasedType().isEnum
     }
 
-    CharSequence::class.isAssignableFrom(fromType) -> when (toType) {
+    CharSequence::class.isAssignableFrom(fromErased) -> when (toType) {
       CharSequence::class.java,
       String::class.java,
       ByteArray::class.java -> true
       else -> false
     }
 
-    Number::class.isAssignableFrom(fromType) -> when (toType) {
+    Number::class.isAssignableFrom(fromErased) -> when (toType) {
       Char::class.java, java.lang.Character::class.java,
       Byte::class.java, java.lang.Byte::class.java,
       Short::class.java, java.lang.Short::class.java,
@@ -303,7 +302,7 @@ private val primitiveConversionPredicate = fun(fromType: Type, toType: Type): Bo
       else -> toType.erasedType().isEnum
     }
 
-    Char::class.isAssignableFrom(fromType) || java.lang.Character::class.isAssignableFrom(fromType) -> when (toType) {
+    Char::class.isAssignableFrom(fromErased) || java.lang.Character::class.isAssignableFrom(fromErased) -> when (toType) {
       Char::class.java, java.lang.Character::class.java,
       Byte::class.java, java.lang.Byte::class.java,
       Short::class.java, java.lang.Short::class.java,
@@ -318,7 +317,7 @@ private val primitiveConversionPredicate = fun(fromType: Type, toType: Type): Bo
       else -> false
     }
 
-    Boolean::class.java.isAssignableFrom(fromType) || java.lang.Boolean::class.isAssignableFrom(fromType) -> when (toType) {
+    Boolean::class.java.isAssignableFrom(fromErased) || java.lang.Boolean::class.isAssignableFrom(fromErased) -> when (toType) {
       Boolean::class.java, java.lang.Boolean::class.java,
       Char::class.java, java.lang.Character::class.java,
       Byte::class.java, java.lang.Byte::class.java,
@@ -333,7 +332,7 @@ private val primitiveConversionPredicate = fun(fromType: Type, toType: Type): Bo
       else -> false
     }
 
-    Date::class.java.isAssignableFrom(fromType) -> when (toType) {
+    Date::class.java.isAssignableFrom(fromErased) -> when (toType) {
       Date::class.java,
       DateTime::class.java,
       Int::class.java, java.lang.Integer::class.java,
@@ -342,7 +341,7 @@ private val primitiveConversionPredicate = fun(fromType: Type, toType: Type): Bo
       else -> false
     }
 
-    DateTime::class.java.isAssignableFrom(fromType) -> when (toType) {
+    DateTime::class.java.isAssignableFrom(fromErased) -> when (toType) {
       Date::class.java,
       DateTime::class.java,
       Int::class.java, java.lang.Integer::class.java,
@@ -351,12 +350,12 @@ private val primitiveConversionPredicate = fun(fromType: Type, toType: Type): Bo
       else -> false
     }
 
-    fromType == ByteArray::class.java -> when (toType) {
+    fromErased == ByteArray::class.java -> when (toType) {
       ByteArray::class.java, String::class.java -> true
       else -> false
     }
 
-    Enum::class.isAssignableFrom(fromType) -> when (toType) {
+    Enum::class.isAssignableFrom(fromErased) -> when (toType) {
       String::class.java,
       Byte::class.java,
       Int::class.java, java.lang.Integer::class.java,
@@ -371,13 +370,13 @@ private val primitiveConversionPredicate = fun(fromType: Type, toType: Type): Bo
       }
     }
 
-    fromType == File::class.java -> when (toType) {
+    fromErased == File::class.java -> when (toType) {
       File::class.java,
       String::class.java -> true
       else -> false
     }
 
-    fromType == URI::class.java || fromType == URL::class.java -> when (toType) {
+    fromErased == URI::class.java || fromErased == URL::class.java -> when (toType) {
       URI::class.java,
       URL::class.java,
       String::class.java -> true

@@ -14,6 +14,7 @@
  * limitations under the License.
  *
  */
+
 @file:JvmName("StreamExtensions")
 
 package debop4k.core.io.stream
