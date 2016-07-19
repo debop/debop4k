@@ -19,11 +19,33 @@
 package debop4k.science.netcdf
 
 import ucar.nc2.NetcdfFile
+import ucar.nc2.util.CancelTask
+import java.net.URI
 
 val NETCDF_CAHCE_EXTENSIONS = arrayOf("gbx9", "ncx3", "idx")
 
-fun openNetCdf(path: String): NetcdfFile = NetcdfFile.open(path)
+@JvmOverloads
+fun openNetCdf(path: String, bufferSize: Int = -1, cancelTask: CancelTask? = null, iospMessage: Any? = null): NetcdfFile {
+  return NetcdfFile.open(path, bufferSize, cancelTask, iospMessage)
+}
 
+//@JvmOverloads
+//fun openNetCdf(raf: RandomAccessFile, location:String, cancelTask:CancelTask? = null, iospMessage: Any? = null):NetcdfFile {
+//  return NetcdfFile.open(raf, location, cancelTask, iospMessage)
+//}
+
+fun openInMemory(filename: String): NetcdfFile {
+  return NetcdfFile.openInMemory(filename)
+}
+
+fun openInMemory(uri: URI): NetcdfFile {
+  return NetcdfFile.openInMemory(uri)
+}
+
+@JvmOverloads
+fun openInMemoery(name: String, data: ByteArray, iospClassName: String? = null): NetcdfFile {
+  return NetcdfFile.openInMemory(name, data, iospClassName)
+}
 
 /**
  * Net CDF 파일의 정보를 읽어드립니다.

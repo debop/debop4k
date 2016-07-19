@@ -20,15 +20,15 @@ package debop4k.science.gis.coords
 import java.io.Serializable
 
 /**
- * Created by debop
+ * 경위도를 표현합니다.
  */
-data class GeoLocation(val latitude: Double = 0.0,
-                       val longitude: Double = 0.0) : Comparable<GeoLocation>, Serializable {
+data class GeoLocation(val lat: Double = 0.0,
+                       val lon: Double = 0.0) : Comparable<GeoLocation>, Serializable {
 
   override fun compareTo(other: GeoLocation): Int {
-    var diff = latitude.compareTo(other.latitude)
+    var diff = lat.compareTo(other.lat)
     if (diff == 0) {
-      diff = longitude.compareTo(other.longitude)
+      diff = lon.compareTo(other.lon)
     }
     return diff
   }

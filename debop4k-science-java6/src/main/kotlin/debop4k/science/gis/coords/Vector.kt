@@ -16,3 +16,20 @@
  */
 
 package debop4k.science.gis.coords
+
+import java.awt.geom.Point2D
+
+/**
+ * Created by debop
+ */
+data class Vector(val degree: Double, val length: Double) {
+
+
+  companion object {
+    @JvmStatic
+    fun of(start: Point2D.Double, end: Point2D.Double): Vector {
+      return vectorOf(start, end)
+    }
+  }
+
+}
