@@ -21,6 +21,7 @@ import debop4k.core.asDouble
 import org.slf4j.LoggerFactory
 import java.awt.Point
 import java.awt.Polygon
+import java.awt.geom.Line2D
 import java.awt.geom.Point2D
 import java.lang.Math.*
 
@@ -86,7 +87,6 @@ fun parseBbox(bboxStr: String?, limitBox: BoundingBox = WorldBBox): BoundingBox?
 /**
  * {@link Polygon} 각 꼭지점을 {@link java.awt.geom.Point2D.Double} 배열로 변환합니다.
  *
- * @param polygon {@link Polygon}
  * @return {@link java.awt.geom.Point2D.Double} 배열
  */
 fun Polygon?.toPointArray(): Array<Point2D.Double> {
@@ -248,5 +248,115 @@ fun rotateXY(p: Point, degree: Double): Point2D.Double {
 fun rotateXY(base: Point, p: Point, degree: Double): Point2D.Double {
   return rotateXYPoint(Point2D.Double(p.x.toDouble(), p.y.toDouble()),
                        degree,
-                       Point2D.Double(p.x.toDouble(), p.y.toDouble()))
+                       Point2D.Double(base.x.toDouble(), base.y.toDouble()))
+}
+
+/**
+ * 사각 영역안에 Point 를 위치시킵니다.
+
+ * @param point       대상 Point
+ * @param leftTop     Left-Top Point
+ * @param rightBottom Bottom-Right Point
+ * @return 대상 Point 를 사각 영역안에 위치 시킨 새로운 Point
+ */
+fun checkPositionPoint(point: Point2D.Double,
+                       leftTop: Point2D.Double,
+                       rightBottom: Point2D.Double): Point2D.Double {
+  return checkPositionPoint(point,
+                            BoundingBox(GeoLocation(leftTop.x, leftTop.y),
+                                        GeoLocation(rightBottom.x, rightBottom.y)))
+}
+
+/**
+ * Point 가 BoundingBox 안에 위치하도록 값을 조정합니다.
+
+ * @param point 조정할 Point 값
+ * *
+ * @param bbox  영역을 나타내는 [BoundingBox]
+ * *
+ * @return 새롭게 조정된 Point
+ */
+fun checkPositionPoint(point: Point2D.Double, bbox: BoundingBox): Point2D.Double {
+  val x = min(max(point.x, bbox.minX), bbox.maxX)
+  val y = min(max(point.y, bbox.minY), bbox.maxY)
+
+  return Point2D.Double(x, y)
+}
+
+/**
+ * 지정한 라인을 n 등분한 위치 좌표들을 반환한다.
+
+ * @param line 라인 정보
+ * *
+ * @param n    등분할 수
+ * *
+ * @return 선분을 N 등분한 Point 중보
+ */
+fun getLineNPoints(line: Line2D.Double, n: Int): Array<Point2D.Double> {
+  assert(n > 0)
+
+  if (n < 2) {
+    return arrayOf(line.p1 as Point2D.Double, line.p2 as Point2D.Double)
+  }
+
+  val start = line.p1 as Point2D.Double
+  val end = line.p2 as Point2D.Double
+
+  val vector = vectorOf(start, end)
+  log.debug("vector={}", vector)
+
+  val points = Array<Point2D.Double>(n + 1) { i -> Point2D.Double() }
+
+  points[0] = line.p1 as Point2D.Double
+  points[n] = line.p2 as Point2D.Double
+
+  val length = vector.length
+  val nlen = length / n.toDouble()
+  // vector의 각도는 -Y 축이 0 도이다. 그래서 +X 축으로 환산한 경우에는 -90 을 해줘야 한다.
+  val degree = vector.degree
+
+  for (i in 1..n - 1) {
+    points[i] = vectorEndPoint(start, degree, nlen * i)
+  }
+
+  return points
+}
+
+/**
+ * 두 선분의 교차점을 구한다. 교차점이 없을 때에는 null 을 반환합니다.
+
+ * @param l1 선분 1
+ * *
+ * @param l2 선분 2
+ * *
+ * @return 두 선분의 교차점.
+ */
+fun getIntersectPoint(l1: Line2D.Double, l2: Line2D.Double): Point2D.Double? {
+  try {
+    val under = (l2.y2 - l2.y1) * (l1.x2 - l1.x1) - (l2.x2 - l2.x1) * (l1.y2 - l1.y1)
+    if (under == 0.0)
+      return null
+
+    var t = (l2.x2 - l2.x1) * (l1.y1 - l2.y1) - (l2.y2 - l2.y1) * (l1.x1 - l2.x1)
+    var s = (l1.x2 - l1.x1) * (l1.y1 - l2.y1) - (l1.y2 - l1.y1) * (l1.x1 - l2.x1)
+
+    if (t == 0.0 && s == 0.0)
+      return null
+
+    t /= under
+    s /= under
+
+    if (t < 0.0 || t > 1.0 || s < 0.0 || s > 1.0)
+      return null
+
+    val x = l1.x1 + t * (l1.x2 - l1.x1)
+    val y = l1.y1 + t * (l1.y2 - l1.y1)
+
+    return Point2D.Double(x, y)
+
+  } catch (ignored: Exception) {
+    log.error("두 선분 교차점 찾기 실패.", ignored)
+    return null
+  }
+
 }
