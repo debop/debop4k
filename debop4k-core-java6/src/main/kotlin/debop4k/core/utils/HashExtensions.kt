@@ -1,18 +1,16 @@
 /*
  * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 @file:JvmName("HashExtensions")
@@ -26,9 +24,9 @@ const val HASH_FACTOR = 31
 /** Hash code 값 얻기 */
 fun Any?.hash(): Int = when (this) {
   null -> ZERO_HASH
-    is Enum<*> -> this.ordinal.hashCode()
-    else -> this.hashCode()
-  }
+  is Enum<*> -> this.ordinal.hashCode()
+  else -> this.hashCode()
+}
 
 
 /** 객체의 hash code 값 반환 */
@@ -42,7 +40,7 @@ fun hashOf(vararg objs: Any?): Int {
   objs.forEach { obj -> hash = hash * HASH_FACTOR + obj.hash() }
 
   return hash
-  }
+}
 
 fun hashOf(x1: Any?, x2: Any?): Int {
   if (x1 is Number && x2 is Number) {
@@ -52,7 +50,7 @@ fun hashOf(x1: Any?, x2: Any?): Int {
   hash = hash * HASH_FACTOR + x1.hash() //computeHashInternal(x1)
   hash = hash * HASH_FACTOR + x2.hash() // computeHashInternal(x2)
   return hash
-  }
+}
 
 fun hashOf(x1: Any?, x2: Any?, x3: Any?): Int {
   if (x1 is Number && x2 is Number && x3 is Number) {

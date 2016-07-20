@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package debop4k.timeperiod.calendars
 
 import debop4k.timeperiod.*
@@ -8,7 +23,7 @@ import org.slf4j.LoggerFactory
  * 특정 기간에 대한 필터링 정보를 기반으로 기간들을 필터링 할 수 있도록 특정 기간을 탐색하는 Visitor입니다.
  * Created by debop
  */
-abstract class CalendarVisitor<F : ICalendarVisitorFilter, C : ICalendarVisitorContext>(
+abstract class CalendarVisitor<out F : ICalendarVisitorFilter, in C : ICalendarVisitorContext>(
     val filter: F,
     val limits: ITimePeriod,
     val seekDirection: SeekDirection = SeekDirection.Forward,
@@ -20,7 +35,8 @@ abstract class CalendarVisitor<F : ICalendarVisitorFilter, C : ICalendarVisitorC
     val MAX_PERIOD = TimeRange(MinPeriodTime, MaxPeriodTime.minusYears(1))
   }
 
-  val isForward: Boolean get() = seekDirection == SeekDirection.Forward
+  val isForward: Boolean
+    get() = seekDirection == SeekDirection.Forward
 
   protected fun startPeriodVisit(context: C): Unit {
     startPeriodVisit(limits, context)
@@ -74,7 +90,7 @@ abstract class CalendarVisitor<F : ICalendarVisitorFilter, C : ICalendarVisitorC
 
   protected fun checkExcludePeriods(target: ITimePeriod): Boolean {
     return filter.excludePeriods.isEmpty()
-        || filter.excludePeriods.overlapPeriods(target).isEmpty
+           || filter.excludePeriods.overlapPeriods(target).isEmpty()
   }
 
   open protected fun enterYears(years: YearRangeCollection, context: C): Boolean = true
