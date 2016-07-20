@@ -22,7 +22,7 @@ import org.geotools.data.shapefile.shp.ShapeType
 import java.io.Serializable
 
 /**
- * Created by debop
+ * ArgGIS Shape 파일의 헤더 정보
  */
 open class ShapeHeader(val size: Int,
                        val version: Int,

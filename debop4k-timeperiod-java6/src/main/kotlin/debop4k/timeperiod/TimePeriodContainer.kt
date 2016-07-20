@@ -1,16 +1,18 @@
 /*
  * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 package debop4k.timeperiod
@@ -18,8 +20,6 @@ package debop4k.timeperiod
 import debop4k.core.SortDirection
 import debop4k.core.SortDirection.ASC
 import debop4k.core.SortDirection.DESC
-import debop4k.core.collections.eclipseCollections.fastListOf
-import org.eclipse.collections.api.list.MutableList
 import org.joda.time.DateTime
 import org.joda.time.Duration
 
@@ -28,7 +28,7 @@ import org.joda.time.Duration
  */
 open class TimePeriodContainer : TimePeriod(), ITimePeriodContainer {
 
-  private val _periods: MutableList<ITimePeriod> = fastListOf<ITimePeriod>()
+  private val _periods: MutableList<ITimePeriod> = mutableListOf<ITimePeriod>()
 
   override val periods: MutableList<ITimePeriod> get() = _periods
 
@@ -37,7 +37,7 @@ open class TimePeriodContainer : TimePeriod(), ITimePeriodContainer {
   override var start: DateTime
     get() {
       if (isEmpty()) return MinPeriodTime
-      return _periods.collect { period -> period.start }.min()
+      return _periods.map { period -> period.start }.min()!!
     }
     set(value) {
       if (!isEmpty()) move(Duration(start, value))
@@ -46,7 +46,7 @@ open class TimePeriodContainer : TimePeriod(), ITimePeriodContainer {
   override var end: DateTime
     get() {
       if (isEmpty()) return MaxPeriodTime
-      return _periods.collect { period -> period.end }.max()
+      return _periods.map { period -> period.end }.max()!!
     }
     set(value) {
       if (!isEmpty()) move(Duration(end, value))
@@ -59,7 +59,7 @@ open class TimePeriodContainer : TimePeriod(), ITimePeriodContainer {
 
   override val readOnly: Boolean get() = false
 
-  override fun isEmpty(): Boolean = _periods.isEmpty
+  override fun isEmpty(): Boolean = _periods.isEmpty()
 
 
   override fun setup(newStart: DateTime, newEnd: DateTime) {
@@ -133,7 +133,7 @@ open class TimePeriodContainer : TimePeriod(), ITimePeriodContainer {
   }
 
   override fun removeIf(filter: (ITimePeriod) -> Boolean): Boolean {
-    return _periods.removeIf(filter)
+    return _periods.removeAll(filter)
   }
 
   override fun retainAll(elements: Collection<ITimePeriod>): Boolean {
@@ -148,21 +148,21 @@ open class TimePeriodContainer : TimePeriod(), ITimePeriodContainer {
 
   override fun sortByStart(sortDir: SortDirection) {
     when (sortDir) {
-      ASC -> _periods.sortThisBy { x -> x.start }
+      ASC -> _periods.sortBy { x -> x.start }
       DESC -> _periods.sortByDescending { x -> x.start }
     }
   }
 
   override fun sortByEnd(sortDir: SortDirection) {
     when (sortDir) {
-      ASC -> _periods.sortThisBy { x -> x.end }
+      ASC -> _periods.sortBy { x -> x.end }
       DESC -> _periods.sortByDescending { x -> x.end }
     }
   }
 
   override fun sortByDuration(sortDir: SortDirection) {
     when (sortDir) {
-      ASC -> _periods.sortThisBy { x -> x.duration }
+      ASC -> _periods.sortBy { x -> x.duration }
       DESC -> _periods.sortByDescending { x -> x.duration }
     }
   }
@@ -198,7 +198,7 @@ open class TimePeriodContainer : TimePeriod(), ITimePeriodContainer {
   }
 
   override fun toString(): String {
-    return _periods.makeString(",")
+    return _periods.joinToString(separator = ",")
   }
 
 

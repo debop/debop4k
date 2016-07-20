@@ -30,7 +30,7 @@ data class BoundingBox(private val _left: Double,
                        private val _bottom: Double) : Comparable<BoundingBox>, Serializable {
 
   constructor(topLeft: GeoLocation, bottomRight: GeoLocation) :
-  this(topLeft.longitude, topLeft.latitude, bottomRight.longitude, bottomRight.latitude)
+  this(topLeft.lon, topLeft.lat, bottomRight.lon, bottomRight.lat)
 
   val left: Double
   val top: Double
@@ -64,7 +64,7 @@ data class BoundingBox(private val _left: Double,
   val bottomRight: GeoLocation get() = GeoLocation(bottom, right)
 
   fun contains(loc: GeoLocation): Boolean {
-    return contains(loc.latitude, loc.longitude)
+    return contains(loc.lat, loc.lon)
   }
 
   fun contains(lat: Double, lon: Double): Boolean {

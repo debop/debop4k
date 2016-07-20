@@ -23,11 +23,11 @@ import org.junit.Test
 class SystemsTest : AbstractCoreTest() {
 
   @Test fun retrieveJavaSpecificationVersion() {
-    log.debug("java version={}, implementation={}", JAVA_VERSION, JAVA_IMPLEMENTATION_VERSION)
-    log.debug("java vendor={}, implementation={}", JAVA_VENDOR, JAVA_IMPLEMENTATION_VENDOR)
+    log.debug("java version={}, implementation={}", JVM_VERSION, JVM_IMPLEMENTATION_VERSION)
+    log.debug("java vendor={}, implementation={}", JVM_VENDOR, JVM_IMPLEMENTATION_VENDOR)
 
-      log.debug("Java6={}", isJava6)
-      log.debug("Java7={}", isJava7)
-      log.debug("Java8={}", isJava8)
+    log.debug("Java6={}", isJava6)
+    log.debug("Java7={}", isJava7)
+    log.debug("Java8={}", isJava8)
   }
 }
