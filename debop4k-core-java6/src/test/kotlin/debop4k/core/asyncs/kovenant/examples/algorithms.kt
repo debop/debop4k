@@ -19,7 +19,8 @@ package debop4k.core.asyncs.kovenant.examples
  * @author debop sunghyouk.bae@gmail.com
  */
 fun fib(n: Int): Int {
-  if (n < 0) throw IllegalArgumentException("negative numbers not allowed")
+  require(n >= 0) { "negate number not allowed" }
+
   return when (n) {
     0, 1 -> 1
     else -> fib(n - 1) + fib(n - 2)

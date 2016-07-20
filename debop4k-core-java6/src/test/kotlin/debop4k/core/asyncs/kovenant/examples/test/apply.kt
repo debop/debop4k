@@ -26,6 +26,7 @@ import kotlin.test.assertEquals
 import kotlin.test.fail
 
 class ApplyTest {
+
   @Before fun setup() {
     Kovenant.testMode {
       fail(it.message)

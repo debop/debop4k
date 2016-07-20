@@ -18,111 +18,127 @@ package debop4k.core.asyncs.kovenant.examples.core
 import debop4k.core.asyncs.kovenant.examples.fib
 import debop4k.core.asyncs.ready
 import debop4k.core.asyncs.readyAll
+import io.kotlintest.specs.FunSpec
 import nl.komponents.kovenant.*
 import nl.komponents.kovenant.properties.lazyPromise
-import org.junit.Test
 import org.slf4j.LoggerFactory
 import java.util.*
 
-class PromiseExaple {
+class PromiseExaple : FunSpec() {
 
   private val log = LoggerFactory.getLogger(javaClass)
 
-  @Test fun testAll() {
-    val promises = Array(10) { n ->
-      task {
-        Pair(n, fib(n))
-      }
-    }
+  private val threadName: String
+    get() = Thread.currentThread().name
 
-    all(*promises) success {
-      it.forEach { pair -> println("fib(${pair.first}) = ${pair.second}") }
-    } always {
-      println("All ${promises.size} promises are done.")
-    }
-  }
 
-  @Test fun testAny() {
-    val promises = Array(10) { n ->
-      task {
-        while (!Thread.currentThread().isInterrupted) {
-          val luckyNumber = Random(System.currentTimeMillis() * (n + 1)).nextInt(100)
-          if (luckyNumber == 7) break
+  init {
+
+    test("all") {
+      val promises = Array(10) { n ->
+        task {
+          Pair(n, fib(n))
         }
-        "Promise number $n won!"
+      }
+
+      all(*promises) success {
+        it.forEach { pair -> println("fib(${pair.first}) = ${pair.second}") }
+      } always {
+        println("All ${promises.size} promises are done.")
       }
     }
 
-    any(*promises) success { msg ->
-      println(msg)
-      println()
+    test("any") {
+      val promises = Array(10) { n ->
+        task {
+          while (!Thread.currentThread().isInterrupted) {
+            val luckyNumber = Random(System.currentTimeMillis() * (n + 1)).nextInt(100)
+            if (luckyNumber == 7) break
+          }
+          "Promise number $n won!"
+        }
+      }
 
-      promises.forEachIndexed { n, p ->
-        p.fail { println("promise[$n] was cancelled") }
-        p.success { println("promise[$n] finished") }
+      any(*promises) success { msg ->
+        println(msg)
+        println()
+
+        promises.forEachIndexed { n, p ->
+          p.fail { println("promise[$n] was cancelled") }
+          p.success { println("promise[$n] finished") }
+        }
+      }
+      readyAll(*promises)
+      println("finish any")
+    }
+
+    test("readyAll") {
+      val promises = Array(50) { task { Thread.sleep(100L) } }
+
+      print("waiting...")
+      readyAll(*promises)
+      println(" done.")
+    }
+
+    test("context") {
+      val ctx = Kovenant.createContext {
+        callbackContext.dispatcher { name = "cb-now" }
+        workerContext.dispatcher { name = "work-new" }
+      }
+
+      task {
+        println("default task $threadName")
+      } success {
+        println("default success $threadName")
+      }
+
+      task(ctx) {
+        println("default task $threadName")
+      } success {
+        println("default success $threadName")
       }
     }
-    readyAll(*promises)
-    println("finish any")
-  }
 
-  @Test fun testAwait() {
-    val promises = Array(50) { task { Thread.sleep(100L) } }
+    test("deferred") {
+      fun handlePromise(promise: Promise<String, Exception>) {
+        promise success { result -> println(result) }
+        promise fail { e -> println(e) }
+      }
 
-    print("waiting...")
-    readyAll(*promises)
-    println(" done.")
-  }
-
-
-  private val threadName: String get() = Thread.currentThread().name
-
-  @Test fun contextExample() {
-    val ctx = Kovenant.createContext {
-      callbackContext.dispatcher { name = "cb-now" }
-      workerContext.dispatcher { name = "work-new" }
-    }
-
-    task {
-      println("default task $threadName")
-    } success {
-      println("default success $threadName")
-    }
-
-    task(ctx) {
-      println("default task $threadName")
-    } success {
-      println("default success $threadName")
-    }
-  }
-
-  @Test fun testDeferred() {
-    fun handlePromise(promise: Promise<String, Exception>) {
-      promise success { result -> println(result) }
-      promise fail { e -> println(e) }
-    }
-
-    val deferred = deferred<String, Exception>()
-    handlePromise(deferred.promise)
-    deferred.resolve("Hello World")
+      val deferred = deferred<String, Exception>()
+      handlePromise(deferred.promise)
+      deferred.resolve("Hello World")
 //    deferred.reject(Exception("Hello exceptional world"))
-    deferred.promise.ready()
-  }
-
-  @Test fun testDone() {
-    val p = task { Thread.sleep(1000) }
-    while (!p.isDone()) {
-      Thread.sleep(10)
-      println("not done")
+      deferred.promise.ready()
     }
-    println("done!!!")
-  }
 
-  @Test fun testGet() {
-    val (n, fib) = task { Pair(30, fib(30)) }.get()
-    println("fib($n) = $fib")
-  }
+    test("isDone") {
+      val p = task { Thread.sleep(1000) }
+      while (!p.isDone()) {
+        Thread.sleep(10)
+        println("not done")
+      }
+      println("done!!!")
+    }
 
+    test("get") {
+      val (n, fib) = task { Pair(30, fib(30)) }.get()
+      println("fib($n) = $fib")
+    }
+
+
+
+    test("lazyPromise") {
+      log.debug("start program")
+
+      expensiveResource thenApply {
+        "Get [$value]"
+      } success {
+        log.debug(it)
+      }
+      expensiveResource.ready()
+    }
+  }
 
   val expensiveResource by lazyPromise {
     log.debug("init promise")
@@ -133,14 +149,4 @@ class PromiseExaple {
     val value: String = "result"
   }
 
-  @Test fun testLazy() {
-    log.debug("start program")
-
-    expensiveResource thenApply {
-      "Get [$value]"
-    } success {
-      log.debug(it)
-    }
-    expensiveResource.ready()
-  }
 }

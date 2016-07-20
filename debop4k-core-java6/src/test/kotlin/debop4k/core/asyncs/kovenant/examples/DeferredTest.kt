@@ -15,18 +15,25 @@
 
 package debop4k.core.asyncs.kovenant.examples
 
-import debop4k.core.asyncs.ready
+import debop4k.core.asyncs.await
+import io.kotlintest.specs.FunSpec
 import nl.komponents.kovenant.task
-import org.junit.Test
+import org.slf4j.LoggerFactory
 
-class DeferredTest {
+class DeferredTest : FunSpec() {
 
-  @Test fun testTask() {
-    val promise = task {
-      println("async task is starting...")
-      Thread.sleep(100L)
-      println("async task is completed")
+  private val log = LoggerFactory.getLogger(javaClass)
+
+  init {
+
+    test("deferred") {
+      val promise = task {
+        log.debug("async task is starting...")
+        Thread.sleep(100L)
+        log.debug("async task is completed")
+      }
+      // await
+      promise.await()
     }
-    promise.ready()
   }
 }

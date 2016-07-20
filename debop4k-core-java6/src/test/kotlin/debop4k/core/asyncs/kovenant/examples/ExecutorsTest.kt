@@ -15,26 +15,31 @@
 
 package debop4k.core.asyncs.kovenant.examples
 
+import io.kotlintest.specs.FunSpec
 import nl.komponents.kovenant.Kovenant
 import nl.komponents.kovenant.jvm.asExecutorService
-import org.junit.Test
+import org.slf4j.LoggerFactory
 import java.util.concurrent.*
 
-class ExecutorsTest {
+class ExecutorsTest : FunSpec() {
 
-  @Test fun testExecutors() {
-    val executorService = Kovenant.context.workerContext.dispatcher.asExecutorService()
 
-    val tasks = Array(5) { x -> Callable { Pair(25 - x, fib(25 - x)) } }.toList()
+  private val log = LoggerFactory.getLogger(javaClass)
 
-    val (n, fib) = executorService.invokeAny(tasks)
-    println("invokeAny: fib($n) = $fib")
-    println()
+  init {
+    test("custom context") {
+      val executorService = Kovenant.context.workerContext.dispatcher.asExecutorService()
 
-    val results = executorService.invokeAll(tasks)
-    results.forEach { future ->
-      val (i, res) = future.get()
-      println("invokeAll: fib($i) = $res")
+      val tasks = Array(5) { x -> Callable { Pair(25 - x, fib(25 - x)) } }.toList()
+
+      val (n, fib) = executorService.invokeAny(tasks)
+      log.debug("invokeAny: fib($n) = $fib")
+
+      val results = executorService.invokeAll(tasks)
+      results.forEach { future ->
+        val (i, res) = future.get()
+        log.debug("invokeAll: fib($i) = $res")
+      }
     }
   }
 }

@@ -15,33 +15,19 @@
 
 package debop4k.core.asyncs.kovenant.examples
 
+import debop4k.core.asyncs.await
 import debop4k.core.asyncs.ready
+import io.kotlintest.specs.FunSpec
 import nl.komponents.kovenant.Promise
 import nl.komponents.kovenant.functional.apply
 import nl.komponents.kovenant.functional.bind
 import nl.komponents.kovenant.functional.map
 import nl.komponents.kovenant.unwrap
-import org.junit.Test
+import org.slf4j.LoggerFactory
 
-class FunctionalTest {
+class FunctionalTest : FunSpec() {
 
-  @Test fun testApply() {
-    val p = Promise.of(21) apply Promise.of({ x: Int -> x * 2 })
-    p success { println(it) }
-    p.ready()
-  }
-
-  @Test fun testBind() {
-    val p = Promise.of(13).bind {
-      divide(it, 12)
-    } success {
-      println("Success: $it")
-    } fail {
-      println("Fail: ${it.message}")
-    }
-
-    p.ready()
-  }
+  private val log = LoggerFactory.getLogger(javaClass)
 
   private fun divide(a: Int, b: Int): Promise<Int, Exception> {
     return if (a == 0 || b == 0) {
@@ -51,16 +37,36 @@ class FunctionalTest {
     }
   }
 
-  @Test fun testMap() {
-    val p = Promise.of(21) map { it * 2 } success { println(it) }
-    p.ready()
-  }
+  init {
+    test("apply test") {
+      val p = Promise.of(21) apply Promise.of({ x: Int -> x * 2 })
+      p success { v -> log.debug("{}", v) }
+      p.ready()
+    }
 
-  @Test fun testUnwrap() {
-    val nested: Promise<Promise<Int, Exception>, Exception> = Promise.of(Promise.of(42))
-    val promise: Promise<Int, Exception> = nested.unwrap()
+    test("bind test") {
+      val p = Promise.of(13).bind {
+        divide(it, 12)
+      } success {
+        println("Success: $it")
+      } fail {
+        println("Fail: ${it.message}")
+      }
 
-    promise success { println(it) }
-    promise.ready()
+      p.ready()
+    }
+
+    test("map promise") {
+      val p = Promise.of(21) map { it * 2 } success { println(it) }
+      p.ready()
+    }
+
+    test("unwrap") {
+      val nested: Promise<Promise<Int, Exception>, Exception> = Promise.of(Promise.of(42))
+      val promise: Promise<Int, Exception> = nested.unwrap()
+
+      promise success { log.debug("{}", it) }
+      promise.await()
+    }
   }
 }

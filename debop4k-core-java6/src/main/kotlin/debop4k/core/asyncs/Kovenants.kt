@@ -17,10 +17,7 @@
 
 package debop4k.core.asyncs
 
-import nl.komponents.kovenant.Context
-import nl.komponents.kovenant.Kovenant
-import nl.komponents.kovenant.Promise
-import nl.komponents.kovenant.task
+import nl.komponents.kovenant.*
 import java.util.concurrent.*
 
 
@@ -31,62 +28,74 @@ fun <V> async(context: Context = Kovenant.context, body: () -> V): Promise<V, Ex
   return task(context) { body() }
 }
 
-fun <V, E> await(promise: Promise<V, E>): Unit {
+
+fun <V> Promise<V, Exception>.await(): Unit {
   val latch = CountDownLatch(1)
-  promise always { latch.countDown() }
+  this always { latch.countDown() }
   latch.await()
 }
 
-fun awaitAll(vararg promises: Promise<*, *>): Unit {
-  val latch = CountDownLatch(promises.size)
-  promises.forEach { p ->
-    p always { latch.countDown() }
-  }
-  latch.await()
+fun <V> awaitAll(vararg promises: Promise<V, Exception>): Unit {
+  all(*promises)
+
+//  val latch = CountDownLatch(promises.size)
+//  promises.forEach { p ->
+//    p always { latch.countDown() }
+//  }
+//  latch.await()
 }
 
-fun awaitAll(promises: Collection<Promise<*, *>>): Unit {
-  val latch = CountDownLatch(promises.size)
-  promises.forEach { p ->
-    p always { latch.countDown() }
-  }
-  latch.await()
+fun <V> awaitAll(promises: Collection<Promise<V, Exception>>): Unit {
+  all(*promises.toTypedArray())
+//  val latch = CountDownLatch(promises.size)
+//  promises.forEach { p ->
+//    p always { latch.countDown() }
+//  }
+//  latch.await()
 }
 
 
 /**
  * [Promise] 이 모두 완료될 때까지 기다립니다.
  */
-fun <V, E> Promise<V, E>.ready(): Promise<V, E> {
-  await(this)
+fun <V> Promise<V, Exception>.ready(): Promise<V, Exception> {
+  this.await()
   return this
 }
 
 /**
  * [Promise] 컬렉션이 모두 완료될 때까지 기다립니다.
  */
-fun readyAll(vararg promises: Promise<*, *>): Unit {
+fun <V> readyAll(vararg promises: Promise<V, Exception>): Unit {
   awaitAll(*promises)
 }
 
 /**
  * 모든 [Promise] 가 끝나기를 기다립니다.
  */
-fun <V, E> readyAll(promises: Collection<Promise<V, E>>): Unit {
+fun <V> readyAll(promises: Collection<Promise<V, Exception>>): Unit {
   awaitAll(promises)
 }
 
 /**
  * [Promise]이 완료될 때까지 기다렸다가 결과를 반환합니다.
  */
-fun <V, E> Promise<V, E>.result(): V {
+fun <V> Promise<V, Exception>.result(): V {
   return this.ready().get()
 }
 
 /**
  * [Promise] 컬렉션이 모두 완료될 때까지 기다렸다가 결과를 반환합니다.
  */
-fun <V, E> resultAll(promises: Collection<Promise<V, E>>): Collection<V> {
-  awaitAll(promises)
-  return promises.map { it.get() }
+fun <V> resultAll(vararg promises: Promise<V, Exception>): Collection<V> {
+  return all(*promises).ready().get()
+}
+
+/**
+ * [Promise] 컬렉션이 모두 완료될 때까지 기다렸다가 결과를 반환합니다.
+ */
+fun <V> resultAll(promises: Collection<Promise<V, Exception>>): Collection<V> {
+  return all(*promises.toTypedArray()).ready().get()
+//  awaitAll(promises)
+//  return promises.map { it.get() }
 }
