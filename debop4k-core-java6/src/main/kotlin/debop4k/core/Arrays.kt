@@ -30,7 +30,6 @@ fun ByteArray?.isNullOrEmpty(): Boolean = this == null || this.isEmpty()
 fun IntArray?.isNullOrEmpty(): Boolean = this == null || this.isEmpty()
 
 fun LongArray?.isNullOrEmpty(): Boolean = this == null || this.isEmpty()
-fun DoubleArray?.isNullOrEmpty(): Boolean = this == null || this.isEmpty()
 
 fun DoubleArray?.isNullOrEmpty(): Boolean = this == null || this.isEmpty()
 

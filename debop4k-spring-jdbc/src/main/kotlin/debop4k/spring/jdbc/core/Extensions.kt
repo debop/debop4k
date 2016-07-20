@@ -1,19 +1,19 @@
 /*
- * Copyright 2016 Sunghyouk Bae<sunghyouk.bae@gmail.com>
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
-
 package debop4k.spring.jdbc.core
 
 import debop4k.core.functional.Option
@@ -39,13 +39,11 @@ fun <T> emptyResultToNull(body: () -> T): T? = try {
 /**
  * 결과 레코드가 없는 [ResultSet]에 대해 [None] 값을 반환합니다.
  */
-fun <T> emptyResultToOption(body: () -> T): Option<T> {
-  return try {
+fun <T> emptyResultToOption(body: () -> T): Option<T> = try {
     Some(body())
   } catch(e: EmptyResultDataAccessException) {
     None
   }
-}
 
 fun <T> rowMapperObject(rowMapper: (ResultSet, Int) -> T): RowMapper<T>
     = RowMapper { rs, rowNum -> rowMapper(rs, rowNum) }

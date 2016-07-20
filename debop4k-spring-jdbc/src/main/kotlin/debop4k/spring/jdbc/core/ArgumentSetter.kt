@@ -1,17 +1,18 @@
 /*
- * Copyright 2016 Sunghyouk Bae<sunghyouk.bae@gmail.com>
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 package debop4k.spring.jdbc.core
@@ -40,9 +41,9 @@ interface ArgumentSetter2<T, A> {
   }
 }
 
-class ArgumentWithLengthSetter<T>(override val setter: (Int, T) -> Unit,
-                                  override val setter2: (Int, T, Int) -> Unit,
-                                  val setterWithLong: (Int, T, Long) -> Unit) :
+open class ArgumentWithLengthSetter<T>(override val setter: (Int, T) -> Unit,
+                                       override val setter2: (Int, T, Int) -> Unit,
+                                       val setterWithLong: (Int, T, Long) -> Unit) :
     ArgumentSetter<T>, ArgumentSetter2<T, Int> {
 
   operator fun set(index: Int, length: Long, value: T) {
@@ -74,9 +75,9 @@ class ClobArgumentSetter(val blobSetter: (Int, Clob) -> Unit,
   }
 }
 
-class NClobArgumentSetter(val blobSetter: (Int, NClob) -> Unit,
-                          override val setter: (Int, Reader) -> Unit,
-                          override val setter2: (Int, Reader, Long) -> Unit) :
+open class NClobArgumentSetter(val blobSetter: (Int, NClob) -> Unit,
+                               override val setter: (Int, Reader) -> Unit,
+                               override val setter2: (Int, Reader, Long) -> Unit) :
     AbstractBlobArgumentSetter<Reader>(setter, setter2) {
 
   operator fun set(index: Int, nclob: NClob) {
@@ -88,13 +89,13 @@ open class CombinedArgumentSetter<T, A>(override val setter: (Int, T) -> Unit,
                                         override val setter2: (Int, T, A) -> Unit) :
     ArgumentSetter<T>, ArgumentSetter2<T, A>
 
-class ObjectArgumentSetter(setter: (Int, Any) -> Unit,
-                           setter2: (Int, Any, Int) -> Unit,
-                           val setter4: (Int, Any, Int, Int) -> Unit) :
+open class ObjectArgumentSetter(setter: (Int, Any) -> Unit,
+                                setter2: (Int, Any, Int) -> Unit,
+                                val setter4: (Int, Any, Int, Int) -> Unit) :
     CombinedArgumentSetter<Any, Int>(setter, setter2) {
 
   operator fun set(index: Int, targetSqlType: Int, scaleOrLength: Int, value: Any)
       = setter4(index, value, targetSqlType, scaleOrLength)
 }
 
-class DefaultArgumentSetter<T>(override val setter: (Int, T) -> Unit) : ArgumentSetter<T>
+open class DefaultArgumentSetter<T>(override val setter: (Int, T) -> Unit) : ArgumentSetter<T>

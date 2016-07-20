@@ -14,8 +14,6 @@
  * limitations under the License.
  *
  */
-@file:JvmName("Numbers")
-
 package debop4k.core
 
 import org.springframework.util.NumberUtils
