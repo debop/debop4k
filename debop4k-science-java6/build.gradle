@@ -37,6 +37,8 @@ dependencies {
     compile "com.jhlabs:javaproj:1.0.6"
     compile "org.osgeo:proj4j:0.1.0"
     compile "com.esri.geometry:esri-geometry-api:1.2.1"
-    compile "org.geotools:gt-shapefile:11.5"
+    compile("org.geotools:gt-shapefile:11.5") {
+        exclude(module: 'jai_core')
+    }
 //    compile "javax.media:jai_core:1.1.3"
 }
