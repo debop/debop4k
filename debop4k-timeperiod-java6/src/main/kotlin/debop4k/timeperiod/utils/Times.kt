@@ -31,9 +31,14 @@ fun DateTime.localDate(): LocalDate = this.toLocalDate()
 fun DateTime.localTime(): LocalTime = this.toLocalTime()
 
 
-fun yearOf(year: Int, monthOfYear: Int): Int = if (monthOfYear >= 1) year else year - 1
+@Suppress("UNUSED_PARAMETER")
 @JvmOverloads
-fun DateTime.yearOf(calendar: ITimeCalendar = TimeCalendar.DEFAULT): Int = yearOf(this.year, this.monthOfYear)
+fun yearOf(year: Int, monthOfYear: Int, calendar: ITimeCalendar = DefaultTimeCalendar): Int
+    = if (monthOfYear >= 1) year else year - 1
+
+@JvmOverloads
+fun DateTime.yearOf(calendar: ITimeCalendar = DefaultTimeCalendar): Int
+    = yearOf(this.year, this.monthOfYear, calendar)
 
 fun daysOfYear(year: Int): Int = asDate(year + 1).minusDays(1).dayOfYear
 
@@ -41,10 +46,15 @@ fun addHalfyear(year: Int, halfyear: Halfyear, delta: Int): YearHalfyear {
   if (delta == 0)
     return YearHalfyear(year, halfyear)
 
-  return YearHalfyear.of(startTimeOfHalfyear(year, halfyear).plusMonths(delta * MonthsPerHalfyear))
+  return YearHalfyear(startTimeOfHalfyear(year, halfyear).plusMonths(delta * MonthsPerHalfyear))
 }
 
-fun YearHalfyear.addHalfyear(delta: Int): YearHalfyear = TODO()
+fun YearHalfyear.addHalfyear(delta: Int): YearHalfyear {
+  if (delta == 0)
+    return YearHalfyear(this)
+  val end = startTimeOfHalfyear(year, halfyear).plusMonths(delta * MonthsPerHalfyear)
+  return YearHalfyear(end)
+}
 
 fun nextHalfyear(year: Int, halfyear: Halfyear): YearHalfyear = addHalfyear(year, halfyear, 1)
 fun YearHalfyear.nextHalfyear(): YearHalfyear = this.addHalfyear(1)
@@ -53,13 +63,20 @@ fun YearHalfyear.prevHalfyear(): YearHalfyear = this.addHalfyear(-1)
 
 fun halfyearOfMonth(monthOfYear: Int) = if (FirstHalfyearMonths.contains(monthOfYear)) Halfyear.First else Halfyear.Second
 
-fun addQuarter(year: Int, quarter: Quarter, delta: Int): YearQuarter = TODO()
-fun YearQuarter.addQuarter(delta: Int): YearQuarter = TODO()
+fun addQuarter(year: Int, quarter: Quarter, delta: Int): YearQuarter {
+  if (delta == 0)
+    return YearQuarter(year, quarter)
+
+  return YearQuarter(startTimeOfQuarter(year, quarter).plusMonths(MonthsPerQuarter * delta))
+}
+
+fun YearQuarter.addQuarter(delta: Int): YearQuarter
+    = addQuarter(year, quarter, delta)
 
 fun nextQuarter(year: Int, quarter: Quarter): YearQuarter = addQuarter(year, quarter, 1)
-fun YearQuarter.nextQuarter(delta: Int): YearQuarter = this.addQuarter(1)
+fun YearQuarter.nextQuarter(): YearQuarter = this.addQuarter(1)
 fun prevQuarter(year: Int, quarter: Quarter): YearQuarter = addQuarter(year, quarter, -1)
-fun YearQuarter.prevQuarter(delta: Int): YearQuarter = this.addQuarter(-1)
+fun YearQuarter.prevQuarter(): YearQuarter = this.addQuarter(-1)
 
 fun quarterOfMonth(monthOfYear: Int): Quarter = Quarter.ofMonth(monthOfYear)
 
@@ -93,13 +110,14 @@ fun DateTime.startOfWeek(): DateTime {
 
 fun DateTime.weekOfMonth(): MonthWeek {
   val calendar = Calendar.getInstance()
-  calendar.timeInMillis = this.getMillis()
+  calendar.timeInMillis = this.millis
   calendar.minimalDaysInFirstWeek = 1
   calendar.firstDayOfWeek = Calendar.MONDAY
 
-  return MonthWeek(this.getMonthOfYear(), calendar.get(Calendar.WEEK_OF_MONTH))
+  return MonthWeek(this.monthOfYear, calendar.get(Calendar.WEEK_OF_MONTH))
 }
 
+@Suppress("UNUSED_PARAMETER")
 @JvmOverloads
 fun DateTime.weekOfYear(calendar: ITimeCalendar = TimeCalendar.DEFAULT): YearWeek = YearWeek.of(this)
 
@@ -111,8 +129,11 @@ fun lastWeekOfYear(year: Int): YearWeek {
   return YearWeek(year, lastDay.weekOfWeekyear)
 }
 
-fun startOfYearWeek(weekyear: Int, weekOfWeekyear: Int): DateTime = TODO()
-fun YearWeek.startOfYearWeek(): DateTime = TODO()
+fun startOfYearWeek(weekyear: Int, weekOfWeekyear: Int): DateTime {
+  return today().withWeekyear(weekyear).withWeekOfWeekyear(weekOfWeekyear)
+}
+
+fun YearWeek.startOfYearWeek(): DateTime = startOfYearWeek(this.weekyear, this.weekOfWeekyear)
 
 fun DateTime.dayStart(): DateTime = this.withTimeAtStartOfDay()
 

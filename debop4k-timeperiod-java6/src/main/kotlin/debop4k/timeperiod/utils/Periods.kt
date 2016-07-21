@@ -23,9 +23,7 @@ import debop4k.timeperiod.*
 import debop4k.timeperiod.models.PeriodRelation
 import debop4k.timeperiod.models.PeriodRelation.*
 import debop4k.timeperiod.models.PeriodUnit
-import debop4k.timeperiod.timeranges.HalfyearRange
-import debop4k.timeperiod.timeranges.QuarterRange
-import debop4k.timeperiod.timeranges.YearRange
+import debop4k.timeperiod.timeranges.*
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.joda.time.DateTime
 import org.joda.time.Duration
@@ -67,38 +65,66 @@ fun relativeYearPeriod(year: Int, yearCount: Int): TimeRange {
   return startTimeOfYear(year).relativeYearPeriod(yearCount)
 }
 
-fun DateTime.relativeYearPeriod(years: Int): TimeRange {
-  val startYear = this.startOfYear()
-  return startYear.timeRange(startYear + years.years())
+fun DateTime.relativeYearPeriod(yearCount: Int): TimeRange {
+  val start = this.startTimeOfYear()
+  return TimeRange(start, start + yearCount.years())
 }
 
-fun DateTime.relativeHalfyearPeriod(halfyearCount: Int): TimeRange = TODO()
+fun DateTime.relativeHalfyearPeriod(halfyearCount: Int): TimeRange {
+  val start = this.startTimeOfHalfyear()
+  return TimeRange(start, start.plusMonths(MonthsPerHalfyear * halfyearCount))
+}
 
-fun DateTime.relativeQuarterPeriod(quarterCount: Int): TimeRange = TODO()
 
-fun DateTime.relativeMonthPeriod(monthCount: Int): TimeRange = TODO()
+fun DateTime.relativeQuarterPeriod(quarterCount: Int): TimeRange {
+  val start = this.startTimeOfQuarter()
+  return TimeRange(start, start.plusMonths(MonthsPerQuarter * quarterCount))
+}
 
-fun DateTime.relativeWeekPeriod(weekCount: Int): TimeRange = TODO()
+fun DateTime.relativeMonthPeriod(monthCount: Int): TimeRange {
+  val start = this.startTimeOfMonth()
+  return TimeRange(start, start + monthCount.months())
+}
 
-fun DateTime.relativeDayPeriod(dayCount: Int): TimeRange = TODO()
+fun DateTime.relativeWeekPeriod(weekCount: Int): TimeRange {
+  val start = this.startTimeOfWeek()
+  return TimeRange(start, start + weekCount.weeks())
+}
 
-fun DateTime.relativeHourPeriod(hourCount: Int): TimeRange = TODO()
-fun DateTime.relativeMinutePeriod(minuteCount: Int): TimeRange = TODO()
-fun DateTime.relativeSecondPeriod(secondCount: Int): TimeRange = TODO()
-fun DateTime.relativeMillisPeriod(millisCount: Int): TimeRange = TODO()
+fun DateTime.relativeDayPeriod(dayCount: Int): TimeRange {
+  val start = this.startTimeOfDay()
+  return TimeRange(start, start + dayCount.days())
+}
 
+fun DateTime.relativeHourPeriod(hourCount: Int): TimeRange {
+  val start = this.startTimeOfHour()
+  return TimeRange(start, start + hourCount.hours())
+}
+
+fun DateTime.relativeMinutePeriod(minuteCount: Int): TimeRange {
+  val start = this.startTimeOfMinute()
+  return TimeRange(start, start + minuteCount.minutes())
+}
+
+fun DateTime.relativeSecondPeriod(secondCount: Int): TimeRange {
+  val start = this.startTimeOfSecond()
+  return TimeRange(start, start.plusSeconds(secondCount))
+}
+
+
+@JvmOverloads
 fun DateTime.periodOf(unit: PeriodUnit, calendar: ITimeCalendar = DefaultTimeCalendar): ITimePeriod {
   return when (unit) {
     PeriodUnit.ALL -> TimeRange.AnyTime
-    PeriodUnit.YEAR -> TODO()
-    PeriodUnit.HALFYEAR -> TODO()
-    PeriodUnit.QUARTER -> TODO()
-    PeriodUnit.MONTH -> TODO()
-    PeriodUnit.WEEK -> TODO()
-    PeriodUnit.DAY -> TODO()
-    PeriodUnit.HOUR -> TODO()
-    PeriodUnit.MINUTE -> TODO()
-    PeriodUnit.SECOND -> TODO()
+    PeriodUnit.YEAR -> YearRange(this, calendar)
+    PeriodUnit.HALFYEAR -> HalfyearRange(this, calendar)
+    PeriodUnit.QUARTER -> QuarterRange(this, calendar)
+    PeriodUnit.MONTH -> MonthRange(this, calendar)
+    PeriodUnit.WEEK -> WeekRange(this, calendar)
+    PeriodUnit.DAY -> DayRange(this, calendar)
+    PeriodUnit.HOUR -> HourRange(this, calendar)
+    PeriodUnit.MINUTE -> MinuteRange(this, calendar)
+    PeriodUnit.SECOND -> TimeRange.of(this.startTimeOfSecond(), 1.seconds().duration)
     else ->
       throw UnsupportedOperationException("지원하지 않는 Period Unit 입니다. unit=$unit")
   }
@@ -244,10 +270,11 @@ fun ITimePeriod.yearStream(): FastList<out ITimePeriod> {
 
   var current = this.start.startTimeOfYear().plusYears(1)
   val endYear = this.end.year
+  val oneYear = 1.years()
 
   while (current.year < endYear) {
     years.add(YearRange(current))
-    current += 1.years()
+    current += oneYear
   }
   if (current < this.end) {
     years.add(TimeRange(current, this.end))
@@ -276,11 +303,12 @@ fun ITimePeriod.halfyearStream(): FastList<out ITimePeriod> {
 
   current += 1.days()
   var currentHashCode = current.year * 10 + current.halfyearOf().value
+  val oneHalfyear = MonthsPerHalfyear.months()
 
   while (currentHashCode < endHashCode) {
     halfyears.add(HalfyearRange(current))
 
-    current += MonthsPerHalfyear.months()
+    current += oneHalfyear
     currentHashCode = current.year * 10 + current.halfyearOf().value
   }
 
@@ -312,11 +340,12 @@ fun ITimePeriod.quarterStream(): FastList<out ITimePeriod> {
 
   current += 1.days()
   var currentHashCode = current.year * 10 + current.quarterOf().value
+  val oneQuarter = MonthsPerQuarter.months()
 
   while (currentHashCode < endHashCode) {
     quarters.add(QuarterRange(current))
 
-    current += MonthsPerQuarter.months()
+    current += oneQuarter
     currentHashCode = current.year * 10 + current.quarterOf().value
   }
 
@@ -339,17 +368,156 @@ fun ITimePeriod.monthStream(): FastList<out ITimePeriod> {
     return months
   }
 
+  var current = start.endTimeOfMonth()
+  val head = TimeRange(start, current)
+  months.add(head)
+
+  val endMonth = end.startTimeOfMonth()
+  current += 1.days()
+
+  val oneMonth = 1.months()
+
+  while (current < endMonth) {
+    months.add(MonthRange(current))
+    current += oneMonth
+  }
+  val last = current.startTimeOfMonth()
+  if (last < end) {
+    months.add(TimeRange(last, end))
+  }
 
   return months
 }
 
-fun ITimePeriod.weekStream(): FastList<out ITimePeriod> = TODO()
+fun ITimePeriod.weekStream(): FastList<out ITimePeriod> {
+  val weeks = FastList.newList<ITimePeriod>()
+  if (isAnyTime()) {
+    return weeks
+  }
 
-fun ITimePeriod.dayStream(): FastList<out ITimePeriod> = TODO()
+  if (start.isSameWeek(end)) {
+    weeks.add(TimeRange(this))
+    return weeks
+  }
 
-fun ITimePeriod.hourStream(): FastList<out ITimePeriod> = TODO()
+  var current = start
+  val endWeek = current.endTimeOfWeek()
+  val head = TimeRange.of(current, endWeek)
+  weeks.add(head)
 
-fun ITimePeriod.minuteStream(): FastList<out ITimePeriod> = TODO()
+  if (endWeek >= end) {
+    return weeks
+  }
+
+  val startWeekOfEnd = end.startTimeOfWeek()
+  current += 1.weeks()
+  current = current.startTimeOfWeek()
+  val oneWeek = 1.weeks()
+
+  while (current < startWeekOfEnd) {
+    weeks.add(WeekRange(current))
+    current += oneWeek
+  }
+
+  if (current < end) {
+    weeks.add(TimeRange(current, end))
+  }
+
+  return weeks;
+}
+
+fun ITimePeriod.dayStream(): FastList<out ITimePeriod> {
+  val days = FastList.newList<ITimePeriod>()
+
+  if (isAnyTime()) {
+    return days
+  }
+
+  if (start.isSameDay(end)) {
+    days.add(TimeRange(this))
+    return days
+  }
+
+  val endDay = end.asDate()
+  var current = start.asDate() + 1.days()
+
+  val head = TimeRange(start, start.endTimeOfDay())
+  days.add(head)
+
+  val oneDay = 1.days()
+
+  while (current < endDay) {
+    days += DayRange(current)
+    current += oneDay
+  }
+  if (end.hasTimepart()) {
+    days.add(TimeRange(endDay, end))
+  }
+
+  return days
+
+}
+
+fun ITimePeriod.hourStream(): FastList<out ITimePeriod> {
+  val hours = FastList.newList<ITimePeriod>()
+
+  if (isAnyTime()) {
+    return hours
+  }
+
+  if (start.isSameHour(end)) {
+    hours += TimeRange(this)
+    return hours
+  }
+
+  val head = TimeRange(start, start.endTimeOfHour())
+  hours += head
+
+  var current = start.trimToHour(start.hourOfDay + 1)
+  val maxHour = end - 1.hours()
+  val oneHour = 1.hours()
+
+  while (current <= maxHour) {
+    hours += HourRange(current)
+    current += oneHour
+  }
+
+  if ((end - end.hourOfDay.hours()).hasTimepart()) {
+    hours += TimeRange(end.startTimeOfHour(), end)
+  }
+
+  return hours
+}
+
+fun ITimePeriod.minuteStream(): FastList<out ITimePeriod> {
+  val minutes = FastList.newList<ITimePeriod>()
+
+  if (isAnyTime()) {
+    return minutes
+  }
+
+  if (start.isSameWeek(end)) {
+    minutes += TimeRange(this)
+    return minutes
+  }
+
+  minutes += TimeRange(start, start.endTimeOfMinute())
+
+  var current = start.trimToMinute(start.minuteOfHour + 1)
+  val maxMin = end - 1.minutes()
+  val oneMinute = 1.minutes()
+
+  while (current <= maxMin) {
+    minutes += MinuteRange(current)
+    current += oneMinute
+  }
+
+  if (end.minusMinutes(end.minuteOfHour).hasTimepart()) {
+    minutes += TimeRange(end.startTimeOfMinute(), end)
+  }
+
+  return minutes
+}
 
 fun ITimePeriod?.assertHasPeriod(): Unit {
   assert(this != null && this.hasPeriod(), { "기간이 설정되지 않았습니다. period=$this" })

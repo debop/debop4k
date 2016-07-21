@@ -17,8 +17,13 @@
 
 package debop4k.timeperiod.utils
 
-import debop4k.core.kodatimes.*
+import debop4k.core.kodatimes.days
+import debop4k.core.kodatimes.hours
+import debop4k.core.kodatimes.minutes
+import debop4k.core.kodatimes.seconds
 import debop4k.timeperiod.DaysPerWeek
+import debop4k.timeperiod.MonthsPerHalfyear
+import debop4k.timeperiod.MonthsPerQuarter
 import debop4k.timeperiod.models.*
 import org.joda.time.DateTime
 import org.joda.time.Duration
@@ -31,31 +36,43 @@ object Durations {
 
   fun of(start: DateTime, end: DateTime): Duration = Duration(start, end)
 
-  fun year(year: Int): Duration {
-    val start = dateTimeOf(year, 1, 1)
-    val end = start + 1.years()
-    return of(start, end)
+  fun yearDurationOf(year: Int): Duration {
+    val start = startTimeOfYear(year)
+    return of(start, start.plusYears(1))
   }
 
-  fun halfyear(year: Int, halfyear: Halfyear): Duration = TODO()
-  fun halfyear(yearHalfyear: YearHalfyear): Duration = TODO()
+  fun halfyearDurationOf(year: Int, halfyear: Halfyear): Duration {
+    val start = startTimeOfHalfyear(year, halfyear)
+    return of(start, start.plusMonths(MonthsPerHalfyear))
+  }
 
-  fun quarter(year: Int, quarter: Quarter): Duration = TODO()
-  fun quarter(yq: YearQuarter): Duration = TODO()
+  fun halfyearOf(yearHalfyear: YearHalfyear): Duration = halfyearDurationOf(yearHalfyear.year, yearHalfyear.halfyear)
 
-  fun month(year: Int, monthOfYear: Int): Duration = TODO()
-  fun month(ym: YearMonth): Duration = TODO()
+  fun quarterDurationOf(year: Int, quarter: Quarter): Duration {
+    val start = startTimeOfQuarter(year, quarter)
+    return of(start, start.plusMonths(MonthsPerQuarter))
+  }
 
-  val Week = weeks(1)
+  fun quarterDurationOf(yq: YearQuarter): Duration = quarterDurationOf(yq.year, yq.quarter)
 
-  fun weeks(week: Int): Duration
-      = if (week == 0) Duration.ZERO else days(week * DaysPerWeek)
+  fun monthDurationOf(year: Int, monthOfYear: Int): Duration {
+    val start = startTimeOfMonth(year, monthOfYear)
+    return of(start, start.plusMonths(1))
+  }
 
-  val Day = days(1)
+  fun monthDurationOf(ym: YearMonth): Duration = monthDurationOf(ym.year, ym.monthOfYear)
+
+  val Week = weekDurationOf(1)
+
+  fun weekDurationOf(week: Int): Duration
+      = if (week == 0) Duration.ZERO else dayDurationOf(week * DaysPerWeek)
+
+  val Day = dayDurationOf(1)
 
   @JvmOverloads
-  fun days(day: Int, hour: Int = 0, minute: Int = 0, second: Int = 0, milli: Int = 0): Duration {
+  fun dayDurationOf(day: Int, hour: Int = 0, minute: Int = 0, second: Int = 0, milli: Int = 0): Duration {
     var duration = day.days().toStandardDuration()
+
     if (hour != 0)
       duration += hour.hours().duration
     if (minute != 0)
@@ -68,25 +85,28 @@ object Durations {
     return duration
   }
 
-  val Hour = hours(1)
+  val Hour = hourDurationOf(1)
 
   @JvmOverloads
-  fun hours(hour: Int, minute: Int = 0, second: Int = 0, milli: Int = 0): Duration
-      = days(0, hour, minute, second, milli)
+  fun hourDurationOf(hour: Int, minute: Int = 0, second: Int = 0, milli: Int = 0): Duration {
+    return dayDurationOf(0, hour, minute, second, milli)
+  }
 
-  val Minute = minutes(1)
-
-  @JvmOverloads
-  fun minutes(minute: Int, second: Int = 0, milli: Int = 0): Duration
-      = hours(0, minute, second, milli)
-
-  val Second = seconds(1)
+  val Minute = minuteDurationOf(1)
 
   @JvmOverloads
-  fun seconds(second: Int, milli: Int = 0): Duration
-      = minutes(second, milli)
+  fun minuteDurationOf(minute: Int, second: Int = 0, milli: Int = 0): Duration {
+    return hourDurationOf(0, minute, second, milli)
+  }
 
-  val MilliSecond = milliseconds(1)
+  val Second = secondDurationOf(1)
 
-  fun milliseconds(milli: Int): Duration = Duration.millis(milli.toLong())
+  @JvmOverloads
+  fun secondDurationOf(second: Int, milli: Int = 0): Duration {
+    return minuteDurationOf(second, milli)
+  }
+
+  val MilliSecond = millisecondsOf(1)
+
+  fun millisecondsOf(milli: Int): Duration = Duration.millis(milli.toLong())
 }

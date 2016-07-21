@@ -23,9 +23,7 @@ import org.joda.time.DateTime
  */
 data class YearHalfyear(val year: Int, val halfyear: Halfyear) {
 
-  companion object {
+  constructor(yh: YearHalfyear) : this(yh.year, yh.halfyear)
+  constructor(m: DateTime) : this(m.year, halfyearOfMonth(m.monthOfYear))
 
-    @JvmStatic
-    fun of(m: DateTime): YearHalfyear = YearHalfyear(m.year, halfyearOfMonth(m.monthOfYear))
-  }
 }
