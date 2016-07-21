@@ -12,14 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package debop4k.core
 
 import org.apache.commons.lang3.builder.HashCodeBuilder
 import java.io.Serializable
 
-/**
- * @author debop sunghyouk.bae@gmail.com
- */
 interface ValueObject : Serializable
 
 abstract class AbstractValueObject : ValueObject {
@@ -31,13 +29,13 @@ abstract class AbstractValueObject : ValueObject {
     }
   }
 
-  override fun hashCode(): Int {
-    return HashCodeBuilder.reflectionHashCode(this)
-  }
+  override fun hashCode(): Int
+      = HashCodeBuilder.reflectionHashCode(this)
 
   override fun toString(): String {
     return buildStringHelper().toString()
   }
 
-  open protected fun buildStringHelper(): ToStringHelper = ToStringHelper(this)
+  open protected fun buildStringHelper(): ToStringHelper
+      = ToStringHelper(this)
 }

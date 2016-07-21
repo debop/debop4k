@@ -17,19 +17,31 @@
 
 package debop4k.core
 
+/** JVM 버전 */
 val JVM_VERSION: String by lazy {
   Runtime::class.java.`package`.specificationVersion
 }
+
+/** JVM 구현 버전 */
 val JVM_IMPLEMENTATION_VERSION: String by lazy {
   Runtime::class.java.`package`.implementationVersion
 }
+
+/** JVM 벤더 */
 val JVM_VENDOR: String by lazy {
   Runtime::class.java.`package`.specificationVendor
 }
+
+/** JVM 구현 벤더  */
 val JVM_IMPLEMENTATION_VENDOR: String by lazy {
   Runtime::class.java.`package`.implementationVendor
 }
 
+/** Java 6 인가 */
 val isJava6: Boolean by lazy { JVM_VERSION.toDouble() == 1.6 }
+
+/** Java 7 인가 */
 val isJava7: Boolean by lazy { JVM_VERSION.toDouble() == 1.7 }
+
+/** Java 8 인가 */
 val isJava8: Boolean by lazy { JVM_VERSION.toDouble() == 1.8 }

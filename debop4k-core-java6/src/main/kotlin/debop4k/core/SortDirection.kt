@@ -29,5 +29,6 @@ enum class SortDirection(val value: Int) {
     fun of(value: Int): SortDirection {
       return if (value > 0) ASC else DESC
     }
+
   }
 }

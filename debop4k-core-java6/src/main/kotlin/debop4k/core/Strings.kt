@@ -27,7 +27,6 @@ val LINE_SEPARATOR: String by lazy { System.getProperty("line.separator") }
 
 public fun CharSequence.isEmpty(): Boolean = trim().length == 0
 
-
 fun CharSequence?.isNull(): Boolean = this == null
 
 fun CharSequence?.isNullOrEmpty(): Boolean = this == null || trim().length == 0
@@ -45,6 +44,8 @@ fun ByteArray.toUtf8String(): String = this.toString(Charsets.UTF_8)
 fun ByteArray.toHexString(): String = Hex.encodeHexString(this)
 
 fun String.fromHexString(): ByteArray = Hex.decodeHex(this.toCharArray())
+
+fun CharSequence?.words(): List<String> = this?.split(' ') ?: listOf<String>()
 
 fun String.dropLast(count: Int = 1): String = this.substring(0, this.length - count)
 fun String.dropFirst(count: Int = 1): String = this.substring(count)

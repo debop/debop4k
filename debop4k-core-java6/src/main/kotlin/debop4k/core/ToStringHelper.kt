@@ -15,9 +15,8 @@
 
 package debop4k.core
 
-import org.eclipse.collections.impl.block.factory.HashingStrategies
-import org.eclipse.collections.impl.map.strategy.mutable.UnifiedMapWithHashingStrategy
 import java.io.Serializable
+import java.util.*
 
 /**
  * @author sunghyouk.bae@gmail.com
@@ -26,31 +25,17 @@ class ToStringHelper(val className: String) : Serializable {
 
   constructor (obj: Any) : this(obj.javaClass.simpleName)
 
-  private val map = UnifiedMapWithHashingStrategy.newMap<String, Any?>(HashingStrategies.defaultStrategy())
+  private val map = HashMap<String, Any?>()
 
   fun add(name: String, value: Any?): ToStringHelper {
-    map.put(name, value)
+    map.put(name, value.asString())
     return this
   }
 
   override fun toString(): String {
-    val builder = StringBuilder(map.size * 4 + 3)
-
-    builder.append(className)
-    builder.append("{")
-
-    builder.append(map.entries.joinToString(separator = ",") { entry -> "${entry.key}=${entry.value}" })
-
-    builder.append("}")
-    return builder.toString()
-  }
-
-  companion object {
-    fun of(className: String): ToStringHelper {
-      assert(!className.isNullOrBlank())
-      return ToStringHelper(className)
+    val properties = map.entries.joinToString(separator = ",") { entry ->
+      "${entry.key}=${entry.value}"
     }
-
-    fun of(obj: Any): ToStringHelper = ToStringHelper(obj)
+    return "className{$properties}"
   }
 }
