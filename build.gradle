@@ -94,13 +94,14 @@ subprojects {
     }
 
     repositories {
+        maven { url "http://nexus.kesti.co.kr/content/groups/public" }
+
         mavenLocal()
         jcenter()
         mavenCentral()
 
         maven { url "http://dl.bintray.com/kotlin/exposed" }
         maven { url "http://repo.spring.io/release" }
-        maven { url "http://nexus.kesti.co.kr/content/groups/public" }
         maven { url "http://download.osgeo.org/webdav/geotools" }
         maven { url "http://maven.geotoolkit.org/" }
         maven { url "https://code.lds.org/nexus/content/groups/main-repo" }
