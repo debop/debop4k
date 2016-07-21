@@ -29,8 +29,8 @@ class DurationTest : AbstractKodaTimesTest() {
   }
 
   @Test fun sortDuration() {
-    val list = listOf(1.seconds(), 5.seconds(), 2.seconds(), 4.seconds()).map { it.duration }
-    val expected = listOf(1.seconds(), 2.seconds(), 4.seconds(), 5.seconds()).map { it.duration }
+    val list: List<Duration> = listOf(1.seconds(), 5.seconds(), 2.seconds(), 4.seconds()).map { it.duration }
+    val expected: List<Duration> = listOf(1.seconds(), 2.seconds(), 4.seconds(), 5.seconds()).map { it.duration }
 
     assertThat(list.sorted()).isEqualTo(expected)
     assertThat(list.max()).isEqualTo(5.seconds().duration)

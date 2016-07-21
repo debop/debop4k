@@ -15,27 +15,30 @@
 
 package debop4k.core.io.serializers
 
-import debop4k.core.AbstractCoreTest
 import debop4k.core.collections.eclipseCollections.fastListOf
 import debop4k.fst.FstSerializer
+import io.kotlintest.specs.FunSpec
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.slf4j.LoggerFactory
 import java.io.Serializable
 
-/**
- * @author sunghyouk.bae@gmail.com
- */
-class SerializerTest : AbstractCoreTest() {
+
+class SerializerTest : FunSpec() {
+
+  private val log = LoggerFactory.getLogger(javaClass)
 
   private val serializers = fastListOf(BinarySerializer(), FstSerializer())
 
   data class YearWeek(val year: Int, val month: Int) : Serializable
 
-  @Test fun serializeValueObject() {
-    val yearWeek = YearWeek(2016, 7)
-    serializers.forEach { serializer ->
-      val copied = serializer.deserialize<YearWeek>(serializer.serialize(yearWeek))
-      assertThat(copied).isEqualTo(yearWeek)
+  init {
+    test("serialize ValueObject") {
+      val yearWeek = YearWeek(2016, 7)
+      serializers.forEach { serializer ->
+        val copied = serializer.deserialize<YearWeek>(serializer.serialize(yearWeek))
+        assertThat(copied).isEqualTo(yearWeek)
+        log.debug("yearWeek={}, copied={}", yearWeek, copied)
+      }
     }
   }
 }
