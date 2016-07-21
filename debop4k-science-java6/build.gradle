@@ -13,6 +13,11 @@
  * limitations under the License.
  */
 
+repositories {
+    maven { url "http://nexus.kesti.co.kr/content/groups/public" }
+    jcenter()
+}
+
 dependencies {
     compile project(":debop4k-core-java6")
 
