@@ -59,7 +59,7 @@ enum class VolumnUnit(val unitName: String, val factor: Double) {
         lower = lower.dropLast(1)
 
       return VolumnUnit.values().find { it.unitName == lower }
-          ?: throw NumberFormatException("Unknown Volumn unit. unitStr=$unitStr")
+             ?: throw NumberFormatException("Unknown Volumn unit. unitStr=$unitStr")
     }
   }
 }
@@ -98,6 +98,7 @@ data class Volumn(val liter: Double = 0.0) : Comparable<Volumn>, Serializable {
     final val NEGATIVE_INF = Volumn(Double.NEGATIVE_INFINITY)
     final val NaN = Volumn(Double.NaN)
 
+    @JvmOverloads
     @JvmStatic
     fun of(volumn: Double, unit: VolumnUnit = VolumnUnit.LITER): Volumn =
         Volumn(volumn * unit.factor)

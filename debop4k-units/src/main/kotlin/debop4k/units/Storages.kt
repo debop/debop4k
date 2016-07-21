@@ -146,6 +146,7 @@ data class Storage(val bytes: Double = 0.0) : Comparable<Storage>, Serializable 
     final val NEGATIVE_INF = Storage(Double.NEGATIVE_INFINITY)
     final val NaN = Storage(Double.NaN)
 
+    @JvmOverloads
     @JvmStatic
     final fun of(value: Double = 0.0, unit: StorageUnit = StorageUnit.BYTE): Storage =
         Storage(value * unit.factor)

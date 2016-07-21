@@ -18,63 +18,68 @@ package debop4k.timeperiod.utils
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
 import debop4k.timeperiod.timeranges.*
-import org.eclipse.collections.impl.list.mutable.FastList
 import org.joda.time.DateTime
 
 
 @JvmOverloads
-fun yearStream(year: Int, yearCount: Int, calendar: ITimeCalendar = DefaultTimeCalendar): FastList<YearRange> {
+fun yearSequence(year: Int, yearCount: Int, calendar: ITimeCalendar = DefaultTimeCalendar): Sequence<YearRange> {
   val start = YearRange(year, calendar)
-  val years = FastList.newList<YearRange>(yearCount)
-  for (y in 0 until yearCount) {
-    years.add(start.addYears(y))
-  }
-  return years
+
+  return (0 until yearCount).map { y ->
+    start.addYears(y)
+  }.asSequence()
 }
 
 @JvmOverloads
-fun yearStream(start: DateTime, yearCount: Int, calendar: ITimeCalendar = DefaultTimeCalendar): FastList<YearRange> {
-  return yearStream(start.year, yearCount, calendar)
+fun yearSequence(start: DateTime, yearCount: Int, calendar: ITimeCalendar = DefaultTimeCalendar): Sequence<YearRange> {
+  return yearSequence(start.year, yearCount, calendar)
 }
 
 @JvmOverloads
-fun halfyearStream(startTime: DateTime, halfyearCount: Int, calendar: ITimeCalendar = DefaultTimeCalendar): FastList<HalfyearRange> {
+fun halfyearSequence(startTime: DateTime,
+                     halfyearCount: Int,
+                     calendar: ITimeCalendar = DefaultTimeCalendar): Sequence<HalfyearRange> {
+
   val start = HalfyearRange()
-  val halfyears = FastList.newList<HalfyearRange>(halfyearCount)
-  (0 until halfyearCount).forEach { hy ->
-    halfyears.add(start.addHalfyears(hy))
-  }
-  return halfyears
+
+  return (0 until halfyearCount).map { hy ->
+    start.addHalfyears(hy)
+  }.asSequence()
 }
 
 
 @JvmOverloads
-fun quarterStream(startTime: DateTime, quarterCount: Int, calendar: ITimeCalendar = DefaultTimeCalendar): FastList<QuarterRange> {
+fun quarterSequence(startTime: DateTime,
+                    quarterCount: Int,
+                    calendar: ITimeCalendar = DefaultTimeCalendar): Sequence<QuarterRange> {
   val start = QuarterRange(startTime.year, startTime.quarterOf(), calendar)
-  val quarters = FastList.newList<QuarterRange>(quarterCount)
-  (0 until quarterCount).forEach { q ->
-    quarters.add(start.addQuarters(q))
-  }
-  return quarters
+
+  return (0 until quarterCount).map { q ->
+    start.addQuarters(q)
+  }.asSequence()
 }
 
 @JvmOverloads
-fun monthStream(year: Int, monthOfYear: Int, monthCount: Int, calendar: ITimeCalendar = DefaultTimeCalendar): FastList<MonthRange> {
+fun monthSequence(year: Int,
+                  monthOfYear: Int,
+                  monthCount: Int,
+                  calendar: ITimeCalendar = DefaultTimeCalendar): Sequence<MonthRange> {
   val start = MonthRange(year, monthOfYear)
-  val months = FastList.newList<MonthRange>(monthCount)
-  for (m in 0 until monthCount) {
-    months.add(start.addMonths(m))
-  }
-  return months
+
+  return (0 until monthCount).map { m ->
+    start.addMonths(m)
+  }.asSequence()
 }
 
 @JvmOverloads
-fun monthStream(startTime: DateTime, monthCount: Int, calendar: ITimeCalendar = DefaultTimeCalendar): FastList<MonthRange> {
-  return monthStream(startTime.year, startTime.monthOfYear, monthCount, calendar)
+fun monthSequence(startTime: DateTime,
+                  monthCount: Int,
+                  calendar: ITimeCalendar = DefaultTimeCalendar): Sequence<MonthRange> {
+  return monthSequence(startTime.year, startTime.monthOfYear, monthCount, calendar)
 }
 
 @JvmOverloads
-fun weekStream(startTime: DateTime, weekCount: Int, calendar: ITimeCalendar = DefaultTimeCalendar): Sequence<WeekRange> {
+fun weekSequence(startTime: DateTime, weekCount: Int, calendar: ITimeCalendar = DefaultTimeCalendar): Sequence<WeekRange> {
   val start = WeekRange(startTime, calendar)
 
   return (0 until weekCount).map { w ->
@@ -83,7 +88,7 @@ fun weekStream(startTime: DateTime, weekCount: Int, calendar: ITimeCalendar = De
 }
 
 @JvmOverloads
-fun dayStream(startTime: DateTime, dayCount: Int, calendar: ITimeCalendar = DefaultTimeCalendar): Sequence<DayRange> {
+fun daySequence(startTime: DateTime, dayCount: Int, calendar: ITimeCalendar = DefaultTimeCalendar): Sequence<DayRange> {
   val start = DayRange(startTime, calendar)
 
   return (0 until dayCount).map { d ->
@@ -92,7 +97,9 @@ fun dayStream(startTime: DateTime, dayCount: Int, calendar: ITimeCalendar = Defa
 }
 
 @JvmOverloads
-fun hourStream(startTime: DateTime, hourCount: Int, calendar: ITimeCalendar = DefaultTimeCalendar): Sequence<HourRange> {
+fun hourSequence(startTime: DateTime,
+                 hourCount: Int,
+                 calendar: ITimeCalendar = DefaultTimeCalendar): Sequence<HourRange> {
   val start = HourRange(startTime, calendar)
 
   return (0 until hourCount).map { h ->
@@ -101,7 +108,9 @@ fun hourStream(startTime: DateTime, hourCount: Int, calendar: ITimeCalendar = De
 }
 
 @JvmOverloads
-fun minuteStream(startTime: DateTime, minuteCount: Int, calendar: ITimeCalendar = DefaultTimeCalendar): Sequence<MinuteRange> {
+fun minuteSequence(startTime: DateTime,
+                   minuteCount: Int,
+                   calendar: ITimeCalendar = DefaultTimeCalendar): Sequence<MinuteRange> {
   val start = MinuteRange(startTime, calendar)
 
   return (0 until minuteCount).map { m ->

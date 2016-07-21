@@ -22,9 +22,9 @@ import debop4k.timeperiod.MonthsPerHalfyear
 import debop4k.timeperiod.QuartersPerHalfyear
 import debop4k.timeperiod.models.Halfyear
 import debop4k.timeperiod.utils.halfyearOf
-import debop4k.timeperiod.utils.monthStream
+import debop4k.timeperiod.utils.monthSequence
+import debop4k.timeperiod.utils.quarterSequence
 import debop4k.timeperiod.utils.relativeHalfyearPeriod
-import org.eclipse.collections.impl.list.mutable.FastList
 import org.joda.time.DateTime
 
 open class HalfyearTimeRange(moment: DateTime = today(),
@@ -40,14 +40,12 @@ open class HalfyearTimeRange(moment: DateTime = today(),
   val isMultipleCalendarYears: Boolean
     get() = startYear != endYear
 
-  fun quarterStream(): FastList<QuarterRange> {
-    val quarterCount = halfyearCount * QuartersPerHalfyear
-    return debop4k.timeperiod.utils.quarterStream(start, quarterCount, calendar)
+  fun quarterSequence(): Sequence<QuarterRange> {
+    return quarterSequence(start, halfyearCount * QuartersPerHalfyear, calendar)
   }
 
-  fun monthStream(): FastList<MonthRange> {
-    val monthCount = halfyearCount * MonthsPerHalfyear
-    return monthStream(start, monthCount, calendar)
+  fun monthSequence(): Sequence<MonthRange> {
+    return monthSequence(start, halfyearCount * MonthsPerHalfyear, calendar)
   }
 
 }

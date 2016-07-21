@@ -46,7 +46,7 @@ enum class AngleUnit(val unitName: String) {
         lower = lower.dropLast(1)
 
       return AngleUnit.values().find { it.unitName == lower }
-          ?: throw NumberFormatException("Unknwon AngleUnit format. str=$str")
+             ?: throw NumberFormatException("Unknwon AngleUnit format. str=$str")
     }
   }
 }
@@ -94,7 +94,7 @@ data class Angle(val degree: Double = 0.0) : Comparable<Angle>, Serializable {
     final val NEGATIVE_INF = Angle(Double.NEGATIVE_INFINITY)
     final val NaN = Angle(Double.NaN)
 
-
+    @JvmOverloads
     @JvmStatic
     fun of(angle: Double = 0.0, unit: AngleUnit = AngleUnit.Degree): Angle = when (unit) {
       AngleUnit.Degree -> degree(angle)

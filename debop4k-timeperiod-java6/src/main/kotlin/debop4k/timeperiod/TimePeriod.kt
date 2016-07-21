@@ -137,9 +137,6 @@ open class TimePeriod(override var start: DateTime = MinPeriodTime,
     return start.compareTo(other.start)
   }
 
-  operator fun rangeTo(endIncluded: ITimePeriod): ClosedRange<ITimePeriod> = TODO()
-
-
   override fun equals(other: Any?): Boolean {
     return other != null && other is ITimePeriod && hashCode() == other.hashCode()
   }

@@ -85,6 +85,7 @@ data class Velocity(val ms: Double = 0.0) : Comparable<Velocity>, Serializable {
     final val NEGATIVE_INF = Velocity(Double.NEGATIVE_INFINITY)
     final val NaN = Velocity(Double.NaN)
 
+    @JvmOverloads
     @JvmStatic
     fun of(speed: Double, unit: VelocityUnit = VelocityUnit.METER_PER_SEC): Velocity =
         Velocity(speed * unit.factor)

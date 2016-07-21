@@ -18,8 +18,8 @@ package debop4k.timeperiod.timeranges
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
 import debop4k.timeperiod.models.Halfyear
+import debop4k.timeperiod.utils.halfyearSequence
 import debop4k.timeperiod.utils.relativeHalfyearPeriod
-import org.eclipse.collections.impl.list.mutable.FastList
 import org.joda.time.DateTime
 
 /**
@@ -37,7 +37,7 @@ open class HalfyearRangeCollection(moment: DateTime,
               calendar: ITimeCalendar = DefaultTimeCalendar)
   : this(debop4k.timeperiod.utils.startTimeOfHalfyear(year, halfyear), halfyearCount, calendar)
 
-  fun halfyearStream(): FastList<HalfyearRange> {
-    return debop4k.timeperiod.utils.halfyearStream(start, halfyearCount, calendar)
+  fun halfyearSequence(): Sequence<HalfyearRange> {
+    return halfyearSequence(start, halfyearCount, calendar)
   }
 }

@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 @file:JvmName("Periods")
 
 package debop4k.timeperiod.utils
@@ -243,18 +244,18 @@ fun ITimePeriod.assertMutable(): Unit {
 }
 
 fun ITimePeriod.periodStream(unit: PeriodUnit): FastList<out ITimePeriod> = when (unit) {
-  PeriodUnit.YEAR -> this.yearStream()
-  PeriodUnit.HALFYEAR -> this.halfyearStream()
-  PeriodUnit.QUARTER -> this.quarterStream()
-  PeriodUnit.MONTH -> this.monthStream()
-  PeriodUnit.WEEK -> this.weekStream()
-  PeriodUnit.DAY -> this.dayStream()
-  PeriodUnit.HOUR -> this.hourStream()
-  PeriodUnit.MINUTE -> this.minuteStream()
+  PeriodUnit.YEAR -> this.yearSequence()
+  PeriodUnit.HALFYEAR -> this.halfyearSequence()
+  PeriodUnit.QUARTER -> this.quarterSequence()
+  PeriodUnit.MONTH -> this.monthSequence()
+  PeriodUnit.WEEK -> this.weekSequence()
+  PeriodUnit.DAY -> this.daySequence()
+  PeriodUnit.HOUR -> this.hourSequence()
+  PeriodUnit.MINUTE -> this.minuteSequence()
   else -> throw UnsupportedOperationException("지원하지 않는 PeriodUnit 입니다. unit=$unit")
 }
 
-fun ITimePeriod.yearStream(): FastList<out ITimePeriod> {
+fun ITimePeriod.yearSequence(): FastList<out ITimePeriod> {
   val years = FastList.newList<ITimePeriod>()
 
   if (this.isAnyTime())
@@ -284,7 +285,7 @@ fun ITimePeriod.yearStream(): FastList<out ITimePeriod> {
 }
 
 
-fun ITimePeriod.halfyearStream(): FastList<out ITimePeriod> {
+fun ITimePeriod.halfyearSequence(): FastList<out ITimePeriod> {
   val halfyears = FastList.newList<ITimePeriod>()
 
   if (this.isAnyTime())
@@ -320,7 +321,7 @@ fun ITimePeriod.halfyearStream(): FastList<out ITimePeriod> {
   return halfyears
 }
 
-fun ITimePeriod.quarterStream(): FastList<out ITimePeriod> {
+fun ITimePeriod.quarterSequence(): FastList<out ITimePeriod> {
   val quarters = FastList.newList<ITimePeriod>()
 
   if (this.isAnyTime()) {
@@ -356,7 +357,7 @@ fun ITimePeriod.quarterStream(): FastList<out ITimePeriod> {
   return quarters
 }
 
-fun ITimePeriod.monthStream(): FastList<out ITimePeriod> {
+fun ITimePeriod.monthSequence(): FastList<out ITimePeriod> {
   val months = FastList.newList<ITimePeriod>()
 
   if (isAnyTime()) {
@@ -389,7 +390,7 @@ fun ITimePeriod.monthStream(): FastList<out ITimePeriod> {
   return months
 }
 
-fun ITimePeriod.weekStream(): FastList<out ITimePeriod> {
+fun ITimePeriod.weekSequence(): FastList<out ITimePeriod> {
   val weeks = FastList.newList<ITimePeriod>()
   if (isAnyTime()) {
     return weeks
@@ -426,7 +427,7 @@ fun ITimePeriod.weekStream(): FastList<out ITimePeriod> {
   return weeks;
 }
 
-fun ITimePeriod.dayStream(): FastList<out ITimePeriod> {
+fun ITimePeriod.daySequence(): FastList<out ITimePeriod> {
   val days = FastList.newList<ITimePeriod>()
 
   if (isAnyTime()) {
@@ -458,7 +459,7 @@ fun ITimePeriod.dayStream(): FastList<out ITimePeriod> {
 
 }
 
-fun ITimePeriod.hourStream(): FastList<out ITimePeriod> {
+fun ITimePeriod.hourSequence(): FastList<out ITimePeriod> {
   val hours = FastList.newList<ITimePeriod>()
 
   if (isAnyTime()) {
@@ -489,7 +490,7 @@ fun ITimePeriod.hourStream(): FastList<out ITimePeriod> {
   return hours
 }
 
-fun ITimePeriod.minuteStream(): FastList<out ITimePeriod> {
+fun ITimePeriod.minuteSequence(): FastList<out ITimePeriod> {
   val minutes = FastList.newList<ITimePeriod>()
 
   if (isAnyTime()) {

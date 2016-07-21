@@ -1,8 +1,24 @@
+/*
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package debop4k.timeperiod.timeranges
 
+import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
 import debop4k.timeperiod.TimeCalendar
-import org.eclipse.collections.impl.list.mutable.FastList
+import debop4k.timeperiod.utils.yearSequence
 import org.joda.time.DateTime
 
 /**
@@ -10,30 +26,14 @@ import org.joda.time.DateTime
  */
 open class YearRangeCollection(year: Int,
                                yearCount: Int,
-                               calendar: ITimeCalendar = TimeCalendar.DEFAULT)
+                               calendar: ITimeCalendar = DefaultTimeCalendar)
 : YearTimeRange(year, yearCount, calendar) {
 
   constructor(m: DateTime,
               yearCount: Int,
               calendar: ITimeCalendar = TimeCalendar.DEFAULT) : this(m.year, yearCount, calendar)
 
-  fun yearStream(): FastList<YearRange> = TODO()
+  fun yearSequence(): Sequence<YearRange>
+      = yearSequence(year, yearCount, calendar)
 
-  companion object {
-    @JvmStatic
-    @JvmOverloads
-    fun of(m: DateTime,
-           yearCount: Int,
-           calendar: ITimeCalendar = TimeCalendar.DEFAULT): YearRangeCollection {
-      return YearRangeCollection(m.year, yearCount, calendar)
-    }
-
-    @JvmStatic
-    @JvmOverloads
-    fun of(year: Int,
-           yearCount: Int,
-           calendar: ITimeCalendar = TimeCalendar.DEFAULT): YearRangeCollection {
-      return YearRangeCollection(year, yearCount, calendar)
-    }
-  }
 }

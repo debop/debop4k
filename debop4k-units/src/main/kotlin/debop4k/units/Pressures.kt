@@ -98,7 +98,7 @@ enum class PressureUnit(val unitName: String, val factor: Double) {
         lower = lower.dropLast(1)
 
       return PressureUnit.values().find { it.unitName == lower }
-          ?: throw NumberFormatException("Unknown Pressure unit. unitStr=$unitStr")
+             ?: throw NumberFormatException("Unknown Pressure unit. unitStr=$unitStr")
     }
   }
 }
@@ -144,7 +144,10 @@ data class Pressure(val pascal: Double = 0.0) : Comparable<Pressure>, Serializab
 
   operator fun unaryMinus(): Pressure = Pressure(-pascal)
 
-  fun toHuman(): String = TODO()
+  fun toHuman(): String {
+    val displayUnit = AreaUnit.values().first { pascal * it.factor > 1.0 }
+    return "%.1f %s".format(pascal * displayUnit.factor, displayUnit.unitName)
+  }
 
   override fun compareTo(other: Pressure): Int = pascal.compareTo(other.pascal)
   override fun toString(): String = "%.1f %s".format(pascal, PressureUnit.PASCAL.unitName)
@@ -158,6 +161,7 @@ data class Pressure(val pascal: Double = 0.0) : Comparable<Pressure>, Serializab
     final val NEGATIVE_INF = Pressure(Double.NEGATIVE_INFINITY)
     final val NaN = Pressure(Double.NaN)
 
+    @JvmOverloads
     @JvmStatic
     fun of(value: Double = 0.0, unit: PressureUnit = PressureUnit.PASCAL): Pressure =
         Pressure(value * unit.factor)

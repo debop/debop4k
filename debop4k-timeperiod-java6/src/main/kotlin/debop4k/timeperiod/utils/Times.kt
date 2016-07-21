@@ -17,7 +17,6 @@
 
 package debop4k.timeperiod.utils
 
-import debop4k.core.areEquals
 import debop4k.core.kodatimes.*
 import debop4k.timeperiod.*
 import debop4k.timeperiod.models.*
@@ -154,74 +153,151 @@ fun DateTime.isSameTime(other: DateTime?, unit: PeriodUnit): Boolean = when (uni
   else -> isSameDateTime(other)
 }
 
-fun DateTime.isSameYear(other: DateTime?): Boolean = this.year == (other?.year ?: Long.MIN_VALUE)
-fun DateTime.isSameHalfyear(other: DateTime?): Boolean = TODO()
-fun DateTime.isSameQuarter(other: DateTime?): Boolean = TODO()
-fun DateTime.isSameMonth(other: DateTime?): Boolean = TODO()
-fun DateTime.isSameWeek(other: DateTime?): Boolean = TODO()
-fun DateTime.isSameDay(other: DateTime?): Boolean = TODO()
-fun DateTime.isSameHour(other: DateTime?): Boolean = TODO()
-fun DateTime.isSameMinute(other: DateTime?): Boolean = TODO()
-fun DateTime.isSameSecond(other: DateTime?): Boolean = TODO()
-fun DateTime.isSameDateTime(other: DateTime?): Boolean = areEquals(this, other)
+fun DateTime.isSameYear(other: DateTime?): Boolean
+    = other != null && this.year == other.year
 
-fun currentYear(): DateTime = asDate(now().year, 1, 1)
-fun currentHalfyear(): DateTime = TODO()
-fun currentQuarter(): DateTime = TODO()
-fun currentMonth(): DateTime = TODO()
-fun currentWeek(): DateTime = TODO()
-fun currentDay(): DateTime = today()
-fun currentHour(): DateTime = TODO()
-fun currentMinute(): DateTime = TODO()
-fun currentSecond(): DateTime = TODO()
+fun DateTime.isSameHalfyear(other: DateTime?): Boolean
+    = isSameYear(other) && halfyearOf() == other!!.halfyearOf()
+
+fun DateTime.isSameQuarter(other: DateTime?): Boolean
+    = isSameYear(other) && quarterOf() == other!!.quarterOf()
+
+fun DateTime.isSameMonth(other: DateTime?): Boolean
+    = isSameYear(other) && monthOfYear == other!!.monthOfYear
+
+fun DateTime.isSameWeek(other: DateTime?): Boolean
+    = isSameMonth(other) && weekyear == other!!.weekyear && weekOfWeekyear == other.weekOfWeekyear
+
+fun DateTime.isSameDay(other: DateTime?): Boolean
+    = isSameYear(other) && dayOfYear == other!!.dayOfYear
+
+fun DateTime.isSameHour(other: DateTime?): Boolean
+    = isSameDay(other) && hourOfDay == other!!.hourOfDay
+
+fun DateTime.isSameMinute(other: DateTime?): Boolean
+    = isSameDay(other) && minuteOfDay == other!!.minuteOfDay
+
+fun DateTime.isSameSecond(other: DateTime?): Boolean
+    = isSameDay(other) && secondOfDay == other!!.secondOfDay
+
+fun DateTime.isSameDateTime(other: DateTime?): Boolean
+    = other != null && millis == other.millis
+
+fun currentYear(): DateTime
+    = asDate(now().year, 1, 1)
+
+fun currentHalfyear(): DateTime {
+  val current = today()
+  return startTimeOfHalfyear(current.year, current.halfyearOf())
+}
+
+fun currentQuarter(): DateTime {
+  val current = today()
+  return startTimeOfQuarter(current.year, current.quarterOf())
+}
+
+fun currentMonth(): DateTime = today().startTimeOfMonth()
+fun currentWeek(): DateTime = today().startTimeOfWeek()
+fun currentDay(): DateTime = today().startTimeOfDay()
+fun currentHour(): DateTime = today().startTimeOfHour()
+fun currentMinute(): DateTime = today().startTimeOfMinute()
+fun currentSecond(): DateTime = today().startTimeOfSecond()
 
 
-fun startTimeOfYear(year: Int): DateTime = asDate(year, 1, 1)
-fun DateTime.startTimeOfYear(): DateTime = startTimeOfYear(this.year)
-fun endTimeOfYear(year: Int): DateTime = startTimeOfYear(year).plusYears(1).minusMillis(1)
-fun DateTime.endTimeOfYear(): DateTime = endTimeOfYear(this.year)
+fun startTimeOfYear(year: Int): DateTime
+    = asDate(year, 1, 1)
 
-fun startTimeOfHalfyear(year: Int, monthOfYear: Int): DateTime = TODO()
-fun startTimeOfHalfyear(year: Int, halfyear: Halfyear): DateTime = TODO()
-fun YearHalfyear.startTimeOfHalfyear(): DateTime = TODO()
-fun DateTime.startTimeOfHalfyear(): DateTime = startTimeOfHalfyear(this.year, this.monthOfYear)
+fun DateTime.startTimeOfYear(): DateTime
+    = startTimeOfYear(this.year)
 
-fun endTimeOfHalfyear(year: Int, monthOfYear: Int): DateTime = TODO()
-fun endTimeOfHalfyear(year: Int, halfyear: Halfyear): DateTime = TODO()
-fun YearHalfyear.endTimeOfHalfyear(): DateTime = TODO()
-fun DateTime.endTimeOfHalfyear(): DateTime = endTimeOfHalfyear(this.year, this.monthOfYear)
+fun endTimeOfYear(year: Int): DateTime
+    = startTimeOfYear(year).plusYears(1).minusMillis(1)
 
-fun startTimeOfQuarter(year: Int, monthOfYear: Int): DateTime = TODO()
-fun startTimeOfQuarter(year: Int, quarter: Quarter): DateTime = TODO()
-fun YearQuarter.startTimeOfQuarter(): DateTime = TODO()
-fun DateTime.startTimeOfQuarter(): DateTime = startTimeOfQuarter(this.year, this.monthOfYear)
+fun DateTime.endTimeOfYear(): DateTime
+    = endTimeOfYear(this.year)
 
-fun endTimeOfQuarter(year: Int, monthOfYear: Int): DateTime = TODO()
-fun endTimeOfQuarter(year: Int, quarter: Quarter): DateTime = TODO()
-fun YearQuarter.endTimeOfQuarter(): DateTime = TODO()
-fun DateTime.endTimeOfQuarter(): DateTime = endTimeOfQuarter(this.year, this.monthOfYear)
+fun startTimeOfHalfyear(year: Int, halfyear: Halfyear): DateTime
+    = asDate(year, halfyear.startMonth.value, 1)
+
+fun startTimeOfHalfyear(year: Int, monthOfYear: Int): DateTime
+    = startTimeOfHalfyear(year, halfyearOf(monthOfYear))
+
+fun YearHalfyear.startTimeOfHalfyear(): DateTime
+    = startTimeOfHalfyear(year, halfyear)
+
+fun DateTime.startTimeOfHalfyear(): DateTime
+    = startTimeOfHalfyear(this.year, this.monthOfYear)
+
+fun endTimeOfHalfyear(year: Int, monthOfYear: Int): DateTime
+    = startTimeOfHalfyear(year, monthOfYear).plusMonths(MonthsPerHalfyear).minusMillis(1)
+
+fun endTimeOfHalfyear(year: Int, halfyear: Halfyear): DateTime
+    = endTimeOfHalfyear(year, halfyear.startMonth.value)
+
+fun YearHalfyear.endTimeOfHalfyear(): DateTime
+    = endTimeOfHalfyear(year, halfyear)
+
+fun DateTime.endTimeOfHalfyear(): DateTime
+    = endTimeOfHalfyear(this.year, this.monthOfYear)
+
+fun startTimeOfQuarter(year: Int, monthOfYear: Int): DateTime
+    = startTimeOfQuarter(year, quarterOf(monthOfYear))
+
+fun startTimeOfQuarter(year: Int, quarter: Quarter): DateTime
+    = asDate(year, quarter.startMonth, 1)
+
+fun YearQuarter.startTimeOfQuarter(): DateTime
+    = startTimeOfQuarter(year, quarter)
+
+fun DateTime.startTimeOfQuarter(): DateTime
+    = startTimeOfQuarter(this.year, this.monthOfYear)
+
+fun endTimeOfQuarter(year: Int, monthOfYear: Int): DateTime
+    = endTimeOfQuarter(year, quarterOf(monthOfYear))
+
+fun endTimeOfQuarter(year: Int, quarter: Quarter): DateTime
+    = asDate(year, quarter.endMonth + 1, 1).minusMillis(1)
+
+fun YearQuarter.endTimeOfQuarter(): DateTime
+    = endTimeOfQuarter(year, quarter)
+
+fun DateTime.endTimeOfQuarter(): DateTime
+    = endTimeOfQuarter(this.year, this.monthOfYear)
 
 fun startTimeOfMonth(year: Int, monthOfYear: Int): DateTime = asDate(year, monthOfYear, 1)
 fun startTimeOfMonth(year: Int, month: Month): DateTime = startTimeOfMonth(year, month.value)
 fun YearMonth.startTimeOfMonth(): DateTime = startTimeOfMonth(this.year, this.monthOfYear)
 fun DateTime.startTimeOfMonth(): DateTime = startTimeOfMonth(this.year, this.monthOfYear)
 
-fun endTimeOfMonth(year: Int, monthOfYear: Int): DateTime = startTimeOfMonth(year, monthOfYear).plusMonths(1).minusMillis(1)
-fun endTimeOfMonth(year: Int, month: Month): DateTime = endTimeOfMonth(year, month.value)
-fun YearMonth.endTimeOfMonth(): DateTime = endTimeOfMonth(this.year, this.monthOfYear)
-fun DateTime.endTimeOfMonth(): DateTime = endTimeOfMonth(this.year, this.monthOfYear)
+fun endTimeOfMonth(year: Int, monthOfYear: Int): DateTime
+    = startTimeOfMonth(year, monthOfYear).plusMonths(1).minusMillis(1)
 
-fun startTimeOfWeek(weekyear: Int, weekOfWeekyear: Int): DateTime =
-    DateTime().withWeekyear(weekyear).withWeekOfWeekyear(weekOfWeekyear)
+fun endTimeOfMonth(year: Int, month: Month): DateTime
+    = endTimeOfMonth(year, month.value)
 
-fun YearWeek.startTimeOfWeek(): DateTime = startTimeOfWeek(this.weekyear, this.weekOfWeekyear)
-fun DateTime.startTimeOfWeek(): DateTime = startTimeOfWeek(this.weekyear, this.weekOfWeekyear)
+fun YearMonth.endTimeOfMonth(): DateTime
+    = endTimeOfMonth(this.year, this.monthOfYear)
+
+fun DateTime.endTimeOfMonth(): DateTime
+    = endTimeOfMonth(this.year, this.monthOfYear)
+
+fun startTimeOfWeek(weekyear: Int, weekOfWeekyear: Int): DateTime
+    = today().withWeekyear(weekyear).withWeekOfWeekyear(weekOfWeekyear)
+
+fun YearWeek.startTimeOfWeek(): DateTime
+    = startTimeOfWeek(this.weekyear, this.weekOfWeekyear)
+
+fun DateTime.startTimeOfWeek(): DateTime
+    = startTimeOfWeek(this.weekyear, this.weekOfWeekyear)
 
 fun endTimeOfWeek(weekyear: Int, weekOfWeekyear: Int): DateTime
     = startTimeOfWeek(weekyear, weekOfWeekyear).plusWeeks(1).minusMillis(1)
 
-fun YearWeek.endTimeOfWeek(): DateTime = endTimeOfWeek(this.weekyear, this.weekOfWeekyear)
-fun DateTime.endTimeOfWeek(): DateTime = endTimeOfWeek(this.weekyear, this.weekOfWeekyear)
+fun YearWeek.endTimeOfWeek(): DateTime
+    = endTimeOfWeek(this.weekyear, this.weekOfWeekyear)
+
+fun DateTime.endTimeOfWeek(): DateTime
+    = endTimeOfWeek(this.weekyear, this.weekOfWeekyear)
 
 fun DateTime.startTimeOfDay(): DateTime = this.withTimeAtStartOfDay()
 fun DateTime.endTimeOfDay(): DateTime = startTimeOfDay().plusDays(1).minusMillis(1)
@@ -238,9 +314,6 @@ fun DateTime.endTimeOfSecond(): DateTime = startTimeOfSecond().plusSeconds(1).mi
 fun halfyearOf(monthOfYear: Int): Halfyear = Halfyear.ofMonth(monthOfYear)
 fun DateTime.halfyearOf(): Halfyear = Halfyear.ofMonth(this.monthOfYear)
 
-fun Quarter.startMonthOfQuarter(): Int = this.ordinal * MonthsPerQuarter + 1
-fun Quarter.endMonthOfQuarter(): Int = this.value * MonthsPerQuarter
-
 fun quarterOf(monthOfYear: Int): Quarter = Quarter.ofMonth(monthOfYear)
 fun DateTime.quarterOf(): Quarter = Quarter.ofMonth(this.monthOfYear)
 
@@ -249,29 +322,29 @@ fun DateTime.nextDayOfWeek(): DateTime = this.plusWeeks(1)
 
 fun DateTime.prevDayOfWeek(): DateTime = this.minusWeeks(1)
 
-fun DateTime?.hasDate(): Boolean = this != null && this.withTimeAtStartOfDay().millis > 0
+fun DateTime?.hasDate(): Boolean
+    = this != null && this.withTimeAtStartOfDay().millis > 0
 
-fun DateTime.setDatepart(date: DateTime): DateTime {
-  return date.startTimeOfDay().withMillisOfDay(this.millisOfDay)
-}
+fun DateTime.setDatepart(date: DateTime): DateTime
+    = date.startTimeOfDay().withMillisOfDay(this.millisOfDay)
 
 @JvmOverloads
-fun DateTime.setDatepart(year: Int, monthOfYear: Int = 1, dayOfMonth: Int = 1): DateTime {
-  return asDate(year, monthOfYear, dayOfMonth).withMillisOfDay(this.millisOfDay)
-}
+fun DateTime.setDatepart(year: Int, monthOfYear: Int = 1, dayOfMonth: Int = 1): DateTime
+    = asDate(year, monthOfYear, dayOfMonth).withMillisOfDay(this.millisOfDay)
 
 fun DateTime.setYear(year: Int): DateTime = this.withYear(year)
 fun DateTime.setMonth(monthOfYear: Int): DateTime = this.withMonthOfYear(monthOfYear)
 fun DateTime.setDay(dayOfMonth: Int): DateTime = this.withDayOfMonth(dayOfMonth)
 
-fun DateTime.setTimepart(time: DateTime): DateTime {
-  return this.startTimeOfDay().withMillisOfDay(time.millisOfDay)
-}
+fun DateTime.setTimepart(time: DateTime): DateTime
+    = this.startTimeOfDay().withMillisOfDay(time.millisOfDay)
 
 @JvmOverloads
-fun DateTime.setTimepart(hourOfDay: Int, minuteOfHour: Int = 0, secnodOfMinute: Int = 0, millisOfSeocond: Int = 0): DateTime {
-  return this.startTimeOfDay().withTime(hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond)
-}
+fun DateTime.setTimepart(hourOfDay: Int,
+                         minuteOfHour: Int = 0,
+                         secondOfMinute: Int = 0,
+                         millisOfSecond: Int = 0): DateTime
+    = this.startTimeOfDay().withTime(hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond)
 
 fun DateTime.getTimepart(): Int = this.millisOfDay
 fun DateTime?.hasTimepart(): Boolean = this != null && this.millisOfDay > 0
@@ -283,7 +356,7 @@ fun DateTime.setHour(hourOfDay: Int): DateTime = this.withHourOfDay(hourOfDay)
 fun DateTime.setMinute(minuteOfHour: Int): DateTime = this.withMinuteOfHour(minuteOfHour)
 fun DateTime.setSecond(secondOfMinute: Int): DateTime = this.withSecondOfMinute(secondOfMinute)
 fun DateTime.setMillis(millisOfSeocond: Int): DateTime = this.withMillisOfSecond(millisOfSeocond)
-fun DateTime.setMillisOfDay(millsOfDay: Int): DateTime = this.withMillisOfDay(millisOfDay)
+fun DateTime.setMillisOfDay(millisOfDay: Int): DateTime = this.withMillisOfDay(millisOfDay)
 
 
 fun DateTime.addDate(unit: PeriodUnit, delta: Int): DateTime = when (unit) {

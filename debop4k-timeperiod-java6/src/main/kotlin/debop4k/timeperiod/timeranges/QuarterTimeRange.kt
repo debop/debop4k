@@ -19,10 +19,10 @@ import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
 import debop4k.timeperiod.MonthsPerQuarter
 import debop4k.timeperiod.models.Quarter
+import debop4k.timeperiod.utils.monthSequence
 import debop4k.timeperiod.utils.quarterOf
 import debop4k.timeperiod.utils.relativeQuarterPeriod
 import debop4k.timeperiod.utils.startTimeOfQuarter
-import org.eclipse.collections.impl.list.mutable.FastList
 import org.joda.time.DateTime
 
 open class QuarterTimeRange(moment: DateTime,
@@ -45,9 +45,8 @@ open class QuarterTimeRange(moment: DateTime,
     get() = isMultipleCalendarYears && start.quarterOf() != end.quarterOf()
 
 
-  fun monthStream(): FastList<MonthRange> {
-    val monthCount = quarterCount * MonthsPerQuarter
-    return debop4k.timeperiod.utils.monthStream(start, monthCount, calendar)
+  fun monthSequence(): Sequence<MonthRange> {
+    return monthSequence(start, quarterCount * MonthsPerQuarter, calendar)
   }
 
 }

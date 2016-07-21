@@ -128,9 +128,7 @@ data class Mass(val gram: Double = 0.0) : Comparable<Mass>, Serializable {
     @JvmField val NEGATIVE_INF: Mass = Mass(Double.NEGATIVE_INFINITY)
     @JvmField val NaN: Mass = Mass(Double.NaN)
 
-    /**
-     * Static constructor
-     */
+    @JvmOverloads
     @JvmStatic
     fun of(value: Double = 0.0, unit: MassUnit = MassUnit.GRAM): Mass =
         Mass(value * unit.factor)

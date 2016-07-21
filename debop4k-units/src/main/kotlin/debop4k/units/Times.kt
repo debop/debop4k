@@ -80,6 +80,7 @@ data class Time(val second: Double = 0.0) : Comparable<Time>, Serializable {
     final val NEGATIVE_INF = Time(Double.NEGATIVE_INFINITY)
     final val NaN = Time(Double.NaN)
 
+    @JvmOverloads
     @JvmStatic
     fun of(time: Double = 0.0, unit: TimeUnit = TimeUnit.SECOND): Time =
         Time(time * unit.factor)

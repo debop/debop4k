@@ -69,6 +69,7 @@ data class Temperature(val kelvin: Double = 0.0) : Comparable<Temperature>, Seri
     final val NEGATIVE_INF = Temperature(Double.NEGATIVE_INFINITY)
     final val NaN = Temperature(Double.NaN)
 
+    @JvmOverloads
     @JvmStatic
     fun of(temp: Double, unit: TemperatureUnit = TemperatureUnit.KELVIN): Temperature =
         Temperature(temp + unit.factor)

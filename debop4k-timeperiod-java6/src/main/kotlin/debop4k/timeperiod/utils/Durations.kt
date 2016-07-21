@@ -46,7 +46,8 @@ object Durations {
     return of(start, start.plusMonths(MonthsPerHalfyear))
   }
 
-  fun halfyearOf(yearHalfyear: YearHalfyear): Duration = halfyearDurationOf(yearHalfyear.year, yearHalfyear.halfyear)
+  fun halfyearOf(yearHalfyear: YearHalfyear): Duration
+      = halfyearDurationOf(yearHalfyear.year, yearHalfyear.halfyear)
 
   fun quarterDurationOf(year: Int, quarter: Quarter): Duration {
     val start = startTimeOfQuarter(year, quarter)

@@ -96,6 +96,7 @@ public data class Length(val meter: Double = 0.0) : Comparable<Length>, Serializ
     final val NEGATIVE_INF = Length(Double.NEGATIVE_INFINITY)
     final val NaN = Length(Double.NaN)
 
+    @JvmOverloads
     @JvmStatic
     fun of(length: Double = 0.0, unit: LengthUnit = LengthUnit.METER): Length =
         Length(length * unit.factor)

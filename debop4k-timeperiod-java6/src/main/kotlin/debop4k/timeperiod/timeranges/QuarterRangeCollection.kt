@@ -18,9 +18,8 @@ package debop4k.timeperiod.timeranges
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
 import debop4k.timeperiod.models.Quarter
-import debop4k.timeperiod.utils.quarterStream
+import debop4k.timeperiod.utils.quarterSequence
 import debop4k.timeperiod.utils.startTimeOfQuarter
-import org.eclipse.collections.impl.list.mutable.FastList
 import org.joda.time.DateTime
 
 /**
@@ -39,7 +38,7 @@ open class QuarterRangeCollection(moment: DateTime,
                                                                     quarterCount,
                                                                     calendar)
 
-  fun quarterStream(): FastList<QuarterRange> {
-    return quarterStream(start, quarterCount, calendar)
+  fun quarterSequence(): Sequence<QuarterRange> {
+    return quarterSequence(start, quarterCount, calendar)
   }
 }

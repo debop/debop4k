@@ -28,7 +28,7 @@ interface ITimeLine : Serializable {
 
   val periods: ITimePeriodContainer
 
-  val limits: ITimePeriod?
+  val limits: ITimePeriod
 
   val mapper: ITimePeriodMapper?
 

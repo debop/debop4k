@@ -107,6 +107,7 @@ data class Area(val m2: Double = 0.0) : Comparable<Area>, Serializable {
     val NEGATIVE_INF = Area(Double.NEGATIVE_INFINITY)
     val NaN = Area(Double.NaN)
 
+    @JvmOverloads
     @JvmStatic
     fun of(area: Double = 0.0, unit: AreaUnit = AreaUnit.METER_2): Area = Area(area * unit.factor)
 

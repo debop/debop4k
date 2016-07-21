@@ -43,6 +43,16 @@ enum class Halfyear(val value: Int) {
     Second -> SecondHalfyearMonths
   }
 
+  val startMonth: Month get() = when (this) {
+    First -> Month.JANUARY
+    Second -> Month.JULY
+  }
+
+  val endMonth: Month get() = when (this) {
+    First -> Month.JUNE
+    Second -> Month.DECEMBER
+  }
+
   companion object {
 
     @JvmStatic
