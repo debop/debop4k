@@ -114,7 +114,7 @@ class CollectionExtensionsTest : AbstractCoreTest() {
   private fun testRunAsStream(testList: List<Int>, batchSize: Int, expectedGroups: Int) {
     run {
       var groupCount = 0
-      var items = arrayListOf<Int>()
+      var items = intArrayListOf()
 
       testList.asSequence().batch(batchSize).forEach { group ->
         groupCount++
@@ -125,7 +125,7 @@ class CollectionExtensionsTest : AbstractCoreTest() {
     }
     run {
       var groupCount = 0
-      var items = arrayListOf<Int>()
+      var items = intArrayListOf()
 
       testList.batch(batchSize).forEach { group ->
         groupCount++
