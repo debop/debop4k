@@ -19,6 +19,7 @@ val EmptyCharArray = CharArray(0)
 val EmptyByteArray = ByteArray(0)
 val EmptyIntArray = IntArray(0)
 val EmptyLongArray = LongArray(0)
+val EmptyFloatArray = FloatArray(0)
 val EmptyDoubleArray = DoubleArray(0)
 
 fun CharArray?.isNullOrEmpty(): Boolean = this == null || this.isEmpty()
