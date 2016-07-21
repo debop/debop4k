@@ -15,7 +15,6 @@
 
 package debop4k.timeperiod
 
-import debop4k.core.AbstractValueObject
 import debop4k.core.ToStringHelper
 import debop4k.core.utils.hashOf
 import debop4k.timeperiod.models.PeriodRelation
@@ -29,7 +28,7 @@ import org.joda.time.Duration
  */
 open class TimePeriod(override var start: DateTime = MinPeriodTime,
                       override var end: DateTime = MaxPeriodTime,
-                      override val readOnly: Boolean = false) : AbstractValueObject(), ITimePeriod {
+                      override val readOnly: Boolean = false) : ITimePeriod {
 
   companion object {
 
@@ -149,10 +148,11 @@ open class TimePeriod(override var start: DateTime = MinPeriodTime,
     return hashOf(start, end, readOnly)
   }
 
-  override fun buildStringHelper(): ToStringHelper {
-    return super.buildStringHelper()
+  override fun toString(): String {
+    return ToStringHelper(this)
         .add("start", start)
         .add("end", end)
         .add("readOnly", readOnly)
+        .toString()
   }
 }

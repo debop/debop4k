@@ -23,7 +23,10 @@ import debop4k.timeperiod.*
 import debop4k.timeperiod.models.PeriodRelation
 import debop4k.timeperiod.models.PeriodRelation.*
 import debop4k.timeperiod.models.PeriodUnit
-import org.eclipse.collections.api.LazyIterable
+import debop4k.timeperiod.timeranges.HalfyearRange
+import debop4k.timeperiod.timeranges.QuarterRange
+import debop4k.timeperiod.timeranges.YearRange
+import org.eclipse.collections.impl.list.mutable.FastList
 import org.joda.time.DateTime
 import org.joda.time.Duration
 import org.slf4j.LoggerFactory
@@ -63,6 +66,7 @@ fun DateTime.timeRange(end: DateTime): TimeRange = TimeRange.of(this, end)
 fun relativeYearPeriod(year: Int, yearCount: Int): TimeRange {
   return startTimeOfYear(year).relativeYearPeriod(yearCount)
 }
+
 fun DateTime.relativeYearPeriod(years: Int): TimeRange {
   val startYear = this.startOfYear()
   return startYear.timeRange(startYear + years.years())
@@ -212,7 +216,7 @@ fun ITimePeriod.assertMutable(): Unit {
   assert(!this.readOnly, { "ITimePeriod 가 읽기전용입니다." })
 }
 
-fun ITimePeriod.periodStream(unit: PeriodUnit): LazyIterable<out ITimePeriod> = when (unit) {
+fun ITimePeriod.periodStream(unit: PeriodUnit): FastList<out ITimePeriod> = when (unit) {
   PeriodUnit.YEAR -> this.yearStream()
   PeriodUnit.HALFYEAR -> this.halfyearStream()
   PeriodUnit.QUARTER -> this.quarterStream()
@@ -224,20 +228,134 @@ fun ITimePeriod.periodStream(unit: PeriodUnit): LazyIterable<out ITimePeriod> = 
   else -> throw UnsupportedOperationException("지원하지 않는 PeriodUnit 입니다. unit=$unit")
 }
 
-fun ITimePeriod.yearStream(): LazyIterable<out ITimePeriod> = TODO()
-fun ITimePeriod.halfyearStream(): LazyIterable<out ITimePeriod> = TODO()
-fun ITimePeriod.quarterStream(): LazyIterable<out ITimePeriod> = TODO()
-fun ITimePeriod.monthStream(): LazyIterable<out ITimePeriod> = TODO()
-fun ITimePeriod.weekStream(): LazyIterable<out ITimePeriod> = TODO()
-fun ITimePeriod.dayStream(): LazyIterable<out ITimePeriod> = TODO()
-fun ITimePeriod.hourStream(): LazyIterable<out ITimePeriod> = TODO()
-fun ITimePeriod.minuteStream(): LazyIterable<out ITimePeriod> = TODO()
+fun ITimePeriod.yearStream(): FastList<out ITimePeriod> {
+  val years = FastList.newList<ITimePeriod>()
+
+  if (this.isAnyTime())
+    return years
+
+  if (this.start.isSameYear(this.end)) {
+    years.add(TimeRange.of(this))
+    return years
+  }
+
+  val head = TimeRange(this.start, this.start.endTimeOfYear())
+  years.add(head)
+
+  var current = this.start.startTimeOfYear().plusYears(1)
+  val endYear = this.end.year
+
+  while (current.year < endYear) {
+    years.add(YearRange(current))
+    current += 1.years()
+  }
+  if (current < this.end) {
+    years.add(TimeRange(current, this.end))
+  }
+
+  return years
+}
+
+
+fun ITimePeriod.halfyearStream(): FastList<out ITimePeriod> {
+  val halfyears = FastList.newList<ITimePeriod>()
+
+  if (this.isAnyTime())
+    return halfyears
+
+  if (start.isSameHalfyear(end)) {
+    halfyears.add(TimeRange(this))
+    return halfyears
+  }
+
+  var current: DateTime = start.endTimeOfHalfyear()
+  val head = TimeRange(start, current)
+  halfyears.add(head)
+
+  val endHashCode = end.year * 10 + end.halfyearOf().value
+
+  current += 1.days()
+  var currentHashCode = current.year * 10 + current.halfyearOf().value
+
+  while (currentHashCode < endHashCode) {
+    halfyears.add(HalfyearRange(current))
+
+    current += MonthsPerHalfyear.months()
+    currentHashCode = current.year * 10 + current.halfyearOf().value
+  }
+
+  if (current < end) {
+    halfyears.add(TimeRange(current.startTimeOfHalfyear(), end))
+  }
+
+
+  return halfyears
+}
+
+fun ITimePeriod.quarterStream(): FastList<out ITimePeriod> {
+  val quarters = FastList.newList<ITimePeriod>()
+
+  if (this.isAnyTime()) {
+    return quarters
+  }
+
+  if (start.isSameQuarter(end)) {
+    quarters.add(TimeRange(this))
+    return quarters
+  }
+
+  var current = start.endTimeOfQuarter()
+  val head = TimeRange(start, current)
+  quarters.add(head)
+
+  val endHashCode = end.year * 10 + end.quarterOf().value
+
+  current += 1.days()
+  var currentHashCode = current.year * 10 + current.quarterOf().value
+
+  while (currentHashCode < endHashCode) {
+    quarters.add(QuarterRange(current))
+
+    current += MonthsPerQuarter.months()
+    currentHashCode = current.year * 10 + current.quarterOf().value
+  }
+
+  if (current < end) {
+    quarters.add(TimeRange(current.startTimeOfQuarter(), end))
+  }
+
+  return quarters
+}
+
+fun ITimePeriod.monthStream(): FastList<out ITimePeriod> {
+  val months = FastList.newList<ITimePeriod>()
+
+  if (isAnyTime()) {
+    return months
+  }
+
+  if (start.isSameMonth(end)) {
+    months.add(TimeRange(this))
+    return months
+  }
+
+
+  return months
+}
+
+fun ITimePeriod.weekStream(): FastList<out ITimePeriod> = TODO()
+
+fun ITimePeriod.dayStream(): FastList<out ITimePeriod> = TODO()
+
+fun ITimePeriod.hourStream(): FastList<out ITimePeriod> = TODO()
+
+fun ITimePeriod.minuteStream(): FastList<out ITimePeriod> = TODO()
 
 fun ITimePeriod?.assertHasPeriod(): Unit {
   assert(this != null && this.hasPeriod(), { "기간이 설정되지 않았습니다. period=$this" })
 }
 
-fun <R> ITimePeriod.mapPeriod(unit: PeriodUnit, func: (ITimePeriod) -> R): LazyIterable<R> {
+fun <R> ITimePeriod.mapPeriod(unit: PeriodUnit, func: (ITimePeriod) -> R): FastList<R> {
   return this.periodStream(unit).collect(func)
 }
 

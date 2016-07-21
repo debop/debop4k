@@ -27,14 +27,21 @@ import java.util.*
 interface ITimeCalendar : ITimePeriodMapper {
 
   val locale: Locale
+
   val startOffset: Duration
+
   val endOffset: Duration
+
   val firstDayOfWeek: DayOfWeek
 
   fun year(moment: DateTime): Int
+
   fun monthOfYear(moment: DateTime): Int
+
   fun dayOfMonth(moment: DateTime): Int
+
   fun hourOfDay(moment: DateTime): Int
+
   fun minuteOfHour(moment: DateTime): Int
 
   fun dayOfWeek(moment: DateTime): DayOfWeek

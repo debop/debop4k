@@ -15,6 +15,7 @@
 
 package debop4k.timeperiod.timeranges
 
+import debop4k.core.ToStringHelper
 import debop4k.core.kodatimes.*
 import debop4k.core.utils.hashOf
 import debop4k.timeperiod.ITimeCalendar
@@ -85,6 +86,13 @@ open class CalendarTimeRange(val period: ITimePeriod,
 
   override fun hashCode(): Int {
     return hashOf(super.hashCode(), calendar)
+  }
+
+  override fun toString(): String {
+    return ToStringHelper(this)
+        .add("period", period)
+        .add("calendar", calendar)
+        .toString()
   }
 
   companion object {

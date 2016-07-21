@@ -15,34 +15,31 @@
 
 package debop4k.timeperiod.timeranges
 
-import debop4k.core.kodatimes.today
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
 import debop4k.timeperiod.models.Quarter
-import debop4k.timeperiod.utils.addQuarter
+import debop4k.timeperiod.utils.quarterStream
 import debop4k.timeperiod.utils.startTimeOfQuarter
+import org.eclipse.collections.impl.list.mutable.FastList
 import org.joda.time.DateTime
 
 /**
- * Created by debop
+ * @author sunghyouk.bae@gmail.com
  */
-open class QuarterRange(moment: DateTime = today(),
-                        calendar: ITimeCalendar = DefaultTimeCalendar) : QuarterTimeRange(moment, 1, calendar) {
+open class QuarterRangeCollection(moment: DateTime,
+                                  quarterCount: Int,
+                                  calendar: ITimeCalendar = DefaultTimeCalendar) :
+    QuarterTimeRange(moment, quarterCount, calendar) {
 
   @JvmOverloads
-  constructor(year: Int, quarter: Quarter, calendar: ITimeCalendar = DefaultTimeCalendar)
-  : this(startTimeOfQuarter(year, quarter), calendar)
+  constructor(year: Int,
+              quarter: Quarter,
+              quarterCount: Int,
+              calendar: ITimeCalendar = DefaultTimeCalendar) : this(startTimeOfQuarter(year, quarter),
+                                                                    quarterCount,
+                                                                    calendar)
 
-
-  val year: Int get() = startYear
-  val quarter: Quarter get() = quarterOfStart
-
-  fun nextQuarter(): QuarterRange = addQuarters(1)
-  fun prevQuarter(): QuarterRange = addQuarters(-1)
-
-  fun addQuarters(quarters: Int): QuarterRange {
-    val yq = addQuarter(year, quarter, quarters)
-    return QuarterRange(yq.year, yq.quarter, calendar)
+  fun quarterStream(): FastList<QuarterRange> {
+    return quarterStream(start, quarterCount, calendar)
   }
-
 }

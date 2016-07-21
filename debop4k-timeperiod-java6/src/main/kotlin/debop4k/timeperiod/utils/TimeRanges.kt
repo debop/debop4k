@@ -38,6 +38,27 @@ fun yearStream(start: DateTime, yearCount: Int, calendar: ITimeCalendar = Defaul
 }
 
 @JvmOverloads
+fun halfyearStream(startTime: DateTime, halfyearCount: Int, calendar: ITimeCalendar = DefaultTimeCalendar): FastList<HalfyearRange> {
+  val start = HalfyearRange()
+  val halfyears = FastList.newList<HalfyearRange>(halfyearCount)
+  (0 until halfyearCount).forEach { hy ->
+    halfyears.add(start.addHalfyears(hy))
+  }
+  return halfyears
+}
+
+
+@JvmOverloads
+fun quarterStream(startTime: DateTime, quarterCount: Int, calendar: ITimeCalendar = DefaultTimeCalendar): FastList<QuarterRange> {
+  val start = QuarterRange(startTime.year, startTime.quarterOf(), calendar)
+  val quarters = FastList.newList<QuarterRange>(quarterCount)
+  (0 until quarterCount).forEach { q ->
+    quarters.add(start.addQuarters(q))
+  }
+  return quarters
+}
+
+@JvmOverloads
 fun monthStream(year: Int, monthOfYear: Int, monthCount: Int, calendar: ITimeCalendar = DefaultTimeCalendar): FastList<MonthRange> {
   val start = MonthRange(year, monthOfYear)
   val months = FastList.newList<MonthRange>(monthCount)

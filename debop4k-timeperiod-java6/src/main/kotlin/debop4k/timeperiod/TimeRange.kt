@@ -25,6 +25,10 @@ open class TimeRange(start: DateTime = MinPeriodTime,
                      end: DateTime = MaxPeriodTime,
                      readOnly: Boolean = false) : TimePeriod(start, end, readOnly), ITimeRange {
 
+  @JvmOverloads
+  constructor(src: ITimePeriod, readOnly: Boolean = src.readOnly)
+  : this(src.start, src.end, readOnly)
+
   companion object {
     @JvmStatic val AnyTime: TimeRange = TimeRange(readOnly = true)
 

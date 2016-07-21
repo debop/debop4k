@@ -215,7 +215,7 @@ fun DateTime.startTimeOfSecond(): DateTime = startTimeOfHour().plusSeconds(this.
 fun DateTime.endTimeOfSecond(): DateTime = startTimeOfSecond().plusSeconds(1).minusMillis(1)
 
 fun halfyearOf(monthOfYear: Int): Halfyear = Halfyear.ofMonth(monthOfYear)
-fun DateTime.haflyearOf(): Halfyear = Halfyear.ofMonth(this.monthOfYear)
+fun DateTime.halfyearOf(): Halfyear = Halfyear.ofMonth(this.monthOfYear)
 
 fun Quarter.startMonthOfQuarter(): Int = this.ordinal * MonthsPerQuarter + 1
 fun Quarter.endMonthOfQuarter(): Int = this.value * MonthsPerQuarter
