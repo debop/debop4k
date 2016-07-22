@@ -15,7 +15,7 @@
 
 package debop4k.core.compressions
 
-import debop4k.core.EmptyByteArray
+import debop4k.core.emptyByteArray
 import net.jpountz.lz4.LZ4Factory
 
 /**
@@ -26,13 +26,13 @@ class LZ4Compressor : Compressor {
 
   override fun compress(input: ByteArray?): ByteArray {
     if (input == null || input.isEmpty())
-      return EmptyByteArray
+      return emptyByteArray()
     return compressor.compress(input)
   }
 
   override fun decompress(input: ByteArray?): ByteArray {
     if (input == null || input.isEmpty())
-      return EmptyByteArray
+      return emptyByteArray()
 
     return decompressor.decompress(input, input.size * 1000)
   }

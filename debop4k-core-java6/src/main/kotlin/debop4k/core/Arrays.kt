@@ -15,12 +15,12 @@
 
 package debop4k.core
 
-val EmptyCharArray = CharArray(0)
-val EmptyByteArray = ByteArray(0)
-val EmptyIntArray = IntArray(0)
-val EmptyLongArray = LongArray(0)
-val EmptyFloatArray = FloatArray(0)
-val EmptyDoubleArray = DoubleArray(0)
+fun emptyCharArray() = CharArray(0)
+fun emptyByteArray() = ByteArray(0)
+fun emptyIntArray() = IntArray(0)
+fun emptyLongArray() = LongArray(0)
+fun emptyFloatArray() = FloatArray(0)
+fun emptyDoubleArray() = DoubleArray(0)
 
 fun CharArray?.isNullOrEmpty(): Boolean = this == null || this.isEmpty()
 

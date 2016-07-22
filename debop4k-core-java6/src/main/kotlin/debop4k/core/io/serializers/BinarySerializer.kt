@@ -16,7 +16,7 @@
 package debop4k.core.io.serializers
 
 
-import debop4k.core.EmptyByteArray
+import debop4k.core.emptyByteArray
 import org.springframework.util.FastByteArrayOutputStream
 import java.io.ByteArrayInputStream
 import java.io.ObjectInputStream
@@ -31,7 +31,7 @@ class BinarySerializer : Serializer {
 
   override fun serialize(graph: Any?): ByteArray {
     if (graph == null)
-      return EmptyByteArray
+      return emptyByteArray()
 
     FastByteArrayOutputStream().use { bos ->
       ObjectOutputStream(bos).use { oos ->

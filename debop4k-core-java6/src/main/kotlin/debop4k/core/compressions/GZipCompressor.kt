@@ -15,7 +15,7 @@
 
 package debop4k.core.compressions
 
-import debop4k.core.EmptyByteArray
+import debop4k.core.emptyByteArray
 import debop4k.core.io.stream.toByteArray
 import org.springframework.util.FastByteArrayOutputStream
 import java.io.BufferedInputStream
@@ -30,7 +30,7 @@ public sealed class GZipCompressor : Compressor {
 
   override fun compress(input: ByteArray?): ByteArray {
     if (input == null || input.isEmpty())
-      return EmptyByteArray
+      return emptyByteArray()
 
     FastByteArrayOutputStream().use { bos ->
       GZIPOutputStream(bos).use { gzip ->
@@ -42,7 +42,7 @@ public sealed class GZipCompressor : Compressor {
 
   override fun decompress(input: ByteArray?): ByteArray {
     if (input == null || input.isEmpty())
-      return EmptyByteArray
+      return emptyByteArray()
 
     BufferedInputStream(ByteArrayInputStream(input)).use { bis ->
       GZIPInputStream(bis).use { gzip ->

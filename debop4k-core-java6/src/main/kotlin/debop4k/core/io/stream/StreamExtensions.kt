@@ -17,7 +17,7 @@
 
 package debop4k.core.io.stream
 
-import debop4k.core.EmptyByteArray
+import debop4k.core.emptyByteArray
 import org.slf4j.LoggerFactory
 import org.springframework.util.FastByteArrayOutputStream
 import java.io.BufferedInputStream
@@ -29,7 +29,7 @@ import java.nio.charset.Charset
 
 private val log = LoggerFactory.getLogger("streams")
 
-fun emptyInputStream(): InputStream = ByteArrayInputStream(EmptyByteArray)
+fun emptyInputStream(): InputStream = ByteArrayInputStream(emptyByteArray())
 
 /**
  * [InputStream] 을 읽어 [OutputStream] 에 씁니다.
@@ -61,12 +61,14 @@ fun InputStream.toByteArray(): ByteArray {
   }
 }
 
+@JvmOverloads
 fun InputStream.toString(cs: Charset = Charsets.UTF_8): String
     = this.toByteArray().toString(cs)
 
 /**
  * Input Stream 전체를 읽어 문자열 리스트로 반환합니다.
  */
+@JvmOverloads
 fun InputStream.readLines(charset: Charset = Charsets.UTF_8): List<String> {
   return this.bufferedReader(charset).readLines()
 }
@@ -74,6 +76,7 @@ fun InputStream.readLines(charset: Charset = Charsets.UTF_8): List<String> {
 /**
  * Input Stream 전체를 읽어 문자열로 반환합니다.
  */
+@JvmOverloads
 fun InputStream.readText(cs: Charset = Charsets.UTF_8): String = this.bufferedReader(cs).readText()
 
 fun InputStream.toByteBuffer(): ByteBuffer = ByteBuffer.wrap(this.toByteArray())
@@ -91,12 +94,15 @@ fun ByteArray.toOutputStream(): FastByteArrayOutputStream {
   return bos
 }
 
+@JvmOverloads
 fun ByteArray.readLines(cs: Charset = Charsets.UTF_8): List<String>
     = this.toInputStream().readLines(cs)
 
+@JvmOverloads
 fun String.toInputStream(cs: Charset = Charsets.UTF_8): InputStream
     = this.toByteArray(cs).toInputStream()
 
+@JvmOverloads
 fun String.toOutputStream(cs: Charset = Charsets.UTF_8): FastByteArrayOutputStream
     = this.toByteArray(cs).toOutputStream()
 

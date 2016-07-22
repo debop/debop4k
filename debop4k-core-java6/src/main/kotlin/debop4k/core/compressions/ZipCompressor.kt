@@ -15,7 +15,7 @@
 
 package debop4k.core.compressions
 
-import debop4k.core.EmptyByteArray
+import debop4k.core.emptyByteArray
 import debop4k.core.io.stream.toByteArray
 import debop4k.core.isNullOrEmpty
 import org.springframework.util.FastByteArrayOutputStream
@@ -28,7 +28,7 @@ class ZipCompressor : Compressor {
 
   override fun compress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty())
-      return EmptyByteArray
+      return emptyByteArray()
 
     FastByteArrayOutputStream().use { bos ->
       ZipOutputStream(bos).use { zip ->
@@ -40,7 +40,7 @@ class ZipCompressor : Compressor {
 
   override fun decompress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty())
-      return EmptyByteArray
+      return emptyByteArray()
 
     BufferedInputStream(ByteArrayInputStream(input)).use { bis ->
       ZipInputStream(bis).use { zip ->
