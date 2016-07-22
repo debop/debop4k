@@ -43,6 +43,7 @@ object DataSources {
 
   private val dataSourceFactory by lazy { HikariDataSourceFactory() }
 
+  @JvmOverloads
   @JvmStatic
   fun of(driverClassName: String,
          jdbcUrl: String,

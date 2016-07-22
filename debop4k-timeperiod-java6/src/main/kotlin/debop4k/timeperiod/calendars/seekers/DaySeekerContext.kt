@@ -13,27 +13,32 @@
  * limitations under the License.
  */
 
-package debop4k.timeperiod
+package debop4k.timeperiod.calendars.seekers
 
-import debop4k.core.Local
+import debop4k.timeperiod.calendars.ICalendarVisitorContext
+import debop4k.timeperiod.timeranges.DayRange
 
 /**
- * 스레드별로 제공하는 Time Period Context
- *
- * @author debop sunghyouk.bae@gmail.com
+ * @author sunghyouk.bae@gmail.com
  */
-open class PeriodContext {
+open class DaySeekerContext(val startDay: DayRange,
+                            val dayCount: Int) : ICalendarVisitorContext {
 
-  companion object {
-    val TIME_CALENDAR_KEY: String = PeriodContext::class.java.name + ".Current"
+  var remainingDays: Int = 0
+  var foundDay: DayRange? = null
+
+  init {
+    remainingDays = this.dayCount
   }
 
-  object Current {
+  val isFinished: Boolean get() = remainingDays == 0
 
-    var calendar: ITimeCalendar
-      get() = Local.getOrPut(TIME_CALENDAR_KEY, { DefaultTimeCalendar })!!
-      set(calendar: ITimeCalendar):Unit {
-        Local[TIME_CALENDAR_KEY] = calendar
-      }
+  fun processDay(day: DayRange): Unit {
+    if (!isFinished) {
+      remainingDays--
+
+      if (isFinished)
+        foundDay = day
+    }
   }
 }

@@ -16,11 +16,16 @@
 package debop4k.timeperiod.calendars
 
 import debop4k.core.ToStringHelper
+import debop4k.core.kodatimes.asDate
+import debop4k.core.kodatimes.months
 import debop4k.core.kodatimes.now
+import debop4k.core.kodatimes.years
+import debop4k.core.min
 import debop4k.core.utils.hashOf
-import debop4k.timeperiod.DefaultTimeCalendar
-import debop4k.timeperiod.ITimeCalendar
-import debop4k.timeperiod.MonthsPerYear
+import debop4k.timeperiod.*
+import debop4k.timeperiod.utils.quarterOfMonth
+import debop4k.timeperiod.utils.startTimeOfWeek
+import debop4k.timeperiod.utils.yearOf
 import org.eclipse.collections.impl.map.mutable.ConcurrentHashMap
 import org.joda.time.DateTime
 import org.joda.time.Duration
@@ -76,19 +81,72 @@ open class DateDiff(val start: DateTime,
   val elapsedSeconds: Long get() = Duration(elapsedStartSeconds, end).standardSeconds
 
   private fun calcYears(): Long {
-    TODO()
+    if (isEmpty) return 0L
+
+    val compareDay = end.dayOfMonth min calendar.daysInMonth(startYear, endMonthOfYear)
+    var compareDate = asDate(startYear, endMonthOfYear, compareDay).plusMillis(end.millisOfDay)
+
+    if (end > start) {
+      if (!start.year().isLeap) {
+        if (compareDate < start) {
+          compareDate += 1.years()
+        }
+      } else {
+        if (compareDate < start.minusDays(1)) {
+          compareDate += 1.years()
+        }
+      }
+    } else if (compareDate > start) {
+      compareDate = compareDate.minusYears(1)
+    }
+
+    return (endYear - calendar.year(compareDate)).toLong()
   }
 
   private fun calcQuarters(): Long {
-    TODO()
+    if (isEmpty) return 0L
+
+    val y1: Int = yearOf(startYear, startMonthOfYear, calendar)
+    val q1: Int = quarterOfMonth(startMonthOfYear).value
+
+    val y2: Int = yearOf(endYear, endMonthOfYear, calendar)
+    val q2: Int = quarterOfMonth(endMonthOfYear).value
+
+    val diff = (y2 * QuartersPerYear + q2) - (y1 * QuartersPerYear + q1)
+    return diff.toLong()
   }
 
   private fun calcMonths(): Long {
-    TODO()
+    if (isEmpty) return 0L
+
+    val compareDay = end.dayOfMonth min calendar.daysInMonth(startYear, startMonthOfYear)
+    var compareDate = asDate(startYear, startMonthOfYear, compareDay).plusMillis(end.millisOfDay)
+
+    if (end > start) {
+      if (!start.year().isLeap) {
+        if (compareDate < start) {
+          compareDate += 1.months()
+        }
+      } else if (compareDate < start.minusDays(1)) {
+        compareDate += 1.months()
+      }
+    } else if (compareDate > start) {
+      compareDate = compareDate.minusMonths(1)
+    }
+
+    val diff = (endYear * MonthsPerYear + endMonthOfYear) -
+               (calendar.year(compareDate) * MonthsPerYear + calendar.monthOfYear(compareDate))
+
+    return diff.toLong()
   }
 
   private fun calcWeeks(): Long {
-    TODO()
+    if (isEmpty) return 0L
+
+    val w1 = start.startTimeOfWeek()
+    val w2 = end.startTimeOfWeek()
+
+    return if (w1 == w2) 0L else Duration(w2, w1).standardDays / DaysPerWeek
   }
 
   private fun roundEx(n: Double): Double {

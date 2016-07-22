@@ -52,13 +52,13 @@ open class YearTimeRange(val year: Int,
 
   fun daySequence(): Sequence<DayRange> {
     return monthSequence().flatMap { m ->
-      m.dayStream()
+      m.daySequence()
     }.asSequence()
   }
 
   fun hourSequence(): Sequence<HourRange> {
     return daySequence().flatMap { d ->
-      d.hourStream()
+      d.hourSequence()
     }.asSequence()
   }
 

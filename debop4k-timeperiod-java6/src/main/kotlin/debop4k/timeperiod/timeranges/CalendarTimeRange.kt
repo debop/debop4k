@@ -22,10 +22,11 @@ import debop4k.timeperiod.ITimeCalendar
 import debop4k.timeperiod.ITimePeriod
 import debop4k.timeperiod.TimeCalendar
 import debop4k.timeperiod.TimeRange
+import debop4k.timeperiod.models.DayOfWeek
 import debop4k.timeperiod.utils.assertValidPeriod
 import org.joda.time.DateTime
 import org.joda.time.Duration
-import java.time.DayOfWeek
+
 
 /**
  * Calendar 기반의 [TimeRange]

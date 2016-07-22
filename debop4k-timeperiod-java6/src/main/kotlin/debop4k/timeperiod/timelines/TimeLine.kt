@@ -41,7 +41,7 @@ open class TimeLine<T : ITimePeriod>(override val periods: ITimePeriodContainer,
     if (moments.isEmpty) {
       return TimePeriodCollection.of(TimeRange.of(periods))
     }
-    return combinePeriods(moments)
+    return TimeLines.combinePeriods(moments)
   }
 
   override fun intersectPeriods(): ITimePeriodCollection {
@@ -53,7 +53,7 @@ open class TimeLine<T : ITimePeriod>(override val periods: ITimePeriodContainer,
     if (moments.isEmpty) {
       return TimePeriodCollection.of(TimeRange.of(periods))
     }
-    return intersectPeriods(moments)
+    return TimeLines.intersectPeriods(moments)
   }
 
   override fun calculateCaps(): ITimePeriodCollection {
@@ -71,7 +71,7 @@ open class TimeLine<T : ITimePeriod>(override val periods: ITimePeriodContainer,
     }
     val range = TimeRange.of(mapPeriodStart(limits.start),
                              mapPeriodEnd(limits.end))
-    return calculateGap(moments, range)
+    return TimeLines.calculateGap(moments, range)
   }
 
   private fun timeLineMoments(): ITimeLineMomentCollection {

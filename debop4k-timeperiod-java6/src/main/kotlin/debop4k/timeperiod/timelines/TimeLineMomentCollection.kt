@@ -37,7 +37,7 @@ open class TimeLineMomentCollection : ITimeLineMomentCollection {
 
   override fun max(): ITimeLineMoment = _moments.max()
 
-  override fun get(index: Int): ITimeLineMoment {
+  override operator fun get(index: Int): ITimeLineMoment {
     return _moments.get(index)
   }
 

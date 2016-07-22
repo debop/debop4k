@@ -31,7 +31,7 @@ open class DayTimeRange(startTime: DateTime = today(),
                         calendar: ITimeCalendar = DefaultTimeCalendar)
 : CalendarTimeRange(startTime.relativeDayPeriod(dayCount), calendar) {
 
-  fun hourStream(): Sequence<HourRange> {
+  fun hourSequence(): Sequence<HourRange> {
     val startDay = startDayOfStart
     val hourCount = dayCount * HoursPerDay
 

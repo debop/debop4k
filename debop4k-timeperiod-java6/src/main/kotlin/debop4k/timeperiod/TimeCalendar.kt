@@ -70,7 +70,7 @@ class TimeCalendar(val cfg: TimeCalendarConfig = TimeCalendarConfig.DEFAULT) : I
   override fun dayOfWeek(moment: DateTime): DayOfWeek = DayOfWeek.of(moment.dayOfWeek)
 
   override fun daysInMonth(year: Int, monthOfYear: Int): Int
-      = daysInMonth(year, monthOfYear)
+      = debop4k.timeperiod.utils.daysInMonth(year, monthOfYear)
 
   override fun weekOfYear(moment: DateTime): YearWeek
       = weekOfYear(moment)

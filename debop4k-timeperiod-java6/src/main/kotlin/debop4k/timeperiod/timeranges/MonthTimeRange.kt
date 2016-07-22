@@ -30,8 +30,7 @@ open class MonthTimeRange(startTime: DateTime = today(),
                           calendar: ITimeCalendar = DefaultTimeCalendar) :
     CalendarTimeRange(startTime.relativeMonthPeriod(monthCount), calendar) {
 
-  fun dayStream(): Sequence<DayRange> {
-
+  fun daySequence(): Sequence<DayRange> {
     return (0 until monthCount).flatMap { m ->
       val monthStart = start.plusMonths(m)
       val dayCountInMonth = monthStart.daysInMonth()
