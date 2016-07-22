@@ -17,17 +17,18 @@ package debop4k.core
 
 import org.junit.Test
 
+
 /**
  * @author sunghyouk.bae@gmail.com
  */
 class SystemsTest : AbstractCoreTest() {
 
   @Test fun retrieveJavaSpecificationVersion() {
-    log.debug("java version={}, implementation={}", JVM_VERSION, JVM_IMPLEMENTATION_VERSION)
-    log.debug("java vendor={}, implementation={}", JVM_VENDOR, JVM_IMPLEMENTATION_VENDOR)
+    log.debug("java version={}, implementation={}", Systems.JVM_VERSION, Systems.JVM_IMPLEMENTATION_VERSION)
+    log.debug("java vendor={}, implementation={}", Systems.JVM_VENDOR, Systems.JVM_IMPLEMENTATION_VENDOR)
 
-    log.debug("Java6={}", isJava6)
-    log.debug("Java7={}", isJava7)
-    log.debug("Java8={}", isJava8)
+    log.debug("Java6={}", Systems.isJava6)
+    log.debug("Java7={}", Systems.isJava7)
+    log.debug("Java8={}", Systems.isJava8)
   }
 }

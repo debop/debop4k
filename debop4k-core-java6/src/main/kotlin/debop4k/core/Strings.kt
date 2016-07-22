@@ -22,7 +22,6 @@ const val EMPTY_STRING = ""
 const val NULL_STRING = "<null>"
 const val TAB: String = "\t"
 const val COMMA: String = ","
-val LINE_SEPARATOR: String by lazy { System.getProperty("line.separator") }
 
 
 public fun CharSequence.isEmpty(): Boolean = trim().length == 0

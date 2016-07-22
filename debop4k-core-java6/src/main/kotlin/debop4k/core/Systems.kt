@@ -12,36 +12,57 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-@file:JvmName("SystemExtensions")
-
 package debop4k.core
 
-/** JVM 버전 */
-val JVM_VERSION: String by lazy {
-  Runtime::class.java.`package`.specificationVersion
+object Systems {
+
+  val RuntimePackage: Package by lazy { Runtime::class.java.`package` }
+
+
+  /** JVM 버전 */
+  val JVM_VERSION: String by lazy {
+    RuntimePackage.specificationVersion
+  }
+
+  /** JVM 구현 버전 */
+  val JVM_IMPLEMENTATION_VERSION: String by lazy {
+    RuntimePackage.implementationVersion
+  }
+
+  /** JVM 벤더 */
+  val JVM_VENDOR: String by lazy {
+    RuntimePackage.specificationVendor
+  }
+
+  /** JVM 구현 벤더  */
+  val JVM_IMPLEMENTATION_VENDOR: String by lazy {
+    RuntimePackage.implementationVendor
+  }
+
+  /** Java 6 인가 */
+  val isJava6: Boolean by lazy { JVM_VERSION.toDouble() == 1.6 }
+
+  /** Java 7 인가 */
+  val isJava7: Boolean by lazy { JVM_VERSION.toDouble() == 1.7 }
+
+  /** Java 8 인가 */
+  val isJava8: Boolean by lazy { JVM_VERSION.toDouble() == 1.8 }
+
+  val JAVA_HOME: String by lazy { System.getProperty("java.home") }
+
+  val LINE_SEPARATOR: String by lazy { System.getProperty("line.separator") }
+
+  val FILE_SEPARATOR: String by lazy { System.getProperty("file.separator") }
+
+  val PATH_SEPARATOR: String by lazy { System.getProperty("path.separator") }
+
+  val USER_NAME: String by lazy { System.getProperty("user.name") }
+
+  val USER_HOME: String by lazy { System.getProperty("user.hone") }
+
+  val USER_DIR: String by lazy { System.getProperty("user.dir") }
+
+  val TEMP_DIR: String by lazy { System.getProperty("java.io.tmpdir") }
+
+  val JAVA_CLASS_VERSION: String by lazy { System.getProperty("java.class.version") }
 }
-
-/** JVM 구현 버전 */
-val JVM_IMPLEMENTATION_VERSION: String by lazy {
-  Runtime::class.java.`package`.implementationVersion
-}
-
-/** JVM 벤더 */
-val JVM_VENDOR: String by lazy {
-  Runtime::class.java.`package`.specificationVendor
-}
-
-/** JVM 구현 벤더  */
-val JVM_IMPLEMENTATION_VENDOR: String by lazy {
-  Runtime::class.java.`package`.implementationVendor
-}
-
-/** Java 6 인가 */
-val isJava6: Boolean by lazy { JVM_VERSION.toDouble() == 1.6 }
-
-/** Java 7 인가 */
-val isJava7: Boolean by lazy { JVM_VERSION.toDouble() == 1.7 }
-
-/** Java 8 인가 */
-val isJava8: Boolean by lazy { JVM_VERSION.toDouble() == 1.8 }
