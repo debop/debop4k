@@ -70,7 +70,7 @@ open class TimePeriodCollection : TimePeriodContainer(), ITimePeriodCollection {
 
     @JvmStatic fun of(vararg elements: ITimePeriod): TimePeriodCollection {
       val collection = TimePeriodCollection()
-      collection.addAll(*elements)
+      collection.addAll(elements)
       return collection
     }
   }

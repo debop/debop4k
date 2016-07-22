@@ -100,9 +100,9 @@ open class TimePeriodContainer : TimePeriod(), ITimePeriodContainer {
     }
   }
 
-  override fun addAll(vararg elements: ITimePeriod) {
-    elements.forEach { e -> add(e) }
-  }
+//  override fun addAll(vararg elements: ITimePeriod) {
+//    elements.forEach { e -> add(e) }
+//  }
 
   override fun addAll(elements: Collection<ITimePeriod>): Boolean {
     elements.forEach { e -> add(e) }
@@ -209,7 +209,7 @@ open class TimePeriodContainer : TimePeriod(), ITimePeriodContainer {
 
     @JvmStatic fun of(vararg elements: ITimePeriod): TimePeriodContainer {
       val container = TimePeriodContainer()
-      container.addAll(*elements)
+      container.addAll(elements.asIterable())
       return container
     }
   }

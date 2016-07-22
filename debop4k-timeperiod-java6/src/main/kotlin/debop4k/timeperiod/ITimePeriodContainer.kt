@@ -34,18 +34,20 @@ interface ITimePeriodContainer : MutableList<ITimePeriod>, ITimePeriod {
 
   override val readOnly: Boolean
 
-  fun containsPeriod(target: ITimePeriod): Boolean
+  abstract fun containsPeriod(target: ITimePeriod): Boolean
 
-  fun addAll(vararg elements: ITimePeriod): Unit
+//  fun addAll(vararg elements: ITimePeriod): Unit
 
-  fun removeIf(filter: (ITimePeriod) -> Boolean): Boolean
+  override fun addAll(elements: Collection<ITimePeriod>): Boolean
 
-  fun sortByStart(sortDir: SortDirection = ASC): Unit
+  abstract fun removeIf(filter: (ITimePeriod) -> Boolean): Boolean
 
-  fun sortByEnd(sortDir: SortDirection = ASC): Unit
+  abstract fun sortByStart(sortDir: SortDirection = ASC): Unit
 
-  fun sortByDuration(sortDir: SortDirection = ASC): Unit
+  abstract fun sortByEnd(sortDir: SortDirection = ASC): Unit
 
-  fun compare(x: ITimePeriod, y: ITimePeriod): Int
+  abstract fun sortByDuration(sortDir: SortDirection = ASC): Unit
+
+  abstract fun compare(x: ITimePeriod, y: ITimePeriod): Int
 
 }
