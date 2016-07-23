@@ -28,6 +28,10 @@ fun <V> async(context: Context = Kovenant.context, body: () -> V): Promise<V, Ex
   return task(context) { body() }
 }
 
+fun <V> asyncAll(context: Context = Kovenant.context, tasks: List<() -> V>): Collection<Promise<V, Exception>> {
+  return tasks.map { task { it() } }
+}
+
 
 fun <V> Promise<V, Exception>.await(): Unit {
   val latch = CountDownLatch(1)
@@ -35,25 +39,9 @@ fun <V> Promise<V, Exception>.await(): Unit {
   latch.await()
 }
 
-fun <V> awaitAll(vararg promises: Promise<V, Exception>): Unit {
-  all(*promises)
+fun <V> awaitAll(vararg promises: Promise<V, Exception>) = all(*promises)
 
-//  val latch = CountDownLatch(promises.size)
-//  promises.forEach { p ->
-//    p always { latch.countDown() }
-//  }
-//  latch.await()
-}
-
-fun <V> awaitAll(promises: Collection<Promise<V, Exception>>): Unit {
-  all(*promises.toTypedArray())
-//  val latch = CountDownLatch(promises.size)
-//  promises.forEach { p ->
-//    p always { latch.countDown() }
-//  }
-//  latch.await()
-}
-
+fun <V> awaitAll(promises: Collection<Promise<V, Exception>>) = all(*promises.toTypedArray())
 
 /**
  * [Promise] 이 모두 완료될 때까지 기다립니다.
@@ -96,6 +84,4 @@ fun <V> resultAll(vararg promises: Promise<V, Exception>): Collection<V> {
  */
 fun <V> resultAll(promises: Collection<Promise<V, Exception>>): Collection<V> {
   return all(*promises.toTypedArray()).ready().get()
-//  awaitAll(promises)
-//  return promises.map { it.get() }
 }

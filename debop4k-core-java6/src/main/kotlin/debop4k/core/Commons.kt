@@ -70,7 +70,6 @@ fun <T : Any, R : Any> Collection<T?>.whenAnyNotNull(block: (Collection<T>) -> R
 }
 
 
-
 @JvmOverloads
 fun Any?.asChar(dv: Char = 0.toChar()): Char = when (this) {
   null -> dv
@@ -171,8 +170,10 @@ fun Any?.asBigInt(dv: BigInteger = BigInteger.ZERO): BigInteger = when (this) {
   }
 }
 
-fun Any?.asString(): String = this?.toString() ?: ""
+@JvmOverloads
+fun Any?.asString(dv: String = ""): String = this?.toString() ?: dv
 
+@JvmOverloads
 fun Any?.asDateTime(dv: DateTime = UnixEpoch): DateTime = when (this) {
   null -> dv
   is Number -> DateTime(this.toLong())
@@ -187,6 +188,7 @@ fun Any?.asDateTime(dv: DateTime = UnixEpoch): DateTime = when (this) {
   }
 }
 
+@JvmOverloads
 fun Any?.asDate(dv: Date = Date(0L)): Date = when (this) {
   null -> dv
   is Number -> Date(this.toLong())
@@ -199,6 +201,7 @@ fun Any?.asDate(dv: Date = Date(0L)): Date = when (this) {
     dv
   }
 }
+
 
 fun Any?.asClass(): Class<*> = when (this) {
   null -> throw NullPointerException()

@@ -18,7 +18,7 @@
 package debop4k.timeperiod.utils
 
 import debop4k.core.NULL_STRING
-import debop4k.core.collections.eclipseCollections.parallelCollect
+import debop4k.core.collections.eclipseCollections.parallelMap
 import debop4k.core.kodatimes.*
 import debop4k.timeperiod.*
 import debop4k.timeperiod.models.PeriodRelation
@@ -424,7 +424,7 @@ fun ITimePeriod.weekSequence(): FastList<out ITimePeriod> {
     weeks.add(TimeRange(current, end))
   }
 
-  return weeks;
+  return weeks
 }
 
 fun ITimePeriod.daySequence(): FastList<out ITimePeriod> {
@@ -529,7 +529,7 @@ fun <R> ITimePeriod.mapPeriod(unit: PeriodUnit, func: (ITimePeriod) -> R): FastL
 }
 
 fun <R> ITimePeriod.mapPeriodAsParallel(unit: PeriodUnit, func: (ITimePeriod) -> R): List<R> {
-  return this.periodStream(unit).parallelCollect(func).toList()
+  return this.periodStream(unit).parallelMap(mapper = func).toList()
 }
 
 fun ITimePeriod?.asString(): String = this?.toString() ?: NULL_STRING

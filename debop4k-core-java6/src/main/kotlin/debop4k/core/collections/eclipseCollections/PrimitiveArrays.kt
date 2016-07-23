@@ -12,12 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package debop4k.core.collections.eclipseCollections
 
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.eclipse.collections.impl.list.mutable.primitive.*
+import org.eclipse.collections.impl.list.primitive.IntInterval
 import org.eclipse.collections.impl.map.mutable.UnifiedMap
-import org.eclipse.collections.impl.parallel.ParallelIterate
 import org.eclipse.collections.impl.set.mutable.UnifiedSet
 
 //
@@ -25,20 +26,27 @@ import org.eclipse.collections.impl.set.mutable.UnifiedSet
 //
 
 // Primitive array
+fun Sequence<Char>.toCharArrayList(): CharArrayList = CharArrayList.newListWith(*this.toList().toCharArray())
 
-fun ByteArray.toByteArrayList(): ByteArrayList = ByteArrayList.newListWith(*this)
-fun ByteArrayList.asList(): List<Byte> = this.toArray().asList()
-fun byteArrayListOf(vararg values: Byte): ByteArrayList = ByteArrayList.newListWith(*values)
-
+fun Collection<Char>.toCharArrayList(): CharArrayList = this.asSequence().toCharArrayList()
 fun CharArray.toCharArrayList(): CharArrayList = CharArrayList.newListWith(*this)
 fun CharArrayList.asList(): List<Char> = this.toArray().asList()
 fun charArrayListOf(vararg values: Char): CharArrayList = CharArrayList.newListWith(*values)
 
+fun Sequence<Byte>.toByteArrayList(): ByteArrayList = ByteArrayList.newListWith(*this.toList().toByteArray())
+fun Collection<Byte>.toByteArrayList(): ByteArrayList = this.asSequence().toByteArrayList()
+fun ByteArray.toByteArrayList(): ByteArrayList = ByteArrayList.newListWith(*this)
+fun ByteArrayList.asList(): List<Byte> = this.toArray().asList()
+fun byteArrayListOf(vararg values: Byte): ByteArrayList = ByteArrayList.newListWith(*values)
+
+fun Sequence<Short>.toShortArrayList(): ShortArrayList = ShortArrayList.newListWith(*this.toList().toShortArray())
+fun Collection<Short>.toShortArrayList(): ShortArrayList = this.asSequence().toShortArrayList()
 fun ShortArray.toShortArrayList(): ShortArrayList = ShortArrayList.newListWith(*this)
 fun ShortArrayList.asList(): List<Short> = this.toArray().asList()
 fun shortArrayListOf(vararg values: Short): ShortArrayList = ShortArrayList.newListWith(*values)
 
 fun Sequence<Int>.toIntArrayList(): IntArrayList = IntArrayList.newListWith(*this.toList().toIntArray())
+fun Collection<Int>.toIntArrayList(): IntArrayList = this.asSequence().toIntArrayList()
 fun IntArray.toIntArrayList(): IntArrayList = IntArrayList.newListWith(*this)
 fun IntArrayList.asList(): List<Int> = this.toArray().asList()
 fun intArrayListOf(vararg values: Int): IntArrayList = IntArrayList.newListWith(*values)
@@ -49,16 +57,19 @@ fun intArrayListOf(iterable: Iterable<Int>): IntArrayList {
 }
 
 fun Sequence<Long>.toLongArrayList(): LongArrayList = LongArrayList.newListWith(*this.toList().toLongArray())
+fun Collection<Long>.toLongArrayList(): LongArrayList = this.asSequence().toLongArrayList()
 fun LongArray.toLongArrayList(): LongArrayList = LongArrayList.newListWith(*this)
 fun LongArrayList.asList(): List<Long> = this.toArray().asList()
 fun longArrayListOf(vararg values: Long): LongArrayList = LongArrayList.newListWith(*values)
 
 fun Sequence<Float>.toFloatArrayList(): FloatArrayList = FloatArrayList.newListWith(*this.toList().toFloatArray())
+fun Collection<Float>.toFloatArrayList(): FloatArrayList = this.asSequence().toFloatArrayList()
 fun FloatArray.toFloatArrayList(): FloatArrayList = FloatArrayList.newListWith(*this)
 fun FloatArrayList.asList(): List<Float> = this.toArray().asList()
 fun floatArrayListOf(vararg values: Float): FloatArrayList = FloatArrayList.newListWith(*values)
 
 fun Sequence<Double>.toDoubleArrayList(): DoubleArrayList = DoubleArrayList.newListWith(*this.toList().toDoubleArray())
+fun Collection<Double>.toDoubleArrayList(): DoubleArrayList = this.asSequence().toDoubleArrayList()
 fun DoubleArray.toDoubleArrayList(): DoubleArrayList = DoubleArrayList.newListWith(*this)
 fun DoubleArrayList.asList(): List<Double> = this.toArray().asList()
 fun doubleArrayListOf(vararg values: Double): DoubleArrayList = DoubleArrayList.newListWith(*values)
@@ -103,9 +114,11 @@ fun <K, V> unifiedMapOf(vararg pairs: Pair<K, V>): UnifiedMap<K, V> {
   return map
 }
 
+// Kotlin IntProgress
 
-// Parallel collector
-
-fun <T, V> Iterable<T>.parallelCollect(selector: (T) -> V): Iterable<V> {
-  return ParallelIterate.collect(this, selector, true)
+/**
+ * [IntProgression] 을 [IntArrayList] 로 변환
+ */
+fun IntProgression.toIntArrayList(): IntArrayList {
+  return IntArrayList.newList(IntInterval.fromToBy(this.first, this.last, this.step))
 }

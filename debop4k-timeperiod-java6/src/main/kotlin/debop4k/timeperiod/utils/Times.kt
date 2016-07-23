@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 
-@file:JvmName("Times")
-
 package debop4k.timeperiod.utils
 
 import debop4k.core.kodatimes.*

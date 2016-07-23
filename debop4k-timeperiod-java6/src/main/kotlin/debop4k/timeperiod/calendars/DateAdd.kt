@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory
 
 /**
  * 특정 일자로부터 미래로(Forward)로 특정 기간을 이후의 일자를 계산합니다.
- * 휴일 등을 제외한 특정 기간 산정을 탐색을 통해 수행합니다.
+ * 특정 기간 산정을 탐색을 통해 수행합니다.
  *
  * @author sunghyouk.bae@gmail.com
  */
@@ -224,7 +224,8 @@ open class DateAdd {
       val gap = availablePeriods[i]
       val gapRemaining = Duration(gap.start, _seekMoment)
 
-      log.trace("gap={}, gamRemaining={}, remaning={}, seekMoment={}", gap, gapRemaining, _remaining, _seekMoment)
+      log.trace("gap={}, gamRemaining={}, remaning={}, seekMoment={}",
+                gap, gapRemaining, _remaining, _seekMoment)
 
       val isTargetPeriod =
           if (seekBoundary === SeekBoundaryMode.Fill)

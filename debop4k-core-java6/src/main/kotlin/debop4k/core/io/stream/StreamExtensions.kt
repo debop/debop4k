@@ -17,7 +17,7 @@
 
 package debop4k.core.io.stream
 
-import debop4k.core.emptyByteArray
+import debop4k.core.collections.emptyByteArray
 import org.slf4j.LoggerFactory
 import org.springframework.util.FastByteArrayOutputStream
 import java.io.BufferedInputStream

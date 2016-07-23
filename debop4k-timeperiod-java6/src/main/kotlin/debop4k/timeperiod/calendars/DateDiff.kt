@@ -31,7 +31,9 @@ import org.joda.time.DateTime
 import org.joda.time.Duration
 
 /**
- * Created by debop
+ * 특정 기간의 [Duration] 을 계산합니다.
+ *
+ * @author sunghyouk.bae@gmail.com
  */
 open class DateDiff(val start: DateTime,
                     val end: DateTime = now(),

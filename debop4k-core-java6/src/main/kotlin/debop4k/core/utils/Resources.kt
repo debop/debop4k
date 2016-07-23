@@ -15,7 +15,7 @@
 
 package debop4k.core.utils
 
-import debop4k.core.emptyByteArray
+import debop4k.core.collections.emptyByteArray
 import debop4k.core.io.stream.toByteArray
 import debop4k.core.io.stream.toString
 import debop4k.core.shouldNotBeNullOrBlank

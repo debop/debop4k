@@ -28,7 +28,10 @@ import org.joda.time.Duration
 import org.slf4j.LoggerFactory
 
 /**
- * Created by debop
+ * 특정 일자로부터 미래로(Forward)로 특정 기간을 이후의 일자를 계산합니다.
+ * Calendar 의 휴일 등을 제외한 특정 기간 산정을 탐색을 통해 수행합니다.
+ *
+ * @author sunghyouk.bae@gmail.com
  */
 open class CalendarDateAdd : DateAdd() {
 

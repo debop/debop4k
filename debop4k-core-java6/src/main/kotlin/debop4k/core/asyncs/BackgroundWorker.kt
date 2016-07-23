@@ -13,30 +13,21 @@
  * limitations under the License.
  */
 
-package debop4k.core.compressions
-
-import debop4k.core.collections.emptyByteArray
-import debop4k.core.collections.isNullOrEmpty
-import org.xerial.snappy.Snappy
+package debop4k.core.asyncs
 
 /**
- * Snappy 압축 라이브러리를 이용한 압축기
- * @author sunghyouk.bae@gmail.com
+ * BackgroundWorker
+ * @author debop sunghyouk.bae@gmail.com
  */
-public sealed class SnappyCompressor : Compressor {
+interface BackgroundWorker {
 
-  override fun compress(input: ByteArray?): ByteArray {
-    if (input.isNullOrEmpty)
-      return emptyByteArray()
+  val name: String
 
-    return Snappy.compress(input)
-  }
+  val isRunning: Boolean
 
-  override fun decompress(input: ByteArray?): ByteArray {
-    if (input.isNullOrEmpty)
-      return emptyByteArray()
+  fun start(): Unit
 
-    return Snappy.uncompress(input)
-  }
+  fun stop(): Unit
 
 }
+

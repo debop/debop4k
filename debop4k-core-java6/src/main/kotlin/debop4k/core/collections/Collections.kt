@@ -12,8 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package debop4k.core.collections
 
+import debop4k.core.*
 import java.util.concurrent.atomic.*
 
 fun <T> Collection<T>.head(): T? = if (this.size > 0) this.elementAt(0) else null
@@ -118,5 +120,75 @@ class LazyBatchSequence<T>(val stream: Iterable<T>, val groupSize: Int = 1) : Se
       }
     }
   }
+}
 
+
+@JvmOverloads
+fun Sequence<Any?>.asCharArray(dv: Char = 0.toChar()): CharArray = map { it.asChar(dv) }.toList().toCharArray()
+
+@JvmOverloads
+fun Collection<Any?>.asCharArray(dv: Char = 0.toChar()): CharArray = map { it.asChar(dv) }.toCharArray()
+
+@JvmOverloads
+fun Sequence<Any?>.asByteArray(dv: Byte = 0): ByteArray = map { it.asByte(dv) }.toList().toByteArray()
+
+@JvmOverloads
+fun Collection<Any?>.asByteArray(dv: Byte = 0): ByteArray = map { it.asByte(dv) }.toByteArray()
+
+@JvmOverloads
+fun Sequence<Any?>.asShortArray(dv: Short = 0): ShortArray = map { it.asShort(dv) }.toList().toShortArray()
+
+@JvmOverloads
+fun Collection<Any?>.asShortArray(dv: Short = 0): ShortArray = map { it.asShort(dv) }.toShortArray()
+
+@JvmOverloads
+fun Sequence<Any?>.asIntArray(dv: Int = 0): IntArray = map { it.asInt(dv) }.toList().toIntArray()
+
+@JvmOverloads
+fun Collection<Any?>.asIntArray(dv: Int = 0): IntArray = map { it.asInt(dv) }.toIntArray()
+
+@JvmOverloads
+fun Sequence<Any?>.asLongArray(dv: Long = 0L): LongArray = map { it.asLong(dv) }.toList().toLongArray()
+
+@JvmOverloads
+fun Collection<Any?>.asLongArray(dv: Long = 0L): LongArray = map { it.asLong(dv) }.toLongArray()
+
+@JvmOverloads
+fun Sequence<Any?>.asFloatArray(dv: Float = 0F): FloatArray = map { it.asFloat(dv) }.toList().toFloatArray()
+
+@JvmOverloads
+fun Collection<Any?>.asFloatArray(dv: Float = 0F): FloatArray = map { it.asFloat(dv) }.toFloatArray()
+
+@JvmOverloads
+fun Sequence<Any?>.asDoubleArray(dv: Double = 0.0): DoubleArray = map { it.asDouble(dv) }.toList().toDoubleArray()
+
+@JvmOverloads
+fun Collection<Any?>.asDoubleArray(dv: Double = 0.0): DoubleArray = map { it.asDouble(dv) }.toDoubleArray()
+
+
+@JvmOverloads
+fun Sequence<Any?>.asStringArray(dv: String = ""): Array<String> = map { it.asString(dv) }.toList().toTypedArray()
+
+@JvmOverloads
+fun Collection<Any?>.asStringArray(dv: String = ""): Array<String> = map { it.asString(dv) }.toTypedArray()
+
+
+fun <T> generateByteArray(length: Int, generator: (Int) -> Byte): ByteArray {
+  return (0 until length).map { i -> generator(i) }.asByteArray()
+}
+
+fun <T> generateIntArray(length: Int, generator: (Int) -> Int): IntArray {
+  return (0 until length).map { i -> generator(i) }.asIntArray()
+}
+
+fun <T> generateLongArray(length: Int, generator: (Int) -> Long): LongArray {
+  return (0 until length).map { i -> generator(i) }.asLongArray()
+}
+
+fun <T> generateFloatArray(length: Int, generator: (Int) -> Float): FloatArray {
+  return (0 until length).map { i -> generator(i) }.asFloatArray()
+}
+
+fun <T> generateDoubleArray(length: Int, generator: (Int) -> Double): DoubleArray {
+  return (0 until length).map { i -> generator(i) }.asDoubleArray()
 }

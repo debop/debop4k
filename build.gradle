@@ -90,7 +90,8 @@ subprojects {
 
     test {
         ignoreFailures true
-//        jvmArgs "-XX:MaxPermSize=512m"
+        // JVM 버전에 따라 빌드가 실패할 수도 있어서
+        // jvmArgs "-XX:MaxPermSize=512m"
     }
 
     repositories {
