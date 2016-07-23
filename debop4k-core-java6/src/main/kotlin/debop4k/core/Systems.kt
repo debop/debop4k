@@ -12,9 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package debop4k.core
 
 object Systems {
+
+  val ProcessCount: Int by lazy { Runtime.getRuntime().availableProcessors() }
 
   val RuntimePackage: Package by lazy { Runtime::class.java.`package` }
 

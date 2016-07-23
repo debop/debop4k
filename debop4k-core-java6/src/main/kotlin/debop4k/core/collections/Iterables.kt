@@ -23,9 +23,7 @@ fun Iterable<*>.size(): Int {
   if (this is Collection<*>) {
     return this.size
   } else {
-    var count = 0
-    this.forEach { count++ }
-    return count
+    return this.count()
   }
 }
 

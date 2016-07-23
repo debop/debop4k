@@ -24,10 +24,12 @@ import java.util.concurrent.*
 /**
  * 특정 코드를 비동기 방식으로 작업하도록 합니다.
  */
+@JvmOverloads
 fun <V> async(context: Context = Kovenant.context, body: () -> V): Promise<V, Exception> {
   return task(context) { body() }
 }
 
+@JvmOverloads
 fun <V> asyncAll(context: Context = Kovenant.context, tasks: List<() -> V>): Collection<Promise<V, Exception>> {
   return tasks.map { task { it() } }
 }
