@@ -52,7 +52,7 @@ object Resources {
                classLoader: ClassLoader = Resources::class.java.classLoader): ByteArray {
     return classPathResourceStream(path)?.use { input ->
       input.toByteArray()
-    } ?: emptyByteArray()
+    } ?: emptyByteArray
   }
 
 }

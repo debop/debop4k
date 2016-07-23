@@ -27,13 +27,13 @@ class LZ4Compressor : Compressor {
 
   override fun compress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty)
-      return emptyByteArray()
+      return emptyByteArray
     return compressor.compress(input)
   }
 
   override fun decompress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty)
-      return emptyByteArray()
+      return emptyByteArray
 
     return decompressor.decompress(input, input!!.size * 1000)
   }

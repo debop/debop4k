@@ -12,17 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 @file:JvmName("RetryExtensions")
 
 package debop4k.core.retry
 
 import debop4k.core.functional.Option
 import debop4k.core.functional.eithers.Either
+import debop4k.core.kodatimes.periodOfSeconds
+import debop4k.core.kodatimes.standardDuration
+import org.joda.time.Duration
 
 
-const val DEFAULT_DELAY = 500
+val DEFAULT_DELAY: Duration = periodOfSeconds(5).standardDuration
 
-class Successful<T>(val predicate: (T) -> Boolean) {
+class Successful<in T>(val predicate: (T) -> Boolean) {
 
   fun <R : T> or(that: Successful<R>): Successful<R> = Successful<R> { predicate(it) || that.predicate(it) }
   fun <R : T> or(that: () -> Boolean): Successful<R> = Successful<R> { predicate(it) || that() }

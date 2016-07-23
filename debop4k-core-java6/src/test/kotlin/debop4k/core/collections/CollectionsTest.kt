@@ -23,7 +23,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import kotlin.test.fail
 
-class CollectionExtensionsTest : AbstractCoreTest() {
+class CollectionsTest : AbstractCoreTest() {
 
   @Test fun convertToListOfGroupsWithoutConsumingGroup() {
     run {
@@ -121,7 +121,7 @@ class CollectionExtensionsTest : AbstractCoreTest() {
         group.forEach { item -> items.add(item) }
       }
       assertThat(groupCount).isEqualTo(expectedGroups)
-      assertThat(testList).isEqualTo(items)
+      assertThat(testList.toIntArrayList()).isEqualTo(items)
     }
     run {
       var groupCount = 0
@@ -132,7 +132,7 @@ class CollectionExtensionsTest : AbstractCoreTest() {
         group.forEach { item -> items.add(item) }
       }
       assertThat(groupCount).isEqualTo(expectedGroups)
-      assertThat(testList).isEqualTo(items)
+      assertThat(testList.toIntArrayList()).isEqualTo(items)
     }
   }
 

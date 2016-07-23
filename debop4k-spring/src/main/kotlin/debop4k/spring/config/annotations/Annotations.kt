@@ -13,30 +13,27 @@
  * limitations under the License.
  */
 
-package debop4k.core.compressions
+package debop4k.spring.config.annotations
 
-import debop4k.core.collections.emptyByteArray
-import debop4k.core.collections.isNullOrEmpty
-import org.xerial.snappy.Snappy
+import org.springframework.context.annotation.Profile
 
-/**
- * Snappy 압축 라이브러리를 이용한 압축기
- * @author sunghyouk.bae@gmail.com
- */
-public sealed class SnappyCompressor : Compressor {
 
-  override fun compress(input: ByteArray?): ByteArray {
-    if (input.isNullOrEmpty)
-      return emptyByteArray
+@Target(AnnotationTarget.TYPE)
+@Retention(AnnotationRetention.RUNTIME)
+@Profile("local")
+annotation class LocalProfile
 
-    return Snappy.compress(input)
-  }
+@Target(AnnotationTarget.TYPE)
+@Retention(AnnotationRetention.RUNTIME)
+@Profile("dev", "develop", "development")
+annotation class DevelopProfile
 
-  override fun decompress(input: ByteArray?): ByteArray {
-    if (input.isNullOrEmpty)
-      return emptyByteArray
+@Target(AnnotationTarget.TYPE)
+@Retention(AnnotationRetention.RUNTIME)
+@Profile("test")
+annotation class TestProfile
 
-    return Snappy.uncompress(input)
-  }
-
-}
+@Target(AnnotationTarget.TYPE)
+@Retention(AnnotationRetention.RUNTIME)
+@Profile("prod", "production")
+annotation class ProductionProfile

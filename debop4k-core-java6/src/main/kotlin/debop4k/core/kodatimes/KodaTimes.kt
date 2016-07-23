@@ -309,7 +309,7 @@ fun Period.since(): DateTime = DateTime.now() + this
 fun Period.later(): DateTime = DateTime.now() + this
 fun Period.from(moment: DateTime): DateTime = moment + this
 fun Period.before(moment: DateTime): DateTime = moment - this
-fun Period.standardDuration(): Duration = this.toStandardDuration()
+val Period.standardDuration: Duration get() = this.toStandardDuration()
 
 fun periodOfYears(y: Int): Period = Period.years(y)
 fun periodOfMonths(m: Int): Period = Period.months(m)

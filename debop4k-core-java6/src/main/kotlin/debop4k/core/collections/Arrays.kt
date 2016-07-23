@@ -15,14 +15,14 @@
 
 package debop4k.core.collections
 
-fun emptyCharArray() = CharArray(0)
-fun emptyByteArray() = ByteArray(0)
-fun emptyShortArray() = ShortArray(0)
-fun emptyIntArray() = IntArray(0)
-fun emptyLongArray() = LongArray(0)
-fun emptyFloatArray() = FloatArray(0)
-fun emptyDoubleArray() = DoubleArray(0)
-fun emptyStringArray() = arrayOf<String>()
+val emptyCharArray: CharArray get() = CharArray(0)
+val emptyByteArray: ByteArray get() = ByteArray(0)
+val emptyShortArray: ShortArray get() = ShortArray(0)
+val emptyIntArray: IntArray get() = IntArray(0)
+val emptyLongArray: LongArray get() = LongArray(0)
+val emptyFloatArray: FloatArray get() = FloatArray(0)
+val emptyDoubleArray: DoubleArray get() = DoubleArray(0)
+val emptyStringArray: Array<String> get() = arrayOf<String>()
 
 val CharArray?.isNullOrEmpty: Boolean get() = this == null || this.isEmpty()
 val ByteArray?.isNullOrEmpty: Boolean get() = this == null || this.isEmpty()
@@ -41,4 +41,6 @@ val LongArray?.nonEmpty: Boolean get() = this != null && this.isNotEmpty()
 val FloatArray?.nonEmpty: Boolean get() = this != null && this.isNotEmpty()
 val DoubleArray?.nonEmpty: Boolean get() = this != null && this.isNotEmpty()
 val Array<*>?.nonEmpty: Boolean get() = this != null && this.isNotEmpty()
+
+
 

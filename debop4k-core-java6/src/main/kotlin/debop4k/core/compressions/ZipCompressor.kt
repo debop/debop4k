@@ -28,7 +28,7 @@ class ZipCompressor : Compressor {
 
   override fun compress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty)
-      return emptyByteArray()
+      return emptyByteArray
 
     FastByteArrayOutputStream().use { bos ->
       ZipOutputStream(bos).use { zip ->
@@ -40,7 +40,7 @@ class ZipCompressor : Compressor {
 
   override fun decompress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty)
-      return emptyByteArray()
+      return emptyByteArray
 
     BufferedInputStream(ByteArrayInputStream(input)).use { bis ->
       ZipInputStream(bis).use { zip ->

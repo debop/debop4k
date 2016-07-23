@@ -31,7 +31,7 @@ class BinarySerializer : Serializer {
 
   override fun serialize(graph: Any?): ByteArray {
     if (graph == null)
-      return emptyByteArray()
+      return emptyByteArray
 
     FastByteArrayOutputStream().use { bos ->
       ObjectOutputStream(bos).use { oos ->

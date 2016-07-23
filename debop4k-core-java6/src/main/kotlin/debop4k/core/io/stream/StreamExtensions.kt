@@ -29,7 +29,7 @@ import java.nio.charset.Charset
 
 private val log = LoggerFactory.getLogger("streams")
 
-fun emptyInputStream(): InputStream = ByteArrayInputStream(emptyByteArray())
+fun emptyInputStream(): InputStream = ByteArrayInputStream(emptyByteArray)
 
 /**
  * [InputStream] 을 읽어 [OutputStream] 에 씁니다.

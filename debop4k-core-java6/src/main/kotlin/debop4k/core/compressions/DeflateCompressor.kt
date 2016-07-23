@@ -31,7 +31,7 @@ class DeflateCompressor : Compressor {
 
   override fun compress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty)
-      return emptyByteArray()
+      return emptyByteArray
 
     FastByteArrayOutputStream().use { bos ->
       DeflaterOutputStream(bos).use { deflater ->
@@ -43,7 +43,7 @@ class DeflateCompressor : Compressor {
 
   override fun decompress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty)
-      return emptyByteArray()
+      return emptyByteArray
 
     BufferedInputStream(ByteArrayInputStream(input)).use { bis ->
       InflaterInputStream(bis).use { inflater ->

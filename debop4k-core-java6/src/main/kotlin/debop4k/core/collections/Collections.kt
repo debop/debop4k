@@ -192,3 +192,16 @@ fun <T> generateFloatArray(length: Int, generator: (Int) -> Float): FloatArray {
 fun <T> generateDoubleArray(length: Int, generator: (Int) -> Double): DoubleArray {
   return (0 until length).map { i -> generator(i) }.asDoubleArray()
 }
+
+
+/**
+ * 현 컬렉션의 항목수가 지정한 항목 수보다 작다면, `item` 값을 추가합니다.
+ */
+fun <T> Collection<T>.padTo(itemCount: Int, item: T): Collection<T> {
+  val list = this.toMutableList()
+  val count = itemCount - this.size
+  (0 until count).forEach {
+    list.add(item)
+  }
+  return list
+}

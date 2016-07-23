@@ -13,30 +13,20 @@
  * limitations under the License.
  */
 
-package debop4k.core.compressions
-
-import debop4k.core.collections.emptyByteArray
-import debop4k.core.collections.isNullOrEmpty
-import org.xerial.snappy.Snappy
+package debop4k.spring.config
 
 /**
- * Snappy 압축 라이브러리를 이용한 압축기
- * @author sunghyouk.bae@gmail.com
+ * Profiles
+ * @author debop sunghyouk.bae@gmail.com
  */
-public sealed class SnappyCompressor : Compressor {
+enum class Profiles(val profileName: String) {
 
-  override fun compress(input: ByteArray?): ByteArray {
-    if (input.isNullOrEmpty)
-      return emptyByteArray
+  Local("local"),
 
-    return Snappy.compress(input)
-  }
+  Develop("develop"),
 
-  override fun decompress(input: ByteArray?): ByteArray {
-    if (input.isNullOrEmpty)
-      return emptyByteArray
+  Test("test"),
 
-    return Snappy.uncompress(input)
-  }
+  Production("production");
 
 }

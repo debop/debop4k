@@ -31,7 +31,7 @@ public sealed class GZipCompressor : Compressor {
 
   override fun compress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty)
-      return emptyByteArray()
+      return emptyByteArray
 
     FastByteArrayOutputStream().use { bos ->
       GZIPOutputStream(bos).use { gzip ->
@@ -43,7 +43,7 @@ public sealed class GZipCompressor : Compressor {
 
   override fun decompress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty)
-      return emptyByteArray()
+      return emptyByteArray
 
     BufferedInputStream(ByteArrayInputStream(input)).use { bis ->
       GZIPInputStream(bis).use { gzip ->
