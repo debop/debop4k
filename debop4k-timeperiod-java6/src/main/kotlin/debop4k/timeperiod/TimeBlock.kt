@@ -27,25 +27,18 @@ import org.joda.time.Duration
 class TimeBlock(start: DateTime = MinPeriodTime,
                 end: DateTime = MaxPeriodTime,
                 readOnly: Boolean = false) : TimePeriod(start, end, readOnly), ITimeBlock {
-  companion object {
-    @JvmStatic fun of(src: ITimePeriod): TimeBlock = TimeBlock(src.start, src.end, src.readOnly)
-    @JvmStatic fun of(src: ITimePeriod, readonly: Boolean): TimeBlock = TimeBlock(src.start, src.end, readonly)
-    @JvmStatic fun withMoment(moment: DateTime, readOnly: Boolean = false): TimeBlock
-        = TimeBlock(moment, moment, readOnly)
 
-    @JvmStatic @JvmOverloads fun of(start: DateTime, duration: Duration, readOnly: Boolean = false): TimeBlock {
-      assert(duration >= Duration.ZERO)
-      return TimeBlock(start, start + duration, readOnly)
-    }
+  constructor(src: ITimePeriod) : this(src.start, src.end, src.readOnly)
+  constructor(src: ITimePeriod, readOnly: Boolean) : this(src.start, src.end, readOnly)
+  constructor(moment: DateTime, readOnly: Boolean = false) : this(moment, moment, readOnly)
 
-    @JvmStatic @JvmOverloads fun of(duration: Duration, end: DateTime, readOnly: Boolean = false): TimeBlock {
-      assert(duration >= Duration.ZERO)
-      return TimeBlock(end - duration, end, readOnly)
-    }
+  @JvmOverloads
+  constructor(start: DateTime, duration: Duration, readOnly: Boolean = false)
+  : this(start, start + duration, readOnly)
 
-    @JvmStatic @JvmOverloads fun of(start: DateTime, end: DateTime, readOnly: Boolean = false): TimeBlock
-        = TimeBlock(start, end, readOnly)
-  }
+  @JvmOverloads
+  constructor(duration: Duration, end: DateTime, readOnly: Boolean = false)
+  : this(end - duration, end, readOnly)
 
   override var duration: Duration
     get() = super.duration

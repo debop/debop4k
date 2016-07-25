@@ -56,11 +56,11 @@ fun allItemsAreEqual(left: Iterable<ITimePeriod>, right: Iterable<ITimePeriod>):
   return !l.hasNext() && !r.hasNext()
 }
 
-fun DateTime.timeBlock(duration: Duration): TimeBlock = TimeBlock.of(this, duration)
-fun DateTime.timeBlock(end: DateTime): TimeBlock = TimeBlock.of(this, end)
+fun DateTime.timeBlock(duration: Duration): TimeBlock = TimeBlock(this, duration)
+fun DateTime.timeBlock(end: DateTime): TimeBlock = TimeBlock(this, end)
 
-fun DateTime.timeRange(duration: Duration): TimeRange = TimeRange.of(this, duration)
-fun DateTime.timeRange(end: DateTime): TimeRange = TimeRange.of(this, end)
+fun DateTime.timeRange(duration: Duration): TimeRange = TimeRange(this, duration)
+fun DateTime.timeRange(end: DateTime): TimeRange = TimeRange(this, end)
 
 fun relativeYearPeriod(year: Int, yearCount: Int): TimeRange {
   return startTimeOfYear(year).relativeYearPeriod(yearCount)
@@ -125,7 +125,7 @@ fun DateTime.periodOf(unit: PeriodUnit, calendar: ITimeCalendar = DefaultTimeCal
     PeriodUnit.DAY -> DayRange(this, calendar)
     PeriodUnit.HOUR -> HourRange(this, calendar)
     PeriodUnit.MINUTE -> MinuteRange(this, calendar)
-    PeriodUnit.SECOND -> TimeRange.of(this.startTimeOfSecond(), 1.seconds().duration)
+    PeriodUnit.SECOND -> TimeRange(this.startTimeOfSecond(), 1.seconds().duration)
     else ->
       throw UnsupportedOperationException("지원하지 않는 Period Unit 입니다. unit=$unit")
   }
@@ -209,7 +209,7 @@ fun ITimePeriod.intersectBlock(target: ITimePeriod): TimeBlock? {
   if (this.intersectWith(target)) {
     val start = this.start max target.start
     val end = this.end min target.end
-    intersection = TimeBlock.of(start, end, this.readOnly)
+    intersection = TimeBlock(start, end, this.readOnly)
   }
   return intersection
 }
@@ -220,7 +220,7 @@ fun ITimePeriod.intersectRange(target: ITimePeriod): TimeRange? {
   if (this.intersectWith(target)) {
     val start = this.start max target.start
     val end = this.end min target.end
-    intersection = TimeRange.of(start, end, this.readOnly)
+    intersection = TimeRange(start, end, this.readOnly)
   }
   return intersection
 }
@@ -229,14 +229,14 @@ fun ITimePeriod.unionBlock(target: ITimePeriod): TimeBlock {
   val start = this.start min target.start
   val end = this.end max target.end
 
-  return TimeBlock.of(start, end, this.readOnly)
+  return TimeBlock(start, end, this.readOnly)
 }
 
 fun ITimePeriod.unionRange(target: ITimePeriod): TimeRange {
   val start = this.start min target.start
   val end = this.end max target.end
 
-  return TimeRange.of(start, end, this.readOnly)
+  return TimeRange(start, end, this.readOnly)
 }
 
 fun ITimePeriod.assertMutable(): Unit {
@@ -262,7 +262,7 @@ fun ITimePeriod.yearSequence(): FastList<out ITimePeriod> {
     return years
 
   if (this.start.isSameYear(this.end)) {
-    years.add(TimeRange.of(this))
+    years.add(TimeRange(this))
     return years
   }
 
@@ -403,7 +403,7 @@ fun ITimePeriod.weekSequence(): FastList<out ITimePeriod> {
 
   var current = start
   val endWeek = current.endTimeOfWeek()
-  val head = TimeRange.of(current, endWeek)
+  val head = TimeRange(current, endWeek)
   weeks.add(head)
 
   if (endWeek >= end) {

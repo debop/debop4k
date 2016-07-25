@@ -29,16 +29,11 @@ data class TimeCalendarConfig(val locale: Locale = Locale.getDefault(),
 
   companion object {
 
-    val DEFAULT = of()
-    val EMPTY_OFFSET: TimeCalendarConfig = TimeCalendarConfig(startOffset = EmptyDuration,
-                                                              endOffset = EmptyDuration)
+    val DEFAULT: TimeCalendarConfig by lazy { TimeCalendarConfig() }
 
-    @JvmOverloads
-    fun of(locale: Locale = Locale.getDefault(),
-           startOffset: Duration = DefaultStartOffset,
-           endOffset: Duration = DefaultEndOffset,
-           firstDayOfWeek: DayOfWeek = FirstDayOfWeek): TimeCalendarConfig {
-      return TimeCalendarConfig(locale, startOffset, endOffset, firstDayOfWeek)
+    val EMPTY_OFFSET: TimeCalendarConfig by lazy {
+      TimeCalendarConfig(startOffset = EmptyDuration,
+                         endOffset = EmptyDuration)
     }
   }
 }

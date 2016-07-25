@@ -62,13 +62,15 @@ open class TimePeriodCollection : TimePeriodContainer(), ITimePeriodCollection {
   }
 
   companion object {
-    @JvmStatic fun of(c: Collection<ITimePeriod>): TimePeriodCollection {
+    @JvmStatic
+    fun of(c: Collection<ITimePeriod>): TimePeriodCollection {
       val collection = TimePeriodCollection()
       collection.addAll(c)
       return collection
     }
 
-    @JvmStatic fun of(vararg elements: ITimePeriod): TimePeriodCollection {
+    @JvmStatic
+    fun of(vararg elements: ITimePeriod): TimePeriodCollection {
       val collection = TimePeriodCollection()
       collection.addAll(elements)
       return collection

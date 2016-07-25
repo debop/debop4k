@@ -85,6 +85,6 @@ open class PerformanceTest : AbstractJdbcTest() {
       }
     }
 
-    println("Performance result = ${watch.prettyPrint()}")
+    log.info("Performance result = ${watch.prettyPrint()}")
   }
 }

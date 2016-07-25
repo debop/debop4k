@@ -17,7 +17,9 @@ package debop4k.core.compressions
 
 import debop4k.core.collections.emptyByteArray
 import debop4k.core.collections.isNullOrEmpty
+import net.jpountz.lz4.LZ4Compressor
 import net.jpountz.lz4.LZ4Factory
+import net.jpountz.lz4.LZ4SafeDecompressor
 
 /**
  * LZ4 알고리즘으로 압축/복원
@@ -39,8 +41,13 @@ class LZ4Compressor : Compressor {
   }
 
   companion object {
-    val factory by lazy { LZ4Factory.fastestInstance() }
-    val compressor by lazy { factory.fastCompressor() }
-    val decompressor by lazy { factory.safeDecompressor() }
+    @JvmStatic
+    val factory: LZ4Factory by lazy { LZ4Factory.fastestInstance() }
+
+    @JvmStatic
+    val compressor: LZ4Compressor by lazy { factory.fastCompressor() }
+
+    @JvmStatic
+    val decompressor: LZ4SafeDecompressor by lazy { factory.safeDecompressor() }
   }
 }

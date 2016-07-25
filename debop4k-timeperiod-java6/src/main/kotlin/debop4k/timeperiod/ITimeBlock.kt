@@ -34,9 +34,9 @@ interface ITimeBlock : ITimePeriod {
   fun durationFromEnd(nd: Duration)
 
   fun nextBlock(offset: Duration): ITimeBlock
-      = TimeBlock.of(end + offset.abs(), duration, readOnly)
+      = TimeBlock(end + offset.abs(), duration, readOnly)
 
   fun prevBlock(offset: Duration): ITimeBlock
-      = TimeBlock.of(duration, start - offset.abs(), readOnly)
+      = TimeBlock(duration, start - offset.abs(), readOnly)
 
 }

@@ -18,9 +18,9 @@ package debop4k.timeperiod.timeranges
 import debop4k.core.ToStringHelper
 import debop4k.core.kodatimes.*
 import debop4k.core.utils.hashOf
+import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
 import debop4k.timeperiod.ITimePeriod
-import debop4k.timeperiod.TimeCalendar
 import debop4k.timeperiod.TimeRange
 import debop4k.timeperiod.models.DayOfWeek
 import debop4k.timeperiod.utils.assertValidPeriod
@@ -33,11 +33,16 @@ import org.joda.time.Duration
  *
  * @author sunghyouk.bae@gmail.com
  */
+@Suppress("EqualsOrHashCode")
 open class CalendarTimeRange(val period: ITimePeriod,
-                             val calendar: ITimeCalendar = TimeCalendar.DEFAULT)
+                             val calendar: ITimeCalendar = DefaultTimeCalendar)
 : TimeRange(calendar.mapStart(period.start),
             calendar.mapEnd(period.end),
             true) {
+
+  constructor(calendar: ITimeCalendar = DefaultTimeCalendar) : this(TimeRange.AnyTime, calendar)
+  constructor(start: DateTime, end: DateTime, calendar: ITimeCalendar = DefaultTimeCalendar)
+  : this(TimeRange(start, end), calendar)
 
   init {
     assertValidPeriod(calendar.mapStart(period.start), calendar.mapEnd(period.end))
@@ -81,10 +86,6 @@ open class CalendarTimeRange(val period: ITimePeriod,
   val startSecondOfStart: DateTime get() = start.trimToMillis()
   val startSecondOfEnd: DateTime get() = end.trimToMillis()
 
-  override fun equals(other: Any?): Boolean {
-    return super<TimeRange>.equals(other)
-  }
-
   override fun hashCode(): Int {
     return hashOf(super.hashCode(), calendar)
   }
@@ -94,22 +95,5 @@ open class CalendarTimeRange(val period: ITimePeriod,
         .add("period", period)
         .add("calendar", calendar)
         .toString()
-  }
-
-  companion object {
-
-    @JvmStatic
-    @JvmOverloads
-    fun of(calendar: ITimeCalendar = TimeCalendar.DEFAULT): CalendarTimeRange {
-      return CalendarTimeRange(TimeRange.AnyTime, calendar)
-    }
-
-    @JvmStatic
-    @JvmOverloads
-    fun of(start: DateTime,
-           end: DateTime,
-           calendar: ITimeCalendar = TimeCalendar.DEFAULT): CalendarTimeRange {
-      return CalendarTimeRange(TimeRange.of(start, end), calendar)
-    }
   }
 }

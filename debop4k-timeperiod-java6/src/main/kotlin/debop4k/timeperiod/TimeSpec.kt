@@ -22,7 +22,6 @@ import org.eclipse.collections.api.list.ImmutableList
 import org.eclipse.collections.impl.factory.Lists
 import org.joda.time.DateTime
 import org.joda.time.Duration
-import java.util.*
 
 /** 1년의 개월 수 (12)  */
 const val MonthsPerYear = 12
@@ -129,65 +128,65 @@ const val DaysTo1899 = DaysPer400Years * 4 + DaysPer100Years * 3 - 367
 /** Number of daysView from 1/1/0001 pudding 12/31/9999  */
 const val DaysTo10000 = DaysPer400Years * 25 - 366
 
-const val ZeroMillis = 0L
-const val MinMillis = 0L
-const val OneMillis = 1L
-const val MaxMillis = DaysTo10000 * MillisPerDay - 1
+const val ZeroMillis: Long = 0L
+const val MinMillis: Long = 0L
+const val OneMillis: Long = 1L
+const val MaxMillis: Long = DaysTo10000 * MillisPerDay - 1
 
 /** 기간 없음 (Duration.ZERO)  */
-val NoDuration = Duration.ZERO
+val NoDuration: Duration = Duration.ZERO
 
 /** 기간 없음 Duration.ZERO)  */
-val EmptyDuration = Duration.ZERO
+val EmptyDuration: Duration = Duration.ZERO
 
 /** 기간 없음 Duration.ZERO)  */
-val ZeroDuration = Duration.ZERO
+val ZeroDuration: Duration = Duration.ZERO
 
 /** 양(Positive)의 최소 기간 (Duration.millis(1L))  */
-val MinPositiveDuration = Duration.millis(1L)
+val MinPositiveDuration: Duration = Duration.millis(1L)
 
 /** 음(Negative)의 최소 기간 (TimeSpan(-1))  */
-val MinNegativeDuration = Duration.millis(-1L)
+val MinNegativeDuration: Duration = Duration.millis(-1L)
 
 /** 최소 기간에 해당하는 일자  */
-val MinPeriodTime = DateTime(MinMillis)
+val MinPeriodTime: DateTime = DateTime(MinMillis)
 
 /** 최대 기간에 해당하는 일자  */
-val MaxPeriodTime = DateTime(MaxMillis)
+val MaxPeriodTime: DateTime = DateTime(MaxMillis)
 
 /** 최소 기간 (0입니다)  */
-val MinPeriodDuration = ZeroMillis
+val MinPeriodDuration: Long = ZeroMillis
 
 /** 최대 기간 MaxMillis - MinMillis  */
-val MaxPeriodDuration = MaxMillis
+val MaxPeriodDuration: Long = MaxMillis
 
 /** 최소 기간 (0입니다. Duration.ZERO)  */
-val MinDuration = Duration.millis(MinPeriodDuration)
+val MinDuration: Duration = Duration.millis(MinPeriodDuration)
 
 /** 최대 기간 MaxPeriodDuration - MinPeriodDuration  */
-val MaxDuration = Duration.millis(MaxPeriodDuration)
+val MaxDuration: Duration = Duration.millis(MaxPeriodDuration)
 
-val DefaultStartOffset = EmptyDuration
+val DefaultStartOffset: Duration = EmptyDuration
 
-val DefaultEndOffset = MinNegativeDuration
+val DefaultEndOffset: Duration = MinNegativeDuration
 
-val DefaultTimeCalendar = TimeCalendar.DEFAULT
+val DefaultTimeCalendar: TimeCalendar = TimeCalendar.DEFAULT
 
-val EmptyOffsetTimeCalendar = TimeCalendar.EMPTY_OFFSET
+val EmptyOffsetTimeCalendar: TimeCalendar = TimeCalendar.EMPTY_OFFSET
 
 
-val dateTimeComparator: Comparator<DateTime> = Comparator { dt1, dt2 -> dt1.compareTo(dt2) }
-
-val dateTimeComparatorDesc: Comparator<DateTime> = Comparator { dt1, dt2 -> -dt1.compareTo(dt2) }
-
-val timePeriodStartComparator: Comparator<ITimePeriod> = Comparator { dt1, dt2 -> dt1.start.compareTo(dt2.start) }
-
-val timePeriodStartComparatorDesc: Comparator<ITimePeriod> = Comparator { dt1, dt2 -> -dt1.start.compareTo(dt2.start) }
-
-val timePeriodEndComparator: Comparator<ITimePeriod> = Comparator { dt1, dt2 -> dt1.end.compareTo(dt2.end) }
-
-val timePeriodEndComparatorDesc: Comparator<ITimePeriod> = Comparator { dt1, dt2 -> -dt1.end.compareTo(dt2.end) }
-
-val timePeriodDurationComparator: Comparator<ITimePeriod> = Comparator { dt1, dt2 -> dt1.duration.compareTo(dt2.duration) }
-
-val timePeriodDurationComparatorDesc: Comparator<ITimePeriod> = Comparator { dt1, dt2 -> -dt1.duration.compareTo(dt2.duration) }
+//val dateTimeComparator: Comparator<DateTime> = Comparator { dt1, dt2 -> dt1.compareTo(dt2) }
+//
+//val dateTimeComparatorDesc: Comparator<DateTime> = Comparator { dt1, dt2 -> -dt1.compareTo(dt2) }
+//
+//val timePeriodStartComparator: Comparator<ITimePeriod> = Comparator { dt1, dt2 -> dt1.start.compareTo(dt2.start) }
+//
+//val timePeriodStartComparatorDesc: Comparator<ITimePeriod> = Comparator { dt1, dt2 -> -dt1.start.compareTo(dt2.start) }
+//
+//val timePeriodEndComparator: Comparator<ITimePeriod> = Comparator { dt1, dt2 -> dt1.end.compareTo(dt2.end) }
+//
+//val timePeriodEndComparatorDesc: Comparator<ITimePeriod> = Comparator { dt1, dt2 -> -dt1.end.compareTo(dt2.end) }
+//
+//val timePeriodDurationComparator: Comparator<ITimePeriod> = Comparator { dt1, dt2 -> dt1.duration.compareTo(dt2.duration) }
+//
+//val timePeriodDurationComparatorDesc: Comparator<ITimePeriod> = Comparator { dt1, dt2 -> -dt1.duration.compareTo(dt2.duration) }

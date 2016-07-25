@@ -25,40 +25,33 @@ open class TimeRange(start: DateTime = MinPeriodTime,
                      end: DateTime = MaxPeriodTime,
                      readOnly: Boolean = false) : TimePeriod(start, end, readOnly), ITimeRange {
 
+
+  @JvmOverloads
+  constructor(moment: DateTime, readOnly: Boolean = false)
+  : this(moment, moment, readOnly)
+
+  @JvmOverloads
+  constructor(start: DateTime, offset: Duration, readOnly: Boolean = false)
+  : this(start, start + offset, readOnly)
+
   @JvmOverloads
   constructor(src: ITimePeriod, readOnly: Boolean = src.readOnly)
   : this(src.start, src.end, readOnly)
 
   companion object {
-    @JvmStatic val AnyTime: TimeRange = TimeRange(readOnly = true)
 
     @JvmStatic
-    @JvmOverloads
-    fun of(start: DateTime = MinPeriodTime, end: DateTime = MaxPeriodTime, readOnly: Boolean = false): TimeRange {
-      return TimeRange(start, end, readOnly)
-    }
+    val AnyTime: TimeRange by lazy { TimeRange(readOnly = true) }
 
-    @JvmStatic
-    fun of(moment: DateTime, readOnly: Boolean = false): TimeRange {
-      return TimeRange(moment, moment, readOnly)
-    }
-
-    fun of(start: DateTime, offset: Duration, readOnly: Boolean = false): TimeRange {
-      return TimeRange(start, start + offset, readOnly)
-    }
-
-    fun of(src: ITimePeriod, readOnly: Boolean = src.readOnly): TimeRange {
-      return TimeRange(src.start, src.end, readOnly)
-    }
   }
 
   override fun copy(offset: Duration): ITimePeriod {
     if (offset == Duration.ZERO)
-      return TimeRange.of(this)
+      return TimeRange(this)
 
     val ns = if (hasStart()) start + offset else start
     val ne = if (hasEnd()) end + offset else end
-    return TimeRange.of(ns, ne, readOnly)
+    return TimeRange(ns, ne, readOnly)
   }
 
   override fun expandStartTo(moment: DateTime) {

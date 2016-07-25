@@ -30,31 +30,21 @@ open class TimePeriod(override var start: DateTime = MinPeriodTime,
                       override var end: DateTime = MaxPeriodTime,
                       override val readOnly: Boolean = false) : ITimePeriod {
 
+  constructor(src: ITimePeriod) : this(src.start, src.end, src.readOnly)
+
+  @JvmOverloads
+  constructor(moment: DateTime, readOnly: Boolean = false)
+  : this(moment, moment, readOnly)
+
+  @JvmOverloads
+  constructor(start: DateTime, duration: Duration, readOnly: Boolean = false)
+  : this(start, start + duration, readOnly)
+
   companion object {
 
-    val AnyTime: TimePeriod = TimePeriod(readOnly = true)
+    val AnyTime: TimePeriod by lazy { TimePeriod(readOnly = true) }
 
-    @JvmStatic
-    fun of(src: ITimePeriod): TimePeriod
-        = TimePeriod(src.start, src.end, src.readOnly)
-
-    @JvmStatic
-    @JvmOverloads
-    fun of(start: DateTime = MinPeriodTime,
-           end: DateTime = MaxPeriodTime,
-           readOnly: Boolean = false): TimePeriod
-        = TimePeriod(start, end, readOnly)
-
-    @JvmStatic
-    fun of(moment: DateTime, readOnly: Boolean = false): TimePeriod
-        = TimePeriod(moment, moment, readOnly)
-
-    @JvmStatic
-    @JvmOverloads
-    fun of(start: DateTime, duration: Duration, readOnly: Boolean = false): TimePeriod
-        = TimePeriod(start, start.plus(duration), readOnly)
   }
-
 
   override var duration: Duration
     get() = Duration(start, end)
@@ -79,7 +69,7 @@ open class TimePeriod(override var start: DateTime = MinPeriodTime,
 
   override fun copy(offset: Duration): ITimePeriod {
     if (offset.millis == 0L) {
-      return TimePeriod.of(this)
+      return TimePeriod(this)
     }
     val s = if (hasStart()) start + offset else start
     val e = if (hasEnd()) end + offset else end

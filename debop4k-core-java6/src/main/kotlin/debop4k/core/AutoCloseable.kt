@@ -29,6 +29,7 @@ interface AutoCloseable {
   fun close(): Unit
 }
 
+val DUMMY_CLOSE_ACTION: () -> Unit = { }
 
 /**
  * Java 7 에서 새로 제공하는 AutoCloseable 을 Java 6 에서도 사용할 수 있도록 하기 위해
@@ -47,9 +48,5 @@ open class AutoCloseableHandler(val closeHandler: () -> Unit = DUMMY_CLOSE_ACTIO
         log.warn("AutoCloseable 인스턴스의 close() 호출에서 예외가 발생했습니다. 무시합니다.", ignored)
       }
     }
-  }
-
-  companion object {
-    val DUMMY_CLOSE_ACTION: () -> Unit = { }
   }
 }

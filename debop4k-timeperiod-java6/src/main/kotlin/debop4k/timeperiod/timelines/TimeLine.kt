@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory
  * @since 1.0
  */
 open class TimeLine<T : ITimePeriod>(override val periods: ITimePeriodContainer,
-                                     val _limits: ITimePeriod? = TimeRange.of(periods),
+                                     val _limits: ITimePeriod? = TimeRange(periods),
                                      override val mapper: ITimePeriodMapper? = null) : ITimeLine {
   override val limits: ITimePeriod
     get() = if (_limits != null) TimeRange(_limits) else TimeRange(periods)
@@ -39,7 +39,7 @@ open class TimeLine<T : ITimePeriod>(override val periods: ITimePeriodContainer,
 
     val moments = timeLineMoments()
     if (moments.isEmpty) {
-      return TimePeriodCollection.of(TimeRange.of(periods))
+      return TimePeriodCollection.of(TimeRange(periods))
     }
     return TimeLines.combinePeriods(moments)
   }
@@ -51,7 +51,7 @@ open class TimeLine<T : ITimePeriod>(override val periods: ITimePeriodContainer,
 
     val moments = timeLineMoments()
     if (moments.isEmpty) {
-      return TimePeriodCollection.of(TimeRange.of(periods))
+      return TimePeriodCollection.of(TimeRange(periods))
     }
     return TimeLines.intersectPeriods(moments)
   }
@@ -69,8 +69,7 @@ open class TimeLine<T : ITimePeriod>(override val periods: ITimePeriodContainer,
     if (moments.isEmpty) {
       return TimePeriodCollection.of(limits)
     }
-    val range = TimeRange.of(mapPeriodStart(limits.start),
-                             mapPeriodEnd(limits.end))
+    val range = TimeRange(mapPeriodStart(limits.start), mapPeriodEnd(limits.end))
     return TimeLines.calculateGap(moments, range)
   }
 
