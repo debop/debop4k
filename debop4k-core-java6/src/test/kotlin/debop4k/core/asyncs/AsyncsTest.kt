@@ -51,4 +51,28 @@ class AsyncsTest {
     assertThat(promise.isSuccess()).isTrue()
     assertThat(promise.get()).isEqualTo(10)
   }
+
+  @Test
+  fun testAwaitAll() {
+    val promises = (0 until 100).map { async(result = 10) { action.run() } }
+    promises.awaitAll()
+    assertThat(promises.all { it.isSuccess() }).isTrue()
+  }
+
+  @Test
+  fun testResult() {
+    val promise = async() { supplier.call() }
+    val result = promise.result()
+    assertThat(promise.isDone()).isTrue()
+    assertThat(result).isEqualTo(1)
+  }
+
+  @Test
+  fun testResultAll() {
+    val promises = (0 until 100).map { async() { supplier.call() } }
+    val results = promises.resultAll()
+    results.forEach {
+      assertThat(it).isEqualTo(1)
+    }
+  }
 }

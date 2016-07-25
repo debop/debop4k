@@ -16,7 +16,6 @@
 package debop4k.core.asyncs.kovenant.examples
 
 import debop4k.core.asyncs.await
-import debop4k.core.asyncs.ready
 import io.kotlintest.specs.FunSpec
 import nl.komponents.kovenant.Promise
 import nl.komponents.kovenant.functional.apply
@@ -41,7 +40,7 @@ class FunctionalTest : FunSpec() {
     test("apply test") {
       val p = Promise.of(21) apply Promise.of({ x: Int -> x * 2 })
       p success { v -> log.debug("{}", v) }
-      p.ready()
+      p.await()
     }
 
     test("bind test") {
@@ -53,12 +52,12 @@ class FunctionalTest : FunSpec() {
         println("Fail: ${it.message}")
       }
 
-      p.ready()
+      p.await()
     }
 
     test("map promise") {
       val p = Promise.of(21) map { it * 2 } success { println(it) }
-      p.ready()
+      p.await()
     }
 
     test("unwrap") {

@@ -15,9 +15,9 @@
 
 package debop4k.core.asyncs.kovenant.examples.core
 
+import debop4k.core.asyncs.await
+import debop4k.core.asyncs.awaitAll
 import debop4k.core.asyncs.kovenant.examples.fib
-import debop4k.core.asyncs.ready
-import debop4k.core.asyncs.readyAll
 import io.kotlintest.specs.FunSpec
 import nl.komponents.kovenant.*
 import org.slf4j.LoggerFactory
@@ -41,7 +41,7 @@ class PromiseOrdered : FunSpec() {
       all(first, second) success {
         log.debug("${firstRef.get()}, ${secondRef.get()}")
       }
-      readyAll(first, second)
+      awaitAll(first, second)
     }
 
     test("promise then") {
@@ -52,7 +52,7 @@ class PromiseOrdered : FunSpec() {
       } success {
         log.debug("{}", it)
       }
-      p.ready()
+      p.await()
     }
 
     test("threads") {
@@ -71,7 +71,7 @@ class PromiseOrdered : FunSpec() {
       } success {
         log.debug("{}", it)
       }
-      p.ready()
+      p.await()
     }
   }
 }

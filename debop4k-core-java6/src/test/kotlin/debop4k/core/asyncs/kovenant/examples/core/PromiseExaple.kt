@@ -15,9 +15,9 @@
 
 package debop4k.core.asyncs.kovenant.examples.core
 
+import debop4k.core.asyncs.await
+import debop4k.core.asyncs.awaitAll
 import debop4k.core.asyncs.kovenant.examples.fib
-import debop4k.core.asyncs.ready
-import debop4k.core.asyncs.readyAll
 import io.kotlintest.specs.FunSpec
 import nl.komponents.kovenant.*
 import nl.komponents.kovenant.properties.lazyPromise
@@ -68,7 +68,7 @@ class PromiseExaple : FunSpec() {
           p.success { println("promise[$n] finished") }
         }
       }
-      readyAll(*promises)
+      awaitAll(*promises)
       println("finish any")
     }
 
@@ -76,7 +76,7 @@ class PromiseExaple : FunSpec() {
       val promises = Array(50) { task { Thread.sleep(100L) } }
 
       print("waiting...")
-      readyAll(*promises)
+      awaitAll(*promises)
       println(" done.")
     }
 
@@ -109,7 +109,7 @@ class PromiseExaple : FunSpec() {
       handlePromise(deferred.promise)
       deferred.resolve("Hello World")
 //    deferred.reject(Exception("Hello exceptional world"))
-      deferred.promise.ready()
+      deferred.promise.await()
     }
 
     test("isDone") {
@@ -136,7 +136,7 @@ class PromiseExaple : FunSpec() {
       } success {
         log.debug(it)
       }
-      expensiveResource.ready()
+      expensiveResource.await()
     }
   }
 
