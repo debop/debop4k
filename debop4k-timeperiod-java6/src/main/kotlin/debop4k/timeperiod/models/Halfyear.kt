@@ -58,7 +58,7 @@ enum class Halfyear(val value: Int) {
     @JvmStatic
     fun of(halfyear: Int): Halfyear {
       if (halfyear < 1 || halfyear > 2)
-        throw IllegalArgumentException("Invalid q for Halfyear: $halfyear")
+        throw IllegalArgumentException("Invalid value for Halfyear: $halfyear")
       return values()[halfyear - 1]
     }
 

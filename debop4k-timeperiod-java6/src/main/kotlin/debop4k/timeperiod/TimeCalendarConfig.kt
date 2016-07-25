@@ -32,8 +32,7 @@ data class TimeCalendarConfig(val locale: Locale = Locale.getDefault(),
     val DEFAULT: TimeCalendarConfig by lazy { TimeCalendarConfig() }
 
     val EMPTY_OFFSET: TimeCalendarConfig by lazy {
-      TimeCalendarConfig(startOffset = EmptyDuration,
-                         endOffset = EmptyDuration)
+      TimeCalendarConfig(startOffset = EmptyDuration, endOffset = EmptyDuration)
     }
   }
 }

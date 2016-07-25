@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. KESTI co, ltd
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -123,13 +123,16 @@ class CSVReader(val lineReader: LineReader,
   }
 
   companion object {
+
     @JvmOverloads
+    @JvmStatic
     fun open(reader: Reader,
              format: CSVFormat = DEFAULT_CSVFORMAT): CSVReader {
       return CSVReader(ReaderLineReader(reader), format)
     }
 
     @JvmOverloads
+    @JvmStatic
     fun open(file: File,
              cs: Charset = DEFAULT_CHARSET,
              format: CSVFormat = DEFAULT_CSVFORMAT): CSVReader {
@@ -143,6 +146,7 @@ class CSVReader(val lineReader: LineReader,
     }
 
     @JvmOverloads
+    @JvmStatic
     fun open(filename: String,
              cs: Charset = DEFAULT_CHARSET,
              format: CSVFormat = DEFAULT_CSVFORMAT): CSVReader {

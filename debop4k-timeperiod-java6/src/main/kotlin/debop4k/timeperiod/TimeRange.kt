@@ -40,7 +40,6 @@ open class TimeRange(start: DateTime = MinPeriodTime,
 
   companion object {
 
-    @JvmStatic
     val AnyTime: TimeRange by lazy { TimeRange(readOnly = true) }
 
   }

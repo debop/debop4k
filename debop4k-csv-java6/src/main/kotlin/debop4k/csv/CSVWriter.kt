@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. KESTI co, ltd
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,9 +30,13 @@ class CSVWriter(val writer: Writer,
   private val printWriter = PrintWriter(writer)
   private val quoteMinimalSpace = arrayOf('\r', '\n', format.quoteChar, format.delimiter)
 
-  override fun close(): Unit = printWriter.close()
+  override fun close(): Unit {
+    printWriter.close()
+  }
 
-  fun flush(): Unit = printWriter.flush()
+  fun flush(): Unit {
+    printWriter.flush()
+  }
 
   fun writeAll(allLines: List<List<*>>): Unit {
     allLines.forEach { writeNext(it) }
@@ -128,10 +132,14 @@ class CSVWriter(val writer: Writer,
 
 
   companion object {
+    @JvmOverloads
+    @JvmStatic
     fun open(writer: Writer, format: CSVFormat = DEFAULT_CSVFORMAT): CSVWriter {
       return CSVWriter(writer, format)
     }
 
+    @JvmOverloads
+    @JvmStatic
     fun open(file: File,
              append: Boolean = false,
              cs: Charset = DEFAULT_CHARSET,
@@ -140,6 +148,8 @@ class CSVWriter(val writer: Writer,
       return open(fos, cs, format)
     }
 
+    @JvmOverloads
+    @JvmStatic
     fun open(filename: String,
              append: Boolean = false,
              cs: Charset = DEFAULT_CHARSET,
@@ -148,6 +158,8 @@ class CSVWriter(val writer: Writer,
       return open(fos, cs, format)
     }
 
+    @JvmOverloads
+    @JvmStatic
     fun open(fos: OutputStream,
              cs: Charset = DEFAULT_CHARSET,
              format: CSVFormat = DEFAULT_CSVFORMAT): CSVWriter {

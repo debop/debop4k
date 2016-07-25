@@ -32,7 +32,8 @@ data class YearWeek(val weekyear: Int, val weekOfWeekyear: Int) {
 
   companion object {
 
-    @JvmStatic fun of(moment: DateTime): YearWeek = YearWeek(moment.weekyear, moment.weekOfWeekyear)
+    @JvmStatic fun of(moment: DateTime): YearWeek
+        = YearWeek(moment.weekyear, moment.weekOfWeekyear)
 
   }
 }
