@@ -15,10 +15,12 @@
 
 package debop4k.core
 
-import org.apache.commons.codec.binary.Hex
+import debop4k.core.collections.emptyByteArray
+import org.eclipse.collections.impl.list.mutable.FastList
 import org.springframework.util.StringUtils
 
 const val EMPTY_STRING = ""
+const val TRIMMING = "..."
 const val NULL_STRING = "<null>"
 const val TAB: String = "\t"
 const val COMMA: String = ","
@@ -37,12 +39,12 @@ fun CharSequence?.hasText(): Boolean = this != null && trim().length > 0
 val CharSequence.lastChar: Char
   get() = if (this.isEmpty()) 0.toChar() else this.get(length - 1)
 
-fun ByteArray.toUtf8String(): String = this.toString(Charsets.UTF_8)
+fun ByteArray.toUtf8String(): String
+    = this.toString(Charsets.UTF_8)
 
-// Hex String
-fun ByteArray.toHexString(): String = Hex.encodeHexString(this)
+fun String?.toUtf8ByteArray(): ByteArray
+    = this?.toByteArray(Charsets.UTF_8) ?: emptyByteArray
 
-fun String.fromHexString(): ByteArray = Hex.decodeHex(this.toCharArray())
 
 fun CharSequence?.words(): List<String> = this?.split(' ') ?: listOf<String>()
 
@@ -135,3 +137,170 @@ fun String.tokenizeToStringArray(delimiters: String,
                                  trimToken: Boolean = true,
                                  ignoreEmptyTokens: Boolean = true): Array<String>
     = StringUtils.tokenizeToStringArray(this, delimiters, trimToken, ignoreEmptyTokens)
+
+fun String?.trim(): String {
+  return if (this == null) EMPTY_STRING else (this as CharSequence).trim() as String
+}
+
+fun String?.needEllipsis(maxLength: Int = ElipsisLength): Boolean {
+  return this != null && this.isNotBlank() && this.length > maxLength
+}
+
+fun String?.ellipsisEnd(maxLength: Int = ElipsisLength): String {
+  if (this == null) {
+    return EMPTY_STRING
+  }
+
+  return if (!this.needEllipsis(maxLength)) this
+  else this.substring(0, maxLength - TRIMMING.length) + TRIMMING
+}
+
+fun String?.ellipsisMid(maxLength: Int = ElipsisLength): String {
+  if (this == null)
+    return EMPTY_STRING
+
+  if (!needEllipsis(maxLength))
+    return this ?: EMPTY_STRING
+
+  val length = maxLength / 2
+  val sb = StringBuilder()
+  sb.append(this.substring(0, length)).append(TRIMMING)
+
+  val len = if (maxLength % 2 == 0) this.length - length
+  else this.length - length - 1
+
+  sb.append(this.substring(len))
+  return sb.toString()
+}
+
+fun String?.ellipsisStart(maxLength: Int = ElipsisLength): String {
+  if (this == null)
+    return EMPTY_STRING
+
+  return if (!this.needEllipsis(maxLength)) this
+  else TRIMMING + this.substring(this.length - maxLength + TRIMMING.length)
+}
+
+fun Iterable<Any?>.toStringList(): FastList<String> {
+  return FastList.newList(map { it.asString() })
+}
+
+@JvmOverloads
+fun Iterable<Any?>.mkString(separator: String = COMMA): String {
+  return toStringList().makeString(separator)
+}
+
+@JvmOverloads
+fun Map<Any, Any?>.mkString(separator: String = COMMA): String {
+  val sb = StringBuilder(this.size * 4)
+  var i = 0
+
+  this.entries.forEach {
+    if (i > 0)
+      sb.append(separator)
+    sb.append(it.key.asString())
+        .append("=")
+        .append(it.value.asString())
+    i++
+  }
+
+  return sb.toString()
+}
+
+fun String?.splitAt(index: Int): Pair<String, String> {
+  if (this == null)
+    return Pair<String, String>(EMPTY_STRING, EMPTY_STRING)
+
+  if (this.isBlank() || index <= 0 || index > this.length) {
+    return Pair(this, EMPTY_STRING)
+  }
+
+  return Pair(this.substring(0, index), this.substring(index + 1))
+}
+
+fun String?.splits(separator: Char): FastList<String> {
+
+  val results = FastList.newList<String>()
+
+  if (this == null || this.isEmpty())
+    return results
+
+  var startIdx = 0
+  val prevIdx = 0
+  val length = this.length
+
+  while (startIdx < length) {
+    val idx = this.indexOf(separator, startIdx)
+    if (idx < 0) {
+      results.add(this.substring(startIdx).trim({ it <= ' ' }))
+      break
+    }
+
+    results.add(this.substring(startIdx, idx).trim({ it <= ' ' }))
+    startIdx = idx + 1
+  }
+  if (this[length - 1] == separator)
+    results.add("")
+
+  return results
+}
+
+@JvmOverloads
+fun String?.splits(ignoreCase: Boolean = true,
+                   removeEmptyEntities: Boolean = true,
+                   vararg separators: String): FastList<String> {
+  val results = FastList.newList<String>()
+
+  if (this == null || this.isEmpty())
+    return results
+
+  if (separators.isEmpty())
+    return FastList.newListWith(this)
+
+
+  //    List<String> seps = Arrays.asList(separators).stream()
+  //                              .map(sep -> ignoreCase ? sep.toLowerCase() : sep)
+  //                              .collect(Collectors.toList());
+  val seps = FastList.newListWith(*separators).collect { sep ->
+    if (ignoreCase) sep.toLowerCase() else sep
+  }
+
+  val lowerStr = if (ignoreCase) this.toLowerCase() else this
+
+  var startIndex = 0
+  var prevIndex = 0
+  val length = lowerStr.length
+
+  while (startIndex < length) {
+    var isContinue = true
+    val iter = seps.iterator()
+    while (iter.hasNext() && isContinue) {
+      val sep = iter.next()
+      val endIndex = Math.min(startIndex + sep.length, length)
+      if (sep == lowerStr.substring(startIndex, endIndex)) {
+        val item = this.substring(prevIndex, startIndex)
+        if (item.isNotEmpty()) {
+          if (removeEmptyEntities) {
+            if (item.isNotBlank())
+              results.add(item.trim { it <= ' ' })
+          } else {
+            results.add(item)
+          }
+        }
+        prevIndex = startIndex + sep.length
+        startIndex = prevIndex
+        isContinue = false
+      }
+    }
+    startIndex++
+  }
+
+  if (prevIndex < length) {
+    val s =
+        if (removeEmptyEntities) this.substring(prevIndex).trim { it <= ' ' }
+        else this.substring(prevIndex)
+    results.add(s)
+  }
+
+  return results
+}

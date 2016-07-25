@@ -17,40 +17,43 @@
 
 package debop4k.core
 
+import org.apache.commons.codec.binary.Base64
 import org.apache.commons.codec.binary.Hex
-import java.util.*
-import java.util.Base64.*
 
-val Base64Encoder: Encoder by lazy { Base64.getEncoder() }
-val Base64Decoder: Decoder by lazy { Base64.getDecoder() }
-val Base64UrlEncoder by lazy { Base64.getUrlEncoder() }
-val Base64UrlDecoder by lazy { Base64.getUrlDecoder() }
+private val base64 by lazy { Base64(true) }
+private val hex by lazy { Hex(Charsets.UTF_8) }
 
-fun String?.toBase64(): String {
+fun String?.base64Encode(): String {
   if (this == null)
     return EMPTY_STRING
 
-  return Base64Encoder.encodeToString(this.toByteArray(Charsets.UTF_8))
+  return base64.encodeToString(this.toByteArray(Charsets.UTF_8))
 }
 
-fun String?.fromBase64(): String {
+fun String?.base64Decode(): String {
   if (this == null)
     return EMPTY_STRING
 
-  return Base64Decoder.decode(this).toString(Charsets.UTF_8)
+  return base64.decode(this).toString(Charsets.UTF_8)
 }
 
-fun String?.toHex(): String {
+fun String?.encodeHex(): String {
   if (this == null)
     return EMPTY_STRING
 
   return Hex.encodeHexString(this.toByteArray(Charsets.UTF_8))
 }
 
-fun String?.fromHex(): String {
+fun String?.decodeHex(): String {
   if (this == null)
     return EMPTY_STRING
+
   return Hex.decodeHex(this.toCharArray()).toString(Charsets.UTF_8)
 }
 
+
+// Hex String
+fun ByteArray.toHexString(): String = Hex.encodeHexString(this)
+
+fun String.fromHexString(): ByteArray = Hex.decodeHex(this.toCharArray())
 
