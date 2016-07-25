@@ -16,13 +16,15 @@
 package debop4k.core.asyncs
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
+import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 
 /**
- * AsyncsConfiguration
+ * BackgroundWorkerConfiguration
  * @author debop sunghyouk.bae@gmail.com
  */
 @Configuration
 @EnableAutoConfiguration
-open class AsyncsConfiguration {
+@ComponentScan(basePackageClasses = arrayOf(DummyBackgroundWorker::class))
+open class BackgroundWorkerConfiguration {
 }

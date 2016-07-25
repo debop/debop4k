@@ -15,32 +15,40 @@
 
 package debop4k.core.asyncs
 
-import debop4k.core.uninitialized
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.slf4j.LoggerFactory
 import org.springframework.boot.test.SpringApplicationConfiguration
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
-import javax.inject.Inject
+import java.util.concurrent.*
 
 /**
- * BackgroundWorkerTest
+ * AsyncsTest
  * @author debop sunghyouk.bae@gmail.com
  */
 @RunWith(SpringJUnit4ClassRunner::class)
-@SpringApplicationConfiguration(classes = arrayOf(BackgroundWorkerConfiguration::class))
-class BackgroundWorkerTest {
+@SpringApplicationConfiguration(classes = arrayOf(AsyncsConfiguration::class))
+class AsyncsTest {
 
   private val log = LoggerFactory.getLogger(javaClass)
 
-  @Inject val worker: DummyBackgroundWorker = uninitialized()
+  val action: Runnable = Runnable { Thread.sleep(10) }
+
+  val supplier: Callable<Int> = Callable { Thread.sleep(10); 1 }
 
   @Test
-  fun injectDummyBackgroundWorker() {
-    assertThat(worker).isNotNull()
-    Thread.sleep(500)
-    assertThat(worker.isRunning).isTrue()
-    Thread.sleep(500)
+  fun emptyRunnable() {
+    val promise = async() { action.run() }
+    promise.await()
+    assertThat(promise.isSuccess()).isTrue()
+  }
+
+  @Test
+  fun testAwait() {
+    val promise = async(result = 10) { action.run() }
+    promise.await()
+    assertThat(promise.isSuccess()).isTrue()
+    assertThat(promise.get()).isEqualTo(10)
   }
 }
