@@ -24,9 +24,10 @@ const val TRIMMING = "..."
 const val NULL_STRING = "<null>"
 const val TAB: String = "\t"
 const val COMMA: String = ","
+const val ElipsisLength = 80
 
 
-public fun CharSequence.isEmpty(): Boolean = trim().length == 0
+fun CharSequence?.isEmpty(): Boolean = this == null || this.trim().length == 0
 
 fun CharSequence?.isNull(): Boolean = this == null
 
@@ -160,7 +161,7 @@ fun String?.ellipsisMid(maxLength: Int = ElipsisLength): String {
     return EMPTY_STRING
 
   if (!needEllipsis(maxLength))
-    return this ?: EMPTY_STRING
+    return this
 
   val length = maxLength / 2
   val sb = StringBuilder()
@@ -226,7 +227,7 @@ fun String?.splits(separator: Char): FastList<String> {
     return results
 
   var startIdx = 0
-  val prevIdx = 0
+//  val prevIdx = 0
   val length = this.length
 
   while (startIdx < length) {

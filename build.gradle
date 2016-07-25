@@ -122,16 +122,22 @@ subprojects {
         compile "javax.inject:javax.inject:$javax_inject_version"
 
         testCompile "junit:junit:$junit_version"
-        testCompile "io.kotlintest:kotlintest:$kotlintest_version"
-
         testCompile "org.assertj:assertj-core:$assertj_core_version"
         testCompile "org.assertj:assertj-joda-time:$assertj_joda_time_version"
+        testCompile "org.projectlombok:lombok:$lombok_version"
 
-        testCompile("org.springframework:spring-test:$spring_version")
+        testCompile "io.kotlintest:kotlintest:$kotlintest_version"
+
+
+        testCompile("org.springframework.boot:spring-boot-starter:$spring_boot_version") {
+            exclude(module: 'commons-logging')
+        }
         testCompile("org.springframework.boot:spring-boot-starter-test:$spring_boot_version") {
             exclude(module: 'commons-logging')
             exclude(module: 'spring-test')
         }
+        testCompile("org.springframework:spring-context:$spring_version")
+        testCompile("org.springframework:spring-test:$spring_version")
     }
 }
 

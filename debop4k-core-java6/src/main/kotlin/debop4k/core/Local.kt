@@ -37,32 +37,41 @@ object Local {
     }
   }
 
+  @JvmStatic
   internal val storage: HashMap<Any, Any?> by lazy {
     threadLocal.get()
   }
 
+  @JvmStatic
   fun save(): HashMap<Any, Any?> = storage.clone() as HashMap<Any, Any?>
+
+  @JvmStatic
   fun restore(saved: HashMap<Any, Any?>): Unit = threadLocal.set(saved)
 
   @Suppress("UNCHECKED_CAST")
+  @JvmStatic
   operator fun <T> get(key: Any): T? {
     return storage[key] as T?
   }
 
+  @JvmStatic
   operator fun <T> set(key: Any, value: T?): Unit {
     if (value != null)
-      storage.putIfAbsent(key, value)
+      storage.put(key, value)
   }
 
+  @JvmStatic
   fun clearAll(): Unit {
     log.debug("clear local storage")
     storage.clear()
   }
 
+  @JvmStatic
   fun <T> getOrPut(key: Any, defaultValue: () -> T?): T? {
     return storage.getOrPut(key, defaultValue) as T?
   }
 
+  @JvmStatic
   fun <T> getOrPut(key: Any, factory: Callable<T?>): T? {
     return storage.getOrPut(key, { factory.call() }) as T?
   }

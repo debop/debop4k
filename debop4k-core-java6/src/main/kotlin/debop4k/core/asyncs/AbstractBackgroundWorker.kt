@@ -17,6 +17,8 @@ package debop4k.core.asyncs
 
 import org.slf4j.LoggerFactory
 import java.util.concurrent.atomic.*
+import javax.annotation.PostConstruct
+import javax.annotation.PreDestroy
 
 /**
  * AbstractBackgroundWorker
@@ -26,7 +28,7 @@ abstract class AbstractBackgroundWorker(override val name: String) : BackgroundW
   private val log = LoggerFactory.getLogger(javaClass)
 
   protected val running = AtomicBoolean(false)
-  protected var workerThread: Thread? = null
+  @Volatile protected var workerThread: Thread? = null
 
   /** 구현 해야 합니다 */
   abstract fun newWorkerThread(): Thread
@@ -34,6 +36,7 @@ abstract class AbstractBackgroundWorker(override val name: String) : BackgroundW
   override val isRunning: Boolean
     get() = running.get()
 
+  @PostConstruct
   @Synchronized
   override open fun start(): Unit {
     if (isRunning)
@@ -43,16 +46,17 @@ abstract class AbstractBackgroundWorker(override val name: String) : BackgroundW
 
     try {
       workerThread = newWorkerThread()
-      workerThread?.start()
-
-      if (workerThread != null && workerThread!!.isAlive)
+      if (workerThread != null) {
+        workerThread?.run()
         running.compareAndSet(false, true)
+      }
     } catch(e: Exception) {
       log.error("{} 작업 스레드를 시작하는데 실패했습니다.", e)
       throw RuntimeException(e)
     }
   }
 
+  @PreDestroy
   @Synchronized
   override open fun stop(): Unit {
     if (!isRunning)
@@ -65,7 +69,7 @@ abstract class AbstractBackgroundWorker(override val name: String) : BackgroundW
       try {
         workerThread?.join(500)
       } catch(ie: InterruptedException) {
-        log.trace("작업이 중단되었습니다.")
+        log.debug("작업이 중단되었습니다.")
       }
     } catch(e: Exception) {
       log.warn("{} 작업용 스레드를 종료하는데 실패했습니다.", e)
