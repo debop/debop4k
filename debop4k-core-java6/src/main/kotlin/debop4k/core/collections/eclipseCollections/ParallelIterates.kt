@@ -51,8 +51,7 @@ inline fun <T> Iterable<T>.parForEach(crossinline action: (T) -> Unit): Unit {
 }
 
 inline fun <T> Iterable<T>.parForEachWithIndex(crossinline procedure: (T, Int) -> Unit): Unit {
-  ParallelIterate.forEachWithIndex(this,
-                                   { t, i -> procedure(t, i) })
+  ParallelIterate.forEachWithIndex(this, { t, i -> procedure(t, i) })
 }
 
 /**
