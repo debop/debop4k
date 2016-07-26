@@ -18,7 +18,7 @@
 package debop4k.timeperiod.utils
 
 import debop4k.core.NULL_STRING
-import debop4k.core.collections.eclipseCollections.parallelMap
+import debop4k.core.collections.eclipseCollections.parMap
 import debop4k.core.kodatimes.*
 import debop4k.timeperiod.*
 import debop4k.timeperiod.models.PeriodRelation
@@ -243,7 +243,7 @@ fun ITimePeriod.assertMutable(): Unit {
   assert(!this.readOnly, { "ITimePeriod 가 읽기전용입니다." })
 }
 
-fun ITimePeriod.periodStream(unit: PeriodUnit): FastList<out ITimePeriod> = when (unit) {
+fun ITimePeriod.periodSequence(unit: PeriodUnit): FastList<out ITimePeriod> = when (unit) {
   PeriodUnit.YEAR -> this.yearSequence()
   PeriodUnit.HALFYEAR -> this.halfyearSequence()
   PeriodUnit.QUARTER -> this.quarterSequence()
@@ -525,11 +525,11 @@ fun ITimePeriod?.assertHasPeriod(): Unit {
 }
 
 fun <R> ITimePeriod.mapPeriod(unit: PeriodUnit, func: (ITimePeriod) -> R): FastList<R> {
-  return this.periodStream(unit).collect(func)
+  return this.periodSequence(unit).collect(func)
 }
 
-fun <R> ITimePeriod.mapPeriodAsParallel(unit: PeriodUnit, func: (ITimePeriod) -> R): List<R> {
-  return this.periodStream(unit).parallelMap(mapper = func).toList()
+fun <R> ITimePeriod.parMapPeriod(unit: PeriodUnit, func: (ITimePeriod) -> R): List<R> {
+  return this.periodSequence(unit).parMap(mapper = func).toList()
 }
 
 fun ITimePeriod?.asString(): String = this?.toString() ?: NULL_STRING
