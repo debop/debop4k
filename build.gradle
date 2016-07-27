@@ -38,8 +38,6 @@ if (project.hasProperty('prod')) {
     apply from: 'gradle/profile_dev.gradle'
 }
 
-apply from: 'gradle/dependency-management.gradle'
-
 group = 'com.github.debop'
 version = '0.0.1-SNAPSHOT'
 
