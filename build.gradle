@@ -38,9 +38,10 @@ if (project.hasProperty('prod')) {
     apply from: 'gradle/profile_dev.gradle'
 }
 
+apply from: 'gradle/dependency-management.gradle'
+
 group = 'com.github.debop'
 version = '0.0.1-SNAPSHOT'
-
 
 subprojects {
     apply plugin: 'java'
@@ -50,8 +51,92 @@ subprojects {
     apply plugin: 'propdeps-maven'
     apply plugin: 'propdeps-idea'
 
-    // maven dependencyManagement와 같은 기능
+// maven dependencyManagement와 같은 기능
     apply plugin: "io.spring.dependency-management"
+
+    repositories {
+        maven { url "http://nexus.kesti.co.kr/content/groups/public" }
+        mavenLocal()
+        jcenter()
+        mavenCentral()
+
+        maven { url "http://dl.bintray.com/kotlin/exposed" }
+        maven { url "http://repo.spring.io/release" }
+        maven { url "http://download.osgeo.org/webdav/geotools" }
+        maven { url "http://maven.geotoolkit.org/" }
+        maven { url "https://code.lds.org/nexus/content/groups/main-repo" }
+        maven { url "https://artifacts.unidata.ucar.edu/content/repositories/unidata-releases" }
+        maven { url "https://maven.open-web.nl/content/groups/public/" }
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-starter-parent:$spring_boot_version"
+        }
+
+        dependencies {
+            dependency "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+            dependency "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+            dependency "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+            dependency "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+
+            dependency "io.kotlintest:kotlintest:$kotlintest_version"
+
+            dependency "org.slf4j:slf4j-api:$slf4j_version"
+            dependency "ch.qos.logback:logback-classic:$logback_version"
+            dependency "javax.inject:javax.inject:$javax_inject_version"
+
+            dependency "junit:junit:$junit_version"
+            dependency "org.assertj:assertj-core:$assertj_core_version"
+            dependency "org.assertj:assertj-joda-time:$assertj_joda_time_version"
+            dependency "org.projectlombok:lombok:$lombok_version"
+
+            dependencySet(group: 'org.springframework', version: "$spring_version") {
+                entry('spring-core') {
+                    exclude(module: 'common-logging')
+                }
+            }
+            dependency("org.springframework.boot:spring-boot-starter:$spring_boot_version") {
+                exclude(module: 'commons-logging')
+                exclude(module: 'spring-context')
+            }
+            dependency("org.springframework.boot:spring-boot-starter-test:$spring_boot_version") {
+                exclude(module: 'commons-logging')
+                exclude(module: 'spring-test')
+            }
+            dependency("org.springframework:spring-context:$spring_version")
+            dependency("org.springframework:spring-test:$spring_version")
+        }
+    }
+
+    dependencies {
+        compile "org.jetbrains.kotlin:kotlin-stdlib"
+        compile "org.jetbrains.kotlin:kotlin-reflect"
+
+        testCompile "org.jetbrains.kotlin:kotlin-test"
+        testCompile "org.jetbrains.kotlin:kotlin-test-junit"
+        testCompile "io.kotlintest:kotlintest"
+
+        compile "org.slf4j:slf4j-api"
+        compile "ch.qos.logback:logback-classic"
+        compile "javax.inject:javax.inject"
+
+        testCompile "junit:junit"
+        testCompile "org.assertj:assertj-core"
+        testCompile "org.projectlombok:lombok"
+
+        testCompile("org.springframework.boot:spring-boot-starter") {
+            exclude(module: 'commons-logging')
+            exclude(module: 'spring-context')
+        }
+        testCompile("org.springframework.boot:spring-boot-starter-test") {
+            exclude(module: 'commons-logging')
+            exclude(module: 'spring-test')
+        }
+        testCompile("org.springframework:spring-context")
+        testCompile("org.springframework:spring-test")
+    }
+
 
 
     if (name.endsWith("java8")) {
@@ -102,93 +187,6 @@ subprojects {
         ignoreFailures true
         // JVM 버전에 따라 빌드가 실패할 수도 있어서
         // jvmArgs "-XX:MaxPermSize=512m"
-    }
-
-    repositories {
-        maven { url "http://nexus.kesti.co.kr/content/groups/public" }
-        mavenLocal()
-        jcenter()
-        mavenCentral()
-
-        maven { url "http://dl.bintray.com/kotlin/exposed" }
-        maven { url "http://repo.spring.io/release" }
-        maven { url "http://download.osgeo.org/webdav/geotools" }
-        maven { url "http://maven.geotoolkit.org/" }
-        maven { url "https://code.lds.org/nexus/content/groups/main-repo" }
-        maven { url "https://artifacts.unidata.ucar.edu/content/repositories/unidata-releases" }
-        maven { url "https://maven.open-web.nl/content/groups/public/" }
-    }
-
-    dependencyManagement {
-        imports {
-            mavenBom "org.springframework.boot:spring-boot-starter-parent:$spring_boot_version"
-        }
-
-        dependencies {
-            dependency "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-            dependency "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-            dependency "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
-            dependency "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
-
-            dependency "io.kotlintest:kotlintest:$kotlintest_version"
-
-            dependency "org.slf4j:slf4j-api:$slf4j_version"
-            dependency "ch.qos.logback:logback-classic:$logback_version"
-            dependency "javax.inject:javax.inject:$javax_inject_version"
-
-            dependency "junit:junit:$junit_version"
-            dependency "org.assertj:assertj-core:$assertj_core_version"
-            dependency "org.assertj:assertj-joda-time:$assertj_joda_time_version"
-            dependency "org.projectlombok:lombok:$lombok_version"
-
-
-
-            dependencySet(group: 'org.springframework', version: "$spring_version") {
-                entry('spring-core') {
-                    exclude(module: 'common-logging')
-                }
-            }
-
-            dependency("org.springframework.boot:spring-boot-starter:$spring_boot_version") {
-                exclude(module: 'commons-logging')
-                exclude(module: 'spring-context')
-            }
-            dependency("org.springframework.boot:spring-boot-starter-test:$spring_boot_version") {
-                exclude(module: 'commons-logging')
-                exclude(module: 'spring-test')
-            }
-            dependency("org.springframework:spring-context:$spring_version")
-            dependency("org.springframework:spring-test:$spring_version")
-        }
-    }
-
-
-    dependencies {
-        compile "org.jetbrains.kotlin:kotlin-stdlib"
-        compile "org.jetbrains.kotlin:kotlin-reflect"
-
-        testCompile "org.jetbrains.kotlin:kotlin-test"
-        testCompile "org.jetbrains.kotlin:kotlin-test-junit"
-        testCompile "io.kotlintest:kotlintest"
-
-        compile "org.slf4j:slf4j-api"
-        compile "ch.qos.logback:logback-classic"
-        compile "javax.inject:javax.inject"
-
-        testCompile "junit:junit"
-        testCompile "org.assertj:assertj-core"
-        testCompile "org.projectlombok:lombok"
-
-        testCompile("org.springframework.boot:spring-boot-starter") {
-            exclude(module: 'commons-logging')
-            exclude(module: 'spring-context')
-        }
-        testCompile("org.springframework.boot:spring-boot-starter-test") {
-            exclude(module: 'commons-logging')
-            exclude(module: 'spring-test')
-        }
-        testCompile("org.springframework:spring-context")
-        testCompile("org.springframework:spring-test")
     }
 }
 
