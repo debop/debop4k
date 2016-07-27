@@ -20,31 +20,27 @@ buildscript {
         mavenCentral()
         maven { url "https://repo.spring.io/plugins-release" }
     }
+
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.springframework.build.gradle:propdeps-plugin:0.0.7"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version"
+
+        // 참고: https://github.com/spring-gradle-plugins/dependency-management-plugin
         classpath "io.spring.gradle:dependency-management-plugin:0.6.0.RELEASE"
     }
 }
 
-// maven dependencyManagement와 같은 기능
-apply plugin: "io.spring.dependency-management"
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.boot:spring-boot-starter-parent:$spring_boot_version"
-    }
-}
-
-group = 'com.github.debop'
-version = '0.0.1-SNAPSHOT'
 
 if (project.hasProperty('prod')) {
     apply from: 'gradle/profile_prod.gradle'
 } else {
     apply from: 'gradle/profile_dev.gradle'
 }
+
+group = 'com.github.debop'
+version = '0.0.1-SNAPSHOT'
+
 
 subprojects {
     apply plugin: 'java'
@@ -53,6 +49,10 @@ subprojects {
     apply plugin: 'propdeps'
     apply plugin: 'propdeps-maven'
     apply plugin: 'propdeps-idea'
+
+    // maven dependencyManagement와 같은 기능
+    apply plugin: "io.spring.dependency-management"
+
 
     if (name.endsWith("java8")) {
         println("Project ${name} set to Java 8")
@@ -106,7 +106,6 @@ subprojects {
 
     repositories {
         maven { url "http://nexus.kesti.co.kr/content/groups/public" }
-
         mavenLocal()
         jcenter()
         mavenCentral()
@@ -120,35 +119,76 @@ subprojects {
         maven { url "https://maven.open-web.nl/content/groups/public/" }
     }
 
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-starter-parent:$spring_boot_version"
+        }
+
+        dependencies {
+            dependency "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+            dependency "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+            dependency "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+            dependency "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+
+            dependency "io.kotlintest:kotlintest:$kotlintest_version"
+
+            dependency "org.slf4j:slf4j-api:$slf4j_version"
+            dependency "ch.qos.logback:logback-classic:$logback_version"
+            dependency "javax.inject:javax.inject:$javax_inject_version"
+
+            dependency "junit:junit:$junit_version"
+            dependency "org.assertj:assertj-core:$assertj_core_version"
+            dependency "org.assertj:assertj-joda-time:$assertj_joda_time_version"
+            dependency "org.projectlombok:lombok:$lombok_version"
+
+
+
+            dependencySet(group: 'org.springframework', version: "$spring_version") {
+                entry('spring-core') {
+                    exclude(module: 'common-logging')
+                }
+            }
+
+            dependency("org.springframework.boot:spring-boot-starter:$spring_boot_version") {
+                exclude(module: 'commons-logging')
+                exclude(module: 'spring-context')
+            }
+            dependency("org.springframework.boot:spring-boot-starter-test:$spring_boot_version") {
+                exclude(module: 'commons-logging')
+                exclude(module: 'spring-test')
+            }
+            dependency("org.springframework:spring-context:$spring_version")
+            dependency("org.springframework:spring-test:$spring_version")
+        }
+    }
+
+
     dependencies {
-        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-        compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+        compile "org.jetbrains.kotlin:kotlin-stdlib"
+        compile "org.jetbrains.kotlin:kotlin-reflect"
 
-        testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
-        testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+        testCompile "org.jetbrains.kotlin:kotlin-test"
+        testCompile "org.jetbrains.kotlin:kotlin-test-junit"
+        testCompile "io.kotlintest:kotlintest"
 
-        compile "org.slf4j:slf4j-api:$slf4j_version"
-        compile "ch.qos.logback:logback-classic:$logback_version"
-        compile "javax.inject:javax.inject:$javax_inject_version"
+        compile "org.slf4j:slf4j-api"
+        compile "ch.qos.logback:logback-classic"
+        compile "javax.inject:javax.inject"
 
-        testCompile "junit:junit:$junit_version"
-        testCompile "org.assertj:assertj-core:$assertj_core_version"
-        testCompile "org.assertj:assertj-joda-time:$assertj_joda_time_version"
-        testCompile "org.projectlombok:lombok:$lombok_version"
+        testCompile "junit:junit"
+        testCompile "org.assertj:assertj-core"
+        testCompile "org.projectlombok:lombok"
 
-        testCompile "io.kotlintest:kotlintest:$kotlintest_version"
-
-
-        testCompile("org.springframework.boot:spring-boot-starter:$spring_boot_version") {
+        testCompile("org.springframework.boot:spring-boot-starter") {
             exclude(module: 'commons-logging')
             exclude(module: 'spring-context')
         }
-        testCompile("org.springframework.boot:spring-boot-starter-test:$spring_boot_version") {
+        testCompile("org.springframework.boot:spring-boot-starter-test") {
             exclude(module: 'commons-logging')
             exclude(module: 'spring-test')
         }
-        testCompile("org.springframework:spring-context:$spring_version")
-        testCompile("org.springframework:spring-test:$spring_version")
+        testCompile("org.springframework:spring-context")
+        testCompile("org.springframework:spring-test")
     }
 }
 

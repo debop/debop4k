@@ -17,7 +17,6 @@ package debop4k.core.kodatimes
 
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.jodatime.api.Assertions.assertThat
 import org.joda.time.DateTime
 import org.joda.time.Interval
 import org.joda.time.LocalDate
