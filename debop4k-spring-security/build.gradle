@@ -14,14 +14,12 @@
  */
 
 dependencies {
-    compile project(":debop4k-core")
+    compile project(":debop4k-core-java6")
     compile project(":debop4k-spring")
 
-    compile("org.springframework.security:spring-security-web:$spring_security_version") {
-        exclude(module: 'spring-web')
-    }
-    compile "org.springframework.security:spring-security-config:$spring_security_version"
+    compile "org.springframework.security:spring-security-web"
+    compile "org.springframework.security:spring-security-config"
 
-    compile "org.springframework:spring-web:$spring_version"
+    compile "org.springframework:spring-web"
 
 }

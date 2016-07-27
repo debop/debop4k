@@ -77,17 +77,48 @@ subprojects {
             dependency "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
             dependency "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
             dependency "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+            dependency "nl.komponents.kovenant:kovenant:$kovenant_version"
 
             dependency "io.kotlintest:kotlintest:$kotlintest_version"
 
             dependency "org.slf4j:slf4j-api:$slf4j_version"
             dependency "ch.qos.logback:logback-classic:$logback_version"
             dependency "javax.inject:javax.inject:$javax_inject_version"
+            dependency "javax.servlet:javax.servlet-api:$javax_servlet_api_version"
 
             dependency "junit:junit:$junit_version"
             dependency "org.assertj:assertj-core:$assertj_core_version"
-            dependency "org.assertj:assertj-joda-time:$assertj_joda_time_version"
             dependency "org.projectlombok:lombok:$lombok_version"
+
+            dependency "org.eclipse.collections:eclipse-collections:$eclipse_collections_version"
+            dependency "com.google.guava:guava:$guava_version"
+            dependency "joda-time:joda-time:$joda_time_version"
+            dependency "org.joda:joda-convert:$joda_convert_version"
+
+            dependency "org.xerial.snappy:snappy-java:$snappy_java_version"
+
+            // apache commons
+            dependency "commons-codec:commons-codec:$commons_codec_version"
+            dependency "org.apache.commons:commons-lang3:$commons_lang3_version"
+            dependency "org.apache.commons:commons-math3:$commons_math3_version"
+            dependency "org.apache.commons:commons-compress:$commons_compress_version"
+            dependency "org.apache.commons:commons-collections4:$commons_collections4_version"
+            dependency "commons-io:commons-io:$commons_io_version"
+            dependency "org.apache.commons:commons-csv:$commons_csv_version"
+            dependency "org.apache.commons:commons-pool2:$commons_pool2_version"
+            dependency "commons-net:commons-net:$commons_net_version"
+            dependency "org.apache.commons:commons-exec:$commons_exec_version"
+            dependency "commons-validator:commons-validator:$commons_validator_version"
+
+            // Json
+            dependency "org.xerial.snappy:snappy-java:$snappy_java_version"
+            dependency "org.jasypt:jasypt:$jasypt_version"
+            dependency "com.fasterxml.jackson.core:jackson-core:$jackson_version"
+            dependency "com.fasterxml.jackson.core:jackson-annotations:$jackson_version"
+            dependency "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
+            dependency "com.fasterxml.jackson.datatype:jackson-datatype-joda:$jackson_version"
+
+            dependency "com.google.code.gson:gson:$gson_version"
 
             dependency "org.springframework:spring-core:$spring_version"
             dependency "org.springframework:spring-context:$spring_version"
@@ -97,17 +128,41 @@ subprojects {
             dependency "org.springframework:spring-expression:$spring_version"
             dependency "org.springframework:spring-web:$spring_version"
             dependency "org.springframework:spring-webmvc:$spring_version"
-
-            dependency("org.springframework.boot:spring-boot-starter:$spring_boot_version") {
-                exclude(module: 'commons-logging')
-                exclude(module: 'spring-context')
-            }
-            dependency("org.springframework.boot:spring-boot-starter-test:$spring_boot_version") {
-                exclude(module: 'commons-logging')
-                exclude(module: 'spring-test')
-            }
-            dependency("org.springframework:spring-context:$spring_version")
             dependency("org.springframework:spring-test:$spring_version")
+
+            dependency "org.springframework.boot:spring-boot-starter:$spring_boot_version"
+            dependency "org.springframework.boot:spring-boot-starter-jpa:$spring_boot_version"
+            dependency "org.springframework.boot:spring-boot-starter-web:$spring_boot_version"
+            dependency "org.springframework.boot:spring-boot-starter-test:$spring_boot_version"
+            dependency "org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version"
+
+            dependency "org.springframework.security:spring-security-web:$spring_security_version"
+            dependency "org.springframework.security:spring-security-config:$spring_security_version"
+
+
+            dependency "org.apache.tomcat:tomcat-jdbc:$tomcat_jdbc_version"
+            dependency "com.h2database:h2:$h2_version"
+            dependency "org.hsqldb:hsqldb:$hsqldb_version"
+            dependency "mysql:mysql-connector-java:$mysql_connector_java_version"
+
+            dependency "io.reactivex:rxjava:$rxjava_version"
+            dependency "com.github.davidmoten:rxjava-jdbc:$rxjava_jdbc_version"
+
+            dependency "org.redisson:redisson:$redisson_version"
+
+            dependency "net.jpountz.lz4:lz4:$lz4_version"
+            dependency "com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:$gson_jodatime_serialisers_version"
+
+            dependency "org.jscience:jscience:4.3.1"
+            dependency "org.jblas:jblas:1.2.4"
+            dependency "com.univocity:univocity-parsers:1.5.6"
+
+            dependency "com.jhlabs:javaproj:1.0.6"
+            dependency "org.osgeo:proj4j:0.1.0"
+            dependency "com.esri.geometry:esri-geometry-api:1.2.1"
+            dependency("org.geotools:gt-shapefile:11.5") {
+                exclude(module: 'jai_core')
+            }
         }
     }
 

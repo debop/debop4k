@@ -18,43 +18,44 @@ dependencies {
     compile project(":debop4k-api")
     compile project(":debop4k-fst-java6")
 
-    compile("org.springframework:spring-core:$spring_version") {
-        exclude group: 'commons-logging', module: 'commons-logging'
+    compile("org.springframework:spring-core") {
+        exclude(module: 'commons-logging')
     }
 
-    compile "nl.komponents.kovenant:kovenant:$kovenant_version"
+    compile "nl.komponents.kovenant:kovenant"
 
-    compile "org.eclipse.collections:eclipse-collections:$eclipse_collections_version"
-    compile "com.google.guava:guava:$guava_version"
-    compile "joda-time:joda-time:$joda_time_version"
+    compile "org.eclipse.collections:eclipse-collections"
+    compile "com.google.guava:guava"
+    compile "joda-time:joda-time"
+    compile "org.joda:joda-convert"
 
+    // FST for Java 6
     compile "de.ruedigermoeller:fst:$fst_java6_version"
-    compile "org.xerial.snappy:snappy-java:$snappy_java_version"
+    compile "org.xerial.snappy:snappy-java"
 
     // apache commons
-    compile "commons-codec:commons-codec:$commons_codec_version"
-    compile "org.apache.commons:commons-lang3:$commons_lang3_version"
-    compile "org.apache.commons:commons-math3:$commons_math3_version"
-    compile "org.apache.commons:commons-compress:$commons_compress_version"
-    compile "org.apache.commons:commons-collections4:$commons_collections4_version"
-    compile "commons-io:commons-io:$commons_io_version"
-    compile "org.apache.commons:commons-csv:$commons_csv_version"
-    compile "org.apache.commons:commons-pool2:$commons_pool2_version"
-    compile "commons-net:commons-net:$commons_net_version"
-    compile "org.apache.commons:commons-exec:$commons_exec_version"
-    compile "commons-validator:commons-validator:$commons_validator_version"
+    compile "commons-codec:commons-codec"
+    compile "org.apache.commons:commons-lang3"
+    compile "org.apache.commons:commons-math3"
+    compile "org.apache.commons:commons-compress"
+    compile "org.apache.commons:commons-collections4"
+    compile "commons-io:commons-io"
+    compile "org.apache.commons:commons-csv"
+    compile "org.apache.commons:commons-pool2"
+    compile "commons-net:commons-net"
+    compile "org.apache.commons:commons-exec"
+    compile "commons-validator:commons-validator"
 
     // Json
-    compile "org.xerial.snappy:snappy-java:$snappy_java_version"
-    compile "org.jasypt:jasypt:$jasypt_version"
-    compile "com.fasterxml.jackson.core:jackson-core:$jackson_version"
-    compile "com.fasterxml.jackson.core:jackson-annotations:$jackson_version"
-    compile "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
-    compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:$jackson_version"
+    compile "org.xerial.snappy:snappy-java"
+    compile "org.jasypt:jasypt"
+    compile "com.fasterxml.jackson.core:jackson-core"
+    compile "com.fasterxml.jackson.core:jackson-annotations"
+    compile "com.fasterxml.jackson.core:jackson-databind"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-joda"
 
-    compile "org.joda:joda-convert:$joda_convert_version"
+    optional "com.google.code.gson:gson"
 
-    optional "net.jpountz.lz4:lz4:$lz4_version"
-    optional "com.google.code.gson:gson:$gson_version"
-    optional "com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:$gson_jodatime_serialisers_version"
+    optional "net.jpountz.lz4:lz4"
+    optional "com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers"
 }

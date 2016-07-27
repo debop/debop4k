@@ -15,14 +15,10 @@
 
 dependencies {
 
-    compile project(":debop4k-core")
+    compile project(":debop4k-core-java6")
 
-    compile("org.springframework:spring-core:$spring_version") {
-        exclude(module: "commons-logging")
-    }
-    compile("org.springframework:spring-context:$spring_version") {
-        exclude(module: "commons-logging")
-    }
+    compile("org.springframework:spring-core")
+    compile("org.springframework:spring-context")
 
-    testCompile "org.springframework:spring-test:$spring_version"
+    testCompile "org.springframework:spring-test"
 }

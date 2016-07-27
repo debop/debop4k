@@ -16,10 +16,7 @@
 dependencies {
     compile project(":debop4k-core-java6")
 
-    compile("org.springframework.boot:spring-boot-starter-web:$spring_boot_version") {
-        exclude(module: 'spring-web')
-        exclude(module: 'spring-webmvc')
-    }
-    compile "org.springframework:spring-web:$spring_version"
-    compile "org.springframework:spring-webmvc:$spring_version"
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.springframework:spring-web"
+    compile "org.springframework:spring-webmvc"
 }

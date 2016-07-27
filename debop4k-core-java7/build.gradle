@@ -20,8 +20,5 @@ dependencies {
         exclude(module: 'fst')
 
     }
-
     compile project(":debop4k-fst-java7")
-    compile "de.ruedigermoeller:fst:$fst_java7_version"
-
 }

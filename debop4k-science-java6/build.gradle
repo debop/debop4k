@@ -16,6 +16,7 @@
 repositories {
     maven { url "http://nexus.kesti.co.kr/content/groups/public" }
     jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -27,18 +28,15 @@ dependencies {
     optional "com.univocity:univocity-parsers:1.5.6"
 
     // Java 6 용은 4.4.x 이고 Java 7 이상은 4.6.x 이다.
-    compile("edu.ucar:cdm:4.4.+") {
-        exclude(module: "jcl-over-slf4j")
-    }
-    compile "edu.ucar:grib:4.4.+"
-    compile "edu.ucar:netcdf4:4.4.+"
-    compile "edu.ucar:opendap:4.4.+"
+    compile "edu.ucar:cdm:4.4.1"
+    compile "edu.ucar:grib:4.4.1"
+    compile "edu.ucar:netcdf4:4.4.1"
+    compile "edu.ucar:opendap:4.4.1"
 
-    compile "com.jhlabs:javaproj:1.0.6"
-    compile "org.osgeo:proj4j:0.1.0"
-    compile "com.esri.geometry:esri-geometry-api:1.2.1"
-    compile("org.geotools:gt-shapefile:11.5") {
+    compile "com.jhlabs:javaproj"
+    compile "org.osgeo:proj4j"
+    compile "com.esri.geometry:esri-geometry-api"
+    compile("org.geotools:gt-shapefile") {
         exclude(module: 'jai_core')
     }
-//    compile "javax.media:jai_core:1.1.3"
 }

@@ -13,13 +13,24 @@
  * limitations under the License.
  */
 
+repositories {
+    maven { url "http://nexus.kesti.co.kr/content/groups/public" }
+    jcenter()
+}
+
 dependencies {
-    compile project(":debop4k-core-java6")
-    compile project(":debop4k-spring")
+    compile project(":debop4k-core-java7")
 
-    compile "org.springframework:spring-jdbc"
-    compile "org.springframework:spring-tx"
+    compile(project(":debop4k-science-java6")) {
+        exclude(group: 'edu.ucar')
+    }
 
-    testCompile "org.springframework:spring-test"
-    testCompile "com.h2database:h2"
+    // Java 6 용은 4.4.x 이고 Java 7 이상은 4.6.x 이다.
+    compile "edu.ucar:cdm:4.6.6"
+    compile "edu.ucar:grib:4.6.6"
+    compile "edu.ucar:netcdf4:4.6.6"
+    compile "edu.ucar:opendap:4.6.6"
+
+    optional "com.univocity:univocity-parsers:1.5.6"
+
 }
