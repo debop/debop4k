@@ -89,11 +89,15 @@ subprojects {
             dependency "org.assertj:assertj-joda-time:$assertj_joda_time_version"
             dependency "org.projectlombok:lombok:$lombok_version"
 
-            dependencySet(group: 'org.springframework', version: "$spring_version") {
-                entry('spring-core') {
-                    exclude(module: 'common-logging')
-                }
-            }
+            dependency "org.springframework:spring-core:$spring_version"
+            dependency "org.springframework:spring-context:$spring_version"
+            dependency "org.springframework:spring-aop:$spring_version"
+            dependency "org.springframework:spring-beans:$spring_version"
+            dependency "org.springframework:spring-jdbc:$spring_version"
+            dependency "org.springframework:spring-expression:$spring_version"
+            dependency "org.springframework:spring-web:$spring_version"
+            dependency "org.springframework:spring-webmvc:$spring_version"
+
             dependency("org.springframework.boot:spring-boot-starter:$spring_boot_version") {
                 exclude(module: 'commons-logging')
                 exclude(module: 'spring-context')
@@ -182,7 +186,7 @@ subprojects {
     artifacts.archives packageSources
 
     test {
-        ignoreFailures true
+        // ignoreFailures true
         // JVM 버전에 따라 빌드가 실패할 수도 있어서
         // jvmArgs "-XX:MaxPermSize=512m"
     }
