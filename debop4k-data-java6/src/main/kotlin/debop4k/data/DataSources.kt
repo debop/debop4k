@@ -1,16 +1,18 @@
 /*
  * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 @file:JvmName("DataSources")
@@ -39,9 +41,9 @@ object DataSources {
   val MIN_IDLE_SIZE: Int by lazy { 2 min processCount }
 
   private val dataSourceCache: ConcurrentHashMap<DatabaseSetting, DataSource>
-      by lazy { ConcurrentHashMap<DatabaseSetting, DataSource>() }
+      = ConcurrentHashMap<DatabaseSetting, DataSource>()
 
-  private val dataSourceFactory by lazy { HikariDataSourceFactory() }
+  private val dataSourceFactory = HikariDataSourceFactory()
 
   @JvmOverloads
   @JvmStatic
@@ -50,11 +52,11 @@ object DataSources {
          username: String? = null,
          password: String? = null): DataSource {
 
-    TODO()
-
-//    val config = HikariConfig()
-//    // TODO()
-//    return HikariDataSource(config)
+    val setting = DatabaseSetting(driverClassName = driverClassName,
+                                  jdbcUrl = jdbcUrl,
+                                  username = username,
+                                  password = password)
+    return of(setting)
   }
 
   @JvmStatic
@@ -62,8 +64,8 @@ object DataSources {
     return dataSourceCache.getIfAbsentPut(setting, dataSourceFactory.create(setting))
   }
 
-  @JvmStatic fun ofEmbeddedH2() = of(h2Mem)
-  @JvmStatic fun ofEmbeddedHsql() = of(hsqlMem)
+  @JvmStatic fun ofEmbeddedH2(): DataSource = of(h2Mem)
+  @JvmStatic fun ofEmbeddedHsql(): DataSource = of(hsqlMem)
 
   @JvmStatic val h2Mem = DatabaseSetting(driverClassName = JdbcDrivers.DRIVER_CLASS_H2,
                                          jdbcUrl = "jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE;MVCC=TRUE;")
