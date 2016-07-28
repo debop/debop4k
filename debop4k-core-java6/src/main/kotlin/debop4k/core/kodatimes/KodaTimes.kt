@@ -1,16 +1,18 @@
 /*
  * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 @file:JvmName("KodaTimes")
@@ -22,9 +24,50 @@ import org.eclipse.collections.api.set.ImmutableSet
 import org.joda.time.*
 import org.joda.time.base.AbstractInstant
 import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.DateTimeFormatter
 import org.joda.time.format.ISODateTimeFormat
 import java.sql.Timestamp
 import java.util.*
+
+// yyyy-MM-dd'T'HH:mm:ss.SSSZZ
+val JODA_DEFAULT_DATETIME_FORMATTER = ISODateTimeFormat.dateTime()
+
+fun DateTime.asTimestamp(): Timestamp = Timestamp(this.millis)
+
+
+fun utcNow(): DateTime = DateTime.now(DateTimeZone.UTC)
+
+fun DateTime.toISOString(): String = JODA_DEFAULT_DATETIME_FORMATTER.print(this)
+fun DateTime.toISODateHourMinuteSecond(): String = ISODateTimeFormat.dateHourMinuteSecond().print(this)
+
+fun String.toDateTime(formatter: DateTimeFormatter): DateTime {
+  if (this.isNullOrBlank())
+    return DateTime(0)
+  return DateTime.parse(this, formatter)
+}
+
+
+fun DateTime.startOfDay(): DateTime = this.withTimeAtStartOfDay()
+fun DateTime.endOfDay(): DateTime = this.startOfDay().plusDays(1).minusMillis(1)
+fun DateTime.startOfWeek(): DateTime = this.minusDays(this.dayOfWeek - DateTimeConstants.MONDAY).withTimeAtStartOfDay()
+fun DateTime.endOfWeek(): DateTime = this.startOfWeek().plusDays(7).minusMillis(1)
+fun DateTime.startOfMonth(): DateTime = this.withDate(this.year, this.monthOfYear, 1)
+fun DateTime.endOfMonth(): DateTime = this.startOfMonth().plusMonths(1).minusMillis(1)
+fun DateTime.startOfYear(): DateTime = this.withDate(this.year, 1, 1)
+fun DateTime.endOfYear(): DateTime = this.startOfYear().plusYears(1).minusMillis(1)
+
+fun DateTime.getWeekyearAndWeekOfWeekyear(): Pair<Int, Int> {
+  return Pair(this.weekyear, this.weekOfWeekyear)
+}
+
+fun DateTime.getMonthAndWeekOfMonth(): Pair<Int, Int> {
+  val result = this.weekOfWeekyear - this.startOfMonth().weekOfWeekyear + 1
+  if (result > 0)
+    return Pair(this.monthOfYear, result)
+
+  return Pair(this.plusMonths(1).monthOfYear, 1)
+}
+
 
 val DefaultTimeZone: DateTimeZone = DateTimeZone.getDefault()
 
@@ -72,6 +115,12 @@ fun Long.millis(): DurationBuilder = DurationBuilder(Period.millis(this.toInt())
 fun Long.seconds(): DurationBuilder = DurationBuilder(Period.seconds(this.toInt()))
 fun Long.minutes(): DurationBuilder = DurationBuilder(Period.minutes(this.toInt()))
 fun Long.hours(): DurationBuilder = DurationBuilder(Period.hours(this.toInt()))
+
+fun Long.standardMillis(): Duration = Duration.millis(this)
+fun Long.standardSeconds(): Duration = Duration.standardSeconds(this)
+fun Long.standardMinutes(): Duration = Duration.standardMinutes(this)
+fun Long.standardHours(): Duration = Duration.standardHours(this)
+fun Long.standardDays(): Duration = Duration.standardDays(this)
 
 fun Long.days(): Period = Period.days(this.toInt())
 fun Long.weeks(): Period = Period.weeks(this.toInt())
@@ -152,10 +201,6 @@ fun DateTime.trimToYear(): DateTime = asDate(this.year, 1, 1)
     = this.withMillisOfSecond(millisOfSecond)
 
 
-fun DateTime.startOfDay(): DateTime = this.withTimeAtStartOfDay()
-fun DateTime.startOfMonth(): DateTime = dateTimeOf(this.year, this.monthOfYear, 1)
-fun DateTime.startOfYear(): DateTime = dateTimeOf(this.year, 1, 1)
-
 operator fun DateTime.minus(builder: DurationBuilder): DateTime = this.minus(builder.period)
 operator fun DateTime.plus(builder: DurationBuilder): DateTime = this.plus(builder.period)
 
@@ -185,6 +230,7 @@ fun DateTime.lastYear(): DateTime = this.minusYears(1)
 
 fun DateTime.toTimestamp(): Timestamp = Timestamp(this.millis)
 fun DateTime.asUtc(): DateTime = this.toDateTime(DateTimeZone.UTC)
+@JvmOverloads
 fun DateTime.asLocal(tz: DateTimeZone = DateTimeZone.getDefault()): DateTime = this.toDateTime(tz)
 
 fun DateTime.toIsoFormatString(): String = ISODateTimeFormat.dateTime().print(this)
@@ -267,11 +313,6 @@ operator fun LocalTime.plus(builder: DurationBuilder): LocalTime = this.plus(bui
  * [Duration] extensions
  */
 val emptyDuration: Duration = Duration.ZERO
-
-fun standardDays(days: Long): Duration = Duration.standardDays(days)
-fun standardHours(hours: Long): Duration = Duration.standardHours(hours)
-fun standardMinutes(minutes: Long): Duration = Duration.standardMinutes(minutes)
-fun standardSeconds(seconds: Long): Duration = Duration.standardSeconds(seconds)
 
 fun Duration.days(): Long = this.standardDays
 fun Duration.hours(): Long = this.standardHours

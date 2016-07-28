@@ -13,36 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- */
+ */package debop4k.data
 
-package debop4k.examples.basic
-
-import org.junit.Test
+import io.kotlintest.specs.FunSpec
 import org.slf4j.LoggerFactory
 
-class ForExample {
+abstract class AbstractDataFunSpec : FunSpec() {
 
-  private val log = LoggerFactory.getLogger(javaClass)
-
-  fun fizzBuzz(i: Int) = when {
-    i % 5 == 0 -> "FizzBuzz "
-    i % 3 == 0 -> "Fizz "
-    i % 5 == 0 -> "Buzz "
-    else -> "$i "
-  }
-
-  @Test
-  fun rangeForLoop() {
-    for (i in 1..100) {
-      log.debug(fizzBuzz(i))
-    }
-  }
-
-  @Test
-  fun rangeForDownTo() {
-    for (i in 100 downTo 1 step 2) {
-      log.debug(fizzBuzz(i))
-    }
-  }
-
+  protected val log = lazy { LoggerFactory.getLogger(javaClass) }
 }
