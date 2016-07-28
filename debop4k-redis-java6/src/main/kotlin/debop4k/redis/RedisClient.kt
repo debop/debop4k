@@ -15,9 +15,10 @@
  *
  */
 
-dependencies {
+package debop4k.redis
 
-    compile project(":debop4k-core-java6")
-
-    compile "joda-time:joda-time"
+/**
+ * Created by debop
+ */
+class RedisClient {
 }
