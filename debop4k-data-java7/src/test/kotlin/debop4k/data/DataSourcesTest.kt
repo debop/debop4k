@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- */
-
-package debop4k.data
+ */package debop4k.data
 
 import org.assertj.core.api.Assertions.assertThat
 import java.sql.SQLException

@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- */
-
-package debop4k.data.spring
+ */package debop4k.data.spring
 
 import debop4k.core.uninitialized
 import org.assertj.core.api.Assertions.assertThat
