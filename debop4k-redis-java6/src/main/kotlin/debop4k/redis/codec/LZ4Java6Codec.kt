@@ -13,10 +13,14 @@
  * limitations under the License.
  */
 
-dependencies {
+package debop4k.redis.codec
 
-    compile project(":debop4k-core-java6")
+import org.redisson.client.codec.Codec
+import org.redisson.codec.LZ4Codec
 
-    compile "org.redisson:redisson"
-    optional "net.jpountz.lz4:lz4"
+/**
+ * LZ4Java6Codec
+ * @author debop sunghyouk.bae@gmail.com
+ */
+class LZ4Java6Codec(val codec: Codec = FstJava6Codec()) : LZ4Codec(codec) {
 }

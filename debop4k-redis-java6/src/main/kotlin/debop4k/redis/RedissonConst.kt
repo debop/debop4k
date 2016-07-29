@@ -13,10 +13,21 @@
  * limitations under the License.
  */
 
-dependencies {
+@file:JvmName("RedissonConst")
 
-    compile project(":debop4k-core-java6")
+package debop4k.redis
 
-    compile "org.redisson:redisson"
-    optional "net.jpountz.lz4:lz4"
-}
+const val DEFAULT_HOST: String = "127.0.0.1"
+const val DEFAULT_PORT: Int = 6379
+
+val DEFAULT_ADDRESS = DEFAULT_HOST + ":" + DEFAULT_PORT
+
+const val DEFAULT_SENTINEL_PORT = 26379
+const val DEFAULT_TIMEOUT = 2000
+const val DEFAULT_DATABASE = 0
+
+const val DEFAULT_CHARSET = "UTF-8"
+
+const val DEFAULT_LOGBACK_CHANNEL = "channel:logback:logs"
+
+const val DEFAULT_DELIMETER = ":"
