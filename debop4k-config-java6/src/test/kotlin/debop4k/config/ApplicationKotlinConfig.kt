@@ -13,17 +13,16 @@
  * limitations under the License.
  */
 
-package debop4k.config.redis
+package debop4k.config
 
-import debop4k.config.ConfigElement
+import com.typesafe.config.Config
+import debop4k.config.database.DatabaseConfigSupport
+import debop4k.config.redis.RedisConfigSupport
 
 /**
- * RedisConfigSupport
+ * ApplicationKotlinConfig
  * @author debop sunghyouk.bae@gmail.com
  */
-interface RedisConfigSupport : ConfigElement {
-
-  val redis: RedisConfigElement
-    get() = RedisConfigElement(config.getConfig("redis"))
+data class ApplicationKotlinConfig(override val config: Config) : DatabaseConfigSupport, RedisConfigSupport {
 
 }

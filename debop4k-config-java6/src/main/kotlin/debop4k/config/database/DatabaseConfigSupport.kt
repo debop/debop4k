@@ -24,5 +24,5 @@ import debop4k.config.ConfigElement
 interface DatabaseConfigSupport : ConfigElement {
 
   val database: DatabaseConfigElement
-    get() = DatabaseConfigElement(config)
+    get() = DatabaseConfigElement(config.getConfig("database"))
 }
