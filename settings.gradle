@@ -22,6 +22,11 @@ include 'debop4k-fst-java7'
 include 'debop4k-fst-java8'
 include 'debop4k-fst'
 
+include 'debop4k-config'
+include 'debop4k-config-java6'
+include 'debop4k-config-java7'
+include 'debop4k-config-java8'
+
 include 'debop4k-core-java6'
 include 'debop4k-core-java7'
 include 'debop4k-core-java8'
@@ -63,6 +68,7 @@ include 'debop4k-science-java7'
 include 'debop4k-science'
 
 
+include 'debop4k-spring-boot-autoconfigure'
+
+
 include 'debop4k-examples'
-
-
