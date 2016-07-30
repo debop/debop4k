@@ -13,22 +13,30 @@
  * limitations under the License.
  */
 
-package debop4k.config.redis
+package debop4k.config.hibernate
 
 import com.typesafe.config.Config
 import debop4k.config.ConfigSupport
-import debop4k.config.ServerAddressConfigElement
-import debop4k.config.loadInt
+import debop4k.config.asProperties
+import debop4k.config.loadBool
 import debop4k.config.loadString
+import java.util.*
 
 /**
- * RedisConfigElement
+ * HibernateConfigElement
  * @author debop sunghyouk.bae@gmail.com
  */
-open class RedisConfigElement(override val config: Config) : ConfigSupport, ServerAddressConfigElement {
+open class HibernateConfigElement(override val config: Config) : ConfigSupport {
 
-  val database: Int by lazy { config.loadInt("database", 0) }
+  val hbm2ddl: String by lazy { config.loadString("hbm2ddl", "none")!! }
 
-  val password: String? by lazy { config.loadString("password", null) }
+  val showSql: Boolean by lazy { config.loadBool("showSql", false) }
 
+  val useSecondCache: Boolean
+      by lazy { config.loadBool("useSecondCache", false) }
+
+  val cacheProviderConfig: String
+      by lazy { config.loadString("cacheProviderConfig", "")!! }
+
+  val properties: Properties by lazy { config.asProperties() }
 }

@@ -19,7 +19,7 @@ package debop4k.config
  * ServerAddressConfigElement
  * @author debop sunghyouk.bae@gmail.com
  */
-interface ServerAddressConfigElement : ConfigElement {
+interface ServerAddressConfigElement : ConfigSupport {
 
   val host: String
     get() = config.loadString("host", "localhost")!!

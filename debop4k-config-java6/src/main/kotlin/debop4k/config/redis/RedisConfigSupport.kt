@@ -15,13 +15,13 @@
 
 package debop4k.config.redis
 
-import debop4k.config.ConfigElement
+import debop4k.config.ConfigSupport
 
 /**
  * RedisConfigSupport
  * @author debop sunghyouk.bae@gmail.com
  */
-interface RedisConfigSupport : ConfigElement {
+interface RedisConfigSupport : ConfigSupport {
 
   val redis: RedisConfigElement
     get() = RedisConfigElement(config.getConfig("redis"))

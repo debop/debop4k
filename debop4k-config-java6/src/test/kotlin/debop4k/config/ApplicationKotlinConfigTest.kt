@@ -41,6 +41,14 @@ class ApplicationKotlinConfigTest {
 
       assertThat(appConfig.redis.host).isEqualTo("127.0.0.1")
       assertThat(appConfig.redis.port).isEqualTo(6379)
+
+      assertThat(appConfig.email.encoding).isEqualTo("UTF-8")
+      assertThat(appConfig.email.protocol).isEqualTo("smtp")
+      assertThat(appConfig.email.properties.getProperty("mail.transport.protocol")).isEqualTo("smtp")
+
+      assertThat(appConfig.mongodb.database).isNotNull()
+
+      assertThat(appConfig.hibernate.hbm2ddl).isNotNull()
     }
   }
 }

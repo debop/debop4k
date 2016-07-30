@@ -15,15 +15,14 @@
 
 package debop4k.config
 
+import com.typesafe.config.Config
+
 /**
- * UserCredentialConfigElement
+ * ConfigSupport
  * @author debop sunghyouk.bae@gmail.com
  */
-interface UserCredentialConfigElement : ConfigSupport {
+interface ConfigSupport {
 
-  val username: String?
-    get() = config.loadString("username", null)
+  val config: Config
 
-  val password: String?
-    get() = config.loadString("password", null)
 }

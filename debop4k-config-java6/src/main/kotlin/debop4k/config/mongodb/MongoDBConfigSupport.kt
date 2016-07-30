@@ -13,17 +13,16 @@
  * limitations under the License.
  */
 
-package debop4k.config
+package debop4k.config.mongodb
+
+import debop4k.config.ConfigSupport
 
 /**
- * UserCredentialConfigElement
+ * MongoDBConfigSupport
  * @author debop sunghyouk.bae@gmail.com
  */
-interface UserCredentialConfigElement : ConfigSupport {
+interface MongoDBConfigSupport : ConfigSupport {
 
-  val username: String?
-    get() = config.loadString("username", null)
-
-  val password: String?
-    get() = config.loadString("password", null)
+  val mongodb: MongoDBConfigElement
+    get() = MongoDBConfigElement(config.getConfig("mongo"))
 }

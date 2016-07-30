@@ -17,12 +17,18 @@ package debop4k.config
 
 import com.typesafe.config.Config
 import debop4k.config.database.DatabaseConfigSupport
+import debop4k.config.email.EmailConfigSupport
+import debop4k.config.hibernate.HibernateConfigSupport
+import debop4k.config.mongodb.MongoDBConfigSupport
 import debop4k.config.redis.RedisConfigSupport
 
 /**
  * ApplicationKotlinConfig
  * @author debop sunghyouk.bae@gmail.com
  */
-data class ApplicationKotlinConfig(override val config: Config) : DatabaseConfigSupport, RedisConfigSupport {
-
-}
+data class ApplicationKotlinConfig(override val config: Config) :
+    DatabaseConfigSupport,
+    RedisConfigSupport,
+    MongoDBConfigSupport,
+    HibernateConfigSupport,
+    EmailConfigSupport

@@ -13,16 +13,16 @@
  * limitations under the License.
  */
 
-package debop4k.config
+package debop4k.config.redis
 
 import com.typesafe.config.Config
+import debop4k.config.ConfigSupport
 
 /**
- * ConfigElement
+ * RedissonConfigElement
  * @author debop sunghyouk.bae@gmail.com
  */
-interface ConfigElement {
+open class RedissonConfigElement(override val config: Config) : ConfigSupport {
 
-  val config: Config
 
 }

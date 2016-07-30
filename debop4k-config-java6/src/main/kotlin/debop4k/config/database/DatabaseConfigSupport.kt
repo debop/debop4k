@@ -15,13 +15,13 @@
 
 package debop4k.config.database
 
-import debop4k.config.ConfigElement
+import debop4k.config.ConfigSupport
 
 /**
  * DatabaseConfigSupport
  * @author debop sunghyouk.bae@gmail.com
  */
-interface DatabaseConfigSupport : ConfigElement {
+interface DatabaseConfigSupport : ConfigSupport {
 
   val database: DatabaseConfigElement
     get() = DatabaseConfigElement(config.getConfig("database"))

@@ -22,7 +22,7 @@ import debop4k.config.*
  * DatabaseConfigElement
  * @author debop sunghyouk.bae@gmail.com
  */
-open class DatabaseConfigElement(override val config: Config) : ConfigElement, UserCredentialConfigElement {
+open class DatabaseConfigElement(override val config: Config) : ConfigSupport, UserCredentialConfigElement {
 
   val host: String by lazy { config.loadString("host", "localhost")!! }
 

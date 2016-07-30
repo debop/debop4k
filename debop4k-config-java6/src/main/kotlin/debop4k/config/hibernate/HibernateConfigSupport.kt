@@ -13,17 +13,17 @@
  * limitations under the License.
  */
 
-package debop4k.config
+package debop4k.config.hibernate
+
+import debop4k.config.ConfigSupport
 
 /**
- * UserCredentialConfigElement
+ * HibernateConfigSupport
  * @author debop sunghyouk.bae@gmail.com
  */
-interface UserCredentialConfigElement : ConfigSupport {
+interface HibernateConfigSupport : ConfigSupport {
 
-  val username: String?
-    get() = config.loadString("username", null)
+  val hibernate: HibernateConfigElement
+    get() = HibernateConfigElement(config.getConfig("hibernate"))
 
-  val password: String?
-    get() = config.loadString("password", null)
 }

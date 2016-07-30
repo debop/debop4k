@@ -13,17 +13,16 @@
  * limitations under the License.
  */
 
-package debop4k.config
+package debop4k.config.redis
+
+import debop4k.config.ConfigSupport
 
 /**
- * UserCredentialConfigElement
+ * RedissonConfigSupport
  * @author debop sunghyouk.bae@gmail.com
  */
-interface UserCredentialConfigElement : ConfigSupport {
+interface RedissonConfigSupport : ConfigSupport {
 
-  val username: String?
-    get() = config.loadString("username", null)
-
-  val password: String?
-    get() = config.loadString("password", null)
+  val redisson: RedissonConfigElement
+    get() = RedissonConfigElement(config.getConfig("redisson"))
 }

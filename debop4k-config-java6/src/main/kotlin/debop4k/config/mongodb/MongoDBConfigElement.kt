@@ -13,17 +13,23 @@
  * limitations under the License.
  */
 
-package debop4k.config
+package debop4k.config.mongodb
+
+import com.typesafe.config.Config
+import debop4k.config.ServerAddressConfigElement
+import debop4k.config.loadInt
+import debop4k.config.loadString
 
 /**
- * UserCredentialConfigElement
+ * MongoDBConfigElement
  * @author debop sunghyouk.bae@gmail.com
  */
-interface UserCredentialConfigElement : ConfigSupport {
+open class MongoDBConfigElement(override val config: Config) : ServerAddressConfigElement {
 
-  val username: String?
-    get() = config.loadString("username", null)
+  override val port: Int by lazy { config.loadInt("port", 27017) }
 
-  val password: String?
-    get() = config.loadString("password", null)
+  val database: String by lazy { config.loadString("database", "test")!! }
+  val username: String? by lazy { config.loadString("username", null) }
+  val password: String? by lazy { config.loadString("password", null) }
+
 }

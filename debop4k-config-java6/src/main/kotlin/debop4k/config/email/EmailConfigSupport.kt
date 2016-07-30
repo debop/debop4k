@@ -13,17 +13,16 @@
  * limitations under the License.
  */
 
-package debop4k.config
+package debop4k.config.email
+
+import debop4k.config.ConfigSupport
 
 /**
- * UserCredentialConfigElement
+ * EmailConfigSupport
  * @author debop sunghyouk.bae@gmail.com
  */
-interface UserCredentialConfigElement : ConfigSupport {
+interface EmailConfigSupport : ConfigSupport {
 
-  val username: String?
-    get() = config.loadString("username", null)
-
-  val password: String?
-    get() = config.loadString("password", null)
+  val email: EmailConfigElement
+    get() = EmailConfigElement(config.getConfig("email"))
 }
