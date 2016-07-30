@@ -33,7 +33,7 @@ object Resources {
     path.shouldNotBeNullOrBlank("path")
 
     val url = if (path.startsWith("/")) path.drop(1) else path
-    return javaClass.classLoader.getResourceAsStream(url)
+    return classLoader.getResourceAsStream(url)
   }
 
 
@@ -41,7 +41,7 @@ object Resources {
   fun getString(path: String,
                 charset: Charset = Charsets.UTF_8,
                 classLoader: ClassLoader = Resources::class.java.classLoader): String {
-    return classPathResourceStream(path)?.use { input ->
+    return classPathResourceStream(path, classLoader)?.use { input ->
       input.toString(charset)
     } ?: ""
   }
@@ -50,7 +50,7 @@ object Resources {
   fun getBytes(path: String,
                charset: Charset = Charsets.UTF_8,
                classLoader: ClassLoader = Resources::class.java.classLoader): ByteArray {
-    return classPathResourceStream(path)?.use { input ->
+    return classPathResourceStream(path, classLoader)?.use { input ->
       input.toByteArray()
     } ?: emptyByteArray
   }

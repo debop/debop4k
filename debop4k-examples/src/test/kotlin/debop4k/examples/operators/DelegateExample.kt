@@ -1,11 +1,27 @@
+/*
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package debop4k.examples.operators
 
-import io.kotlintest.matchers.be
-import io.kotlintest.specs.FunSpec
+import debop4k.examples.AbstractExampleTest
+import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.IdTable
 import org.jetbrains.exposed.sql.Column
+import org.junit.Test
 import java.beans.PropertyChangeListener
 import java.beans.PropertyChangeSupport
 import kotlin.reflect.KProperty
@@ -13,78 +29,75 @@ import kotlin.reflect.KProperty
 /**
  * Delegated Properties : 속성 접근 로직을 재사용하기
  */
-class DelegateExample : FunSpec() {
+class DelegateExample : AbstractExampleTest() {
 
-  init {
+  @Test fun `Lazy Initialization and by backed field`() {
 
-    test("Lazy Initialization and by backed field") {
+    val p = Person("debop")
+    assertThat(p.emails).isNotNull()
+    assertThat(p.emails).isNotNull()
+    assertThat(p.emails).isNotNull()
+  }
 
-      val p = Person("debop")
-      p.emails should be != null
-      p.emails should be != null
-      p.emails should be != null
-    }
+  @Test fun `Lazy Initialization and by lazy()`() {
 
-    test("Lazy Initialization and by lazy()") {
-
-      val p2 = Person2("debop")
-      p2.emails should be != null
-      p2.emails should be != null
-      p2.emails should be != null
-    }
+    val p2 = Person2("debop")
+    assertThat(p2.emails).isNotNull()
+    assertThat(p2.emails).isNotNull()
+    assertThat(p2.emails).isNotNull()
+  }
 
 
-    test("Person 3 : Delegate with PropertyChangeSupport") {
-      val p = Person3("Debop", 49, 1200)
-      p.addPropertyChangeListener(PropertyChangeListener { event ->
-        println("Property ${event.propertyName} changed from ${event.oldValue} to ${event.newValue}")
-      })
+  @Test fun `Person 3 - Delegate with PropertyChangeSupport`() {
+    val p = Person3("Debop", 49, 1200)
+    p.addPropertyChangeListener(PropertyChangeListener { event ->
+      log.debug("Property ${event.propertyName} changed from ${event.oldValue} to ${event.newValue}")
+    })
 
-      p.age = 50
-      p.salary = 1500
-    }
+    p.age = 50
+    p.salary = 1500
+  }
 
-    test("Person 4 : Delegate with ObservableProperty") {
-      val p = Person4("Debop", 49, 1200)
-      p.addPropertyChangeListener(PropertyChangeListener { event ->
-        println("Property with Observable ${event.propertyName} changed from ${event.oldValue} to ${event.newValue}")
-      })
+  @Test fun `Person 4 - Delegate with ObservableProperty`() {
+    val p = Person4("Debop", 49, 1200)
+    p.addPropertyChangeListener(PropertyChangeListener { event ->
+      log.debug("Property with Observable ${event.propertyName} changed from ${event.oldValue} to ${event.newValue}")
+    })
 
-      p.age = 50
-      p.salary = 1500
-    }
+    p.age = 50
+    p.salary = 1500
+  }
 
-    test("Person5 : with Reflect") {
-      val p = Person5("debop", 55, 5500)
-      p.addPropertyChangeListener(PropertyChangeListener { event ->
-        println("Property with Reflect ${event.propertyName} changed from ${event.oldValue} to ${event.newValue}")
-      })
-      p.age = 555
-      p.salary = 323423432
-    }
+  @Test fun `Person5 - with Reflect`() {
+    val p = Person5("debop", 55, 5500)
+    p.addPropertyChangeListener(PropertyChangeListener { event ->
+      log.debug("Property with Reflect ${event.propertyName} changed from ${event.oldValue} to ${event.newValue}")
+    })
+    p.age = 555
+    p.salary = 323423432
+  }
 
-    test("Store Property Values in a map") {
+  @Test fun `Store Property Values in a map`() {
 
-      class Person {
-        private val _attrs = hashMapOf<String, String>()
+    class Person {
+      private val _attrs = hashMapOf<String, String>()
 
-        fun setAttribute(name: String, value: String) {
-          _attrs[name] = value
-        }
-
-        fun setAttribute(map: Map<String, String>) {
-          _attrs.putAll(map)
-        }
-
-        val name: String
-          get() = _attrs["name"]!!
+      fun setAttribute(name: String, value: String) {
+        _attrs[name] = value
       }
 
-      val p = Person()
-      p.setAttribute(mapOf("name" to "Debop", "company" to "KESTI"))
+      fun setAttribute(map: Map<String, String>) {
+        _attrs.putAll(map)
+      }
 
-      p.name shouldBe "Debop"
+      val name: String
+        get() = _attrs["name"]!!
     }
+
+    val p = Person()
+    p.setAttribute(mapOf("name" to "Debop", "company" to "KESTI"))
+
+    assertThat(p.name).isEqualTo("Debop")
   }
 }
 

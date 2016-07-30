@@ -15,18 +15,19 @@
 
 package debop4k.units
 
+import debop4k.units.java.MassTest
+import org.assertj.core.api.Assertions
+import org.assertj.core.data.Offset
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
 /**
- * @author debop sunghyouk.bae@gmail.com
+ * @author sunghyouk.bae@gmail.com
  */
-class MassFunTest : AbstractUnitFunSpec() {
+abstract class AbstractUnitKotlinTest {
 
-  init {
+  protected val log: Logger = LoggerFactory.getLogger(MassTest::class.java)
 
-    test("gram to gram") {
+  val TOLERANCE: Offset<Double> = Assertions.offset(1.0e-8)
 
-      5.0.toGram().gram shouldBe (5.0 plusOrMinus TOLERANCE)
-      Double.POSITIVE_INFINITY.toGram().gram shouldBe Double.POSITIVE_INFINITY
-      Mass.POSITIVE_INF.gram shouldBe Double.POSITIVE_INFINITY
-    }
-  }
 }

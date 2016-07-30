@@ -1,30 +1,43 @@
+/*
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package debop4k.examples.highorderfunctions
 
-import io.kotlintest.matchers.be
-import io.kotlintest.specs.FunSpec
+import debop4k.examples.AbstractExampleTest
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.Test
 import java.io.BufferedReader
 import java.io.FileReader
-import java.util.concurrent.locks.Lock
-import java.util.concurrent.locks.ReentrantLock
+import java.util.concurrent.locks.*
 
 /**
  * @author sunghyouk.bae@gmail.com
  */
-class HighOrderFunctionExample : FunSpec() {
+class HighOrderFunctionExample : AbstractExampleTest() {
 
   val sum: (Int, Int) -> Int = { x: Int, y: Int -> x + y }
   val action: () -> Unit = { println(42) }
 
 
-  init {
-
-    test("Calling Functions passed as argument") {
+  @Test fun `Calling Functions passed as argument`() {
 
       fun <T> Iterable<T>.filter(predicate: (T) -> Boolean): MutableList<T> {
         val items = mutableListOf<T>()
 
         this.forEach { item ->
-          println("item=$item")
+          log.debug("item={}", item)
           if (predicate(item)) {
             items.add(item)
           }
@@ -33,12 +46,12 @@ class HighOrderFunctionExample : FunSpec() {
       }
 
       val list = listOf<Int>(1, 2, 3, 4).filter { i -> i > 3 }
-      println(list)
+    log.debug("list={}", list)
 
-      list shouldBe listOf<Int>(4)
+    assertThat(list).isEqualTo(listOf<Int>(4))
     }
 
-    test("Returning Function") {
+  @Test fun `Returning Function`() {
       val contacts = listOf(Person("Sunghyouk", "Bae", "123-4567"),
                             Person("Misook", "Kwon", null))
 
@@ -46,26 +59,23 @@ class HighOrderFunctionExample : FunSpec() {
         prefix = "B"
         onlyWithPhoneNumber = true
       }
-      contacts.filter(ContactListFilters.getPredicate()) shouldBe listOf(Person("Sunghyouk", "Bae", "123-4567"))
+    val filtered = contacts.filter(ContactListFilters.getPredicate())
+    assertThat(filtered).isEqualTo(listOf(Person("Sunghyouk", "Bae", "123-4567")))
     }
 
-    test("inline functions : removing the overhead of lambda") {
-
+  @Test fun `inline functions - removing the overhead of lambda`() {
       val lock = ReentrantLock()
       synchronized(lock) {
         println("synchronized")
       }
-
     }
 
-    test("Lambda : Design Pattern for Resources") {
+  @Test fun `Lambda - Design Pattern for Resources`() {
       val lines = BufferedReader(FileReader("../README.md")).use { it.readLines() }
-      lines should be != null
-      lines.size should be gt 0
-      println(lines)
+    assertThat(lines).isNotNull()
+    assertThat(lines.size).isGreaterThan(0)
+    log.debug("lines={}", lines)
     }
-
-  }
 }
 
 data class Person(val firstName: String, val lastName: String, val phoneNumber: String?)

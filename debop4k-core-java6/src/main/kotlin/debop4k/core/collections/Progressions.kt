@@ -83,7 +83,6 @@ fun groupedFromRange(start: Int, endInclusive: Int, step: Int = 1, groupSize: In
  */
 @JvmOverloads
 fun IntProgression.partitioning(partitionCount: Int = 1): FastList<IntProgression> {
-  val rangeSize = this.size()
   val stepSign = if (this.step >= 0) 1 else -1
   val step = this.step
   val partitionSize = this.size() / partitionCount
@@ -155,7 +154,6 @@ fun groupedLongFromRange(start: Long,
  */
 @JvmOverloads
 fun LongProgression.partitioning(partitionCount: Long = 1L): FastList<LongProgression> {
-  val rangeSize = this.size()
   val stepSign = if (this.step >= 0) 1 else -1
   val step = this.step
   val partitionSize = this.size() / partitionCount

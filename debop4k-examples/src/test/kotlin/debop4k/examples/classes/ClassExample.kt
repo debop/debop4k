@@ -1,54 +1,61 @@
 /*
- * Copyright (c) 2016. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package debop4k.examples.classes
 
-import io.kotlintest.specs.FunSpec
+import debop4k.examples.AbstractExampleTest
+import org.junit.Test
+
 
 /**
  * @author debop sunghyouk.bae@gmail.com
  */
-class ClassExample : FunSpec() {
+class ClassExample : AbstractExampleTest() {
 
-  init {
-    test("Secondary constructor") {
-      open class View {
-        constructor(name: String) {
-          // some code
-        }
 
-        constructor(name: String, age: Int) {
-          // some code
-        }
+  @Test fun secondary_constructor() {
+    open class View {
+      constructor(name: String) {
+        // some code
       }
 
-      class MyButton : View {
-        constructor(name: String) : this(name, 12) {
-          // some code
-        }
-
-        constructor(name: String, age: Int) : super(name, age) {
-          // some code
-        }
+      constructor(name: String, age: Int) {
+        // some code
       }
-
-      val view = View("a", 12)
-      val button = MyButton("default", 34)
     }
 
-    test("private constructor") {
-
-      class Secretive {
-        // private constructor
-        private constructor()
+    class MyButton : View {
+      constructor(name: String) : this(name, 12) {
+        // some code
       }
-      // not compiled
-      // val x = Secretive()
+
+      constructor(name: String, age: Int) : super(name, age) {
+        // some code
+      }
     }
+
+    val view = View("a", 12)
+    val button = MyButton("default", 34)
+  }
+
+  @Test fun private_constructor() {
+    class Secretive {
+      // private constructor
+      private constructor()
+    }
+    // not compiled
+    // val x = Secretive()
   }
 }
