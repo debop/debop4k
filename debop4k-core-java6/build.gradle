@@ -55,7 +55,8 @@ dependencies {
     compile "com.fasterxml.jackson.datatype:jackson-datatype-joda"
 
     optional "com.google.code.gson:gson"
+    optional "com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers"
 
     optional "net.jpountz.lz4:lz4"
-    optional "com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers"
+
 }

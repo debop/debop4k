@@ -40,8 +40,8 @@ fun CharSequence?.hasText(): Boolean = this != null && trim().length > 0
 val CharSequence.lastChar: Char
   get() = if (this.isEmpty()) 0.toChar() else this.get(length - 1)
 
-fun ByteArray.toUtf8String(): String
-    = this.toString(Charsets.UTF_8)
+fun ByteArray?.toUtf8String(): String
+    = this?.toString(Charsets.UTF_8) ?: EMPTY_STRING
 
 fun String?.toUtf8ByteArray(): ByteArray
     = this?.toByteArray(Charsets.UTF_8) ?: emptyByteArray
