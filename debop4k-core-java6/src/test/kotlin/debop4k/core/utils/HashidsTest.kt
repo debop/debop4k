@@ -15,10 +15,10 @@
 
 package debop4k.core.utils
 
-import debop4k.core.AbstractCoreTest
+import debop4k.core.AbstractCoreKotlinTest
 import org.junit.Test
 
-class HashidsTest : AbstractCoreTest() {
+class HashidsTest : AbstractCoreKotlinTest() {
 
   @Test fun simpleHashIds() {
     val hashids = Hashids("this is my salt")

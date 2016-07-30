@@ -15,7 +15,7 @@
 
 package debop4k.core
 
-import debop4k.core.collections.emptyByteArray
+import debop4k.core.java.collections.emptyByteArray
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.springframework.util.StringUtils
 

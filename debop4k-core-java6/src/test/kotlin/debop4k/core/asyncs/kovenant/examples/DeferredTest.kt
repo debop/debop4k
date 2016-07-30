@@ -15,25 +15,25 @@
 
 package debop4k.core.asyncs.kovenant.examples
 
+import debop4k.core.AbstractCoreKotlinTest
 import debop4k.core.asyncs.await
-import io.kotlintest.specs.FunSpec
 import nl.komponents.kovenant.task
-import org.slf4j.LoggerFactory
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.Test
 
-class DeferredTest : FunSpec() {
+class DeferredTest : AbstractCoreKotlinTest() {
 
-  private val log = LoggerFactory.getLogger(javaClass)
-
-  init {
-
-    test("deferred") {
-      val promise = task {
-        log.debug("async task is starting...")
-        Thread.sleep(100L)
-        log.debug("async task is completed")
-      }
-      // await
-      promise.await()
+  @Test fun deferred() {
+    var isCompleted = false
+    val promise = task {
+      log.debug("async task is starting...")
+      Thread.sleep(100L)
+      log.debug("async task is completed")
+      isCompleted = true
     }
+    assertThat(isCompleted).isFalse()
+    // await
+    promise.await()
+    assertThat(isCompleted).isTrue()
   }
 }

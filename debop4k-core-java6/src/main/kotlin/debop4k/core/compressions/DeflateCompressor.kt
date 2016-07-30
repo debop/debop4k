@@ -15,9 +15,9 @@
 
 package debop4k.core.compressions
 
-import debop4k.core.collections.emptyByteArray
-import debop4k.core.collections.isNullOrEmpty
 import debop4k.core.io.stream.toByteArray
+import debop4k.core.java.collections.emptyByteArray
+import debop4k.core.java.collections.isNullOrEmpty
 import org.springframework.util.FastByteArrayOutputStream
 import java.io.BufferedInputStream
 import java.io.ByteArrayInputStream

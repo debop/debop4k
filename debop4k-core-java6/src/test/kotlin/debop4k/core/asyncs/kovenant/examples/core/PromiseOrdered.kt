@@ -15,63 +15,59 @@
 
 package debop4k.core.asyncs.kovenant.examples.core
 
+import debop4k.core.AbstractCoreKotlinTest
 import debop4k.core.asyncs.await
 import debop4k.core.asyncs.awaitAll
 import debop4k.core.asyncs.kovenant.examples.fib
-import io.kotlintest.specs.FunSpec
 import nl.komponents.kovenant.*
-import org.slf4j.LoggerFactory
+import org.junit.Test
 import java.util.concurrent.atomic.*
 
 /**
  * @author debop sunghyouk.bae@gmail.com
  */
-class PromiseOrdered : FunSpec() {
+class PromiseOrdered : AbstractCoreKotlinTest() {
 
-  private val log = LoggerFactory.getLogger(javaClass)
+  @Test fun `ordered promise`() {
+    val firstRef = AtomicReference<String>()
+    val secondRef = AtomicReference<String>()
 
-  init {
-    test("ordered promise") {
-      val firstRef = AtomicReference<String>()
-      val secondRef = AtomicReference<String>()
+    val first = task { "hello" } success { firstRef.set(it) }
+    val second = task { "world" } success { secondRef.set(it) }
 
-      val first = task { "hello" } success { firstRef.set(it) }
-      val second = task { "world" } success { secondRef.set(it) }
-
-      all(first, second) success {
-        log.debug("${firstRef.get()}, ${secondRef.get()}")
-      }
-      awaitAll(first, second)
+    all(first, second) success {
+      log.debug("${firstRef.get()}, ${secondRef.get()}")
     }
+    awaitAll(first, second)
+  }
 
-    test("promise then") {
-      val p: Promise<String, Exception> = task {
-        fib(20)
-      } then {
-        "fib(20) = $it, and fib(21)=(${fib(21)})"
-      } success {
-        log.debug("{}", it)
-      }
-      p.await()
+  @Test fun `promise then`() {
+    val p: Promise<String, Exception> = task {
+      fib(20)
+    } then {
+      "fib(20) = $it, and fib(21)=(${fib(21)})"
+    } success {
+      log.debug("{}", it)
     }
+    p.await()
+  }
 
-    test("threads") {
-      val context = Kovenant.context {
-        callbackContext.jvmDispatcher {
-          threadFactory = {
-            target, dispatcherName, id ->
-            Thread(target, "custom name")
-          }
+  @Test fun threads() {
+    val context = Kovenant.context {
+      callbackContext.jvmDispatcher {
+        threadFactory = {
+          target, dispatcherName, id ->
+          Thread(target, "custom name")
         }
       }
-      val p = task(context) {
-        fib(20)
-      } then {
-        "fib(20)=$it"
-      } success {
-        log.debug("{}", it)
-      }
-      p.await()
     }
+    val p = task(context) {
+      fib(20)
+    } then {
+      "fib(20)=$it"
+    } success {
+      log.debug("{}", it)
+    }
+    p.await()
   }
 }

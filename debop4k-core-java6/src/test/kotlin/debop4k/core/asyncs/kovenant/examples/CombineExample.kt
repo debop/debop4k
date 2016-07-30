@@ -15,28 +15,25 @@
 
 package debop4k.core.asyncs.kovenant.examples
 
-import io.kotlintest.specs.FunSpec
+import debop4k.core.AbstractCoreKotlinTest
 import nl.komponents.kovenant.combine.and
 import nl.komponents.kovenant.task
-import org.slf4j.LoggerFactory
+import org.junit.Test
 
-class CombineExample : FunSpec() {
+class CombineExample : AbstractCoreKotlinTest() {
 
-  private val log = LoggerFactory.getLogger(javaClass)
+  @Test fun `combine example`() {
 
-  init {
-    test("combine example") {
-      val fib20Promise = task { fib(20) }
-      val helloWorldPromise = task { "hello world" }
+    val fib20Promise = task { fib(20) }
+    val helloWorldPromise = task { "hello world" }
 
-      fib20Promise and helloWorldPromise success {
-        val (fib, msg) = it
-        log.debug("{}, fib(20)={}", msg, fib)
-      }
+    fib20Promise and helloWorldPromise success {
+      val (fib, msg) = it
+      log.debug("{}, fib(20)={}", msg, fib)
+    }
 
-      task { fib(20) } and task { "hello world" } success {
-        log.debug("{}, fib(20)={}", it.second, it.first)
-      }
+    task { fib(20) } and task { "hello world" } success {
+      log.debug("{}, fib(20)={}", it.second, it.first)
     }
   }
 }

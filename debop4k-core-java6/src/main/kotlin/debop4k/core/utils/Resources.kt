@@ -15,9 +15,9 @@
 
 package debop4k.core.utils
 
-import debop4k.core.collections.emptyByteArray
 import debop4k.core.io.stream.toByteArray
 import debop4k.core.io.stream.toString
+import debop4k.core.java.collections.emptyByteArray
 import debop4k.core.shouldNotBeNullOrBlank
 import org.slf4j.LoggerFactory
 import java.io.InputStream

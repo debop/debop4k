@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package debop4k.core.collections
+package debop4k.core.java.collections
 
 val emptyCharArray: CharArray get() = CharArray(0)
 val emptyByteArray: ByteArray get() = ByteArray(0)

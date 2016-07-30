@@ -13,8 +13,9 @@
  * limitations under the License.
  */
 
-package debop4k.core;
+package debop4k.core.java;
 
+import debop4k.core.Local;
 import debop4k.core.cryptography.CryptoUtilsKt;
 import lombok.AllArgsConstructor;
 import lombok.Data;

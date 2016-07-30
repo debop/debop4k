@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 
-package debop4k.core.collections.eclipsecollections
+package debop4k.core.java.collections.eclipsecollections
 
-import debop4k.core.collections.eclipseCollections.*
+import debop4k.core.java.collections.eclipseCollections.*
 import io.kotlintest.specs.FunSpec
 import org.eclipse.collections.api.multimap.MutableMultimap
 import org.eclipse.collections.impl.list.mutable.FastList

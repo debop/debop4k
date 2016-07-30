@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package debop4k.core.collections
+package debop4k.core.java.collections
 
 import debop4k.core.*
 import java.util.concurrent.atomic.*

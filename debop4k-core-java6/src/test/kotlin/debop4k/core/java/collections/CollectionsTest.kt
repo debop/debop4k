@@ -13,17 +13,17 @@
  * limitations under the License.
  */
 
-package debop4k.core.collections
+package debop4k.core.java.collections
 
-import debop4k.core.AbstractCoreTest
-import debop4k.core.collections.eclipseCollections.fastListOf
-import debop4k.core.collections.eclipseCollections.intArrayListOf
-import debop4k.core.collections.eclipseCollections.toIntArrayList
+import debop4k.core.AbstractCoreKotlinTest
+import debop4k.core.java.collections.eclipseCollections.fastListOf
+import debop4k.core.java.collections.eclipseCollections.intArrayListOf
+import debop4k.core.java.collections.eclipseCollections.toIntArrayList
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import kotlin.test.fail
 
-class CollectionsTest : AbstractCoreTest() {
+class CollectionsTest : AbstractCoreKotlinTest() {
 
   @Test fun convertToListOfGroupsWithoutConsumingGroup() {
     run {

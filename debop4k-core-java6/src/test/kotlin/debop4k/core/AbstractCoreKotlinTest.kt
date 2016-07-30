@@ -15,10 +15,14 @@
 
 package debop4k.core
 
+import org.assertj.core.data.Offset
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-abstract class AbstractCoreTest {
+abstract class AbstractCoreKotlinTest {
 
-  protected val log by lazy { LoggerFactory.getLogger(javaClass) }
+  protected val log: Logger by lazy { LoggerFactory.getLogger(javaClass) }
+
+  val TOLERANCE: Offset<Double> = Offset.offset(1.0e-8)
 
 }

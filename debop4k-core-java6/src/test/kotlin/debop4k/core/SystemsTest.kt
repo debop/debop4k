@@ -21,7 +21,7 @@ import org.junit.Test
 /**
  * @author sunghyouk.bae@gmail.com
  */
-class SystemsTest : AbstractCoreTest() {
+class SystemsTest : AbstractCoreKotlinTest() {
 
   @Test fun retrieveJavaSpecificationVersion() {
     log.debug("java version={}, implementation={}", Systems.JVM_VERSION, Systems.JVM_IMPLEMENTATION_VERSION)
