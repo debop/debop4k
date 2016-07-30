@@ -95,6 +95,9 @@ subprojects {
 
             dependency "org.xerial.snappy:snappy-java:$snappy_java_version"
 
+            dependency "org.mapstruct:mapstruct:$mapstruct_version"
+            dependency "org.mapstruct:mapstruct-processor:$mapstruct_version"
+
             // apache commons
             dependency "commons-codec:commons-codec:$commons_codec_version"
             dependency "org.apache.commons:commons-lang3:$commons_lang3_version"
