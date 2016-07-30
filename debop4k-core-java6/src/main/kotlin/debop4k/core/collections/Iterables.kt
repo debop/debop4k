@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package debop4k.core.java.collections
+package debop4k.core.collections
 
 import debop4k.core.asByte
 import debop4k.core.asInt

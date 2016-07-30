@@ -15,8 +15,8 @@
 
 package debop4k.core.utils
 
-import debop4k.core.java.collections.eclipseCollections.charArrayListOf
-import debop4k.core.java.collections.eclipseCollections.intArrayListOf
+import debop4k.core.collections.eclipseCollections.charArrayListOf
+import debop4k.core.collections.eclipseCollections.intArrayListOf
 import org.eclipse.collections.impl.list.mutable.primitive.CharArrayList
 
 /**

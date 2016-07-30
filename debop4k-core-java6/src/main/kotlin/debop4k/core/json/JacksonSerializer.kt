@@ -17,7 +17,7 @@ package debop4k.core.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import debop4k.core.EMPTY_STRING
-import debop4k.core.java.collections.emptyByteArray
+import debop4k.core.collections.emptyByteArray
 
 /**
  * JacksonSerializer

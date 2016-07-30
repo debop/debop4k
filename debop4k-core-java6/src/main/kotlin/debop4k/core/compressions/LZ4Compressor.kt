@@ -15,8 +15,8 @@
 
 package debop4k.core.compressions
 
-import debop4k.core.java.collections.emptyByteArray
-import debop4k.core.java.collections.isNullOrEmpty
+import debop4k.core.collections.emptyByteArray
+import debop4k.core.collections.isNullOrEmpty
 import net.jpountz.lz4.LZ4Compressor
 import net.jpountz.lz4.LZ4Factory
 import net.jpountz.lz4.LZ4SafeDecompressor

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package debop4k.core.java.collections.eclipseCollections
+package debop4k.core.collections.eclipseCollections
 
 import org.eclipse.collections.api.map.primitive.ObjectDoubleMap
 import org.eclipse.collections.api.map.primitive.ObjectLongMap

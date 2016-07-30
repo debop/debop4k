@@ -13,10 +13,10 @@
  * limitations under the License.
  */
 
-package debop4k.core.java.collections.eclipsecollections
+package debop4k.core.collections.eclipsecollections
 
 import debop4k.core.AbstractCoreKotlinTest
-import debop4k.core.java.collections.toIntArrayList
+import debop4k.core.collections.toIntArrayList
 import org.assertj.core.api.Assertions.assertThat
 import org.eclipse.collections.api.bag.MutableBag
 import org.eclipse.collections.api.list.primitive.MutableIntList
@@ -55,7 +55,8 @@ class EclipseCollectionExamples : AbstractCoreKotlinTest() {
     assertThat(even.detect { it % 2 == 0 }).isEqualTo(0)
     assertThat(even.detectIndex { it % 2 == 0 }).isEqualTo(0)
     assertThat(even.detectLastIndex { it % 2 == 0 }).isEqualTo(499)
-    assertThat(even.detect { it % 2 == 1 }).isNull()
+//    assertThat(even.detect { it % 2 == 1 }).isEqualTo(0)
+    assertThat(even.detect { it % 2 == 1 } as? Int).isNull()
     assertThat(even.select { it % 2 == 1 }).hasSize(0)
   }
 

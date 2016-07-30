@@ -16,12 +16,12 @@
 package debop4k.core.functional.eithers
 
 import com.google.common.base.Objects
+import debop4k.core.collections.prependTo
 import debop4k.core.functional.Option
 import debop4k.core.functional.Option.None
 import debop4k.core.functional.Option.Some
 import debop4k.core.functional.eithers.Either.Left
 import debop4k.core.functional.eithers.Either.Right
-import debop4k.core.java.collections.prependTo
 import java.util.*
 
 public sealed class Either<out L, out R> {

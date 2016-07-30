@@ -12,13 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 @file:Suppress("CAST_NEVER_SUCCEEDS")
 
 package debop4k.core.conversions
 
 import debop4k.core.*
-import debop4k.core.java.collections.eclipseCollections.fastListOf
-import debop4k.core.java.collections.eclipseCollections.unifiedMapOf
+import debop4k.core.collections.eclipseCollections.fastListOf
+import debop4k.core.collections.eclipseCollections.unifiedMapOf
 import debop4k.core.kodatimes.toISOString
 import org.joda.time.DateTime
 import java.io.File

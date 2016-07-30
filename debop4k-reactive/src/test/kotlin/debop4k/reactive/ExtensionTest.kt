@@ -15,9 +15,9 @@
 
 package debop4k.reactive
 
-import debop4k.core.java.collections.eclipseCollections.asList
-import debop4k.core.java.collections.eclipseCollections.fastListOf
-import debop4k.core.java.collections.eclipseCollections.intArrayListOf
+import debop4k.core.collections.eclipseCollections.asList
+import debop4k.core.collections.eclipseCollections.fastListOf
+import debop4k.core.collections.eclipseCollections.intArrayListOf
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.mockito.Mockito

@@ -13,20 +13,20 @@
  * limitations under the License.
  */
 
-package debop4k.core.java.collections.eclipsecollections
+package debop4k.core.collections.eclipsecollections
 
 import debop4k.core.AbstractCoreKotlinTest
-import debop4k.core.java.collections.eclipseCollections.*
+import debop4k.core.collections.eclipseCollections.*
 import org.assertj.core.api.Assertions.assertThat
 import org.eclipse.collections.impl.map.mutable.UnifiedMap
 import org.eclipse.collections.impl.set.mutable.UnifiedSet
 import org.junit.Test
 
 /**
- * EclipseCollectionFunSpec
+ * EclipseCollectionTest
  * @author sunghyouk.bae@gmail.com
  */
-class EclipseCollectionFunSpec : AbstractCoreKotlinTest() {
+class EclipseCollectionTest : AbstractCoreKotlinTest() {
 
 
   @Test fun `Primitive ArrayList extension function`() {
@@ -61,7 +61,7 @@ class EclipseCollectionFunSpec : AbstractCoreKotlinTest() {
     val longs: List<Long> = longArrayListOf(1, 2, 3, 4, 5).asList()
     assertThat(longs)
         .hasSize(5)
-        .isEqualTo(listOf(1, 2, 3, 4, 5))
+        .isEqualTo(listOf<Long>(1, 2, 3, 4, 5))
   }
 
   @Test fun fastListOf() {

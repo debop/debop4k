@@ -16,7 +16,7 @@
 package debop4k.core.io.serializers
 
 
-import debop4k.core.java.collections.emptyByteArray
+import debop4k.core.collections.emptyByteArray
 import org.springframework.util.FastByteArrayOutputStream
 import java.io.ByteArrayInputStream
 import java.io.ObjectInputStream

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package debop4k.core.java.collections
+package debop4k.core.collections
 
 import java.io.Serializable
 

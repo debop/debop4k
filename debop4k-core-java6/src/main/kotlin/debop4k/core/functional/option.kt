@@ -15,12 +15,12 @@
 
 package debop4k.core.functional
 
+import debop4k.core.collections.prependTo
 import debop4k.core.functional.Option.None
 import debop4k.core.functional.Option.Some
 import debop4k.core.functional.eithers.Either
 import debop4k.core.functional.eithers.Either.Left
 import debop4k.core.functional.eithers.Either.Right
-import debop4k.core.java.collections.prependTo
 import java.util.*
 
 /**
