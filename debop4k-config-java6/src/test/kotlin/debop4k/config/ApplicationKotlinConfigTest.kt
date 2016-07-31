@@ -49,6 +49,11 @@ class ApplicationKotlinConfigTest {
       assertThat(appConfig.mongodb.database).isNotNull()
 
       assertThat(appConfig.hibernate.hbm2ddl).isNotNull()
+
+      assertThat(appConfig.redisson.configPath).isNotEmpty()
+      val redissonConfigPath = appConfig.redisson.configPath
+      val inputStream = javaClass.classLoader.getResourceAsStream(redissonConfigPath)
+      assertThat(inputStream).isNotNull()
     }
   }
 }

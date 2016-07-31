@@ -21,6 +21,7 @@ import debop4k.config.email.EmailConfigSupport
 import debop4k.config.hibernate.HibernateConfigSupport
 import debop4k.config.mongodb.MongoDBConfigSupport
 import debop4k.config.redis.RedisConfigSupport
+import debop4k.config.redis.RedissonConfigSupport
 
 /**
  * ApplicationKotlinConfig
@@ -29,6 +30,7 @@ import debop4k.config.redis.RedisConfigSupport
 data class ApplicationKotlinConfig(override val config: Config) :
     DatabaseConfigSupport,
     RedisConfigSupport,
+    RedissonConfigSupport,
     MongoDBConfigSupport,
     HibernateConfigSupport,
     EmailConfigSupport

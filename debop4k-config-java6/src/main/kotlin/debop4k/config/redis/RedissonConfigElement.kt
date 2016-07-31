@@ -17,6 +17,7 @@ package debop4k.config.redis
 
 import com.typesafe.config.Config
 import debop4k.config.ConfigSupport
+import debop4k.config.loadString
 
 /**
  * RedissonConfigElement
@@ -24,5 +25,7 @@ import debop4k.config.ConfigSupport
  */
 open class RedissonConfigElement(override val config: Config) : ConfigSupport {
 
+  val configPath: String
+      by lazy { config.loadString("configPath", "redisson.yml")!! }
 
 }
