@@ -16,6 +16,7 @@
 package debop4k.core
 
 import debop4k.core.collections.emptyByteArray
+import debop4k.core.collections.emptyCharArray
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.springframework.util.StringUtils
 
@@ -182,17 +183,32 @@ fun String?.ellipsisStart(maxLength: Int = ElipsisLength): String {
   else TRIMMING + this.substring(this.length - maxLength + TRIMMING.length)
 }
 
-fun Iterable<Any?>.toStringList(): FastList<String> {
+fun CharSequence?.toCharArray(): CharArray {
+  if (this == null)
+    return emptyCharArray
+  val array = CharArray(this.length)
+  this.forEachIndexed { i, c ->
+    array[i] = c
+  }
+  return array
+}
+
+fun <T> Iterable<T>.toStringList(): FastList<String> {
   return FastList.newList(map { it.asString() })
 }
 
 @JvmOverloads
-fun Iterable<Any?>.mkString(separator: String = COMMA): String {
-  return toStringList().makeString(separator)
+fun <T> Iterable<T>.mkString(separator: String = COMMA): String {
+  return this.toStringList().makeString(separator)
 }
 
 @JvmOverloads
-fun Map<Any, Any?>.mkString(separator: String = COMMA): String {
+fun <T> Array<T>.mkString(separator: String = COMMA): String {
+  return this.asIterable().toStringList().makeString(separator)
+}
+
+@JvmOverloads
+fun <K, V> Map<K, V>.mkString(separator: String = COMMA): String {
   val sb = StringBuilder(this.size * 4)
   var i = 0
 
@@ -206,6 +222,45 @@ fun Map<Any, Any?>.mkString(separator: String = COMMA): String {
   }
 
   return sb.toString()
+}
+
+@JvmOverloads
+fun <T> Iterable<T>.join(separator: String = COMMA): String {
+  return this.mkString(separator)
+}
+
+@JvmOverloads
+fun <T> Array<T>.join(separator: String = COMMA): String {
+  return this.asIterable().mkString(separator)
+}
+
+@JvmOverloads
+fun <K, V> Map<K, V>.join(separator: String = COMMA): String {
+  return this.mkString(separator)
+}
+
+fun String?.quotedStr(): String {
+  if (isNullOrEmpty())
+    return "''"
+  return "'" + this!!.replace("\'", "\'\'") + "'"
+}
+
+fun CharSequence?.reverse(): CharSequence {
+  if (this.isNullOrEmpty())
+    return EMPTY_STRING
+
+  return this!!.reversed()
+}
+
+fun CharSequence?.replicate(count: Int): String {
+  if (this.isNullOrEmpty())
+    return EMPTY_STRING
+
+  val builder = StringBuilder(count)
+  (0 until count).forEach { i ->
+    builder.append(this)
+  }
+  return builder.toString()
 }
 
 fun String?.splitAt(index: Int): Pair<String, String> {

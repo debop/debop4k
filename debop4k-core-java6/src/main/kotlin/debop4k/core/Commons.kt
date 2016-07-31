@@ -15,10 +15,12 @@
 
 package debop4k.core
 
-import debop4k.core.kodatimes.UnixEpoch
+import org.eclipse.collections.impl.map.mutable.ConcurrentHashMap
 import org.joda.time.DateTime
+import java.math.BigDecimal
 import java.math.BigInteger
 import java.sql.Timestamp
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -73,8 +75,9 @@ fun <T : Any, R : Any> Collection<T?>.whenAnyNotNull(block: (Collection<T>) -> R
 @JvmOverloads
 fun Any?.asChar(dv: Char = 0.toChar()): Char = when (this) {
   null -> dv
-  is Number -> this.toChar()
-  is String -> this[0]
+  is Char -> this
+//  is Number -> this.toChar()
+//  is String -> this[0]
   else -> try {
     this.asByte().toChar()
   } catch(ignored: Exception) {
@@ -85,8 +88,9 @@ fun Any?.asChar(dv: Char = 0.toChar()): Char = when (this) {
 @JvmOverloads
 fun Any?.asByte(dv: Byte = 0): Byte = when (this) {
   null -> dv
+  is Char -> this.toByte()
   is Number -> this.toByte()
-  is String -> this.toByte()
+//  is String -> this.toByte()
   else -> try {
     this.asDouble(dv.toDouble()).toByte()
   } catch(ignored: Exception) {
@@ -97,8 +101,10 @@ fun Any?.asByte(dv: Byte = 0): Byte = when (this) {
 @JvmOverloads
 fun Any?.asShort(dv: Short = 0): Short = when (this) {
   null -> dv
+  is Short -> this
+  is Char -> this.toShort()
   is Number -> this.toShort()
-  is String -> this.toShort()
+//  is String -> this.toShort()
   else -> try {
     this.asDouble(dv.toDouble()).toShort()
   } catch(ignored: Exception) {
@@ -109,8 +115,10 @@ fun Any?.asShort(dv: Short = 0): Short = when (this) {
 @JvmOverloads
 fun Any?.asInt(dv: Int = 0): Int = when (this) {
   null -> dv
+  is Int -> this
+  is Char -> this.toInt()
   is Number -> this.toInt()
-  is String -> this.toInt()
+//  is String -> this.toInt()
   else -> try {
     this.asDouble(dv.toDouble()).toInt()
   } catch(ignored: Exception) {
@@ -123,8 +131,10 @@ fun Any?.asLong(dv: Long = 0L): Long {
 
   return when (this) {
     null -> dv
+    is Long -> this
+    is Char -> this.toLong()
     is Number -> this.toLong()
-    is String -> this.toLong()
+//    is String -> this.toLong()
     else -> try {
       this.asDouble(dv.toDouble()).toLong()
     } catch(ignored: Exception) {
@@ -137,7 +147,7 @@ fun Any?.asLong(dv: Long = 0L): Long {
 fun Any?.asFloat(dv: Float = 0.0F): Float = when (this) {
   null -> dv
   is Number -> this.toFloat()
-  is String -> this.toFloat()
+//  is String -> this.toFloat()
   else -> try {
     this.asDouble(dv.toDouble()).toFloat()
   } catch(ignored: Exception) {
@@ -148,8 +158,8 @@ fun Any?.asFloat(dv: Float = 0.0F): Float = when (this) {
 @JvmOverloads
 fun Any?.asDouble(dv: Double = 0.0): Double = when (this) {
   is Number -> this.toDouble()
-  is String -> this.toDouble()
-  is Char -> this.toDouble()
+//  is String -> this.toDouble()
+//  is Char -> this.toDouble()
   else -> {
     try {
       this.toString().toDouble()
@@ -160,7 +170,20 @@ fun Any?.asDouble(dv: Double = 0.0): Double = when (this) {
 }
 
 @JvmOverloads
+fun Any?.asBigDecimal(dv: BigDecimal = BigDecimal.ZERO): BigDecimal = when (this) {
+  null -> dv
+  is BigDecimal -> this
+  is Number -> BigDecimal.valueOf(this.toDouble())
+  else -> try {
+    BigDecimal.valueOf(this.asDouble(dv.toDouble()))
+  } catch(ignored: Exception) {
+    dv
+  }
+}
+
+@JvmOverloads
 fun Any?.asBigInt(dv: BigInteger = BigInteger.ZERO): BigInteger = when (this) {
+  null -> dv
   is BigInteger -> this
   is Number -> BigInteger.valueOf(this.toLong())
   else -> try {
@@ -174,13 +197,12 @@ fun Any?.asBigInt(dv: BigInteger = BigInteger.ZERO): BigInteger = when (this) {
 fun Any?.asString(dv: String = ""): String = this?.toString() ?: dv
 
 @JvmOverloads
-fun Any?.asDateTime(dv: DateTime = UnixEpoch): DateTime = when (this) {
+fun Any?.asDateTime(dv: DateTime? = null): DateTime? = when (this) {
   null -> dv
   is Number -> DateTime(this.toLong())
   is Date -> DateTime(this.time)
   is Timestamp -> DateTime(this.time)
   is DateTime -> this
-  is CharSequence -> DateTime.parse(this.toString())
   else -> try {
     DateTime.parse(this.toString())
   } catch(ignored: Exception) {
@@ -217,3 +239,47 @@ fun Any?.asClass(): Class<*> = when (this) {
   is CharSequence -> this.javaClass
   else -> this.javaClass
 }
+
+private val decimalFormats by lazy { ConcurrentHashMap<Int, DecimalFormat>() }
+
+private fun decimalFormatOf(decimalCount: Int): DecimalFormat {
+  return decimalFormats.getIfAbsentPut(decimalCount, { count ->
+    val df = if (count > 0) DecimalFormat("." + "#".replicate(count))
+    else DecimalFormat("#")
+    return@getIfAbsentPut df
+  })
+}
+
+fun Any?.asFloatFloor(decimalCount: Int): Float {
+  require(decimalCount >= 0)
+  val df = decimalFormatOf(decimalCount)
+  return df.format(this.asFloat()).asFloat()
+
+}
+
+fun Any?.asDoubleFloor(decimalCount: Int): Double {
+  require(decimalCount >= 0)
+
+  val df = decimalFormatOf(decimalCount)
+  return df.format(this.asDouble()).asDouble()
+}
+
+fun Any?.asFloatRound(decimalCount: Int): Float {
+  require(decimalCount >= 0)
+  if (decimalCount == 0)
+    return this.asLong().toFloat()
+
+  val decimal = Math.pow(10.0, decimalCount.toDouble())
+  return (Math.round(this.asFloat() * decimal) / decimal).toFloat()
+}
+
+fun Any?.asDoubleRound(decimalCount: Int): Double {
+  require(decimalCount >= 0)
+  if (decimalCount == 0)
+    return this.asLong().toDouble()
+
+  val decimal = Math.pow(10.0, decimalCount.toDouble())
+  return (Math.round(this.asDouble() * decimal) / decimal)
+}
+
+
