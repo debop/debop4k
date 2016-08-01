@@ -81,6 +81,7 @@ subprojects {
 
             dependency "org.slf4j:slf4j-api:$slf4j_version"
             dependency "ch.qos.logback:logback-classic:$logback_version"
+            dependency "com.google.code.findbugs:jsr305:$jsr305_version"
             dependency "javax.inject:javax.inject:$javax_inject_version"
             dependency "javax.servlet:javax.servlet-api:$javax_servlet_api_version"
 
@@ -178,6 +179,7 @@ subprojects {
         compile "org.slf4j:slf4j-api"
         compile "ch.qos.logback:logback-classic"
         compile "javax.inject:javax.inject"
+        compile "com.google.code.findbugs:jsr305"
 
         testCompile "junit:junit"
         testCompile "org.assertj:assertj-core"
