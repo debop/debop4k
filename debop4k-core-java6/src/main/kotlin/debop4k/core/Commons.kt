@@ -244,7 +244,7 @@ private val decimalFormats by lazy { ConcurrentHashMap<Int, DecimalFormat>() }
 
 private fun decimalFormatOf(decimalCount: Int): DecimalFormat {
   return decimalFormats.getIfAbsentPut(decimalCount, { count ->
-    val df = if (count > 0) DecimalFormat("." + "#".replicate(count))
+    val df = if (count > 0) DecimalFormat("." + "#".repeat(count))
     else DecimalFormat("#")
     return@getIfAbsentPut df
   })
