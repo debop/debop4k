@@ -17,6 +17,4 @@ dependencies {
 
     compile project(":debop4k-core-java6")
 
-    compile "org.eclipse.collections:eclipse-collections"
-
 }

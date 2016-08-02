@@ -15,7 +15,6 @@
 
 package debop4k.units
 
-import debop4k.units.java.MassTest
 import org.assertj.core.api.Assertions
 import org.assertj.core.data.Offset
 import org.slf4j.Logger
@@ -26,7 +25,7 @@ import org.slf4j.LoggerFactory
  */
 abstract class AbstractUnitKotlinTest {
 
-  protected val log: Logger = LoggerFactory.getLogger(MassTest::class.java)
+  protected val log: Logger = LoggerFactory.getLogger(javaClass)
 
   val TOLERANCE: Offset<Double> = Assertions.offset(1.0e-8)
 
