@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package debop4k.timeperiod.utils
+package debop4k.core.kodatimes
 
 import org.eclipse.collections.api.map.ImmutableMap
 import org.eclipse.collections.api.set.ImmutableSet
