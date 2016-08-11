@@ -39,29 +39,29 @@ class AsyncsTest {
 
   @Test
   fun emptyRunnable() {
-    val promise = async() { action.run() }
-    promise.await()
+    val promise = future() { action.run() }
+    promise.ready()
     assertThat(promise.isSuccess()).isTrue()
   }
 
   @Test
   fun testAwait() {
-    val promise = async(result = 10) { action.run() }
-    promise.await()
+    val promise = future(result = 10) { action.run() }
+    promise.ready()
     assertThat(promise.isSuccess()).isTrue()
     assertThat(promise.get()).isEqualTo(10)
   }
 
   @Test
   fun testAwaitAll() {
-    val promises = (0 until 100).map { async(result = 10) { action.run() } }
-    promises.awaitAll()
+    val promises = (0 until 100).map { future(result = 10) { action.run() } }
+    promises.readyAll()
     assertThat(promises.all { it.isSuccess() }).isTrue()
   }
 
   @Test
   fun testResult() {
-    val promise = async() { supplier.call() }
+    val promise = future() { supplier.call() }
     val result = promise.result()
     assertThat(promise.isDone()).isTrue()
     assertThat(result).isEqualTo(1)
@@ -69,7 +69,7 @@ class AsyncsTest {
 
   @Test
   fun testResultAll() {
-    val promises = (0 until 100).map { async() { supplier.call() } }
+    val promises = (0 until 100).map { future() { supplier.call() } }
     val results = promises.resultAll()
     results.forEach {
       assertThat(it).isEqualTo(1)

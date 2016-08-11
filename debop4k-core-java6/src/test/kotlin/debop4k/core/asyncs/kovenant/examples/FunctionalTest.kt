@@ -16,7 +16,7 @@
 package debop4k.core.asyncs.kovenant.examples
 
 import debop4k.core.AbstractCoreKotlinTest
-import debop4k.core.asyncs.await
+import debop4k.core.asyncs.ready
 import nl.komponents.kovenant.Promise
 import nl.komponents.kovenant.functional.apply
 import nl.komponents.kovenant.functional.bind
@@ -38,7 +38,7 @@ class FunctionalTest : AbstractCoreKotlinTest() {
   @Test fun testApply() {
     val p = Promise.of(21) apply Promise.of({ x: Int -> x * 2 })
     p success { v -> log.debug("{}", v) }
-    p.await()
+    p.ready()
   }
 
   @Test fun testBind() {
@@ -50,12 +50,12 @@ class FunctionalTest : AbstractCoreKotlinTest() {
       println("Fail: ${it.message}")
     }
 
-    p.await()
+    p.ready()
   }
 
   @Test fun mapPromise() {
     val p = Promise.of(21) map { it * 2 } success { println(it) }
-    p.await()
+    p.ready()
   }
 
   @Test fun unwrap() {
@@ -63,6 +63,6 @@ class FunctionalTest : AbstractCoreKotlinTest() {
     val promise: Promise<Int, Exception> = nested.unwrap()
 
     promise success { log.debug("{}", it) }
-    promise.await()
+    promise.ready()
   }
 }

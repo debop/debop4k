@@ -1,11 +1,10 @@
 /*
- * Copyright 2016 Sunghyouk Bae<sunghyouk.bae@gmail.com>
- *
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,12 +16,28 @@
 
 package debop4k.examples.asyncs
 
-import java.util.concurrent.Executor
+import java.util.concurrent.*
 
-public fun Executor.runAsync(action: () -> Unit) {
+inline fun Executor.runAsync(crossinline action: () -> Unit) {
   execute { action() }
 }
 
-public fun Executor.runAsyncAll(actions: List<() -> Unit>) {
+fun Executor.runAsyncAll(actions: List<() -> Unit>) {
   actions.forEach { action -> execute { action() } }
 }
+
+
+inline fun <T> ExecutorService.runAsync(crossinline func: () -> T): Future<T>
+    = this.submit(Callable { func() })
+
+fun <T> ExecutorService.runAllAsync(funcs: Iterable<() -> T>): List<Future<T>> {
+  val tasks = funcs.map { Callable { it() } }
+  return this.invokeAll(tasks)
+}
+
+fun <T> ExecutorService.runAnyAsync(funcs: Iterable<() -> T>): T {
+  val tasks = funcs.map { Callable { it() } }
+  return this.invokeAny(tasks)
+}
+
+

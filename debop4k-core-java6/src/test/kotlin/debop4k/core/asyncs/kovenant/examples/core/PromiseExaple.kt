@@ -16,9 +16,9 @@
 package debop4k.core.asyncs.kovenant.examples.core
 
 import debop4k.core.AbstractCoreKotlinTest
-import debop4k.core.asyncs.await
-import debop4k.core.asyncs.awaitAll
 import debop4k.core.asyncs.kovenant.examples.fib
+import debop4k.core.asyncs.ready
+import debop4k.core.asyncs.readyAll
 import nl.komponents.kovenant.*
 import nl.komponents.kovenant.properties.lazyPromise
 import org.junit.Test
@@ -64,7 +64,7 @@ class PromiseExaple : AbstractCoreKotlinTest() {
         p.success { println("promise[$n] finished") }
       }
     }
-    awaitAll(*promises)
+    readyAll(*promises)
     println("finish any")
   }
 
@@ -72,7 +72,7 @@ class PromiseExaple : AbstractCoreKotlinTest() {
     val promises = Array(50) { task { Thread.sleep(100L) } }
 
     print("waiting...")
-    awaitAll(*promises)
+    readyAll(*promises)
     println(" done.")
   }
 
@@ -105,7 +105,7 @@ class PromiseExaple : AbstractCoreKotlinTest() {
     handlePromise(deferred.promise)
     deferred.resolve("Hello World")
 //    deferred.reject(Exception("Hello exceptional world"))
-    deferred.promise.await()
+    deferred.promise.ready()
   }
 
   @Test fun testIsDone() {
@@ -131,7 +131,7 @@ class PromiseExaple : AbstractCoreKotlinTest() {
     } success {
       log.debug(it)
     }
-    expensiveResource.await()
+    expensiveResource.ready()
   }
 
 

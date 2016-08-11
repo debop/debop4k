@@ -25,46 +25,51 @@ import java.util.concurrent.*
  * 특정 코드를 비동기 방식으로 작업하도록 합니다.
  */
 @JvmOverloads
-fun <V> async(context: Context = Kovenant.context,
-              body: () -> V): Promise<V, Exception> {
+fun <V> future(context: Context = Kovenant.context,
+               body: () -> V): Promise<V, Exception> {
   return task(context) { body() }
 }
 
 @JvmOverloads
-fun <V> async(context: Context = Kovenant.context,
-              result: V,
-              body: () -> V): Promise<V, Exception> {
+fun <V> future(context: Context = Kovenant.context,
+               result: V,
+               body: () -> V): Promise<V, Exception> {
   return task(context) { body() }.thenApply { result }
 }
 
 
-fun <V> asyncAll(context: Context = Kovenant.context, tasks: List<() -> V>): Collection<Promise<V, Exception>> {
+fun <V> futureAll(context: Context = Kovenant.context, tasks: List<() -> V>): Collection<Promise<V, Exception>> {
   return tasks.map { task(context) { it() } }
 }
 
 
-fun <V> Promise<V, Exception>.await(): Promise<V, Exception> {
+fun <V, E> Promise<V, E>.ready(): Promise<V, E> {
   val latch = CountDownLatch(1)
   this always { latch.countDown() }
   latch.await()
   return this
 }
 
-fun <V> awaitAll(vararg promises: Promise<V, Exception>): Promise<List<V>, Exception> {
-  val mp = all(*promises).await()
-  return mp.await()
+fun <V> readyAll(vararg promises: Promise<V, Exception>): Promise<List<V>, Exception> {
+  val mp = all(*promises).ready()
+  return mp.ready()
 }
 
-fun <V> Collection<Promise<V, Exception>>.awaitAll(): Promise<List<V>, Exception> {
+fun <V> Collection<Promise<V, Exception>>.readyAll(): Promise<List<V>, Exception> {
   val mp = all(*this.toTypedArray())
-  return mp.await()
+  return mp.ready()
 }
+
+fun <V> Collection<Promise<V, Exception>>.readyAny(): Promise<V, List<Exception>> {
+  return any(*this.toTypedArray())
+}
+
 
 /**
  * [Promise]이 완료될 때까지 기다렸다가 결과를 반환합니다.
  */
 fun <V> Promise<V, Exception>.result(): V {
-  this.await()
+  this.ready()
   return this.get()
 }
 
@@ -72,12 +77,19 @@ fun <V> Promise<V, Exception>.result(): V {
  * [Promise] 컬렉션이 모두 완료될 때까지 기다렸다가 결과를 반환합니다.
  */
 fun <V> resultAll(vararg promises: Promise<V, Exception>): List<V> {
-  return awaitAll(*promises).get()
+  return readyAll(*promises).get()
 }
 
 /**
  * [Promise] 컬렉션이 모두 완료될 때까지 기다렸다가 결과를 반환합니다.
  */
 fun <V> Collection<Promise<V, Exception>>.resultAll(): List<V> {
-  return this.awaitAll().get()
+  return this.readyAll().get()
+}
+
+/**
+ * [Promise] 컬렉션 중 첫번째 완료된 결과값을 반환합니다.
+ */
+fun <V> Collection<Promise<V, Exception>>.resultAny(): V {
+  return this.readyAny().get()
 }
