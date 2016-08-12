@@ -58,7 +58,7 @@ abstract class AbstractJdbcTest {
     }
   }
 
-  @Autowired private var template: JdbcTemplate = uninitialized()
+  @Autowired private val template: JdbcTemplate = uninitialized()
 
   protected fun count(): Int {
     var cnt = 0

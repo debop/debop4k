@@ -15,6 +15,7 @@
 
 package debop4k.data.spring.boot.autoconfigure
 
+import debop4k.core.EMPTY_STRING
 import debop4k.core.uninitialized
 import debop4k.data.DataSources
 import debop4k.data.DatabaseSetting
@@ -36,8 +37,8 @@ open class HikariDataSourceAutoConfiguration {
 
   private val log = LoggerFactory.getLogger(javaClass)
 
-  @Inject var dataSourceProps: HikariDataSourceProperties = uninitialized()
-  @Inject var dataSource: DataSource = uninitialized()
+  @Inject val dataSourceProps: HikariDataSourceProperties = uninitialized()
+  @Inject val dataSource: DataSource = uninitialized()
 
   @Bean(name = arrayOf("dataSource"))
   open fun dataSource(): DataSource {
@@ -45,7 +46,7 @@ open class HikariDataSourceAutoConfiguration {
     log.debug("flyway={}", dataSourceProps.flyway)
 
     val setting = DatabaseSetting().apply {
-      driverClassName = dataSourceProps.driverClassName ?: ""
+      driverClassName = dataSourceProps.driverClassName ?: EMPTY_STRING
       jdbcUrl = dataSourceProps.jdbcUrl ?: ""
     }
     return DataSources.of(setting)
