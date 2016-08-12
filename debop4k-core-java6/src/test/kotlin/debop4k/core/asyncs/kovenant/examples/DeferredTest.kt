@@ -16,7 +16,7 @@
 package debop4k.core.asyncs.kovenant.examples
 
 import debop4k.core.AbstractCoreKotlinTest
-import debop4k.core.asyncs.await
+import debop4k.core.asyncs.ready
 import nl.komponents.kovenant.task
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -26,14 +26,14 @@ class DeferredTest : AbstractCoreKotlinTest() {
   @Test fun deferred() {
     var isCompleted = false
     val promise = task {
-      log.debug("async task is starting...")
+      log.debug("future task is starting...")
       Thread.sleep(100L)
-      log.debug("async task is completed")
+      log.debug("future task is completed")
       isCompleted = true
     }
     assertThat(isCompleted).isFalse()
-    // await
-    promise.await()
+    // ready
+    promise.ready()
     assertThat(isCompleted).isTrue()
   }
 }

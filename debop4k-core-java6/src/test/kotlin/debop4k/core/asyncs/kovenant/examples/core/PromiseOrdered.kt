@@ -16,9 +16,9 @@
 package debop4k.core.asyncs.kovenant.examples.core
 
 import debop4k.core.AbstractCoreKotlinTest
-import debop4k.core.asyncs.await
-import debop4k.core.asyncs.awaitAll
 import debop4k.core.asyncs.kovenant.examples.fib
+import debop4k.core.asyncs.ready
+import debop4k.core.asyncs.readyAll
 import nl.komponents.kovenant.*
 import org.junit.Test
 import java.util.concurrent.atomic.*
@@ -38,7 +38,7 @@ class PromiseOrdered : AbstractCoreKotlinTest() {
     all(first, second) success {
       log.debug("${firstRef.get()}, ${secondRef.get()}")
     }
-    awaitAll(first, second)
+    readyAll(first, second)
   }
 
   @Test fun `promise then`() {
@@ -49,7 +49,7 @@ class PromiseOrdered : AbstractCoreKotlinTest() {
     } success {
       log.debug("{}", it)
     }
-    p.await()
+    p.ready()
   }
 
   @Test fun threads() {
@@ -68,6 +68,6 @@ class PromiseOrdered : AbstractCoreKotlinTest() {
     } success {
       log.debug("{}", it)
     }
-    p.await()
+    p.ready()
   }
 }
