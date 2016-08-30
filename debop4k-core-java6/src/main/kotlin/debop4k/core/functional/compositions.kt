@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-@file:JvmName("composition")
+@file:JvmName("compositions")
 
 package debop4k.core.functional
 
