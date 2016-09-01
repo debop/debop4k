@@ -255,6 +255,7 @@ fun ITimePeriod.periodSequence(unit: PeriodUnit): FastList<out ITimePeriod> = wh
   else -> throw UnsupportedOperationException("지원하지 않는 PeriodUnit 입니다. unit=$unit")
 }
 
+// TODO: 실제로 Iterator 를 만들던가 Sequence 를 이용하여 만들던가 해야 한다
 fun ITimePeriod.yearSequence(): FastList<out ITimePeriod> {
   val years = FastList.newList<ITimePeriod>()
 
