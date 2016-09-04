@@ -48,13 +48,12 @@ data class DM(val d: Int = 0,
 
     @JvmStatic
     fun parse(str: String): DM {
+      if (str.isNullOrBlank())
+        return DM()
+
       val items = str.split(' ', limit = 2)
-
-      var d = 0
-      var m = 0.0
-      if (items.size > 0) d = items[0].asInt()
-      if (items.size > 1) m = items[1].asDouble()
-
+      val d = if (items.size > 0) items[0].asInt() else 0
+      val m = if (items.size > 1) items[1].asDouble() else 0.0
       return DM(d, m)
     }
   }
