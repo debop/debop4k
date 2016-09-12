@@ -19,7 +19,8 @@ import org.redisson.client.codec.Codec
 import org.redisson.codec.SnappyCodec
 
 /**
- * SnappyJava6Codec
+ * Snappy + FST Codec
  * @author debop sunghyouk.bae@gmail.com
  */
-class SnappyJava6Codec(val innerCodec: Codec = FstJava6Codec()) : SnappyCodec(innerCodec) {}
+class SnappyJava6Codec
+@JvmOverloads constructor(val innerCodec: Codec = FstJava6Codec()) : SnappyCodec(innerCodec) {}

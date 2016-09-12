@@ -27,7 +27,8 @@ import java.io.IOException
  * FstJava6Codec
  * @author debop sunghyouk.bae@gmail.com
  */
-open class FstJava6Codec(val config: FSTConfiguration = FSTConfiguration.createDefaultConfiguration()) : Codec {
+open class FstJava6Codec
+@JvmOverloads constructor(val config: FSTConfiguration = FSTConfiguration.createDefaultConfiguration()) : Codec {
 
   private val encoder: Encoder = Encoder { input ->
     ByteArrayOutputStream().use { bos ->

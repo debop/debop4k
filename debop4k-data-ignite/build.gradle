@@ -13,15 +13,6 @@
  * limitations under the License.
  */
 
-package debop4k.redis.codec
-
-import org.redisson.client.codec.Codec
-import org.redisson.codec.LZ4Codec
-
-/**
- * LZ4 + FST Codec
- * @author debop sunghyouk.bae@gmail.com
- */
-class LZ4Java6Codec
-@JvmOverloads constructor(val codec: Codec = FstJava6Codec()) : LZ4Codec(codec) {
+dependencies {
+    compile project(":debop4k-data-ignite-java6")
 }

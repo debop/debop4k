@@ -56,6 +56,9 @@ include 'debop4k-redis-java7'
 include 'debop4k-redis-java8'
 include 'debop4k-redis'
 
+include 'debop4k-data-ignite-java6'
+include 'debop4k-data-ignite'
+
 include 'debop4k-csv'
 include 'debop4k-csv-java6'
 
@@ -72,3 +75,5 @@ include 'debop4k-spring-boot-autoconfigure'
 
 
 include 'debop4k-examples'
+
+
