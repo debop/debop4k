@@ -14,8 +14,7 @@
  */
 
 dependencies {
-
-    compile project(":debop4k-core-java6")
+    compile project(":debop4k-core-java7")
 
     compile "org.apache.ignite:ignite-core:$ignite_version"
     compile "org.apache.ignite:ignite-spring:$ignite_version"

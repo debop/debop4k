@@ -14,5 +14,5 @@
  */
 
 dependencies {
-    compile project(":debop4k-data-ignite-java6")
+    compile project(":debop4k-data-ignite-java7")
 }
