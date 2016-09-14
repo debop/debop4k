@@ -18,4 +18,10 @@ dependencies {
 
     compile "org.apache.ignite:ignite-core:$ignite_version"
     compile "org.apache.ignite:ignite-spring:$ignite_version"
+    compile "org.apache.ignite:ignite-indexing:$ignite_version"
+    compile "org.apache.ignite:ignite-geospatial:$ignite_version"
+    compile "org.apache.ignite:ignite-slf4j:$ignite_version"
+
+    compile("org.apache.ignite:ignite-hibernate:$ignite_version")
+    compile "org.hibernate:hibernate-core:$hibernate_version"
 }
