@@ -37,13 +37,13 @@ class SimpleExample {
   }
 
   @Test
-  fun testInstancing() {
+  fun testCompute() {
     Ignition.start().use { ignite ->
 
       val calls = ArrayList<IgniteCallable<Int>>()
 
       // Iterate through all the words in the sentence and create Callable jobs.
-      for (word in "Count characters using callable".split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
+      for (word in "Count characters using callable".split(" "))
         calls.add(IgniteCallable { word.length })
 
       // Execute collection of Callables on the grid.
