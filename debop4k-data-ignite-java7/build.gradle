@@ -22,6 +22,6 @@ dependencies {
     compile "org.apache.ignite:ignite-geospatial:$ignite_version"
     compile "org.apache.ignite:ignite-slf4j:$ignite_version"
 
-    compile("org.apache.ignite:ignite-hibernate:$ignite_version")
-    compile "org.hibernate:hibernate-core:$hibernate_version"
+    optional "org.apache.ignite:ignite-hibernate:$ignite_version"
+    optional "org.hibernate:hibernate-core:$hibernate_version"
 }

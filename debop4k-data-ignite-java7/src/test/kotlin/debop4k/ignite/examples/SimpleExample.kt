@@ -17,6 +17,7 @@ package debop4k.ignite.examples
 
 import debop4k.core.io.use
 import org.apache.ignite.Ignition
+import org.apache.ignite.configuration.IgniteConfiguration
 import org.apache.ignite.lang.IgniteCallable
 import org.junit.Test
 import java.util.*
@@ -27,9 +28,11 @@ import java.util.*
  */
 class SimpleExample {
 
+  private val cfg = IgniteConfiguration()
+
   @Test
   fun testConfiguration() {
-    Ignition.start().use { ignite ->
+    Ignition.getOrStart(cfg).use { ignite ->
       val cache = ignite.getOrCreateCache<String, Any?>("default")
       cache.put("a", "abc")
       println("cache matrics =${cache.metrics()}")
@@ -38,7 +41,7 @@ class SimpleExample {
 
   @Test
   fun testCompute() {
-    Ignition.start().use { ignite ->
+    Ignition.getOrStart(cfg).use { ignite ->
 
       val calls = ArrayList<IgniteCallable<Int>>()
 
@@ -58,7 +61,7 @@ class SimpleExample {
 
   @Test
   fun testDataGrid() {
-    Ignition.start().use { ignite ->
+    Ignition.getOrStart(cfg).use { ignite ->
       val cache = ignite.getOrCreateCache<Int, String>("myCacheName")
 
       // Store keys in cache (values will end up on different cache nodes).
@@ -69,4 +72,5 @@ class SimpleExample {
         println("Got [key=$i, val=${cache.get(i)}]")
     }
   }
+
 }
