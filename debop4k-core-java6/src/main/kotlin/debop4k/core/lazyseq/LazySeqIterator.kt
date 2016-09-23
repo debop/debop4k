@@ -19,14 +19,14 @@ package debop4k.core.lazyseq
  * LazySeqIterator
  * @author sunghyouk.bae@gmail.com
  */
-class LazySeqIterator<E>(val underlying: LazySeq<E>) : MutableIterator<E> {
+class LazySeqIterator<E>(var underlying: LazySeq<E>) : MutableIterator<E> {
 
-  override fun hasNext(): Boolean {
-    TODO()
-  }
+  override fun hasNext(): Boolean = !underlying.isEmpty()
 
   override fun next(): E {
-    TODO()
+    val next = underlying.head
+    underlying = underlying.tail
+    return next
   }
 
   override fun remove() {

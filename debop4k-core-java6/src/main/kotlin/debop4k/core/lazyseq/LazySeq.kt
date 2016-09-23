@@ -15,12 +15,12 @@
 
 package debop4k.core.lazyseq
 
+import debop4k.core.collections.eclipseCollections.fastListOf
 import debop4k.core.functional.Option
+import debop4k.core.functional.Option.Some
 import debop4k.core.utils.hashOf
-import org.eclipse.collections.api.list.MutableList
 import java.util.*
 import java.util.function.*
-import java.util.stream.*
 
 /**
  * LazySeq
@@ -29,66 +29,126 @@ import java.util.stream.*
 abstract class LazySeq<E> : AbstractList<E>() {
 
   abstract val head: E
-  abstract val headOption: Option<E>
+
+  open val headOption: Option<E> get() = Some(head)
 
   abstract val tail: LazySeq<E>
 
   protected abstract val isTailDefined: Boolean
 
-  override operator fun get(index: Int): E = TODO()
+  override operator fun get(index: Int): E {
+    require(index >= 0)
 
-  abstract fun <R> map(mapper: (E) -> R): LazySeq<R>
+    var curr = this
+    (index downTo 1).forEach {
+      if (curr.tail.isEmpty()) {
+        throw IndexOutOfBoundsException(index.toString())
+      }
+      curr = curr.tail
+    }
+    return curr.head
+  }
 
-  open fun sequence(): Sequence<E> = TODO()
+  abstract fun <R : Any?> map(mapper: (E) -> R): LazySeq<out R>
 
-  open fun parallelSequence(): Sequence<E> = TODO()
+  open fun sequence(): Sequence<E> = Sequence { this.iterator() }
+
+  open fun parallelSequence(): Sequence<E> = Sequence { this.iterator() }
 
   override fun toString(): String {
     return this.joinToString(", ", "[", "]")
   }
 
   @JvmOverloads
-  open fun mkString(separator: CharSequence = ", ", prefix: CharSequence = "", postfix: CharSequence = "", lazy: Boolean = false): String {
-    TODO()
-  }
+  open fun mkString(separator: CharSequence = ", ",
+                    prefix: CharSequence = "",
+                    postfix: CharSequence = "",
+                    lazy: Boolean = false): String {
+    val sb = StringBuilder(prefix)
 
-
-  open fun concat(elements: Iterable<E>, tailFun: () -> LazySeq<E>): LazySeq<E> = TODO()
-  open fun concat(elements: Iterable<E>, tail: LazySeq<E>): LazySeq<E> = TODO()
-
-  open fun concat(iterator: Iterator<E>, tailFun: () -> LazySeq<E>): LazySeq<E> = TODO()
-  open fun concat(iterator: Iterator<E>, tail: LazySeq<E>): LazySeq<E> = TODO()
-
-  open fun createNonEmptyIterator(iterator: Iterator<E>, tailFun: () -> LazySeq<E>): LazySeq<E> = TODO()
-  open fun createNonEmptyIterator(iterator: Iterator<E>, tail: LazySeq<E>): LazySeq<E> = TODO()
-
-
-  open fun filter(predicate: (E) -> Boolean): LazySeq<E> = TODO()
-
-  open fun <R> flatMap(mapper: (E) -> Iterable<R>): LazySeq<R> = TODO()
-
-  open fun forEach(action: (E) -> Unit): Unit {
-    tailrec fun traverse(seq: LazySeq<E>, action: (E) -> Unit): Unit {
-      action(seq.head)
-      traverse(seq.tail, action)
+    var curr = this
+    while (!curr.isEmpty()) {
+      sb.append(curr.head)
+      if (!lazy || curr.isTailDefined) {
+        if (!curr.tail.isEmpty()) {
+          sb.append(separator)
+        }
+        curr = curr.tail
+      } else {
+        sb.append(separator).append("?")
+        break
+      }
     }
-    traverse(this, action)
+    return sb.append(postfix).toString()
   }
+
+  abstract fun filter(predicate: (E) -> Boolean): LazySeq<E>
+
+  abstract fun <R> flatMap(mapper: (E) -> Iterable<R>): LazySeq<R>
 
   fun limit(maxSize: Long): LazySeq<E> = take(maxSize)
 
-  open fun toList(): MutableList<E> = TODO()
+  open fun toList(): List<E> = fastListOf<E>(this.force())
 
-  override fun subList(fromIndex: Int, toIndex: Int): LazySeq<E> = TODO()
+  open fun take(maxSize: Long): LazySeq<E> {
+    require(maxSize >= 0)
+    return if (maxSize == 0L) emptyLazySeq() else takeUnsafe(maxSize)
+  }
 
-  open fun slice(startInclusive: Long, endExclusive: Long): LazySeq<E> = TODO()
+  abstract fun takeUnsafe(maxSize: Long): LazySeq<E>
 
+  open fun drop(startInclusive: Long): LazySeq<E> {
+    require(startInclusive >= 0L)
+    return dropUnsafe(startInclusive)
+  }
 
-  open fun <C : Comparable<C>> maxBy(propertyFunc: (E) -> C): E = TODO()
-  open fun <C : Comparable<C>> minBy(propertyFunc: (E) -> C): E = TODO()
+  open fun dropUnsafe(startInclusive: Long): LazySeq<E> {
+    return if (startInclusive > 0) tail.drop(startInclusive - 1) else this
+  }
 
-  open fun max(comparator: Comparator<in E>): E? = TODO()
-  open fun min(comparator: Comparator<in E>): E? = TODO()
+  override fun subList(fromIndex: Int, toIndex: Int): LazySeq<E> = slice(fromIndex.toLong(), toIndex.toLong())
+
+  open fun slice(startInclusive: Long, endExclusive: Long): LazySeq<E> {
+    require(startInclusive >= 0 && startInclusive < endExclusive)
+    return dropUnsafe(startInclusive).takeUnsafe(endExclusive - startInclusive)
+  }
+
+  open fun forEach(action: (E) -> Unit): Unit {
+    action(head)
+    tail.forEach(action)
+//    tailrec fun traverse(seq: LazySeq<E>, action: (E) -> Unit): Unit {
+//      action(seq.head)
+//      traverse(seq.tail, action)
+//    }
+//    traverse(this, action)
+  }
+
+  open fun <C : Comparable<C>> maxBy(propertyFunc: (E) -> C): E? = max(propertyFunToComparator(propertyFunc))
+  open fun <C : Comparable<C>> minBy(propertyFunc: (E) -> C): E? = min(propertyFunToComparator(propertyFunc))
+
+  open fun max(comparator: Comparator<in E>): E? = greatestByComparator(comparator)
+  open fun min(comparator: Comparator<in E>): E? = greatestByComparator(comparator.reversed())
+
+  private fun <C : Comparable<C>> propertyFunToComparator(propertyFunc: (E) -> C): Comparator<in E> {
+    return Comparator { a, b ->
+      val aProperty = propertyFunc(a)
+      val bProperty = propertyFunc(b)
+      aProperty.compareTo(bProperty)
+    }
+  }
+
+  private fun greatestByComparator(comparator: Comparator<in E>): E? {
+    if (tail.isEmpty())
+      return head
+
+    var minSoFar = head
+    var curr = this.tail
+    while (!curr.isEmpty()) {
+      minSoFar = maxByComparator(minSoFar, curr.head, comparator)
+      curr = curr.tail
+    }
+    return minSoFar
+  }
 
   override val size: Int
     get() = 1 + tail.size
@@ -99,39 +159,91 @@ abstract class LazySeq<E> : AbstractList<E>() {
 
   open fun anyMatch(predicate: (E) -> Boolean): Boolean = predicate(head) || tail.anyMatch(predicate)
   open fun allMatch(predicate: (E) -> Boolean): Boolean = predicate(head) && tail.allMatch(predicate)
-  open fun nonMatch(predicate: (E) -> Boolean): Boolean = !predicate(head) && tail.nonMatch(predicate)
+  open fun noneMatch(predicate: (E) -> Boolean): Boolean = !predicate(head) && tail.noneMatch(predicate)
 
-  open fun take(maxSize: Long): LazySeq<E> = TODO()
-  open fun takeUnsafe(maxSize: Long): LazySeq<E> = TODO()
-  open fun takeWhile(predicate: (E) -> Boolean): LazySeq<E> = TODO()
-  open fun drop(startInclusive: Long): LazySeq<E> = TODO()
-  open fun dropUnsafe(startInclusive: Long): LazySeq<E> = TODO()
-  open fun dropWhile(predicate: (E) -> Boolean): LazySeq<E> = TODO()
+  open fun takeWhile(predicate: (E) -> Boolean): LazySeq<E> {
+    return if (predicate(head)) {
+      cons(head) { tail.takeWhile(predicate) }
+    } else {
+      emptyLazySeq()
+    }
+  }
 
-  open fun sliding(size: Int): LazySeq<List<E>> = TODO()
-  open fun slidingUnsafe(size: Int): LazySeq<List<E>> = TODO()
-  open fun slidingFullOnly(size: Int): LazySeq<List<E>> = TODO()
+  open fun dropWhile(predicate: (E) -> Boolean): LazySeq<E> {
+    return if (predicate(head)) {
+      tail.dropWhile(predicate)
+    } else {
+      this
+    }
+  }
 
-  open fun grouped(size: Int): LazySeq<List<E>> = TODO()
-  open fun groupedUnsafe(size: Int): LazySeq<List<E>> = TODO()
+  open fun sliding(size: Int): LazySeq<List<E>> {
+    require(size > 0)
+    return slidingUnsafe(size)
+  }
 
-  open fun scan(initial: E, binFunc: BinaryOperator<E>): LazySeq<E> = TODO()
-  open fun distinct(): LazySeq<E> = TODO()
-  open fun filterOutSeen(exclude: Set<E>): LazySeq<E> = TODO()
+  open fun slidingUnsafe(size: Int): LazySeq<List<E>> {
+    val window = take(size).toList()
+    return cons(window) { tail.slidingFullOnly(size) }
+  }
 
-  @SuppressWarnings("unchecked")
-  open fun sorted(): LazySeq<E> = TODO()
+  open fun slidingFullOnly(size: Int): LazySeq<List<E>> {
+    val window = take(size).toList()
+    return if (window.size < size) {
+      emptyLazySeq()
+    } else {
+      cons(window) { tail.slidingFullOnly(size) }
+    }
+  }
 
-  open fun sorted(comparator: Comparator<E>): LazySeq<E> = TODO()
+  open fun grouped(size: Int): LazySeq<List<E>> {
+    require(size > 0)
+    return groupedUnsafe(size)
+  }
 
-  open fun startsWith(prefix: Iterable<E>): Boolean = TODO()
-  open fun startsWith(iterator: Iterator<E>): Boolean = TODO()
+  open fun groupedUnsafe(size: Int): LazySeq<List<E>> {
+    val window = take(size).toList()
+    return cons(window) { drop(size.toLong()).groupedUnsafe(size) }
+  }
+
+  // TODO: 이건 Java 8에서 지원하는 것이라 LazySeqStream 에 정의해야 한다
+  open fun scan(initial: E, binFunc: BinaryOperator<E>): LazySeq<E> {
+    return cons(initial) { tail.scan(binFunc.apply(initial, head), binFunc) }
+  }
+
+  open fun distinct(): LazySeq<E> = filterOutSeen(hashSetOf<E>())
+  open fun filterOutSeen(exclude: MutableSet<E>): LazySeq<E> {
+    val moreDistinct = filter { !exclude.contains(it) }
+    if (moreDistinct.isEmpty())
+      return emptyLazySeq()
+
+    val next = moreDistinct.head
+    exclude.add(next)
+    return cons(next) { moreDistinct.tail.filterOutSeen(exclude) }
+  }
+
+  @Suppress("UNCHECKED_CAST")
+  open fun sorted(): LazySeq<E> {
+    return sorted(Comparator { o1, o2 -> (o1 as Comparable<E>).compareTo(o2) })
+  }
+
+  open fun sorted(comparator: Comparator<in E>): LazySeq<E> {
+    val list = fastListOf<E>(this)
+    list.sortThis(comparator)
+    return lazySeqOf(list)
+  }
+
+  open fun startsWith(prefix: Iterable<E>): Boolean = startsWith(prefix.iterator())
+  open fun startsWith(iterator: Iterator<E>): Boolean {
+    return !iterator.hasNext() ||
+           head?.equals(iterator.next()) ?: false &&
+           tail.startsWith(iterator)
+  }
 
   open fun force(): LazySeq<E> {
     tail.force()
     return this
   }
-
 
   override fun equals(other: Any?): Boolean {
     if (this == other) return true
@@ -144,37 +256,119 @@ abstract class LazySeq<E> : AbstractList<E>() {
   override fun hashCode(): Int {
     return hashOf(head, tail)
   }
+}
 
-  companion object {
-    @JvmStatic fun <E> of(element: E): LazySeq<E> = TODO()
-    @JvmStatic fun <E> of(element: E, tailFun: () -> LazySeq<E>): LazySeq<E> = TODO()
-    @JvmStatic fun <E> of(element1: E, element2: E): LazySeq<E> = TODO()
-    @JvmStatic fun <E> of(element1: E, element2: E, tailFun: () -> LazySeq<E>): LazySeq<E> = TODO()
-    @JvmStatic fun <E> of(element1: E, element2: E, element3: E): LazySeq<E> = TODO()
-    @JvmStatic fun <E> of(element1: E, element2: E, element3: E, tailFun: () -> LazySeq<E>): LazySeq<E> = TODO()
+fun <E> emptyLazySeq(): LazySeq<E> = Nil.instance()
 
-    @JvmStatic fun <E> of(vararg elements: E): LazySeq<E> = TODO()
-    @JvmStatic fun <E> of(elements: Iterable<E>): LazySeq<E> = TODO()
-    @JvmStatic fun <E> of(iterator: Iterator<E>): LazySeq<E> = TODO()
+fun <E> lazySeqOf(element: E): LazySeq<E>
+    = cons(element, emptyLazySeq())
+
+fun <E> lazySeqOf(element: E, tailFunc: () -> LazySeq<E>): LazySeq<E>
+    = cons(element, tailFunc)
+
+fun <E> lazySeqOf(element1: E, element2: E): LazySeq<E>
+    = cons(element1, lazySeqOf(element2))
+
+fun <E> lazySeqOf(element1: E, element2: E, tailFunc: () -> LazySeq<E>): LazySeq<E>
+    = cons(element1, lazySeqOf(element2, tailFunc))
+
+fun <E> lazySeqOf(element1: E, element2: E, element3: E): LazySeq<E>
+    = cons(element1, lazySeqOf(element2, element3))
+
+fun <E> lazySeqOf(element1: E, element2: E, element3: E, tailFunc: () -> LazySeq<E>): LazySeq<E>
+    = cons(element1, lazySeqOf(element2, element3, tailFunc))
+
+fun <E> lazySeqOf(vararg elements: E): LazySeq<E> = lazySeqOf(elements.iterator())
+fun <E> lazySeqOf(elements: Iterable<E>): LazySeq<E> = lazySeqOf(elements.iterator())
+fun <E> lazySeqOf(iterator: Iterator<E>): LazySeq<E> {
+  return if (iterator.hasNext()) {
+    cons(iterator.next(), { lazySeqOf(iterator) })
+  } else {
+    emptyLazySeq()
   }
 }
 
-fun <E> cons(head: E, tailFun: () -> LazySeq<E>): LazySeq<E> = TODO()
-fun <E> cons(head: E, tail: LazySeq<E>): LazySeq<E> = TODO()
+fun <E> concat(elements: Iterable<E>, tailFunc: () -> LazySeq<E>): LazySeq<E>
+    = concat(elements.iterator(), tailFunc)
 
-fun <E> iterate(initial: E, func: (E) -> E): LazySeq<E> = TODO()
+fun <E> concat(elements: Iterable<E>, tail: LazySeq<E>): LazySeq<E>
+    = concat(elements.iterator(), tail)
 
-fun <E> toLazySeq(): Collector<E, LazySeq<E>, LazySeq<E>> = TODO()
+fun <E> concat(iterator: Iterator<E>, tailFunc: () -> LazySeq<E>): LazySeq<E> {
+  return if (iterator.hasNext()) {
+    concatNonEmptyIterator(iterator, tailFunc)
+  } else {
+    tailFunc()
+  }
+}
 
-fun <E> tabulate(start: Int, generator: (Int) -> E): Collector<E, LazySeq<E>, LazySeq<E>> = TODO()
+fun <E> concat(iterator: Iterator<E>, tail: LazySeq<E>): LazySeq<E> {
+  return if (iterator.hasNext()) {
+    concatNonEmptyIterator(iterator, tail)
+  } else {
+    tail
+  }
+}
 
-fun <E> continually(generator: () -> E): LazySeq<E> = TODO()
-fun <E> continually(cycle: Iterable<E>): LazySeq<E> = TODO()
-fun <E> continuallyUnsafe(cycle: Iterable<E>): LazySeq<E> = TODO()
-fun <E> continually(value: E): LazySeq<E> = TODO()
+private fun <E> concatNonEmptyIterator(iterator: Iterator<E>, tail: LazySeq<E>): LazySeq<E> {
+  val next = iterator.next()
+  return if (iterator.hasNext()) {
+    cons(next, concatNonEmptyIterator(iterator, tail))
+  } else {
+    cons(next, tail)
+  }
+}
 
-fun numbers(start: Int, step: Int): LazySeq<Int> = TODO()
-fun numbers(start: Long, step: Long): LazySeq<Long> = TODO()
-fun numbers(start: Double, step: Double): LazySeq<Double> = TODO()
+private fun <E> concatNonEmptyIterator(iterator: Iterator<E>, tailFunc: () -> LazySeq<E>): LazySeq<E> {
+  val next = iterator.next()
+  return if (iterator.hasNext()) {
+    cons(next, concatNonEmptyIterator(iterator, tailFunc))
+  } else {
+    cons(next, tailFunc)
+  }
+}
+
+fun <E> cons(head: E, tailFunc: () -> LazySeq<E>): LazySeq<E> = Cons(head, tailFunc)
+fun <E> cons(head: E, tail: LazySeq<E>): LazySeq<E> = FixedCons(head, tail)
+
+fun <E> iterate(initial: E, func: (E) -> E): LazySeq<E> {
+  return Cons(initial, { iterate(func.invoke(initial), func) })
+}
+
+fun <E> tabulate(start: Int, generator: (Int) -> E): LazySeq<E> {
+  return cons(generator(start)) { tabulate(start + 1, generator) }
+}
+
+fun <E> continually(generator: () -> E): LazySeq<E> = cons(generator.invoke()) { continually(generator) }
+fun <E> continually(cycle: Iterable<E>): LazySeq<E> {
+  return if (!cycle.iterator().hasNext()) {
+    emptyLazySeq()
+  } else {
+    continuallyUnsafe(cycle)
+  }
+}
+
+fun <E> continuallyUnsafe(cycle: Iterable<E>): LazySeq<E> = concat(cycle) { continually(cycle) }
+fun <E> continually(value: E): LazySeq<E> = cons(value) { continually(value) }
+
+@JvmOverloads
+fun numbers(start: Int, step: Int = 1): LazySeq<Int>
+    = cons(start) { numbers(start + step, step) }
+
+@JvmOverloads
+fun numbers(start: Long, step: Long = 1L): LazySeq<Long>
+    = cons(start) { numbers(start + step, step) }
 
 
+@JvmOverloads
+fun numbers(start: Float, step: Float = 1.0F): LazySeq<Float>
+    = cons(start) { numbers(start + step, step) }
+
+@JvmOverloads
+fun numbers(start: Double, step: Double = 1.0): LazySeq<Double>
+    = cons(start) { numbers(start + step, step) }
+
+
+private fun <E> maxByComparator(first: E, second: E, comparator: Comparator<in E>): E {
+  return if (comparator.compare(first, second) >= 0) first else second
+}

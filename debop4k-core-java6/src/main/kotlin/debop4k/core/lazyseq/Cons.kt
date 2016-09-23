@@ -15,24 +15,101 @@
 
 package debop4k.core.lazyseq
 
+import debop4k.core.collections.eclipseCollections.fastListOf
 import debop4k.core.functional.Option
 import java.util.*
+import java.util.concurrent.locks.*
+import java.util.function.*
 
-///**
-// * Cons
-// * @author sunghyouk.bae@gmail.com
-// */
-//class Cons<T>(override val head: T, val tailFunc: () -> LazySeq<T>) : LazySeq<T>() {
-//
-//
-//}
-//
-///**
-// * Fixed Cons
-// */
-//class FixedCons<T>(override val head: T, override val tail: LazySeq<T>) : LazySeq<T>() {
-//
-//}
+/**
+ * Cons
+ * @author sunghyouk.bae@gmail.com
+ */
+class Cons<T>(override val head: T, val tailFunc: () -> LazySeq<T>) : LazySeq<T>() {
+
+  @Volatile
+  private var tailOrNull: LazySeq<T>? = null
+
+  private val lock = ReentrantLock()
+
+  override val tail: LazySeq<T> by lazy {
+    if (!isTailDefined) {
+      synchronized(lock) {
+        if (!isTailDefined) {
+          tailOrNull = tailFunc.invoke()
+        }
+      }
+    }
+    tailOrNull!!
+  }
+
+  override val isTailDefined: Boolean get() = tailOrNull != null
+
+  override fun <R> map(mapper: (T) -> R): LazySeq<R> {
+    return cons(mapper(head), { tail.map(mapper) })
+  }
+
+  override fun filter(predicate: (T) -> Boolean): LazySeq<T> {
+    return if (predicate(head)) {
+      cons(head, { tail.filter(predicate) })
+    } else {
+      tail.filter(predicate)
+    }
+  }
+
+  override fun <R> flatMap(mapper: (T) -> Iterable<R>): LazySeq<R> {
+    val result = fastListOf<R>()
+    mapper(head).forEach { result.add(it) }
+    return concat(result, { tail.flatMap(mapper) })
+  }
+
+  override fun takeUnsafe(maxSize: Long): LazySeq<T> {
+    return if (maxSize > 1) {
+      cons(head, { tail.takeUnsafe(maxSize - 1) })
+    } else {
+      lazySeqOf(head)
+    }
+  }
+
+  override fun isEmpty(): Boolean = false
+}
+
+
+/**
+ * Fixed Cons
+ */
+class FixedCons<T>(override val head: T, override val tail: LazySeq<T>) : LazySeq<T>() {
+
+  override val isTailDefined: Boolean get() = true
+
+  override fun <R> map(mapper: (T) -> R): LazySeq<R> {
+    return cons(mapper(head), tail.map(mapper))
+  }
+
+  override fun filter(predicate: (T) -> Boolean): LazySeq<T> {
+    return if (predicate(head)) {
+      cons(head, tail.filter(predicate))
+    } else {
+      tail.filter(predicate)
+    }
+  }
+
+  override fun <R> flatMap(mapper: (T) -> Iterable<R>): LazySeq<R> {
+    val result = fastListOf<R>()
+    mapper(head).forEach { result.add(it) }
+    return concat(result, tail.flatMap(mapper))
+  }
+
+  override fun takeUnsafe(maxSize: Long): LazySeq<T> {
+    return if (maxSize > 1) {
+      cons(head, tail.takeUnsafe(maxSize - 1))
+    } else {
+      lazySeqOf(head)
+    }
+  }
+
+  override fun isEmpty(): Boolean = false
+}
 
 /**
  * Empty LazySeq
@@ -42,7 +119,7 @@ class Nil<T> : LazySeq<T>() {
   companion object {
     val NIL: Nil<Any> = Nil<Any>()
 
-    @SuppressWarnings("unchecked")
+    @Suppress("UNCHECKED_CAST")
     @JvmStatic fun <T> instance(): Nil<T> = NIL as Nil<T>
   }
 
@@ -76,10 +153,20 @@ class Nil<T> : LazySeq<T>() {
 
   override fun anyMatch(predicate: (T) -> Boolean): Boolean = false
   override fun allMatch(predicate: (T) -> Boolean): Boolean = false
-  override fun nonMatch(predicate: (T) -> Boolean): Boolean = true
+  override fun noneMatch(predicate: (T) -> Boolean): Boolean = true
 
   override fun takeWhile(predicate: (T) -> Boolean): LazySeq<T> = instance()
   override fun dropWhile(predicate: (T) -> Boolean): LazySeq<T> = instance()
 
+  override fun slidingUnsafe(size: Int): LazySeq<List<T>> = instance()
+  override fun groupedUnsafe(size: Int): LazySeq<List<T>> = instance()
 
+  override fun scan(initial: T, binFunc: BinaryOperator<T>): LazySeq<T> = lazySeqOf(initial)
+  override fun distinct(): LazySeq<T> = instance()
+  override fun startsWith(iterator: Iterator<T>): Boolean = !iterator.hasNext()
+  override fun force(): LazySeq<T> = this
+
+  override fun equals(other: Any?): Boolean = other is Nil<*>
+  override fun hashCode(): Int = Nil.hashCode()
+  override fun isEmpty(): Boolean = true
 }

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package debop4k.core.java8.utils
+package debop4k.core.utils
 
 import debop4k.core.collections.eclipseCollections.toDoubleArrayList
 import debop4k.core.collections.eclipseCollections.toIntArrayList

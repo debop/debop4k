@@ -13,19 +13,23 @@
  * limitations under the License.
  */
 
-@file:Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "UNCHECKED_CAST", "NOTHING_TO_INLINE")
+package debop4k.core.async
 
-package debop4k.core.java8.utils
+import java.util.concurrent.*
+import java.util.function.*
 
-import java.util.stream.*
+@JvmOverloads
+inline fun runAsync(crossinline action: () -> Unit,
+                    executor: Executor = ForkJoinPool.commonPool()): CompletableFuture<Void>
+    = CompletableFuture.runAsync(Runnable { action() }, executor)
 
-/**
- * Returns an [IntStream] of UTF-16 character code values from this sequence.
- * Surrogate pairs are represented as pair of consecutive chars.
- */
-inline fun CharSequence.chars(): IntStream = (this as java.lang.CharSequence).chars()
+@JvmOverloads
+fun <T> supplyAsync(supplier: () -> T,
+                    executor: Executor = ForkJoinPool.commonPool()): CompletableFuture<T>
+    = CompletableFuture.supplyAsync(Supplier(supplier), executor)
 
-/**
- * Returns an [IntStream] of UTF code point values from this sequence.
- */
-inline fun CharSequence.codePoints(): IntStream = (this as java.lang.CharSequence).codePoints()
+fun <T> T.completedFuture(): CompletableFuture<T>
+    = CompletableFuture.completedFuture(this)
+
+
+

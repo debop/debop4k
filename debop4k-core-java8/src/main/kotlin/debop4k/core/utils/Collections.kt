@@ -15,7 +15,7 @@
 
 @file:Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "UNCHECKED_CAST", "NOTHING_TO_INLINE")
 
-package debop4k.core.java8.utils
+package debop4k.core.utils
 
 import java.util.*
 import java.util.function.*
