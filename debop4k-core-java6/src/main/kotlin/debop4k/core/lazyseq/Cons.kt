@@ -15,13 +15,71 @@
 
 package debop4k.core.lazyseq
 
-/**
- * Cons
- * @author sunghyouk.bae@gmail.com
- */
-class Cons<E> : LazySeq<E>() {
-}
+import debop4k.core.functional.Option
+import java.util.*
 
-class FixedCons<E> : LazySeq<E>() {
+///**
+// * Cons
+// * @author sunghyouk.bae@gmail.com
+// */
+//class Cons<T>(override val head: T, val tailFunc: () -> LazySeq<T>) : LazySeq<T>() {
+//
+//
+//}
+//
+///**
+// * Fixed Cons
+// */
+//class FixedCons<T>(override val head: T, override val tail: LazySeq<T>) : LazySeq<T>() {
+//
+//}
+
+/**
+ * Empty LazySeq
+ */
+class Nil<T> : LazySeq<T>() {
+
+  companion object {
+    val NIL: Nil<Any> = Nil<Any>()
+
+    @SuppressWarnings("unchecked")
+    @JvmStatic fun <T> instance(): Nil<T> = NIL as Nil<T>
+  }
+
+  override val head: T
+    get() = throw NoSuchElementException("head of empty sequence")
+
+  override val headOption: Option<T>
+    get() = Option.None
+
+  override val tail: LazySeq<T>
+    get() = throw NoSuchElementException("tail of empty sequence")
+
+  override val isTailDefined: Boolean
+    get() = false
+
+  override fun get(index: Int): T = throw IndexOutOfBoundsException(index.toString())
+
+  override fun <R> map(mapper: (T) -> R): LazySeq<R> = instance()
+  override fun filter(predicate: (T) -> Boolean): LazySeq<T> = instance()
+  override fun <R> flatMap(mapper: (T) -> Iterable<R>): LazySeq<R> = instance()
+  override fun takeUnsafe(maxSize: Long): LazySeq<T> = instance()
+  override fun dropUnsafe(startInclusive: Long): LazySeq<T> = instance()
+  override fun forEach(action: (T) -> Unit) {
+    /* Nothing to do */
+  }
+
+  override fun min(comparator: Comparator<in T>): T? = null
+  override fun max(comparator: Comparator<in T>): T? = null
+
+  override val size: Int get() = 0
+
+  override fun anyMatch(predicate: (T) -> Boolean): Boolean = false
+  override fun allMatch(predicate: (T) -> Boolean): Boolean = false
+  override fun nonMatch(predicate: (T) -> Boolean): Boolean = true
+
+  override fun takeWhile(predicate: (T) -> Boolean): LazySeq<T> = instance()
+  override fun dropWhile(predicate: (T) -> Boolean): LazySeq<T> = instance()
+
 
 }

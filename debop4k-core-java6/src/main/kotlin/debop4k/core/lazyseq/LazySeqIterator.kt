@@ -19,7 +19,7 @@ package debop4k.core.lazyseq
  * LazySeqIterator
  * @author sunghyouk.bae@gmail.com
  */
-class LazySeqIterator<E>(val underlying: LazySeq<E>) : Iterator<E> {
+class LazySeqIterator<E>(val underlying: LazySeq<E>) : MutableIterator<E> {
 
   override fun hasNext(): Boolean {
     TODO()
@@ -27,5 +27,13 @@ class LazySeqIterator<E>(val underlying: LazySeq<E>) : Iterator<E> {
 
   override fun next(): E {
     TODO()
+  }
+
+  override fun remove() {
+    throw UnsupportedOperationException("remove")
+  }
+
+  inline fun forEachRemaining(action: (E) -> Unit): Unit {
+    underlying.forEach(action)
   }
 }
