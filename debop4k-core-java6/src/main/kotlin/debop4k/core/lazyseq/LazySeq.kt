@@ -49,7 +49,7 @@ abstract class LazySeq<E> : AbstractList<E>() {
     return curr.head
   }
 
-  abstract fun <R : Any?> map(mapper: (E) -> R): LazySeq<out R>
+  abstract fun <R : Any?> map(mapper: (E) -> R): LazySeq<R>
 
   open fun sequence(): Sequence<E> = Sequence { this.iterator() }
 

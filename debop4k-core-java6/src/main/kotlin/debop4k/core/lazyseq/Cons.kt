@@ -32,11 +32,12 @@ class Cons<T>(override val head: T, val tailFunc: () -> LazySeq<T>) : LazySeq<T>
 
   private val lock = ReentrantLock()
 
+  @Suppress("UNCHECKED_CAST")
   override val tail: LazySeq<T> by lazy {
     if (!isTailDefined) {
       synchronized(lock) {
         if (!isTailDefined) {
-          tailOrNull = tailFunc.invoke()
+          tailOrNull = tailFunc() as? LazySeq<T>
         }
       }
     }
@@ -83,7 +84,7 @@ class FixedCons<T>(override val head: T, override val tail: LazySeq<T>) : LazySe
   override val isTailDefined: Boolean get() = true
 
   override fun <R> map(mapper: (T) -> R): LazySeq<R> {
-    return cons(mapper(head), tail.map(mapper))
+    return cons(mapper(head), { tail.map(mapper) })
   }
 
   override fun filter(predicate: (T) -> Boolean): LazySeq<T> {
