@@ -256,119 +256,141 @@ abstract class LazySeq<E> : AbstractList<E>() {
   override fun hashCode(): Int {
     return hashOf(head, tail)
   }
+
+  companion object {
+
+    @JvmStatic
+    fun <E> concat(elements: Iterable<E>, tailFunc: () -> LazySeq<E>): LazySeq<E>
+        = concat(elements.iterator(), tailFunc)
+
+    @JvmStatic
+    fun <E> concat(elements: Iterable<E>, tail: LazySeq<E>): LazySeq<E>
+        = concat(elements.iterator(), tail)
+
+    @JvmStatic
+    fun <E> concat(iterator: Iterator<E>, tailFunc: () -> LazySeq<E>): LazySeq<E> {
+      return if (iterator.hasNext()) {
+        concatNonEmptyIterator(iterator, tailFunc)
+      } else {
+        tailFunc()
+      }
+    }
+
+    @JvmStatic
+    fun <E> concat(iterator: Iterator<E>, tail: LazySeq<E>): LazySeq<E> {
+      return if (iterator.hasNext()) {
+        concatNonEmptyIterator(iterator, tail)
+      } else {
+        tail
+      }
+    }
+
+    private fun <E> concatNonEmptyIterator(iterator: Iterator<E>, tail: LazySeq<E>): LazySeq<E> {
+      val next = iterator.next()
+      return if (iterator.hasNext()) {
+        cons(next, concatNonEmptyIterator(iterator, tail))
+      } else {
+        cons(next, tail)
+      }
+    }
+
+    private fun <E> concatNonEmptyIterator(iterator: Iterator<E>, tailFunc: () -> LazySeq<E>): LazySeq<E> {
+      val next = iterator.next()
+      return if (iterator.hasNext()) {
+        cons(next, concatNonEmptyIterator(iterator, tailFunc))
+      } else {
+        cons(next, tailFunc)
+      }
+    }
+
+    @JvmStatic
+    fun <E> cons(head: E, tailFunc: () -> LazySeq<E>): LazySeq<E> = Cons(head, tailFunc)
+
+    @JvmStatic
+    fun <E> cons(head: E, tail: LazySeq<E>): LazySeq<E> = FixedCons(head, tail)
+
+    @JvmStatic
+    fun <E> iterate(initial: E, func: (E) -> E): LazySeq<E> {
+      return Cons(initial, { iterate(func.invoke(initial), func) })
+    }
+
+    @JvmStatic
+    fun <E> tabulate(start: Int, generator: (Int) -> E): LazySeq<E> {
+      return cons(generator(start)) { tabulate(start + 1, generator) }
+    }
+
+    @JvmStatic
+    fun <E> continually(generator: () -> E): LazySeq<E> = cons(generator.invoke()) { continually(generator) }
+
+    @JvmStatic
+    fun <E> continually(cycle: Iterable<E>): LazySeq<E> {
+      return if (!cycle.iterator().hasNext()) {
+        emptyLazySeq()
+      } else {
+        continuallyUnsafe(cycle)
+      }
+    }
+
+    @JvmStatic
+    fun <E> continuallyUnsafe(cycle: Iterable<E>): LazySeq<E> = concat(cycle) { continually(cycle) }
+
+    @JvmStatic
+    fun <E> continually(value: E): LazySeq<E> = cons(value) { continually(value) }
+
+    @JvmStatic
+    @JvmOverloads
+    fun numbers(start: Int, step: Int = 1): LazySeq<Int>
+        = cons(start) { numbers(start + step, step) }
+
+    @JvmStatic
+    @JvmOverloads
+    fun numbers(start: Long, step: Long = 1L): LazySeq<Long>
+        = cons(start) { numbers(start + step, step) }
+
+    @JvmStatic
+    @JvmOverloads
+    fun numbers(start: Float, step: Float = 1.0F): LazySeq<Float>
+        = cons(start) { numbers(start + step, step) }
+
+    @JvmStatic
+    @JvmOverloads
+    fun numbers(start: Double, step: Double = 1.0): LazySeq<Double>
+        = cons(start) { numbers(start + step, step) }
+
+
+    private fun <E> maxByComparator(first: E, second: E, comparator: Comparator<in E>): E {
+      return if (comparator.compare(first, second) >= 0) first else second
+    }
+  }
 }
 
 fun <E> emptyLazySeq(): LazySeq<E> = Nil.instance()
 
 fun <E> lazySeqOf(element: E): LazySeq<E>
-    = cons(element, emptyLazySeq())
+    = LazySeq.cons(element, emptyLazySeq())
 
 fun <E> lazySeqOf(element: E, tailFunc: () -> LazySeq<E>): LazySeq<E>
-    = cons(element, tailFunc)
+    = LazySeq.cons(element, tailFunc)
 
 fun <E> lazySeqOf(element1: E, element2: E): LazySeq<E>
-    = cons(element1, lazySeqOf(element2))
+    = LazySeq.cons(element1, lazySeqOf(element2))
 
 fun <E> lazySeqOf(element1: E, element2: E, tailFunc: () -> LazySeq<E>): LazySeq<E>
-    = cons(element1, lazySeqOf(element2, tailFunc))
+    = LazySeq.cons(element1, lazySeqOf(element2, tailFunc))
 
 fun <E> lazySeqOf(element1: E, element2: E, element3: E): LazySeq<E>
-    = cons(element1, lazySeqOf(element2, element3))
+    = LazySeq.cons(element1, lazySeqOf(element2, element3))
 
 fun <E> lazySeqOf(element1: E, element2: E, element3: E, tailFunc: () -> LazySeq<E>): LazySeq<E>
-    = cons(element1, lazySeqOf(element2, element3, tailFunc))
+    = LazySeq.cons(element1, lazySeqOf(element2, element3, tailFunc))
 
 fun <E> lazySeqOf(vararg elements: E): LazySeq<E> = lazySeqOf(elements.iterator())
 fun <E> lazySeqOf(elements: Iterable<E>): LazySeq<E> = lazySeqOf(elements.iterator())
 fun <E> lazySeqOf(iterator: Iterator<E>): LazySeq<E> {
   return if (iterator.hasNext()) {
-    cons(iterator.next(), { lazySeqOf(iterator) })
+    LazySeq.cons(iterator.next(), { lazySeqOf(iterator) })
   } else {
     emptyLazySeq()
   }
 }
 
-fun <E> concat(elements: Iterable<E>, tailFunc: () -> LazySeq<E>): LazySeq<E>
-    = concat(elements.iterator(), tailFunc)
-
-fun <E> concat(elements: Iterable<E>, tail: LazySeq<E>): LazySeq<E>
-    = concat(elements.iterator(), tail)
-
-fun <E> concat(iterator: Iterator<E>, tailFunc: () -> LazySeq<E>): LazySeq<E> {
-  return if (iterator.hasNext()) {
-    concatNonEmptyIterator(iterator, tailFunc)
-  } else {
-    tailFunc()
-  }
-}
-
-fun <E> concat(iterator: Iterator<E>, tail: LazySeq<E>): LazySeq<E> {
-  return if (iterator.hasNext()) {
-    concatNonEmptyIterator(iterator, tail)
-  } else {
-    tail
-  }
-}
-
-private fun <E> concatNonEmptyIterator(iterator: Iterator<E>, tail: LazySeq<E>): LazySeq<E> {
-  val next = iterator.next()
-  return if (iterator.hasNext()) {
-    cons(next, concatNonEmptyIterator(iterator, tail))
-  } else {
-    cons(next, tail)
-  }
-}
-
-private fun <E> concatNonEmptyIterator(iterator: Iterator<E>, tailFunc: () -> LazySeq<E>): LazySeq<E> {
-  val next = iterator.next()
-  return if (iterator.hasNext()) {
-    cons(next, concatNonEmptyIterator(iterator, tailFunc))
-  } else {
-    cons(next, tailFunc)
-  }
-}
-
-fun <E> cons(head: E, tailFunc: () -> LazySeq<E>): LazySeq<E> = Cons(head, tailFunc)
-fun <E> cons(head: E, tail: LazySeq<E>): LazySeq<E> = FixedCons(head, tail)
-
-fun <E> iterate(initial: E, func: (E) -> E): LazySeq<E> {
-  return Cons(initial, { iterate(func.invoke(initial), func) })
-}
-
-fun <E> tabulate(start: Int, generator: (Int) -> E): LazySeq<E> {
-  return cons(generator(start)) { tabulate(start + 1, generator) }
-}
-
-fun <E> continually(generator: () -> E): LazySeq<E> = cons(generator.invoke()) { continually(generator) }
-fun <E> continually(cycle: Iterable<E>): LazySeq<E> {
-  return if (!cycle.iterator().hasNext()) {
-    emptyLazySeq()
-  } else {
-    continuallyUnsafe(cycle)
-  }
-}
-
-fun <E> continuallyUnsafe(cycle: Iterable<E>): LazySeq<E> = concat(cycle) { continually(cycle) }
-fun <E> continually(value: E): LazySeq<E> = cons(value) { continually(value) }
-
-@JvmOverloads
-fun numbers(start: Int, step: Int = 1): LazySeq<Int>
-    = cons(start) { numbers(start + step, step) }
-
-@JvmOverloads
-fun numbers(start: Long, step: Long = 1L): LazySeq<Long>
-    = cons(start) { numbers(start + step, step) }
-
-
-@JvmOverloads
-fun numbers(start: Float, step: Float = 1.0F): LazySeq<Float>
-    = cons(start) { numbers(start + step, step) }
-
-@JvmOverloads
-fun numbers(start: Double, step: Double = 1.0): LazySeq<Double>
-    = cons(start) { numbers(start + step, step) }
-
-
-private fun <E> maxByComparator(first: E, second: E, comparator: Comparator<in E>): E {
-  return if (comparator.compare(first, second) >= 0) first else second
-}

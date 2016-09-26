@@ -32,12 +32,11 @@ class Cons<T>(override val head: T, val tailFunc: () -> LazySeq<T>) : LazySeq<T>
 
   private val lock = ReentrantLock()
 
-  @Suppress("UNCHECKED_CAST")
   override val tail: LazySeq<T> by lazy {
     if (!isTailDefined) {
       synchronized(lock) {
         if (!isTailDefined) {
-          tailOrNull = tailFunc() as? LazySeq<T>
+          tailOrNull = tailFunc()
         }
       }
     }
