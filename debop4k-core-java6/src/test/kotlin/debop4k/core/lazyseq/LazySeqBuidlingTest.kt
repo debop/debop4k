@@ -20,10 +20,6 @@ import org.junit.Test
 import java.util.Arrays.*
 import java.util.Collections.*
 
-/**
- * LazySeqBuidlingTest
- * @author sunghyouk.bae@gmail.com
- */
 class LazySeqBuidlingTest : AbstractLazySeqTest() {
 
   @Test

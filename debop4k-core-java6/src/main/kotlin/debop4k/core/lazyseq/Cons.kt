@@ -63,7 +63,7 @@ class Cons<T>(override val head: T, val tailFunc: () -> LazySeq<T>) : LazySeq<T>
     return concat(result, { tail.flatMap(mapper) })
   }
 
-  override fun takeUnsafe(maxSize: Long): LazySeq<T> {
+  override fun takeUnsafe(maxSize: Int): LazySeq<T> {
     return if (maxSize > 1) {
       cons(head, { tail.takeUnsafe(maxSize - 1) })
     } else {
@@ -100,7 +100,7 @@ class FixedCons<T>(override val head: T, override val tail: LazySeq<T>) : LazySe
     return concat(result, tail.flatMap(mapper))
   }
 
-  override fun takeUnsafe(maxSize: Long): LazySeq<T> {
+  override fun takeUnsafe(maxSize: Int): LazySeq<T> {
     return if (maxSize > 1) {
       cons(head, tail.takeUnsafe(maxSize - 1))
     } else {
@@ -140,8 +140,8 @@ class Nil<T> : LazySeq<T>() {
   override fun <R> map(mapper: (T) -> R): LazySeq<R> = instance()
   override fun filter(predicate: (T) -> Boolean): LazySeq<T> = instance()
   override fun <R> flatMap(mapper: (T) -> Iterable<R>): LazySeq<R> = instance()
-  override fun takeUnsafe(maxSize: Long): LazySeq<T> = instance()
-  override fun dropUnsafe(startInclusive: Long): LazySeq<T> = instance()
+  override fun takeUnsafe(maxSize: Int): LazySeq<T> = instance()
+  override fun dropUnsafe(startInclusive: Int): LazySeq<T> = instance()
   override fun forEach(action: (T) -> Unit) {
     /* Nothing to do */
   }

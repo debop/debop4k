@@ -26,7 +26,7 @@ import java.util.function.*
  * LazySeq
  * @author sunghyouk.bae@gmail.com
  */
-abstract class LazySeq<E> : AbstractList<E>() {
+abstract class LazySeq<E> : AbstractList<E>(), Sequence<E> {
 
   abstract val head: E
 
@@ -56,7 +56,7 @@ abstract class LazySeq<E> : AbstractList<E>() {
   open fun parallelSequence(): Sequence<E> = Sequence { this.iterator() }
 
   override fun toString(): String {
-    return this.joinToString(", ", "[", "]")
+    return mkString(", ", "[", "]")
   }
 
   @JvmOverloads
@@ -86,29 +86,29 @@ abstract class LazySeq<E> : AbstractList<E>() {
 
   abstract fun <R> flatMap(mapper: (E) -> Iterable<R>): LazySeq<R>
 
-  fun limit(maxSize: Long): LazySeq<E> = take(maxSize)
+  fun limit(maxSize: Int): LazySeq<E> = take(maxSize)
 
   open fun toList(): List<E> = fastListOf<E>(this.force())
 
-  open fun take(maxSize: Long): LazySeq<E> {
+  open fun take(maxSize: Int): LazySeq<E> {
     require(maxSize >= 0)
-    return if (maxSize == 0L) emptyLazySeq() else takeUnsafe(maxSize)
+    return if (maxSize == 0) emptyLazySeq() else takeUnsafe(maxSize)
   }
 
-  abstract fun takeUnsafe(maxSize: Long): LazySeq<E>
+  abstract fun takeUnsafe(maxSize: Int): LazySeq<E>
 
-  open fun drop(startInclusive: Long): LazySeq<E> {
-    require(startInclusive >= 0L)
+  open fun drop(startInclusive: Int): LazySeq<E> {
+    require(startInclusive >= 0)
     return dropUnsafe(startInclusive)
   }
 
-  open fun dropUnsafe(startInclusive: Long): LazySeq<E> {
+  open fun dropUnsafe(startInclusive: Int): LazySeq<E> {
     return if (startInclusive > 0) tail.drop(startInclusive - 1) else this
   }
 
-  override fun subList(fromIndex: Int, toIndex: Int): LazySeq<E> = slice(fromIndex.toLong(), toIndex.toLong())
+  override fun subList(fromIndex: Int, toIndex: Int): LazySeq<E> = slice(fromIndex, toIndex)
 
-  open fun slice(startInclusive: Long, endExclusive: Long): LazySeq<E> {
+  open fun slice(startInclusive: Int, endExclusive: Int): LazySeq<E> {
     require(startInclusive >= 0 && startInclusive < endExclusive)
     return dropUnsafe(startInclusive).takeUnsafe(endExclusive - startInclusive)
   }
@@ -203,7 +203,7 @@ abstract class LazySeq<E> : AbstractList<E>() {
 
   open fun groupedUnsafe(size: Int): LazySeq<List<E>> {
     val window = take(size).toList()
-    return cons(window) { drop(size.toLong()).groupedUnsafe(size) }
+    return cons(window) { drop(size).groupedUnsafe(size) }
   }
 
   // TODO: 이건 Java 8에서 지원하는 것이라 LazySeqStream 에 정의해야 한다
@@ -246,7 +246,7 @@ abstract class LazySeq<E> : AbstractList<E>() {
   }
 
   override fun equals(other: Any?): Boolean {
-    if (this == other) return true
+    if (this === other) return true
     if (other is LazySeq<*>) {
       return !other.isEmpty() && hashCode() == other.hashCode()
     }
@@ -258,6 +258,9 @@ abstract class LazySeq<E> : AbstractList<E>() {
   }
 
   companion object {
+
+    @JvmStatic
+    fun <E> empty(): LazySeq<E> = Nil.instance()
 
     @JvmStatic
     fun <E> concat(elements: Iterable<E>, tailFunc: () -> LazySeq<E>): LazySeq<E>

@@ -18,7 +18,8 @@ package debop4k.core.lazyseq
 import debop4k.core.uninitialized
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.verifyZeroInteractions
 
 class LazySeqForEachTest : AbstractLazySeqTest() {
 
@@ -30,7 +31,50 @@ class LazySeqForEachTest : AbstractLazySeqTest() {
     val empty = emptyLazySeq<Int>()
 
     empty.forEach(consumerMock)
-    Mockito.verifyZeroInteractions(consumerMock)
+    verifyZeroInteractions(consumerMock)
   }
 
+  @Test
+  fun testCallConsumerForSingleEmenetInSeq() {
+    val single = lazySeqOf(1)
+
+    single.forEach(consumerMock)
+    verify(consumerMock).invoke(1)
+    verifyZeroInteractions(consumerMock)
+  }
+
+  @Test
+  fun testCallConsumerForMultipleElementsOfFixedSeq() {
+    val fixed = lazySeqOf(2, 3, 4)
+
+    fixed.forEach(consumerMock)
+
+    verify(consumerMock).invoke(2)
+    verify(consumerMock).invoke(3)
+    verify(consumerMock).invoke(4)
+    verifyZeroInteractions(consumerMock)
+  }
+
+  @Test
+  fun testCallConsumerForMultipleElementsOfSubstream() {
+    val fixed = lazySeqOf(2, 3, 4, 5, 6, 7).take(3)
+
+    fixed.forEach(consumerMock)
+
+    verify(consumerMock).invoke(2)
+    verify(consumerMock).invoke(3)
+    verify(consumerMock).invoke(4)
+    verifyZeroInteractions(consumerMock)
+  }
+
+  @Test
+  fun testCallConsumerForEachElementOfLazilyCreatedButNotInfiniteSeq() {
+    val fixed = LazySeq.cons(5) { LazySeq.cons(6) { lazySeqOf(7) } }
+
+    fixed.forEach(consumerMock)
+    verify(consumerMock).invoke(5)
+    verify(consumerMock).invoke(6)
+    verify(consumerMock).invoke(7)
+    verifyZeroInteractions(consumerMock)
+  }
 }
