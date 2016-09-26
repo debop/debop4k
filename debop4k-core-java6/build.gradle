@@ -59,4 +59,7 @@ dependencies {
 
     optional "net.jpountz.lz4:lz4"
 
+    compile "org.jodd:jodd-core:3.7.1"
+    compile "org.jodd:jodd-db:3.7.1"
+
 }

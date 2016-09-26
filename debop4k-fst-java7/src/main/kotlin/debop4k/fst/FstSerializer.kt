@@ -22,7 +22,7 @@ import java.io.ByteArrayOutputStream
 
 
 /**
- * FST Library 를 이용한 Java 6용 Serializer
+ * FST Library 를 이용한 Serializer for Java 7 or higher
  * @author debop sunghyouk.bae@gmail.com
  */
 class FstSerializer(val conf: FSTConfiguration = FSTConfiguration.createDefaultConfiguration()) : Serializer {
@@ -41,11 +41,11 @@ class FstSerializer(val conf: FSTConfiguration = FSTConfiguration.createDefaultC
   }
 
   @Suppress("UNCHECKED_CAST")
-  override fun <T> deserialize(data: ByteArray): T? {
-    if (data == null || data.isEmpty())
-      return null as T
+  override fun <T> deserialize(bytes: ByteArray): T? {
+    if (bytes.isEmpty())
+      return null
 
-    ByteArrayInputStream(data).use { bis ->
+    ByteArrayInputStream(bytes).use { bis ->
       val ois = conf.getObjectInput(bis)
       return ois.readObject() as T
     }
