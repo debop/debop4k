@@ -212,6 +212,7 @@ abstract class LazySeq<E> : AbstractList<E>(), Sequence<E> {
   }
 
   open fun distinct(): LazySeq<E> = filterOutSeen(hashSetOf<E>())
+
   open fun filterOutSeen(exclude: MutableSet<E>): LazySeq<E> {
     val moreDistinct = filter { !exclude.contains(it) }
     if (moreDistinct.isEmpty())

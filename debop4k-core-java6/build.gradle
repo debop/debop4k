@@ -63,4 +63,5 @@ dependencies {
     compile "org.jodd:jodd-db:3.7.1"
 
     testCompile "org.mockito:mockito-all:1.9.5"
+    testCompile "org.quartz-scheduler:quartz:2.1.7"
 }
