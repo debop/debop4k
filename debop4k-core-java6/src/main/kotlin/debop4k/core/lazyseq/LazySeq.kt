@@ -37,7 +37,9 @@ abstract class LazySeq<E> : AbstractList<E>(), Sequence<E> {
   protected abstract val isTailDefined: Boolean
 
   override operator fun get(index: Int): E {
-    require(index >= 0)
+    if (index < 0) {
+      throw IndexOutOfBoundsException(index.toString())
+    }
 
     var curr = this
     (index downTo 1).forEach {
@@ -56,7 +58,7 @@ abstract class LazySeq<E> : AbstractList<E>(), Sequence<E> {
   open fun parallelSequence(): Sequence<E> = Sequence { this.iterator() }
 
   override fun toString(): String {
-    return mkString(", ", "[", "]")
+    return mkString(", ", "[", "]", true)
   }
 
   @JvmOverloads
@@ -249,7 +251,7 @@ abstract class LazySeq<E> : AbstractList<E>(), Sequence<E> {
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
     if (other is LazySeq<*>) {
-      return !other.isEmpty() && hashCode() == other.hashCode()
+      return !other.isEmpty() && head == other.head && tail == other.tail
     }
     return false
   }
