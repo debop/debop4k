@@ -28,9 +28,6 @@ abstract class AbstractLazySeqTest {
     MockitoAnnotations.initMocks(this)
   }
 
-  protected val emptySeq: LazySeq<Any> get() = emptyLazySeq<Any>()
-  protected val emptyIntSeq: LazySeq<Int> get() = emptyLazySeq<Int>()
-
   protected val expectedList = listOf(3, -2, 8, 5, -4, 11, 2, 1)
 
   protected fun lazy(): LazySeq<Int> {

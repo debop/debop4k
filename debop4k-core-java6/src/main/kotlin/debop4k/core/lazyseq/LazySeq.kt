@@ -111,7 +111,7 @@ abstract class LazySeq<E> : AbstractList<E>(), Sequence<E> {
   override fun subList(fromIndex: Int, toIndex: Int): LazySeq<E> = slice(fromIndex.toLong(), toIndex.toLong())
 
   open fun slice(startInclusive: Long, endExclusive: Long): LazySeq<E> {
-    require(startInclusive >= 0 && startInclusive < endExclusive)
+    require(startInclusive >= 0 && startInclusive <= endExclusive)
     return dropUnsafe(startInclusive).takeUnsafe(endExclusive - startInclusive)
   }
 
@@ -123,6 +123,21 @@ abstract class LazySeq<E> : AbstractList<E>(), Sequence<E> {
 //      traverse(seq.tail, action)
 //    }
 //    traverse(this, action)
+  }
+
+  fun <R : E> reduce(operation: (R, E) -> R): R? {
+    if (isEmpty() || tail.isEmpty()) {
+      return null
+    }
+
+    var acc = head as R
+    val iter = tail.iterator()
+
+    while (iter.hasNext()) {
+      acc = operation(acc, iter.next())
+    }
+
+    return acc
   }
 
   fun <C : Comparable<C>> maxBy(propertyFunc: (E) -> C): E? = max(propertyFunToComparator(propertyFunc))
@@ -235,6 +250,10 @@ abstract class LazySeq<E> : AbstractList<E>(), Sequence<E> {
   @Suppress("UNCHECKED_CAST")
   open fun sorted(): LazySeq<E> {
     return sorted(Comparator { o1, o2 -> (o1 as Comparable<E>).compareTo(o2) })
+  }
+
+  fun sorted(comparator: (E1: E, E2: E) -> Int): LazySeq<E> {
+    return sorted(Comparator(comparator))
   }
 
   open fun sorted(comparator: Comparator<in E>): LazySeq<E> {

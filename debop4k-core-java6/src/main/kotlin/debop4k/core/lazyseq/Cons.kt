@@ -154,7 +154,7 @@ class Nil<T> : LazySeq<T>() {
 
   override fun anyMatch(predicate: (T) -> Boolean): Boolean = false
   override fun allMatch(predicate: (T) -> Boolean): Boolean = true
-//  override fun noneMatch(predicate: (T) -> Boolean): Boolean = true
+  override fun noneMatch(predicate: (T) -> Boolean): Boolean = true
 
   override fun takeWhile(predicate: (T) -> Boolean): LazySeq<T> = instance()
   override fun dropWhile(predicate: (T) -> Boolean): LazySeq<T> = instance()

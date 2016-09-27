@@ -101,7 +101,6 @@ class LazySeqMinMaxTest : AbstractLazySeqTest() {
     val minBy = lazy.minBy(Math::abs)
     val maxBy = lazy.maxBy(Math::abs)
 
-    // BUG : 여기서 기본값이 11 이 아니라 -11 이라도 제대로 되야 하는데, 잘 안된다..
     assertThat(minBy).isEqualTo(1)
     assertThat(maxBy).isEqualTo(11)
   }
