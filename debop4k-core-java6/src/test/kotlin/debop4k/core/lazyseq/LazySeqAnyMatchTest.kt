@@ -23,13 +23,13 @@ import org.junit.Test
 import org.mockito.BDDMockito
 import org.mockito.Mockito
 
-class LazySeqAllMatchTest : AbstractLazySeqTest() {
+class LazySeqAnyMatchTest : AbstractLazySeqTest() {
 
   val supplierMock = mock<() -> LazySeq<String>>()
 
   @Test
   fun testEmptySeq() {
-    assertThat(emptyLazySeq<String>().allMatch { x -> false }).isTrue()
+    assertThat(emptyLazySeq<String>().anyMatch { x -> false }).isFalse()
   }
 
   @Test
@@ -48,49 +48,50 @@ class LazySeqAllMatchTest : AbstractLazySeqTest() {
   fun testFiniteSeqWithPredicate() {
     val fixed = lazySeqOf(5, 10, 15)
 
-    assertThat(fixed.allMatch { it % 5 == 0 }).isTrue()
-    assertThat(fixed.allMatch { it <= 10 }).isFalse()
+    assertThat(fixed.anyMatch { it % 5 == 0 }).isTrue()
+    assertThat(fixed.anyMatch { it <= 10 }).isTrue()
+    assertThat(fixed.anyMatch { it > 100 }).isFalse()
   }
 
   @Test
   fun testFiniteSeqWithStringMatches() {
     val fixed = lazySeqOf("a", "bc", "def")
 
-    assertThat(fixed.allMatch(String::isEmpty)).isFalse()
-    assertThat(fixed.allMatch(String::isBlank)).isFalse()
-    assertThat(fixed.allMatch(String::isNotEmpty)).isTrue()
+    assertThat(fixed.anyMatch(String::isEmpty)).isFalse()
+    assertThat(fixed.anyMatch(String::isBlank)).isFalse()
+    assertThat(fixed.anyMatch(String::isNotEmpty)).isTrue()
   }
 
   @Test
   fun testLazyFiniteSeq() {
     val lazy = LazySeq.cons(3) { LazySeq.cons(2) { lazySeqOf(8) } }
 
-    assertThat(lazy.allMatch { it > 0 }).isTrue()
-    assertThat(lazy.allMatch { it <= 0 }).isFalse()
-    assertThat(lazy.allMatch { it % 2 == 0 }).isFalse()
+    assertThat(lazy.anyMatch { it > 0 }).isTrue()
+    assertThat(lazy.anyMatch { it <= 0 }).isFalse()
+    assertThat(lazy.anyMatch { it % 2 == 0 }).isTrue()
 
     val lazy2 = LazySeq.cons(3) { LazySeq.cons(-5) { lazySeqOf(9) } }
 
-    assertThat(lazy2.allMatch { it > 0 }).isFalse()
-    assertThat(lazy2.allMatch { it <= 0 }).isFalse()
-    assertThat(lazy2.allMatch { it % 2 == 0 }).isFalse()
-    assertThat(lazy2.allMatch { it % 2 != 0 }).isTrue()
+    assertThat(lazy2.anyMatch { it > 0 }).isTrue()
+    assertThat(lazy2.anyMatch { it <= 0 }).isTrue()
+    assertThat(lazy2.anyMatch { it % 2 == 0 }).isFalse()
+    assertThat(lazy2.anyMatch { it % 2 != 0 }).isTrue()
   }
 
   @Test
   fun testWithPrimes() {
     val primes = primes()
 
-    assertThat(primes.allMatch { it % 2 != 0 }).isFalse()
-    assertThat(primes.allMatch { it < 1000 }).isFalse()
+    assertThat(primes.anyMatch { it % 2 != 0 }).isTrue()
+    assertThat(primes.anyMatch { it < 1000 }).isTrue()
   }
 
   @Test
   fun testNotEvaluateTailIfHeadNotMatchPredicate() {
     val lazy = LazySeq.cons("a", supplierMock)
 
-    assertThat(lazy.allMatch(String::isEmpty))
-    // supplierMock 은 호출되지 않는다.
+    assertThat(lazy.anyMatch { !it.isEmpty() })
+
     Mockito.verifyZeroInteractions(supplierMock)
   }
 
@@ -98,10 +99,9 @@ class LazySeqAllMatchTest : AbstractLazySeqTest() {
   @Test
   fun testEvaluateTailIfHeadMatchPredicate() {
     val lazy = LazySeq.cons("", supplierMock)
-
     BDDMockito.given(supplierMock.invoke()).willReturn(lazySeqOf("b"))
 
-    assertThat(lazy.allMatch(String::isEmpty))
+    assertThat(lazy.anyMatch { !it.isEmpty() })
     verify(supplierMock).invoke()
   }
 }
