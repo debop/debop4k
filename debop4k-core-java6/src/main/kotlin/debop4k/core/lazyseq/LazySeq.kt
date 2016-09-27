@@ -68,7 +68,7 @@ abstract class LazySeq<E> : AbstractList<E>(), Sequence<E> {
                     lazy: Boolean = false): String {
     val sb = StringBuilder(prefix)
 
-    var curr = this
+    var curr: LazySeq<E> = this
     while (!curr.isEmpty()) {
       sb.append(curr.head)
       if (!lazy || curr.isTailDefined) {
@@ -116,13 +116,13 @@ abstract class LazySeq<E> : AbstractList<E>(), Sequence<E> {
   }
 
   open fun forEach(action: (E) -> Unit): Unit {
-    action(head)
-    tail.forEach(action)
-//    tailrec fun traverse(seq: LazySeq<E>, action: (E) -> Unit): Unit {
-//      action(seq.head)
-//      traverse(seq.tail, action)
-//    }
-//    traverse(this, action)
+    //    action(head)
+//    tail.forEach(action)
+    tailrec fun traverse(seq: LazySeq<E>, action: (E) -> Unit): Unit {
+      action(seq.head)
+      traverse(seq.tail, action)
+    }
+    traverse(this, action)
   }
 
   fun <R : E> reduce(operation: (R, E) -> R): R? {

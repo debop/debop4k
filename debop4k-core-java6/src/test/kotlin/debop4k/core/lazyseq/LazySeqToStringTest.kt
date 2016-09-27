@@ -48,11 +48,11 @@ class LazySeqToStringTest : AbstractLazySeqTest() {
   }
 
   @Test fun testTerminatedSeqToString() {
-    val notFull: LazySeq<Int> = lazySeqOf(1, 2) { emptyLazySeq() }
+    val notFull: LazySeq<Int> = lazySeqOf<Int>(1, 2, { LazySeq.empty<Int>() })
 
     assertThat(notFull.toString()).isEqualTo("[1, 2, ?]")
 
-    notFull.take(100)
-    assertThat(notFull.toString()).isEqualTo("[1, 2, ?]")
+    notFull.forEach { it }
+    assertThat(notFull.toString()).isEqualTo("[1, 2]")
   }
 }

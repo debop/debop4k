@@ -28,7 +28,7 @@ import java.util.function.*
 class Cons<T>(override val head: T, val tailFunc: () -> LazySeq<T>) : LazySeq<T>() {
 
   @Volatile
-  private var tailOrNull: LazySeq<T> = Nil.instance()
+  private var tailOrNull: LazySeq<T>? = null
 
   private val lock = ReentrantLock()
 
@@ -40,10 +40,10 @@ class Cons<T>(override val head: T, val tailFunc: () -> LazySeq<T>) : LazySeq<T>
         }
       }
     }
-    tailOrNull
+    tailOrNull ?: Nil.instance()
   }
 
-  override val isTailDefined: Boolean get() = tailOrNull != Nil.instance<T>()
+  override val isTailDefined: Boolean get() = tailOrNull != null
 
   override fun <R> map(mapper: (T) -> R): LazySeq<R> {
     return cons(mapper(head), { tail.map(mapper) })
