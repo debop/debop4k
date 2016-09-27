@@ -20,7 +20,6 @@ import debop4k.core.functional.Option
 import debop4k.core.functional.Option.Some
 import debop4k.core.utils.hashOf
 import java.util.*
-import java.util.function.*
 
 /**
  * LazySeq
@@ -129,15 +128,32 @@ abstract class LazySeq<E> : AbstractList<E>(), Sequence<E> {
     if (isEmpty() || tail.isEmpty()) {
       return null
     }
-
-    var acc = head as R
-    val iter = tail.iterator()
-
-    while (iter.hasNext()) {
-      acc = operation(acc, iter.next())
+    var result = head as R
+    var curr = tail
+    while (!curr.isEmpty()) {
+      result = operation(result, curr.head)
+      curr = curr.tail
     }
+    return result
 
-    return acc
+//    var acc = head as R
+//    val iter = tail.iterator()
+//
+//    while (iter.hasNext()) {
+//      acc = operation(acc, iter.next())
+//    }
+//
+//    return acc
+  }
+
+  fun <R> reduce(identity: R, operation: (R, E) -> R): R {
+    var result = identity
+    var curr = this
+    while (!curr.isEmpty()) {
+      result = operation(result, curr.head)
+      curr = curr.tail
+    }
+    return result
   }
 
   fun <C : Comparable<C>> maxBy(propertyFunc: (E) -> C): E? = max(propertyFunToComparator(propertyFunc))
@@ -185,6 +201,15 @@ abstract class LazySeq<E> : AbstractList<E>(), Sequence<E> {
   open fun allMatch(predicate: (E) -> Boolean): Boolean = predicate(head) && tail.allMatch(predicate)
   open fun noneMatch(predicate: (E) -> Boolean): Boolean = !predicate(head) && tail.noneMatch(predicate)
 
+  open fun <S, R> zip(second: LazySeq<S>, zipper: (E, S) -> R): LazySeq<R> {
+    if (second.isEmpty()) {
+      return empty<R>()
+    } else {
+      val headsZipped = zipper.invoke(head, second.head)
+      return cons(headsZipped) { tail.zip(second.tail, zipper) }
+    }
+  }
+
   open fun takeWhile(predicate: (E) -> Boolean): LazySeq<E> {
     return if (predicate(head)) {
       cons(head) { tail.takeWhile(predicate) }
@@ -230,9 +255,8 @@ abstract class LazySeq<E> : AbstractList<E>(), Sequence<E> {
     return cons(window) { drop(size).groupedUnsafe(size) }
   }
 
-  // TODO: 이건 Java 8에서 지원하는 것이라 LazySeqStream 에 정의해야 한다
-  open fun scan(initial: E, binFunc: BinaryOperator<E>): LazySeq<E> {
-    return cons(initial) { tail.scan(binFunc.apply(initial, head), binFunc) }
+  open fun scan(initial: E, binFunc: (E, E) -> E): LazySeq<E> {
+    return cons(initial) { tail.scan(binFunc(initial, head), binFunc) }
   }
 
   open fun distinct(): LazySeq<E> = filterOutSeen(hashSetOf<E>())

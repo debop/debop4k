@@ -19,7 +19,6 @@ import debop4k.core.collections.eclipseCollections.fastListOf
 import debop4k.core.functional.Option
 import java.util.*
 import java.util.concurrent.locks.*
-import java.util.function.*
 
 /**
  * Cons
@@ -156,13 +155,16 @@ class Nil<T> : LazySeq<T>() {
   override fun allMatch(predicate: (T) -> Boolean): Boolean = true
   override fun noneMatch(predicate: (T) -> Boolean): Boolean = true
 
+  override fun <S, R> zip(second: LazySeq<S>, zipper: (T, S) -> R): LazySeq<R> = instance()
+
   override fun takeWhile(predicate: (T) -> Boolean): LazySeq<T> = instance()
   override fun dropWhile(predicate: (T) -> Boolean): LazySeq<T> = instance()
 
   override fun slidingUnsafe(size: Long): LazySeq<List<T>> = instance()
   override fun groupedUnsafe(size: Long): LazySeq<List<T>> = instance()
 
-  override fun scan(initial: T, binFunc: BinaryOperator<T>): LazySeq<T> = lazySeqOf(initial)
+  override fun scan(initial: T, binFunc: (T, T) -> T): LazySeq<T> = lazySeqOf(initial)
+
   override fun distinct(): LazySeq<T> = instance()
   override fun startsWith(iterator: Iterator<T>): Boolean = !iterator.hasNext()
   override fun force(): LazySeq<T> = this

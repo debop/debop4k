@@ -15,11 +15,36 @@
 
 package debop4k.core.lazyseq
 
-/**
- * Java 8 에서 제공
- * @author sunghyouk.bae@gmail.com
- */
+import debop4k.core.lazyseq.samples.primes
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.Test
+
 class LazySeqScanTest : AbstractLazySeqTest() {
 
+  @Test fun testInitialElementWithEmptySeq() {
+    val scanned: LazySeq<Int> = emptyIntSeq.scan(0) { acc, c -> acc + c }
+    assertThat(scanned).isEqualTo(lazySeqOf(0))
+  }
 
+  @Test fun testScannedFixedSeq() {
+    val fixed = lazySeqOf(1, 2, 3, 4)
+
+    val scanned = fixed.scan(0) { acc, c -> acc + c }
+    assertThat(scanned).isEqualTo(lazySeqOf(0, 1, 3, 6, 10))
+  }
+
+  @Test fun testScannedFixedSeqOfStrings() {
+    val fixed = LazySeq.continually("*").take(5)
+
+    val scanned = fixed.scan("") { acc, c -> acc + c }
+    assertThat(scanned).isEqualTo(lazySeqOf("", "*", "**", "***", "****", "*****"))
+  }
+
+  @Test fun testScanInfiniteSeq() {
+    val primes = primes()
+
+    val scanned = primes.scan(1) { acc, c -> acc * c }
+
+    assertThat(scanned.take(4)).isEqualTo(lazySeqOf(1, 1 * 2, 1 * 2 * 3, 1 * 2 * 3 * 5))
+  }
 }
