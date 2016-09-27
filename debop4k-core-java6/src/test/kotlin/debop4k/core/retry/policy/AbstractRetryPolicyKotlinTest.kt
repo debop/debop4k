@@ -13,10 +13,24 @@
  * limitations under the License.
  */
 
-package debop4k.core.lazyseq.samples
+package debop4k.core.retry.policy
+
+import debop4k.core.retry.AbstractRetryKotlinTest
+import debop4k.core.retry.AsyncRetryContext
+import debop4k.core.retry.RetryPolicy
 
 /**
- * Record
- * @author sunghyouk.bae@gmail.com
+ * AbstractRetryPolicyKotlinTest
+ * @author debop sunghyouk.bae@gmail.com
  */
-data class Record(val id: Long)
+abstract class AbstractRetryPolicyKotlinTest : AbstractRetryKotlinTest() {
+
+  private val ANY_RETRY = 7
+
+  protected fun shouldRetryOn(policy: RetryPolicy, lastThrowable: Throwable): Boolean {
+    return policy.shouldContinue(AsyncRetryContext(policy, ANY_RETRY, lastThrowable))
+  }
+
+}
+
+class OptimisticLockException : RuntimeException()

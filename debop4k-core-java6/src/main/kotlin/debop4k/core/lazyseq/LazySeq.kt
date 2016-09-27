@@ -86,29 +86,29 @@ abstract class LazySeq<E> : AbstractList<E>(), Sequence<E> {
 
   abstract fun <R> flatMap(mapper: (E) -> Iterable<R>): LazySeq<R>
 
-  fun limit(maxSize: Int): LazySeq<E> = take(maxSize)
+  fun limit(maxSize: Long): LazySeq<E> = take(maxSize)
 
   open fun toList(): List<E> = fastListOf<E>(this.force())
 
-  open fun take(maxSize: Int): LazySeq<E> {
-    require(maxSize >= 0)
-    return if (maxSize == 0) emptyLazySeq() else takeUnsafe(maxSize)
+  open fun take(maxSize: Long): LazySeq<E> {
+    require(maxSize >= 0L)
+    return if (maxSize == 0L) emptyLazySeq() else takeUnsafe(maxSize)
   }
 
-  abstract fun takeUnsafe(maxSize: Int): LazySeq<E>
+  abstract fun takeUnsafe(maxSize: Long): LazySeq<E>
 
-  open fun drop(startInclusive: Int): LazySeq<E> {
+  open fun drop(startInclusive: Long): LazySeq<E> {
     require(startInclusive >= 0)
     return dropUnsafe(startInclusive)
   }
 
-  open fun dropUnsafe(startInclusive: Int): LazySeq<E> {
+  open fun dropUnsafe(startInclusive: Long): LazySeq<E> {
     return if (startInclusive > 0) tail.drop(startInclusive - 1) else this
   }
 
-  override fun subList(fromIndex: Int, toIndex: Int): LazySeq<E> = slice(fromIndex, toIndex)
+  override fun subList(fromIndex: Int, toIndex: Int): LazySeq<E> = slice(fromIndex.toLong(), toIndex.toLong())
 
-  open fun slice(startInclusive: Int, endExclusive: Int): LazySeq<E> {
+  open fun slice(startInclusive: Long, endExclusive: Long): LazySeq<E> {
     require(startInclusive >= 0 && startInclusive < endExclusive)
     return dropUnsafe(startInclusive).takeUnsafe(endExclusive - startInclusive)
   }
@@ -177,17 +177,17 @@ abstract class LazySeq<E> : AbstractList<E>(), Sequence<E> {
     }
   }
 
-  open fun sliding(size: Int): LazySeq<List<E>> {
+  open fun sliding(size: Long): LazySeq<List<E>> {
     require(size > 0)
     return slidingUnsafe(size)
   }
 
-  open fun slidingUnsafe(size: Int): LazySeq<List<E>> {
+  open fun slidingUnsafe(size: Long): LazySeq<List<E>> {
     val window = take(size).toList()
     return cons(window) { tail.slidingFullOnly(size) }
   }
 
-  open fun slidingFullOnly(size: Int): LazySeq<List<E>> {
+  open fun slidingFullOnly(size: Long): LazySeq<List<E>> {
     val window = take(size).toList()
     return if (window.size < size) {
       emptyLazySeq()
@@ -196,12 +196,12 @@ abstract class LazySeq<E> : AbstractList<E>(), Sequence<E> {
     }
   }
 
-  open fun grouped(size: Int): LazySeq<List<E>> {
+  open fun grouped(size: Long): LazySeq<List<E>> {
     require(size > 0)
     return groupedUnsafe(size)
   }
 
-  open fun groupedUnsafe(size: Int): LazySeq<List<E>> {
+  open fun groupedUnsafe(size: Long): LazySeq<List<E>> {
     val window = take(size).toList()
     return cons(window) { drop(size).groupedUnsafe(size) }
   }

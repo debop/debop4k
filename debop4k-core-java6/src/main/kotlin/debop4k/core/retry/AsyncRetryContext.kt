@@ -13,10 +13,23 @@
  * limitations under the License.
  */
 
-package debop4k.core.lazyseq.samples
+package debop4k.core.retry
 
 /**
- * Record
- * @author sunghyouk.bae@gmail.com
+ * AsyncRetryContext
+ * @author debop sunghyouk.bae@gmail.com
  */
-data class Record(val id: Long)
+open class AsyncRetryContext(val retryPolicy: RetryPolicy,
+                             override val retryCount: Int = 0,
+                             override val lastThrowable: Throwable? = null) : RetryContext {
+
+  override val willRetry: Boolean
+    get() = retryPolicy.shouldContinue(this.nextRetry(Exception()))
+
+  fun nextRetry(cause: Throwable?): AsyncRetryContext
+      = AsyncRetryContext(retryPolicy, retryCount + 1, cause)
+
+  fun prevRetry(): AsyncRetryContext
+      = AsyncRetryContext(retryPolicy, retryCount - 1, lastThrowable)
+
+}

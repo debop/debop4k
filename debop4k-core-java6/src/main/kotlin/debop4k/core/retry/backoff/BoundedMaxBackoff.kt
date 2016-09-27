@@ -13,10 +13,19 @@
  * limitations under the License.
  */
 
-package debop4k.core.lazyseq.samples
+package debop4k.core.retry.backoff
+
+import debop4k.core.retry.RetryContext
 
 /**
- * Record
- * @author sunghyouk.bae@gmail.com
+ * BoundedMaxBackoff
+ * @author debop sunghyouk.bae@gmail.com
  */
-data class Record(val id: Long)
+class BoundedMaxBackoff(target: Backoff,
+                        val maxDelayMillis: Long = Backoffs.DEFAULT_MAX_DELAY_MILLIS) : BackoffWrapper(target) {
+
+  override fun delayMillis(context: RetryContext): Long {
+    return Math.min(target.delayMillis(context), maxDelayMillis)
+  }
+
+}

@@ -13,10 +13,23 @@
  * limitations under the License.
  */
 
-package debop4k.core.lazyseq.samples
+package debop4k.core.retry
+
+import nl.komponents.kovenant.Promise
+import java.util.concurrent.*
 
 /**
- * Record
- * @author sunghyouk.bae@gmail.com
+ * RetryExecutor
+ * @author debop sunghyouk.bae@gmail.com
  */
-data class Record(val id: Long)
+interface RetryExecutor {
+
+  fun doWithRetry(action: (RetryContext) -> Unit): Promise<Unit, Throwable>
+
+  fun <V> getWithRetry(callable: Callable<V>): Promise<V, Throwable>
+
+  fun <V> getWithRetry(func: (RetryContext) -> V): Promise<V, Throwable>
+
+  fun <V> getFutureWithRetry(func: (RetryContext) -> Promise<V, Throwable>): Promise<V, Throwable>
+
+}

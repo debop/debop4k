@@ -13,10 +13,15 @@
  * limitations under the License.
  */
 
-package debop4k.core.lazyseq.samples
+package debop4k.core.retry
 
 /**
- * Record
- * @author sunghyouk.bae@gmail.com
+ * AbortRetryException
+ * @author debop sunghyouk.bae@gmail.com
  */
-data class Record(val id: Long)
+open class AbortRetryException : RuntimeException {
+  constructor() : super()
+  constructor(msg: String) : super(msg)
+  constructor(msg: String, cause: Throwable) : super(msg, cause)
+  constructor(cause: Throwable) : super(cause)
+}

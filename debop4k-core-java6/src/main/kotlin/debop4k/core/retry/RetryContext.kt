@@ -13,10 +13,25 @@
  * limitations under the License.
  */
 
-package debop4k.core.lazyseq.samples
+package debop4k.core.retry
 
 /**
- * Record
- * @author sunghyouk.bae@gmail.com
+ * RetryContext
+ * @author debop sunghyouk.bae@gmail.com
  */
-data class Record(val id: Long)
+interface RetryContext {
+
+  val willRetry: Boolean
+
+  /**
+   * 현재 재시도 횟수
+   * @return 1 은 첫번째 시도
+   */
+  val retryCount: Int
+
+  val lastThrowable: Throwable?
+
+  val isFirstRetry: Boolean
+    get() = retryCount == 1
+
+}

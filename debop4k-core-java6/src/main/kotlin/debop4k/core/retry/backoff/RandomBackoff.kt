@@ -13,10 +13,27 @@
  * limitations under the License.
  */
 
-package debop4k.core.lazyseq.samples
+package debop4k.core.retry.backoff
+
+import debop4k.core.retry.RetryContext
+import java.util.*
+import java.util.concurrent.*
 
 /**
- * Record
- * @author sunghyouk.bae@gmail.com
+ * RandomBackoff
+ * @author debop sunghyouk.bae@gmail.com
  */
-data class Record(val id: Long)
+abstract class RandomBackoff(target: Backoff,
+                             val random: Random = ThreadLocalRandom.current()) :
+    BackoffWrapper(target) {
+
+  override fun delayMillis(context: RetryContext): Long {
+    val initialDelay = target.delayMillis(context)
+    val randomDelay = addRandomJitter(initialDelay)
+
+    return Math.max(randomDelay, 0)
+  }
+
+  abstract fun addRandomJitter(initialDelay: Long): Long
+
+}

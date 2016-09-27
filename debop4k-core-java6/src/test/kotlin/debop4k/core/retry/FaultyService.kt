@@ -13,10 +13,26 @@
  * limitations under the License.
  */
 
-package debop4k.core.lazyseq.samples
+package debop4k.core.retry
+
+import nl.komponents.kovenant.Promise
+import java.math.BigDecimal
 
 /**
- * Record
- * @author sunghyouk.bae@gmail.com
+ * FaultyService
+ * @author debop sunghyouk.bae@gmail.com
  */
-data class Record(val id: Long)
+interface FaultyService {
+
+  fun alwaysSucceeds(): Int
+
+  fun sometimesFails(): String
+
+  fun calculateSum(retry: Int): BigDecimal
+
+  fun withFlag(flag: Boolean): Void
+
+  fun safeAsync(): Promise<String, Exception>
+
+  fun alwaysFailsAsync(): Promise<String, Exception>
+}

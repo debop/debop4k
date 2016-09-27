@@ -13,10 +13,25 @@
  * limitations under the License.
  */
 
-package debop4k.core.lazyseq.samples
+package debop4k.core.retry.backoff
+
+import debop4k.core.retry.RetryContext
 
 /**
- * Record
- * @author sunghyouk.bae@gmail.com
+ * ExponentialDelayBackoff
+ * @author debop sunghyouk.bae@gmail.com
  */
-data class Record(val id: Long)
+class ExponentialDelayBackoff(val initialDelayMillis: Long,
+                              val multiplier: Double = Backoffs.DEFAULT_MULTIPLIER) : Backoff {
+
+  init {
+    require(initialDelayMillis > 0) {
+      "Initial delay must be positive but was: $initialDelayMillis"
+    }
+  }
+
+  override fun delayMillis(context: RetryContext): Long {
+    return (initialDelayMillis * Math.pow(multiplier, (context.retryCount - 1).toDouble())).toLong()
+  }
+
+}

@@ -13,10 +13,23 @@
  * limitations under the License.
  */
 
-package debop4k.core.lazyseq.samples
+package debop4k.core.retry.backoff;
 
 /**
- * Record
+ * Backoffs
+ *
  * @author sunghyouk.bae@gmail.com
  */
-data class Record(val id: Long)
+public final class Backoffs {
+
+  public static final double DEFAULT_MULTIPLIER = 0.1;
+
+  public static final long DEFAULT_MIN_DELAY_MILLIS = 100L;
+  public static final long DEFAULT_MAX_DELAY_MILLIS = 10000L;
+
+  public static final long DEFAULT_PERIOD_MILLIS = 1000L;
+
+  public static final long DEFAULT_RANDOM_RANGE_MILLIS = 100L;
+
+  public static final Backoff DEFAULT_BACKOFF = new FixedIntervalBackoff();
+}

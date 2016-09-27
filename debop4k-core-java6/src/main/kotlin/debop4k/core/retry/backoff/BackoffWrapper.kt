@@ -13,10 +13,13 @@
  * limitations under the License.
  */
 
-package debop4k.core.lazyseq.samples
+package debop4k.core.retry.backoff
 
 /**
- * Record
- * @author sunghyouk.bae@gmail.com
+ * BackoffWrapper
+ * @author debop sunghyouk.bae@gmail.com
  */
-data class Record(val id: Long)
+abstract class BackoffWrapper(protected val target: Backoff) : Backoff {
+
+
+}

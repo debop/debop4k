@@ -29,7 +29,7 @@ class LazyPagingTest : AbstractLazySeqTest() {
   @Mock
   val pageConsumer: (String) -> Unit = uninitialized()
 
-  val PAGE_SIZE: Int = 5
+  val PAGE_SIZE: Long = 5L
 
   @Test
   fun testLoadOnlyFirstPageWhenInitialized() {
@@ -65,11 +65,11 @@ class LazyPagingTest : AbstractLazySeqTest() {
     assertThat(record).isEqualTo(Record(17))
   }
 
-  private fun records(from: Int): LazySeq<Record> {
+  private fun records(from: Long): LazySeq<Record> {
     return LazySeq.concat(loadPage(from, PAGE_SIZE)) { records(from + PAGE_SIZE) }
   }
 
-  fun loadPage(offset: Int, max: Int): List<Record> {
+  fun loadPage(offset: Long, max: Long): List<Record> {
     pageConsumer.invoke("$offset,$max")
     return LazySeq.numbers(offset)
         .take(max)

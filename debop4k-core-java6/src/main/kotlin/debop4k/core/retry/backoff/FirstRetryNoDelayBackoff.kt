@@ -13,10 +13,25 @@
  * limitations under the License.
  */
 
-package debop4k.core.lazyseq.samples
+package debop4k.core.retry.backoff
+
+import debop4k.core.retry.AsyncRetryContext
+import debop4k.core.retry.RetryContext
 
 /**
- * Record
- * @author sunghyouk.bae@gmail.com
+ * FirstRetryNoDelayBackoff
+ * @author debop sunghyouk.bae@gmail.com
  */
-data class Record(val id: Long)
+class FirstRetryNoDelayBackoff(target: Backoff) : BackoffWrapper(target) {
+
+  override fun delayMillis(context: RetryContext): Long {
+    if (context.isFirstRetry) {
+      return 0
+    }
+    return target.delayMillis(decrementRetryCount(context))
+  }
+
+  fun decrementRetryCount(context: RetryContext): RetryContext
+      = (context as AsyncRetryContext).prevRetry()
+
+}

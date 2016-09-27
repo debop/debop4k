@@ -63,7 +63,7 @@ class Cons<T>(override val head: T, val tailFunc: () -> LazySeq<T>) : LazySeq<T>
     return concat(result, { tail.flatMap(mapper) })
   }
 
-  override fun takeUnsafe(maxSize: Int): LazySeq<T> {
+  override fun takeUnsafe(maxSize: Long): LazySeq<T> {
     return if (maxSize > 1) {
       cons(head, { tail.takeUnsafe(maxSize - 1) })
     } else {
@@ -100,7 +100,7 @@ class FixedCons<T>(override val head: T, override val tail: LazySeq<T>) : LazySe
     return concat(result, tail.flatMap(mapper))
   }
 
-  override fun takeUnsafe(maxSize: Int): LazySeq<T> {
+  override fun takeUnsafe(maxSize: Long): LazySeq<T> {
     return if (maxSize > 1) {
       cons(head, tail.takeUnsafe(maxSize - 1))
     } else {
@@ -140,8 +140,8 @@ class Nil<T> : LazySeq<T>() {
   override fun <R> map(mapper: (T) -> R): LazySeq<R> = instance()
   override fun filter(predicate: (T) -> Boolean): LazySeq<T> = instance()
   override fun <R> flatMap(mapper: (T) -> Iterable<R>): LazySeq<R> = instance()
-  override fun takeUnsafe(maxSize: Int): LazySeq<T> = instance()
-  override fun dropUnsafe(startInclusive: Int): LazySeq<T> = instance()
+  override fun takeUnsafe(maxSize: Long): LazySeq<T> = instance()
+  override fun dropUnsafe(startInclusive: Long): LazySeq<T> = instance()
   override fun forEach(action: (T) -> Unit) {
     /* Nothing to do */
   }
@@ -152,14 +152,14 @@ class Nil<T> : LazySeq<T>() {
   override val size: Int get() = 0
 
   override fun anyMatch(predicate: (T) -> Boolean): Boolean = false
-  override fun allMatch(predicate: (T) -> Boolean): Boolean = false
-  override fun noneMatch(predicate: (T) -> Boolean): Boolean = true
+  override fun allMatch(predicate: (T) -> Boolean): Boolean = true
+//  override fun noneMatch(predicate: (T) -> Boolean): Boolean = true
 
   override fun takeWhile(predicate: (T) -> Boolean): LazySeq<T> = instance()
   override fun dropWhile(predicate: (T) -> Boolean): LazySeq<T> = instance()
 
-  override fun slidingUnsafe(size: Int): LazySeq<List<T>> = instance()
-  override fun groupedUnsafe(size: Int): LazySeq<List<T>> = instance()
+  override fun slidingUnsafe(size: Long): LazySeq<List<T>> = instance()
+  override fun groupedUnsafe(size: Long): LazySeq<List<T>> = instance()
 
   override fun scan(initial: T, binFunc: BinaryOperator<T>): LazySeq<T> = lazySeqOf(initial)
   override fun distinct(): LazySeq<T> = instance()
