@@ -125,8 +125,11 @@ abstract class LazySeq<E> : AbstractList<E>(), Sequence<E> {
 //    traverse(this, action)
   }
 
-  open fun <C : Comparable<C>> maxBy(propertyFunc: (E) -> C): E? = max(propertyFunToComparator(propertyFunc))
-  open fun <C : Comparable<C>> minBy(propertyFunc: (E) -> C): E? = min(propertyFunToComparator(propertyFunc))
+  fun <C : Comparable<C>> maxBy(propertyFunc: (E) -> C): E? = max(propertyFunToComparator(propertyFunc))
+  fun <C : Comparable<C>> minBy(propertyFunc: (E) -> C): E? = min(propertyFunToComparator(propertyFunc))
+
+  fun max(comparator: (a: E, b: E) -> Int): E? = max(Comparator(comparator))
+  fun min(comparator: (a: E, b: E) -> Int): E? = min(Comparator(comparator))
 
   open fun max(comparator: Comparator<in E>): E? = greatestByComparator(comparator)
   open fun min(comparator: Comparator<in E>): E? = greatestByComparator(comparator.reversed())
@@ -140,8 +143,12 @@ abstract class LazySeq<E> : AbstractList<E>(), Sequence<E> {
   }
 
   private fun greatestByComparator(comparator: Comparator<in E>): E? {
-    if (tail.isEmpty())
+    if (isEmpty()) {
+      return null as E
+    }
+    if (tail.isEmpty()) {
       return head
+    }
 
     var minSoFar = head
     var curr = this.tail

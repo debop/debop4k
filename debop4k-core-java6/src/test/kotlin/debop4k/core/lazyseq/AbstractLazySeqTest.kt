@@ -27,4 +27,29 @@ abstract class AbstractLazySeqTest {
   fun injectMocks() {
     MockitoAnnotations.initMocks(this)
   }
+
+  protected val expectedList = listOf(3, -2, 8, 5, -4, 11, 2, 1)
+
+  protected fun lazy(): LazySeq<Int> {
+    return LazySeq.cons(3) {
+      LazySeq.cons(-2) {
+        LazySeq.cons(8) {
+          LazySeq.cons(5) {
+            LazySeq.cons(-4) {
+              LazySeq.cons(11) {
+                LazySeq.cons(2) {
+                  lazySeqOf(1)
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  protected fun loremIpsum(): Array<String> {
+    return "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id metus at ligula convallis imperdiet. "
+        .toLowerCase().split("[ \\.,]+".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+  }
 }

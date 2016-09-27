@@ -72,24 +72,6 @@ class LazySeqEqualsHashcodeTest : AbstractLazySeqTest() {
     assertThat(first.hashCode() == second.hashCode()).isTrue()
   }
 
-  fun lazy(): LazySeq<Int> {
-    return LazySeq.cons(3) {
-      LazySeq.cons(-2) {
-        LazySeq.cons(8) {
-          LazySeq.cons(5) {
-            LazySeq.cons(-4) {
-              LazySeq.cons(11) {
-                LazySeq.cons(2) {
-                  lazySeqOf(1)
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
   @Test
   fun testFiniteSeqAndInfiniteSeq() {
     val first = lazySeqOf(2, 3, 5, 7)
