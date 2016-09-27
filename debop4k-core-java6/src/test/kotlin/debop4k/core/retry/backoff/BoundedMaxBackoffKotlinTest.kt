@@ -16,7 +16,6 @@
 package debop4k.core.retry.backoff
 
 import debop4k.core.retry.AbstractRetryKotlinTest
-import debop4k.core.retry.backoff.Backoffs.DEFAULT_MAX_DELAY_MILLIS
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 

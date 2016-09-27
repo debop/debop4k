@@ -12,24 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:JvmName("Backoffs")
 
-package debop4k.core.retry.backoff;
+package debop4k.core.retry.backoff
 
-/**
- * Backoffs
- *
- * @author sunghyouk.bae@gmail.com
- */
-public final class Backoffs {
+const val DEFAULT_MULTIPLIER = 0.1
 
-  public static final double DEFAULT_MULTIPLIER = 0.1;
+const val DEFAULT_MIN_DELAY_MILLIS = 100L
+const val DEFAULT_MAX_DELAY_MILLIS = 10000L
 
-  public static final long DEFAULT_MIN_DELAY_MILLIS = 100L;
-  public static final long DEFAULT_MAX_DELAY_MILLIS = 10000L;
+const val DEFAULT_PERIOD_MILLIS = 1000L
 
-  public static final long DEFAULT_PERIOD_MILLIS = 1000L;
+const val DEFAULT_RANDOM_RANGE_MILLIS = 100L
 
-  public static final long DEFAULT_RANDOM_RANGE_MILLIS = 100L;
-
-  public static final Backoff DEFAULT_BACKOFF = new FixedIntervalBackoff();
-}
+@JvmField val DEFAULT_BACKOFF: Backoff = FixedIntervalBackoff()

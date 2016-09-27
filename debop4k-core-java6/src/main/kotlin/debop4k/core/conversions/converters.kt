@@ -99,7 +99,7 @@ class TypeConverters(val parent: TypeConverters? = null) {
                             val converter: ExactConverter.(Any) -> Any)
 }
 
-@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
+@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "UNCHECKED_CAST")
 private val primitiveConversion = fun TypeConverters.ExactConverter.(value: Any): Any = when (value) {
 
   is String -> when (toType) {

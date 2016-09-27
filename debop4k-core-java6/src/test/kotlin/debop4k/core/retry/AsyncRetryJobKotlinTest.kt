@@ -16,7 +16,7 @@
 package debop4k.core.retry
 
 import debop4k.core.asyncs.ready
-import debop4k.core.retry.backoff.Backoffs.DEFAULT_PERIOD_MILLIS
+import debop4k.core.retry.backoff.DEFAULT_PERIOD_MILLIS
 import nl.komponents.kovenant.Promise
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test

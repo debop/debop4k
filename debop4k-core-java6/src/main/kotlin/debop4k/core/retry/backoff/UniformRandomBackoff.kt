@@ -23,11 +23,11 @@ import java.util.concurrent.*
  * @author debop sunghyouk.bae@gmail.com
  */
 class UniformRandomBackoff(target: Backoff,
-                           val range: Long = Backoffs.DEFAULT_RANDOM_RANGE_MILLIS,
+                           val range: Long = DEFAULT_RANDOM_RANGE_MILLIS,
                            random: Random = ThreadLocalRandom.current()) :
     RandomBackoff(target, random) {
 
-  constructor(target: Backoff, random: Random) : this(target, Backoffs.DEFAULT_RANDOM_RANGE_MILLIS, random)
+  constructor(target: Backoff, random: Random) : this(target, DEFAULT_RANDOM_RANGE_MILLIS, random)
 
   override fun addRandomJitter(initialDelay: Long): Long {
     val uniformRandom = (1 - random.nextDouble() * 2) * range

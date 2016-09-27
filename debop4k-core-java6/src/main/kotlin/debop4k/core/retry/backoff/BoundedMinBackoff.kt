@@ -22,7 +22,7 @@ import debop4k.core.retry.RetryContext
  * @author debop sunghyouk.bae@gmail.com
  */
 class BoundedMinBackoff(target: Backoff,
-                        val minDelayMillis: Long = Backoffs.DEFAULT_MIN_DELAY_MILLIS) : BackoffWrapper(target) {
+                        val minDelayMillis: Long = DEFAULT_MIN_DELAY_MILLIS) : BackoffWrapper(target) {
 
   override fun delayMillis(context: RetryContext): Long {
     return Math.max(target.delayMillis(context), minDelayMillis)

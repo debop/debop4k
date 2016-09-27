@@ -17,7 +17,6 @@ package debop4k.core.retry.backoff
 
 import com.nhaarman.mockito_kotlin.mock
 import debop4k.core.retry.AbstractRetryKotlinTest
-import debop4k.core.retry.backoff.Backoffs.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.mockito.BDDMockito

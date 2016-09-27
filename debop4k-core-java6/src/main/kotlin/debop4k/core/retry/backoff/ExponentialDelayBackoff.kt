@@ -22,7 +22,7 @@ import debop4k.core.retry.RetryContext
  * @author debop sunghyouk.bae@gmail.com
  */
 class ExponentialDelayBackoff(val initialDelayMillis: Long,
-                              val multiplier: Double = Backoffs.DEFAULT_MULTIPLIER) : Backoff {
+                              val multiplier: Double = DEFAULT_MULTIPLIER) : Backoff {
 
   init {
     require(initialDelayMillis > 0) {

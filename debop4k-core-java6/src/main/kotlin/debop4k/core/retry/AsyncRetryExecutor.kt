@@ -15,10 +15,7 @@
 
 package debop4k.core.retry
 
-import debop4k.core.retry.backoff.Backoff
-import debop4k.core.retry.backoff.Backoffs.*
-import debop4k.core.retry.backoff.ExponentialDelayBackoff
-import debop4k.core.retry.backoff.FixedIntervalBackoff
+import debop4k.core.retry.backoff.*
 import nl.komponents.kovenant.Promise
 import org.slf4j.LoggerFactory
 import java.util.concurrent.*

@@ -23,10 +23,10 @@ import java.util.concurrent.*
  * @author debop sunghyouk.bae@gmail.com
  */
 class ProportionalRandomBackoff(target: Backoff,
-                                val multiplier: Double = Backoffs.DEFAULT_MULTIPLIER,
+                                val multiplier: Double = DEFAULT_MULTIPLIER,
                                 random: Random = ThreadLocalRandom.current()) : RandomBackoff(target, random) {
 
-  constructor(target: Backoff, random: Random) : this(target, Backoffs.DEFAULT_MULTIPLIER, random)
+  constructor(target: Backoff, random: Random) : this(target, DEFAULT_MULTIPLIER, random)
 
   override fun addRandomJitter(initialDelay: Long): Long {
     val randomMultiplier = (1 - 2 * random.nextDouble()) * multiplier

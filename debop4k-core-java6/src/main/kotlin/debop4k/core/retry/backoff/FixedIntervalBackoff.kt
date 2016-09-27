@@ -21,7 +21,7 @@ import debop4k.core.retry.RetryContext
  * FixedIntervalBackoff
  * @author debop sunghyouk.bae@gmail.com
  */
-class FixedIntervalBackoff(val intervalMillis: Long = Backoffs.DEFAULT_PERIOD_MILLIS) : Backoff {
+class FixedIntervalBackoff(val intervalMillis: Long = DEFAULT_PERIOD_MILLIS) : Backoff {
 
   override fun delayMillis(context: RetryContext): Long {
     return intervalMillis

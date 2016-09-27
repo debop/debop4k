@@ -20,7 +20,7 @@ import com.nhaarman.mockito_kotlin.inOrder
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import debop4k.core.asyncs.ready
-import debop4k.core.retry.backoff.Backoffs
+import debop4k.core.retry.backoff.DEFAULT_PERIOD_MILLIS
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.mockito.BDDMockito
@@ -103,7 +103,7 @@ class AsyncRetryExecutorManualAbortKotlinTest : AbstractRetryKotlinTest() {
     // then
     val order = inOrder(schedulerMock)
     order.verify(schedulerMock).schedule(notNullRunnable(), eq(0L), millis())
-    order.verify(schedulerMock).schedule(notNullRunnable(), eq(Backoffs.DEFAULT_PERIOD_MILLIS), millis())
+    order.verify(schedulerMock).schedule(notNullRunnable(), eq(DEFAULT_PERIOD_MILLIS), millis())
     order.verifyNoMoreInteractions()
   }
 
