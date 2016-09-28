@@ -126,6 +126,7 @@ abstract class Permutation<E> : AbstractList<E>(), Sequence<E> {
     traverse(this, action)
   }
 
+  @Suppress("UNCHECKED_CAST")
   fun <R : E> reduce(operation: (R, E) -> R): R? {
     if (isEmpty() || tail.isEmpty()) {
       return null
