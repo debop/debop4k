@@ -30,19 +30,16 @@ class LazySeqStream<T>(val underlying: LazySeq<T>) : Stream<T> {
   private var closed: Boolean = false
   private var closeHandler: Runnable? = null
 
-  override fun reduce(identity: T, accumulator: BinaryOperator<T>?): T {
-    TODO("구현 중")
-//    return underlying.reduce(identity, accumulator)
+  override fun reduce(identity: T, accumulator: BinaryOperator<T>): T {
+    return underlying.reduce(identity) { a, b -> accumulator.apply(a, b) }
   }
 
-  override fun <U : Any?> reduce(identity: U, accumulator: BiFunction<U, in T, U>?, combiner: BinaryOperator<U>?): U {
-    TODO("구현 중")
-//    return underlying.reduce(identity, accumulator, combiner)
+  override fun <U> reduce(identity: U, accumulator: BiFunction<U, in T, U>, combiner: BinaryOperator<U>): U {
+    return underlying.reduce(identity) { a, b -> accumulator.apply(a, b) }
   }
 
-  override fun reduce(accumulator: BinaryOperator<T>?): Optional<T> {
-    TODO("구현 중")
-//    return underlying.reduce(accumulator)
+  override fun reduce(accumulator: BinaryOperator<T>): Optional<T> {
+    return Optional.ofNullable(underlying.reduce { a: T, b: T -> accumulator.apply(a, b) })
   }
 
   override fun iterator(): MutableIterator<T> {
@@ -67,11 +64,11 @@ class LazySeqStream<T>(val underlying: LazySeq<T>) : Stream<T> {
   }
 
   override fun findFirst(): Optional<T> {
-    return Optional.of(underlying.headOption.orNull())
+    return Optional.ofNullable(underlying.headOption.orNull())
   }
 
   override fun findAny(): Optional<T> {
-    return Optional.of(underlying.headOption.orNull())
+    return Optional.ofNullable(underlying.headOption.orNull())
   }
 
   override fun mapToInt(mapper: ToIntFunction<in T>): IntStream {
@@ -118,12 +115,10 @@ class LazySeqStream<T>(val underlying: LazySeq<T>) : Stream<T> {
 
   override fun sorted(comparator: Comparator<in T>): Stream<T> {
     return underlying.sorted(comparator).stream()
-
   }
 
-  override fun flatMapToLong(mapper: Function<in T, out LongStream>?): LongStream {
-    TODO("Not Implemented")
-
+  override fun flatMapToLong(mapper: Function<in T, out LongStream>): LongStream {
+    return underlying.stream().flatMapToLong(mapper)
   }
 
   override fun isParallel(): Boolean = false
