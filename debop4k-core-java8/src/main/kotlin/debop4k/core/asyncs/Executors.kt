@@ -13,23 +13,26 @@
  * limitations under the License.
  */
 
-package debop4k.core.async
+package debop4k.core.asyncs
 
 import java.util.concurrent.*
-import java.util.function.*
-
-@JvmOverloads
-inline fun runAsync(crossinline action: () -> Unit,
-                    executor: Executor = ForkJoinPool.commonPool()): CompletableFuture<Void>
-    = CompletableFuture.runAsync(Runnable { action() }, executor)
-
-@JvmOverloads
-fun <T> supplyAsync(supplier: () -> T,
-                    executor: Executor = ForkJoinPool.commonPool()): CompletableFuture<T>
-    = CompletableFuture.supplyAsync(Supplier(supplier), executor)
-
-fun <T> T.completedFuture(): CompletableFuture<T>
-    = CompletableFuture.completedFuture(this)
 
 
+/**
+ * <code>
+ *   withWorkStealingPool { executor ->
+ *    // ...
+ *   }
+ * </code>
+ */
+fun withWorkStealingPool(parallelism: Int = Runtime.getRuntime().availableProcessors(),
+                         action: (Executor) -> Unit): Unit {
 
+  val executor = Executors.newWorkStealingPool(parallelism)
+
+  try {
+    action(executor)
+  } finally {
+    executor.shutdown()
+  }
+}
