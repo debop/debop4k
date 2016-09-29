@@ -4,75 +4,38 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 rootProject.name = 'debop4k-parent'
 
-include 'debop4k-api'
-
-include 'debop4k-fst-java6'
-include 'debop4k-fst-java7'
-include 'debop4k-fst-java8'
-include 'debop4k-fst'
-
 include 'debop4k-config'
-include 'debop4k-config-java6'
-include 'debop4k-config-java7'
-include 'debop4k-config-java8'
-
-include 'debop4k-core-java6'
-include 'debop4k-core-java7'
-include 'debop4k-core-java8'
 include 'debop4k-core'
+include 'debop4k-csv'
+include 'debop4k-reactive'
+
+include 'debop4k-web'
+include 'debop4k-science'
+include 'debop4k-timeperiod'
 
 include 'debop4k-units'
 
-include 'debop4k-timeperiod-java6'
-include 'debop4k-timeperiod-java7'
-include 'debop4k-timeperiod-java8'
-include 'debop4k-timeperiod'
-
-include 'debop4k-data-java6'
-include 'debop4k-data-java7'
-include 'debop4k-data-java8'
 include 'debop4k-data'
+include 'debop4k-data-ignite'
+include 'debop4k-redis'
 
 include 'debop4k-spring'
 include 'debop4k-spring-jdbc'
 include 'debop4k-spring-webmvc'
 include 'debop4k-spring-security'
-
-include 'debop4k-reactive'
-
-include 'debop4k-redis-java6'
-include 'debop4k-redis-java7'
-include 'debop4k-redis-java8'
-include 'debop4k-redis'
-
-include 'debop4k-data-ignite-java7'
-include 'debop4k-data-ignite'
-
-include 'debop4k-csv'
-include 'debop4k-csv-java6'
-
-include 'debop4k-web'
-include 'debop4k-web-java6'
-
-
-include 'debop4k-science-java6'
-include 'debop4k-science-java7'
-include 'debop4k-science'
-
-
 include 'debop4k-spring-boot-autoconfigure'
-
 
 include 'debop4k-examples'
 

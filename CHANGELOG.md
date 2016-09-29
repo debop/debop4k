@@ -2,5 +2,5 @@
 ================================
 
 - Support Asynchronous Programming by Kovenant
-- Support Java 6, Java 7, Java 8
+- Target JVM version : Java 8
 - Create Library by [Kotlin](http://kotlin-lang.org)
