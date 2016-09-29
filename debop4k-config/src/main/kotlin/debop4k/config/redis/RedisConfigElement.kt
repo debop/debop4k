@@ -23,13 +23,16 @@ import debop4k.config.loadInt
 import debop4k.config.loadString
 
 /**
- * RedisConfigElement
- * @author debop sunghyouk.bae@gmail.com
+ * Redis 서버 접속을 위한 환경설정 정보
+ *
+ * @author sunghyouk.bae@gmail.com
  */
 open class RedisConfigElement(override val config: Config) : ConfigSupport, ServerAddressConfigElement {
 
+  /** Database Number */
   val database: Int by lazy { config.loadInt("database", 0) }
 
+  /** Password */
   val password: String? by lazy { config.loadString("password", null) }
 
 }

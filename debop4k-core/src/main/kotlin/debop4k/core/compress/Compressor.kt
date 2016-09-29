@@ -14,7 +14,7 @@
  *
  */
 
-package debop4k.core.compressions
+package debop4k.core.compress
 
 /**
  * 압축/복원을 수행합니다.

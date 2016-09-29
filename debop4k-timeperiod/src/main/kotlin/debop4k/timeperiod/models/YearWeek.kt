@@ -20,7 +20,7 @@ import debop4k.timeperiod.utils.startTimeOfWeek
 import org.joda.time.DateTime
 
 /**
- * 주차를 표현합니다.
+ * 년/주차를 표현합니다.
  * @author debop sunghyouk.bae@gmail.com
  */
 data class YearWeek(val weekyear: Int, val weekOfWeekyear: Int) {

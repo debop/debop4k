@@ -107,7 +107,6 @@ object TimeLines {
     var itemIndex = 0
     while (itemIndex < moments.size) {
       val moment = moments[itemIndex]
-      assert(moment != null)
       assert(moment.startCount > 0) { "moment.startCount 값이 0보다 커야합니다. startCount=${moment.startCount}" }
 
       var balance = moment.startCount

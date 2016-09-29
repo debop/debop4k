@@ -45,7 +45,7 @@ class ApplicationKotlinConfigTest {
 
       assertThat(appConfig.email.encoding).isEqualTo("UTF-8")
       assertThat(appConfig.email.protocol).isEqualTo("smtp")
-      assertThat(appConfig.email.properties.getProperty("mail.transport.protocol")).isEqualTo("smtp")
+      assertThat(appConfig.email.properties["mail.transport.protocol"]).isEqualTo("smtp")
 
       assertThat(appConfig.mongodb.database).isNotNull()
 

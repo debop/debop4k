@@ -19,6 +19,7 @@ package debop4k.timeperiod.models
 import debop4k.timeperiod.*
 
 /**
+ * 분기를 표현
  * @author debop sunghyouk.bae@gmail.com
  */
 enum class Quarter(val value: Int) {

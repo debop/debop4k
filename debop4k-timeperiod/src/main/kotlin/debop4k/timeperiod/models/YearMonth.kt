@@ -17,6 +17,7 @@
 package debop4k.timeperiod.models
 
 /**
+ * 년/월을 표현
  * @author debop sunghyouk.bae@gmail.com
  */
 data class YearMonth(val year: Int, val monthOfYear: Int) {}

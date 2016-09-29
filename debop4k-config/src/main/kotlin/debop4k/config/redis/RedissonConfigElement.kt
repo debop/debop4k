@@ -21,11 +21,13 @@ import debop4k.config.ConfigSupport
 import debop4k.config.loadString
 
 /**
- * RedissonConfigElement
+ * Redisson 을 이용한 접속 정보
+ *
  * @author debop sunghyouk.bae@gmail.com
  */
 open class RedissonConfigElement(override val config: Config) : ConfigSupport {
 
+  /** Redisson Connection 정보를 담은 yaml 파일의 경로 */
   val configPath: String
       by lazy { config.loadString("configPath", "redisson.yml")!! }
 

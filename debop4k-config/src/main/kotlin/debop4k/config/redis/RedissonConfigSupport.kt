@@ -19,11 +19,20 @@ package debop4k.config.redis
 import debop4k.config.ConfigSupport
 
 /**
- * RedissonConfigSupport
- * @author debop sunghyouk.bae@gmail.com
+ * Redis 서버 접속을 위한 환경 설정 정보를 {@link Config} 로부터 읽어드리는 Adapter.
+ * <pre>
+ *   <code>
+ *     redisson {
+ *        configPath = "config/redisson.yml"
+ *     }
+ *   </code>
+ * </pre>
+ *
+ * @author sunghyouk.bae @gmail.com
  */
 interface RedissonConfigSupport : ConfigSupport {
 
+  /** Redisson 으로 Redis에 접속하기 위한 환경설정 정보 */
   val redisson: RedissonConfigElement
     get() = RedissonConfigElement(config.getConfig("redisson"))
 }

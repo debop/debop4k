@@ -21,8 +21,8 @@ import com.typesafe.config.ConfigFactory
 import org.slf4j.LoggerFactory
 
 /**
- * ConfigLoader
- * @author debop sunghyouk.bae@gmail.com
+ * Typesafe Config 라이브러리를 이용하여, 환경설정 정보를 로드합니다.
+ * @author sunghyouk.bae@gmail.com
  */
 object ConfigLoader {
 
@@ -33,9 +33,7 @@ object ConfigLoader {
    * 가지는 [Config] 인스턴스를 반환합니다.
 
    * @param resourceBasename 환경설정 파일 경로
-   * *
    * @param rootPath         최상위 path
-   * *
    * @return [Config] 인스턴스
    */
   @JvmStatic
@@ -44,10 +42,11 @@ object ConfigLoader {
     log.debug("환경설정 정보를 로드합니다. resourceBasename={}, rootPath={}", resourceBasename, rootPath)
     val config = ConfigFactory.load(resourceBasename)
 
-    if (rootPath.isNullOrBlank()) {
-      return config
-    }
-    return config.getConfig(rootPath)
+    return rootPath?.let { path -> config.getConfig(path) } ?: config
+//    if (rootPath.isNullOrBlank()) {
+//      return config
+//    }
+//    return config.getConfig(rootPath)
   }
 
   /**
@@ -55,11 +54,8 @@ object ConfigLoader {
    * 가지는 [Config] 인스턴스를 반환합니다.
 
    * @param loader           ClassLoader 인스턴스
-   * *
    * @param resourceBasename 환경설정 파일 경로
-   * *
    * @param rootPath         최상위 path
-   * *
    * @return [Config] 인스턴스
    */
   @JvmStatic
@@ -69,9 +65,10 @@ object ConfigLoader {
               loader, resourceBasename, rootPath)
     val config = ConfigFactory.load(loader, resourceBasename)
 
-    if (rootPath.isNullOrBlank()) {
-      return config
-    }
-    return config.getConfig(rootPath)
+    return rootPath?.let { path -> config.getConfig(path) } ?: config
+//    if (rootPath.isNullOrBlank()) {
+//      return config
+//    }
+//    return config.getConfig(rootPath)
   }
 }

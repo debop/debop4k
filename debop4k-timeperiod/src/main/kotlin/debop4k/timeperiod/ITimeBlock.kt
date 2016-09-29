@@ -34,10 +34,11 @@ interface ITimeBlock : ITimePeriod {
 
   fun durationFromEnd(nd: Duration)
 
-  fun nextBlock(offset: Duration): ITimeBlock
-      = TimeBlock(end + offset.abs(), duration, readOnly)
+  fun nextBlock(offset: Duration): ITimeBlock {
+    return TimeBlock(end + offset.abs(), duration, readOnly)
+  }
 
-  fun prevBlock(offset: Duration): ITimeBlock
-      = TimeBlock(duration, start - offset.abs(), readOnly)
-
+  fun prevBlock(offset: Duration): ITimeBlock {
+    return TimeBlock(duration, start - offset.abs(), readOnly)
+  }
 }

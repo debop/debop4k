@@ -13,7 +13,6 @@
  * limitations under the License.
  *
  */
-
 @file:JvmName("TimeSpec")
 
 package debop4k.timeperiod

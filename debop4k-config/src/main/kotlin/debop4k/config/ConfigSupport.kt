@@ -19,11 +19,13 @@ package debop4k.config
 import com.typesafe.config.Config
 
 /**
- * ConfigSupport
- * @author debop sunghyouk.bae@gmail.com
+ * Configuration 을 지원하는 기본 interface
+ *
+ * @author sunghyouk.bae@gmail.com
  */
 interface ConfigSupport {
 
+  /** Typesafe [Config] instance */
   val config: Config
 
 }

@@ -19,6 +19,7 @@ package debop4k.timeperiod.models
 import debop4k.timeperiod.ITimePeriod
 
 /**
+ * Period 간의 관계 종류를 나타냅니다
  * @author debop sunghyouk.bae@gmail.com
  */
 enum class PeriodRelation {

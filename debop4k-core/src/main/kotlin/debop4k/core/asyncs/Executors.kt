@@ -19,18 +19,25 @@ package debop4k.core.asyncs
 import java.util.concurrent.*
 
 
+operator inline infix fun Executor.invoke(crossinline action: () -> Unit): Unit {
+  this.execute(runnable(action))
+}
+
+
+inline infix fun <T> ExecutorService.runAsync(crossinline func: () -> T): Future<T> {
+  return this.submit(callable { func() })
+}
+
 /**
  * <code>
- *   withWorkStealingPool { executor ->
+ *   withFixedThreadPool { executor ->
  *    // ...
  *   }
  * </code>
  */
-fun withWorkStealingPool(parallelism: Int = Runtime.getRuntime().availableProcessors(),
-                         action: (Executor) -> Unit): Unit {
-
-  val executor = Executors.newWorkStealingPool(parallelism)
-
+inline fun withFixedThreadPool(nThreads: Int = Runtime.getRuntime().availableProcessors(),
+                               action: (Executor) -> Unit): Unit {
+  val executor = Executors.newFixedThreadPool(nThreads)
   try {
     action(executor)
   } finally {

@@ -38,8 +38,8 @@ open class CalendarDateAdd : DateAdd() {
 
   private val log = LoggerFactory.getLogger(javaClass)
 
-  val calendar = TimeCalendar.EMPTY_OFFSET
-  val weekDays = FastList.newList<DayOfWeek>()
+  val calendar: TimeCalendar = TimeCalendar.EMPTY_OFFSET
+  val weekDays: FastList<DayOfWeek> = FastList.newList<DayOfWeek>()
   val workingHours: FastList<HourRangeInDay> = FastList.newList<HourRangeInDay>()
   val workingDayHours: FastList<DayOfWeekHourRange> = FastList.newList<DayOfWeekHourRange>()
 
@@ -187,7 +187,7 @@ open class CalendarDateAdd : DateAdd() {
   private fun getAvailableWeekPeriods(limits: ITimePeriod): List<ITimePeriod> {
     log.trace("가능한 주간 기간을 추출합니다. limits={}", limits)
 
-    if (weekDays.isEmpty && workingHours.isEmpty && workingDayHours.isEmpty()) {
+    if (weekDays.isEmpty && workingHours.isEmpty && workingDayHours.isEmpty) {
       return TimePeriodCollection.of(limits)
     }
 

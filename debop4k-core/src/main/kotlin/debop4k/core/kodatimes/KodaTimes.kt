@@ -317,7 +317,7 @@ fun Duration.hours(): Long = this.standardHours
 fun Duration.minutes(): Long = this.standardMinutes
 fun Duration.seconds(): Long = this.standardSeconds
 
-fun Duration.abs(): Duration = if (this < emptyDuration) -this else this
+fun Duration.abs(): Duration = if (this.millis < 0L) -this else this
 fun Duration.fromNow(): DateTime = now() + this
 fun Duration.agoNow(): DateTime = now() - this
 fun Duration.afterEpoch(): DateTime = DateTime(0) + this

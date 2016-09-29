@@ -14,7 +14,7 @@
  *
  */
 
-package debop4k.core.compressions
+package debop4k.core.compress
 
 import debop4k.core.collections.emptyByteArray
 import debop4k.core.collections.isNullOrEmpty

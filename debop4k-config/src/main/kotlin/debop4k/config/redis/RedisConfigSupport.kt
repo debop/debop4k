@@ -19,11 +19,22 @@ package debop4k.config.redis
 import debop4k.config.ConfigSupport
 
 /**
- * RedisConfigSupport
- * @author debop sunghyouk.bae@gmail.com
+ * Redis 서버 접속을 위한 환경 설정 정보를 {@link Config} 로부터 읽어드리는 Adapter.
+ * <pre>
+ *   <code>
+ *     redis {
+ *       host="127.0.0.1"
+ *       port=6379
+ *       database=0
+ *     }
+ *   </code>
+ * </pre>
+ *
+ * @author sunghyouk.bae @gmail.com
  */
 interface RedisConfigSupport : ConfigSupport {
 
+  /** Redis connection configuration */
   val redis: RedisConfigElement
     get() = RedisConfigElement(config.getConfig("redis"))
 

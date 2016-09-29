@@ -18,14 +18,14 @@ package debop4k.config.hibernate
 
 import com.typesafe.config.Config
 import debop4k.config.ConfigSupport
-import debop4k.config.asProperties
+import debop4k.config.asMap
 import debop4k.config.loadBool
 import debop4k.config.loadString
-import java.util.*
 
 /**
- * HibernateConfigElement
- * @author debop sunghyouk.bae@gmail.com
+ * Hibernate 설정 정보를 표현합니다.
+ *
+ * @author sunghyouk.bae@gmail.com
  */
 open class HibernateConfigElement(override val config: Config) : ConfigSupport {
 
@@ -39,5 +39,6 @@ open class HibernateConfigElement(override val config: Config) : ConfigSupport {
   val cacheProviderConfig: String
       by lazy { config.loadString("cacheProviderConfig", "")!! }
 
-  val properties: Properties by lazy { config.asProperties() }
+  val properties: Map<String, String> by lazy { config.asMap() }
+
 }

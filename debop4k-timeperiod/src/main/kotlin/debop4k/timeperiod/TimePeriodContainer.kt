@@ -52,14 +52,13 @@ open class TimePeriodContainer : TimePeriod(), ITimePeriodContainer {
     }
 
   override var duration: Duration
-    get() = if (hasPeriod()) Duration(start, end) else MaxDuration
+    get() = if (hasPeriod) Duration(start, end) else MaxDuration
     set(value) { /* noting to do */
     }
 
   override val readOnly: Boolean get() = false
 
   override fun isEmpty(): Boolean = _periods.isEmpty()
-
 
   override fun setup(newStart: DateTime, newEnd: DateTime) {
     throw UnsupportedOperationException("TimePeriodContainer 는 setup 메소드를 지원하지 않습니다.")

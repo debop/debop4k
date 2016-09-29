@@ -20,6 +20,7 @@ import debop4k.timeperiod.utils.halfyearOfMonth
 import org.joda.time.DateTime
 
 /**
+ * 년/반기 정보를 표현
  * @author debop sunghyouk.bae@gmail.com
  */
 data class YearHalfyear(val year: Int, val halfyear: Halfyear) {

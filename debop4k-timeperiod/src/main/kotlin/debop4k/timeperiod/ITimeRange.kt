@@ -29,7 +29,6 @@ interface ITimeRange : ITimePeriod {
 
   override var end: DateTime
 
-
   /** 시작시각을 지정된 시각으로 설정합니다. 시작시각 이전이여야 합니다.  */
   fun expandStartTo(moment: DateTime)
 

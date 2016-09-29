@@ -42,18 +42,16 @@ open class TimePeriod(override var start: DateTime = MinPeriodTime,
   : this(start, start + duration, readOnly)
 
   companion object {
-
-    val AnyTime: TimePeriod by lazy { TimePeriod(readOnly = true) }
-
+    @JvmField val AnyTime: TimePeriod = TimePeriod(readOnly = true)
   }
 
   override var duration: Duration
     get() = Duration(start, end)
-    set(d: Duration) {
+    set(d) {
       assertMutable()
       require(d.millis > 0, { "Duration 은 0보다 커야 합니다." })
 
-      if (hasStart()) {
+      if (hasStart) {
         end = start + d
       }
     }
@@ -72,8 +70,8 @@ open class TimePeriod(override var start: DateTime = MinPeriodTime,
     if (offset.millis == 0L) {
       return TimePeriod(this)
     }
-    val s = if (hasStart()) start + offset else start
-    val e = if (hasEnd()) end + offset else end
+    val s = if (hasStart) start + offset else start
+    val e = if (hasEnd) end + offset else end
 
     return TimePeriod(s, e, readOnly)
   }
@@ -82,8 +80,8 @@ open class TimePeriod(override var start: DateTime = MinPeriodTime,
     if (offset.millis == 0L) return
     assertMutable()
 
-    if (hasStart()) start += offset
-    if (hasEnd()) end += offset
+    if (hasStart) start += offset
+    if (hasEnd) end += offset
   }
 
   override fun isSamePeriod(other: ITimePeriod): Boolean {

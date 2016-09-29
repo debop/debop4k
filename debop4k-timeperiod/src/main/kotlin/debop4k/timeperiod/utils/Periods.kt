@@ -523,7 +523,7 @@ fun ITimePeriod.minuteSequence(): FastList<out ITimePeriod> {
 }
 
 fun ITimePeriod?.assertHasPeriod(): Unit {
-  assert(this != null && this.hasPeriod(), { "기간이 설정되지 않았습니다. period=$this" })
+  assert(this != null && this.hasPeriod) { "기간이 설정되지 않았습니다. period=$this" }
 }
 
 fun <R> ITimePeriod.mapPeriod(unit: PeriodUnit, func: (ITimePeriod) -> R): FastList<R> {

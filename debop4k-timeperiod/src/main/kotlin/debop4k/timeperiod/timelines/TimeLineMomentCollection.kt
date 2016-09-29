@@ -28,11 +28,9 @@ open class TimeLineMomentCollection : ITimeLineMomentCollection {
 
   private val _moments = FastList.newList<ITimeLineMoment>()
 
-  override val size: Int
-    get() = _moments.size
+  override val size: Int get() = _moments.size
 
-  override val isEmpty: Boolean
-    get() = _moments.isEmpty
+  override val isEmpty: Boolean get() = _moments.isEmpty
 
   override fun min(): ITimeLineMoment = _moments.min()
 

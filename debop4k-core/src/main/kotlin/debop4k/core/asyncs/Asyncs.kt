@@ -21,29 +21,101 @@ package debop4k.core.asyncs
 import nl.komponents.kovenant.*
 import java.util.concurrent.*
 
-
 /**
- * 특정 코드를 비동기 방식으로 작업하도록 합니다.
+ * 아무일도 하지 않는 빈 [Runnable] 객체입니다.
  */
-@JvmOverloads
-fun <V> future(context: Context = Kovenant.context,
-               body: () -> V): Promise<V, Exception> {
-  return task(context) { body() }
+val EMPTY_RUNNABLE: Runnable = Runnable { }
+
+inline fun runnable(crossinline action: () -> Unit): Runnable {
+  return Runnable { action() }
 }
 
-@JvmOverloads
+inline fun <T> callable(crossinline func: () -> T): Callable<T> {
+  return Callable { func() }
+}
+
+infix inline fun <T, V> T.future(crossinline block: T.() -> V): Promise<V, Exception> {
+  return task { this.block() }
+}
+
+/**
+ * [runnable] 인스턴스를 비동기 방식으로 작업하도록 합니다.
+ */
+fun future(runnable: Runnable): Promise<Unit, Exception> {
+  return task { runnable.run() }
+}
+
+/**
+ * [callable] 인스턴스를 비동기 방식으로 작업하도록 합니다.
+ */
+fun <V> future(callable: Callable<V>): Promise<V, Exception> {
+  return task { callable.call() }
+}
+
+/**
+ * 지정된 [func] 을 비동기 방식으로 작업하도록 합니다.
+ */
+fun <V> future(func: () -> V): Promise<V, Exception> {
+  return task(body = func)
+}
+
+/**
+ * 지정된 [func] 을 비동기 방식으로 작업하도록 합니다.
+ */
+fun <V> future(context: Context, func: () -> V): Promise<V, Exception> {
+  return task(context, func)
+}
+
+/**
+ * 지정된 [body] 을 비동기 방식으로 작업하도록 하고, 완료되면 [result] 를 반환하도록 합니다.
+ */
+fun <V> future(result: V,
+               body: () -> V): Promise<V, Exception> {
+  return task { body() }.thenApply { result }
+}
+
+
+/**
+ * 지정된 [body] 을 비동기 방식으로 작업하도록 하고, 완료되면 [result] 를 반환하도록 합니다.
+ */
 fun <V> future(context: Context = Kovenant.context,
                result: V,
                body: () -> V): Promise<V, Exception> {
-  return task(context) { body() }.thenApply { result }
+  return task(context, body).thenApply { result }
 }
 
 
-fun <V> futureAll(context: Context = Kovenant.context, tasks: List<() -> V>): Collection<Promise<V, Exception>> {
+/**
+ * 모든 task 들을 비동기 방식으로 실행하도록 합니다.
+ */
+fun <V> futureAll(tasks: Iterable<() -> V>): Collection<Promise<V, Exception>> {
+  return tasks.map { task { it() } }
+}
+
+/**
+ * 모든 task 들을 비동기 방식으로 실행하도록 합니다.
+ */
+fun <V> futureAll(context: Context = Kovenant.context,
+                  tasks: Iterable<() -> V>): Collection<Promise<V, Exception>> {
   return tasks.map { task(context) { it() } }
 }
 
+fun <V> delayedFuture(delay: Long = 0L, timeunit: TimeUnit = TimeUnit.MILLISECONDS, body: () -> V): Promise<V, Exception> {
+  if (delay > 0) {
+    return task { body() }
+  } else {
+    return task {
+      Thread.sleep(timeunit.toMillis(delay))
+    } then {
+      body()
+    }
+  }
+}
 
+
+/**
+ * [Promise] 가 완료될 때까지 대기합니다.
+ */
 fun <V, E> Promise<V, E>.ready(): Promise<V, E> {
   val latch = CountDownLatch(1)
   this always { latch.countDown() }
@@ -51,46 +123,57 @@ fun <V, E> Promise<V, E>.ready(): Promise<V, E> {
   return this
 }
 
-fun <V> readyAll(vararg promises: Promise<V, Exception>): Promise<List<V>, Exception> {
-  val mp = all(*promises).ready()
-  return mp.ready()
-}
+/**
+ * [Promise] 배열의 모든 task 가 완료될 때까지 대기합니다.
+ */
+fun <V> readyAll(vararg promises: Promise<V, Exception>): Promise<List<V>, Exception>
+    = all(*promises).ready()
 
-fun <V> Collection<Promise<V, Exception>>.readyAll(): Promise<List<V>, Exception> {
-  val mp = all(*this.toTypedArray())
-  return mp.ready()
-}
+/**
+ * [Promise] 컬렉션의 모든 task 가 완료될 때까지 대기합니다.
+ */
+fun <V> Collection<Promise<V, Exception>>.readyAll(): Promise<List<V>, Exception>
+    = all(*this.toTypedArray()).ready()
 
-fun <V> Collection<Promise<V, Exception>>.readyAny(): Promise<V, List<Exception>> {
-  return any(*this.toTypedArray())
-}
+/**
+ * [Promise] 중에 하나라도 완료되면 반환합니다.
+ */
+fun <V> readyAny(vararg promises: Promise<V, Exception>): Promise<V, List<Exception>>
+    = any(*promises).ready()
+
+/**
+ * [Promise] 중에 하나라도 완료되면 반환합니다.
+ */
+fun <V> Collection<Promise<V, Exception>>.readyAny(): Promise<V, List<Exception>>
+    = any(*this.toTypedArray()).ready()
 
 
 /**
  * [Promise]이 완료될 때까지 기다렸다가 결과를 반환합니다.
  */
-fun <V> Promise<V, Exception>.result(): V {
-  this.ready()
-  return this.get()
-}
+fun <V, E> Promise<V, E>.result(): V = this.get()
 
 /**
  * [Promise] 컬렉션이 모두 완료될 때까지 기다렸다가 결과를 반환합니다.
  */
-fun <V> resultAll(vararg promises: Promise<V, Exception>): List<V> {
-  return readyAll(*promises).get()
-}
+fun <V> resultAll(vararg promises: Promise<V, Exception>): List<V>
+    = readyAll(*promises).get()
 
 /**
  * [Promise] 컬렉션이 모두 완료될 때까지 기다렸다가 결과를 반환합니다.
  */
-fun <V> Collection<Promise<V, Exception>>.resultAll(): List<V> {
-  return this.readyAll().get()
-}
+fun <V> Collection<Promise<V, Exception>>.resultAll(): List<V>
+    = this.readyAll().get()
 
 /**
- * [Promise] 컬렉션 중 첫번째 완료된 결과값을 반환합니다.
+ * [Promise] 중에 하나라도 완료되면 결과를 반환합니다.
  */
-fun <V> Collection<Promise<V, Exception>>.resultAny(): V {
-  return this.readyAny().get()
-}
+fun <V> resultAny(vararg promises: Promise<V, Exception>): V
+    = any(*promises).ready().get()
+
+/**
+ * [Promise] 중에 하나라도 완료되면 결과를 반환합니다.
+ */
+fun <V> Collection<Promise<V, Exception>>.resultAny(): V
+    = any(*this.toTypedArray()).ready().get()
+

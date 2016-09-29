@@ -19,12 +19,22 @@ package debop4k.config.hibernate
 import debop4k.config.ConfigSupport
 
 /**
- * HibernateConfigSupport
- * @author debop sunghyouk.bae@gmail.com
+ * Hibernate를 위한 환경 설정 정보를 {@link Config} 로부터 읽어드리는 Adapter.
+ * <pre>
+ *   <code>
+ *     hibernate {
+ *       hbm2ddl = "update"
+ *       showSql = true
+ *       useSecondCache = false
+ *       cacheProviderConfig = "hibernate-redis.conf"
+ *     }
+ *   </code>
+ * </pre>
+ *
+ * @author sunghyouk.bae @gmail.com
  */
 interface HibernateConfigSupport : ConfigSupport {
 
   val hibernate: HibernateConfigElement
     get() = HibernateConfigElement(config.getConfig("hibernate"))
-
 }

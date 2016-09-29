@@ -20,6 +20,7 @@ import debop4k.timeperiod.utils.startTimeOfMonth
 import org.joda.time.DateTime
 
 /**
+ * 월/주차를 표현하는 클래스
  * @author sunghyouk.bae@gmail.com
  */
 data class MonthWeek(val month: Int, val week: Int) {

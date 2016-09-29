@@ -18,11 +18,11 @@ package debop4k.config.email
 
 import com.typesafe.config.Config
 import debop4k.config.*
-import java.util.*
 
 /**
- * EmailConfigElement
- * @author debop sunghyouk.bae@gmail.com
+ * Email 서버 환경설정 정보를 표현합니다.
+ *
+ * @author sunghyouk.bae @gmail.com
  */
 open class EmailConfigElement(override val config: Config) : ServerAddressConfigElement {
 
@@ -36,13 +36,14 @@ open class EmailConfigElement(override val config: Config) : ServerAddressConfig
   val startTlsEnable by lazy { config.loadBool(PATH_START_TLS_ENABLE, true) }
   val sslTrust by lazy { config.loadString(PATH_SSL_TRUST, this.host) }
 
-  val properties: Properties
-    get() = config.asProperties()
+  val properties: Map<String, String>
+    get() = config.asMap()
 
   companion object {
-    const val PATH_PROTOCOL = "mail.transport.protocol"
-    const val PATH_AUTH = "mail.smtp.auth"
-    const val PATH_START_TLS_ENABLE = "mail.smtp.starttls.enable"
-    const val PATH_SSL_TRUST = "mail.smtp.ssl.trust"
+    @JvmField val PATH_PROTOCOL = "mail.transport.protocol"
+    @JvmField val PATH_AUTH = "mail.smtp.auth"
+    @JvmField val PATH_START_TLS_ENABLE = "mail.smtp.starttls.enable"
+    @JvmField val PATH_SSL_TRUST = "mail.smtp.ssl.trust"
   }
+
 }

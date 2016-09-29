@@ -17,14 +17,18 @@
 package debop4k.config
 
 /**
- * ServerAddressConfigElement
- * @author debop sunghyouk.bae@gmail.com
+ * 서버 주소와 Port 정보를 제공하는 환경설정 요소
+ *
+ * @author sunghyouk.bae@gmail.com
  */
 interface ServerAddressConfigElement : ConfigSupport {
 
+  /** 서버 주소 */
   val host: String
-    get() = config.loadString("host", "localhost")!!
+    get() = config.loadString("host", "localhost") ?: "localhost"
 
+  /** Port */
   val port: Int
     get() = config.loadInt("port", 0)
+
 }

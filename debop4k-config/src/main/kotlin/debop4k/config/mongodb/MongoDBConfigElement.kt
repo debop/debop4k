@@ -22,8 +22,16 @@ import debop4k.config.loadInt
 import debop4k.config.loadString
 
 /**
- * MongoDBConfigElement
- * @author debop sunghyouk.bae@gmail.com
+ * MongoDB 서버 접석을 위한 환경 설정 정보
+ * <pre>
+ *   <code>
+ *     mongo {
+ *       database = "local"
+ *     }
+ *   </code>
+ * </pre>
+ *
+ * @author sunghyouk.bae @gmail.com
  */
 open class MongoDBConfigElement(override val config: Config) : ServerAddressConfigElement {
 

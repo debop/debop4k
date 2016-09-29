@@ -19,11 +19,30 @@ package debop4k.config.database
 import debop4k.config.ConfigSupport
 
 /**
- * DatabaseConfigSupport
- * @author debop sunghyouk.bae@gmail.com
+ * Database 관련 환경 설정 정보를 표현하는 {@link Config} 를 읽어드리는 Adapter.
+ * <p>
+ * 설정 정보는 아래와 같이 정의하면 됩니다.
+ * <pre>
+ *   <code>
+ *     application {
+ *       database {
+ *         driverClass="org.h2.driver"
+ *         jdbcUrl="jdbc://sql:xxxxx"
+ *         username="sa
+ *         password=""
+ *         maxPoolSize = 100
+ *         minIdleSize = 2
+ *       }
+ *     }
+ *   </code>
+ * </pre>
+ *
+ * @author sunghyouk.bae@gmail.com
  */
 interface DatabaseConfigSupport : ConfigSupport {
 
+  /** Database configuration element */
   val database: DatabaseConfigElement
     get() = DatabaseConfigElement(config.getConfig("database"))
+
 }

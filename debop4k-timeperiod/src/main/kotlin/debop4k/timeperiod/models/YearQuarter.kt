@@ -19,6 +19,7 @@ package debop4k.timeperiod.models
 import org.joda.time.DateTime
 
 /**
+ * 년/분기를 표현
  * @author debop sunghyouk.bae@gmail.com
  */
 data class YearQuarter(val year: Int, val quarter: Quarter) {

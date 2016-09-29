@@ -52,21 +52,15 @@ open class YearTimeRange(val year: Int,
       = monthSequence(start, yearCount * MonthsPerYear, calendar)
 
   fun daySequence(): Sequence<DayRange> {
-    return monthSequence().flatMap { m ->
-      m.daySequence()
-    }.asSequence()
+    return monthSequence().flatMap(MonthRange::daySequence).asSequence()
   }
 
   fun hourSequence(): Sequence<HourRange> {
-    return daySequence().flatMap { d ->
-      d.hourSequence()
-    }.asSequence()
+    return daySequence().flatMap(DayRange::hourSequence).asSequence()
   }
 
   fun minuteSequence(): Sequence<MinuteRange> {
-    return hourSequence().flatMap { h ->
-      h.minuteSequence()
-    }.asSequence()
+    return hourSequence().flatMap(HourRange::minuteSequence).asSequence()
   }
 
 }

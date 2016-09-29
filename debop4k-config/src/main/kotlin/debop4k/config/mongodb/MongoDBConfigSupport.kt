@@ -19,8 +19,18 @@ package debop4k.config.mongodb
 import debop4k.config.ConfigSupport
 
 /**
- * MongoDBConfigSupport
- * @author debop sunghyouk.bae@gmail.com
+ * MongoDB 서버 접속을 위한 환경 설정 정보를 {@link Config} 로부터 읽어드리는 Adapter.
+ * <pre>
+ *   <code>
+ *     mongo {
+ *       host="127.0.0.1"
+ *       port=27017
+ *       database="local"
+ *     }
+ *   </code>
+ * </pre>
+ *
+ * @author sunghyouk.bae @gmail.com
  */
 interface MongoDBConfigSupport : ConfigSupport {
 

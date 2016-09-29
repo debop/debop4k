@@ -20,14 +20,17 @@ package debop4k.config
 
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigValue
+import org.eclipse.collections.api.map.MutableMap
+import org.eclipse.collections.impl.factory.Maps
 import org.slf4j.LoggerFactory
 import java.util.*
 import java.util.concurrent.*
 
+
 private val log = LoggerFactory.getLogger("ConfigReader")
 
 private fun assertPath(path: String): Unit {
-  assert(path.isNotBlank()) { "경로가 지정되지 않았습니다" }
+  assert(path.isNotBlank()) { "경로가 지정되지 않았습니다 (null 이거나 blank 입니다)" }
 }
 
 /**
@@ -97,7 +100,7 @@ fun Config.loadBool(path: String, defaultValue: Boolean = false): Boolean {
  * @return 환경설정 값
  */
 @JvmOverloads
-fun Config.loadBoolList(path: String, defaultValue: List<Boolean> = emptyList<Boolean>()): List<Boolean> {
+fun Config.loadBoolList(path: String, defaultValue: List<Boolean> = emptyList()): List<Boolean> {
   return loadConfigValue(path,
                          { this.getBooleanList(path) },
                          defaultValue)
@@ -123,7 +126,7 @@ fun Config.loadInt(path: String, defaultValue: Int = 0): Int {
  * @return 환경설정 값
  */
 @JvmOverloads
-fun Config.loadIntList(path: String, defaultValue: List<Int> = emptyList<Int>()): List<Int> {
+fun Config.loadIntList(path: String, defaultValue: List<Int> = emptyList()): List<Int> {
   return loadConfigValue(path,
                          { this.getIntList(path) },
                          defaultValue)
@@ -149,7 +152,7 @@ fun Config.loadLong(path: String, defaultValue: Long = 0L): Long {
  * @return 환경설정 값
  */
 @JvmOverloads
-fun Config.loadLongList(path: String, defaultValue: List<Long> = emptyList<Long>()): List<Long> {
+fun Config.loadLongList(path: String, defaultValue: List<Long> = emptyList()): List<Long> {
   return loadConfigValue(path,
                          { this.getLongList(path) },
                          defaultValue)
@@ -175,7 +178,7 @@ fun Config.loadDouble(path: String, defaultValue: Double = 0.0): Double {
  * @return 환경설정 값
  */
 @JvmOverloads
-fun Config.loadDoubleList(path: String, defaultValue: List<Double> = emptyList<Double>()): List<Double> {
+fun Config.loadDoubleList(path: String, defaultValue: List<Double> = emptyList()): List<Double> {
   return loadConfigValue(path,
                          { this.getDoubleList(path) },
                          defaultValue)
@@ -201,7 +204,7 @@ fun Config.loadNumber(path: String, defaultValue: Number = 0): Number {
  * @return 환경설정 값
  */
 @JvmOverloads
-fun Config.loadNumberList(path: String, defaultValue: List<Number> = emptyList<Number>()): List<Number> {
+fun Config.loadNumberList(path: String, defaultValue: List<Number> = emptyList()): List<Number> {
   return loadConfigValue(path,
                          { this.getNumberList(path) },
                          defaultValue)
@@ -228,7 +231,7 @@ fun Config.loadObject(path: String, defaultValue: Any? = null): Any? {
  */
 @SuppressWarnings("unchecked")
 @JvmOverloads
-fun Config.loadAnyRefList(path: String, defaultValue: List<Any?> = emptyList<Any?>()): List<Any?> {
+fun Config.loadAnyRefList(path: String, defaultValue: List<Any?> = emptyList()): List<Any?> {
   return loadConfigValue(path,
                          { this.getAnyRefList(path) },
                          defaultValue)
@@ -254,7 +257,7 @@ fun Config.loadBytes(path: String, defaultValue: Long = 0L): Long {
  * @return 환경설정 값
  */
 @JvmOverloads
-fun Config.loadBytesList(path: String, defaultValue: List<Long> = emptyList<Long>()): List<Long> {
+fun Config.loadBytesList(path: String, defaultValue: List<Long> = emptyList()): List<Long> {
   return loadConfigValue(path,
                          { this.getBytesList(path) },
                          defaultValue)
@@ -281,7 +284,7 @@ fun Config.loadDuration(path: String, unit: TimeUnit, defaultValue: Long = 0L): 
  * @return 환경설정 값
  */
 @JvmOverloads
-fun Config.loadDurationList(path: String, unit: TimeUnit, defaultValue: List<Long> = emptyList<Long>()): List<Long> {
+fun Config.loadDurationList(path: String, unit: TimeUnit, defaultValue: List<Long> = emptyList()): List<Long> {
   return loadConfigValue(path,
                          { this.getDurationList(path, unit) },
                          defaultValue)
@@ -309,24 +312,22 @@ fun Config.asProperties(): Properties {
   val props = Properties()
   try {
     props.putAll(this.asMap())
-  } catch (ignored: Exception) {
+  } catch (ignored: Throwable) {
     log.warn("환경설정을 읽는데 실패했습니다.", ignored)
   }
-
   return props
 }
 
 /**
  * 환경설정의 모든 key=value 값을 Map 으로 빌드하여 반환합니다.
-
  * @return 환경설정 정보를 담은 Map 인스턴스
  */
-fun Config.asMap(): Map<String, String> {
-  val map = mutableMapOf<String, String>()
+fun Config.asMap(): MutableMap<String, String> {
+  val map = Maps.mutable.of<String, String>()
   try {
-    for ((key, cv) in this.entrySet()) {
-      val value = cv?.unwrapped()?.toString() ?: ""
-      map.put(key, value)
+    this.entrySet().forEach { entry ->
+      val value = entry.value?.unwrapped()?.toString() ?: ""
+      map.put(entry.key, value)
     }
   } catch (ignored: Throwable) {
     log.warn("환경설정을 읽는데 실패했습니다.", ignored)

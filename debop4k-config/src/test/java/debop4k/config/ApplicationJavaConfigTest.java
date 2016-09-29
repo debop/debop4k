@@ -54,7 +54,7 @@ public class ApplicationJavaConfigTest {
 //      assertThat(appConfig.getRedis().getSlaves().iterator().next().getHost()).isEqualTo("127.0.0.1");
 
       assertThat(appConfig.getEmail().getEncoding()).isEqualTo("UTF-8");
-      assertThat(appConfig.getEmail().getProperties().getProperty("mail.transport.protocol")).isEqualTo("smtp");
+      assertThat(appConfig.getEmail().getProperties().get("mail.transport.protocol")).isEqualTo("smtp");
 
       assertThat(appConfig.getMongodb().getDatabase()).isNotNull();
       assertThat(appConfig.getHibernate().getHbm2ddl()).isNotNull();

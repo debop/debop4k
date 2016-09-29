@@ -18,7 +18,7 @@ package debop4k.config
 
 /**
  * UserCredentialConfigElement
- * @author debop sunghyouk.bae@gmail.com
+ * @author sunghyouk.bae@gmail.com
  */
 interface UserCredentialConfigElement : ConfigSupport {
 

@@ -21,6 +21,7 @@ import debop4k.core.kodatimes.asDate
 import debop4k.core.kodatimes.months
 import debop4k.core.kodatimes.now
 import debop4k.core.kodatimes.years
+import debop4k.core.loggerOf
 import debop4k.core.min
 import debop4k.core.utils.hashOf
 import debop4k.timeperiod.*
@@ -39,6 +40,8 @@ import org.joda.time.Duration
 open class DateDiff(val start: DateTime,
                     val end: DateTime = now(),
                     val calendar: ITimeCalendar = DefaultTimeCalendar) {
+
+  val log = loggerOf(javaClass)
 
   val difference: Duration = Duration(start, end)
   val isEmpty: Boolean = (difference == Duration.ZERO)

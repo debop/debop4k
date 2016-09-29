@@ -40,7 +40,7 @@ open class DayRangeInMonth(val startDayOfMonth: Int = 1,
   companion object {
 
     fun of(period: ITimePeriod): DayRangeInMonth {
-      require(period.hasPeriod())
+      require(period.hasPeriod)
       require(period.start.trimToDay() == period.end.trimToDay())
       return DayRangeInMonth(period.start.dayOfMonth, period.end.dayOfMonth)
     }

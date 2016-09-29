@@ -16,11 +16,11 @@
 
 package debop4k.timeperiod.calendars
 
+import debop4k.core.loggerOf
 import debop4k.timeperiod.*
 import debop4k.timeperiod.timelines.TimeGapCalculator
 import org.joda.time.DateTime
 import org.joda.time.Duration
-import org.slf4j.LoggerFactory
 
 /**
  * 특정 일자로부터 미래로(Forward)로 특정 기간을 이후의 일자를 계산합니다.
@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory
  */
 open class DateAdd {
 
-  private val log = LoggerFactory.getLogger(javaClass)
+  private val log = loggerOf(javaClass)
 
   open protected val includePeriods: TimePeriodCollection = TimePeriodCollection()
   open protected val excludePeriods: TimePeriodCollection = TimePeriodCollection()

@@ -14,7 +14,7 @@
  *
  */
 
-package debop4k.core.compressions
+package debop4k.core.compress
 
 import debop4k.core.collections.emptyByteArray
 import debop4k.core.collections.isNullOrEmpty
@@ -24,19 +24,16 @@ import java.io.BufferedInputStream
 import java.io.ByteArrayInputStream
 import java.util.zip.*
 
-/**
- * Deflater 알고리즘을 이용하는 압축기
- * @author sunghyouk.bae@gmail.com
- */
-class DeflateCompressor : Compressor {
+
+class ZipCompressor : Compressor {
 
   override fun compress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty)
       return emptyByteArray
 
     FastByteArrayOutputStream().use { bos ->
-      DeflaterOutputStream(bos).use { deflater ->
-        deflater.write(input)
+      ZipOutputStream(bos).use { zip ->
+        zip.write(input)
       }
       return bos.toByteArrayUnsafe()
     }
@@ -47,8 +44,8 @@ class DeflateCompressor : Compressor {
       return emptyByteArray
 
     BufferedInputStream(ByteArrayInputStream(input)).use { bis ->
-      InflaterInputStream(bis).use { inflater ->
-        return inflater.toByteArray()
+      ZipInputStream(bis).use { zip ->
+        return zip.toByteArray()
       }
     }
   }

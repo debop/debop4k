@@ -70,7 +70,7 @@ open class TimePeriodChain : TimePeriodContainer(), ITimePeriodChain {
   override fun assertSpaceBefore(moment: DateTime, duration: Duration) {
     var hasSpace = moment !== MinPeriodTime
     if (hasSpace) {
-      hasSpace = duration.compareTo(Duration(MinPeriodTime, moment)) <= 0
+      hasSpace = duration <= Duration(MinPeriodTime, moment)
     }
     assert(hasSpace) { "duration[$duration] is out of range." }
   }
@@ -78,7 +78,7 @@ open class TimePeriodChain : TimePeriodContainer(), ITimePeriodChain {
   override fun assertSpaceAfter(moment: DateTime, duration: Duration) {
     var hasSpace = moment !== MaxPeriodTime
     if (hasSpace) {
-      hasSpace = duration.compareTo(Duration(moment, MaxPeriodTime)) <= 0
+      hasSpace = duration <= Duration(moment, MaxPeriodTime)
     }
     assert(hasSpace) { "duration[$duration] is out of range." }
   }
