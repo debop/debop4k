@@ -13,6 +13,7 @@
  * limitations under the License.
  *
  */
+@file:JvmName("formats")
 
 package debop4k.csv
 
@@ -24,7 +25,6 @@ object QUOTE_ALL : Quoting
 object QUOTE_MINIMAL : Quoting
 object QUOTE_NONE : Quoting
 object QUOTE_NONNUMERIC : Quoting
-
 
 interface CSVFormat {
 

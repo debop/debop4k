@@ -4,13 +4,14 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 @file:JvmName("Angles")
@@ -26,6 +27,8 @@ const val RADIAN_FORMAT = "%.4f rad"
 fun radToDeg(rad: Double): Double = rad * 180.0 / Math.PI
 fun degToRad(degree: Double): Double = degree * Math.PI / 180.0
 
+fun Float.toRadian(): Angle = Angle(radToDeg(this.toDouble()))
+fun Float.toDegree(): Angle = Angle(this.toDouble())
 fun Double.toRadian(): Angle = Angle(radToDeg(this))
 fun Double.toDegree(): Angle = Angle(this)
 

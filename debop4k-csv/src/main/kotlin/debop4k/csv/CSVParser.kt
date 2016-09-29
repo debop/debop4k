@@ -20,11 +20,12 @@ import org.eclipse.collections.impl.list.mutable.FastList
 import org.slf4j.LoggerFactory
 
 /**
+ * CSV File Parser
  * @author debop sunghyouk.bae@gmail.com
  */
 class CSVParser(val format: CSVFormat = DEFAULT_CSVFORMAT) {
 
-  private val log = LoggerFactory.getLogger(CSVParser::class.java)
+  private val log = LoggerFactory.getLogger(javaClass)
 
   private val emptyLineList = FastList.newListWith("")
   private val emptyStringList = FastList.newList<String>()
@@ -38,7 +39,7 @@ class CSVParser(val format: CSVFormat = DEFAULT_CSVFORMAT) {
 
   companion object {
 
-    private val log = LoggerFactory.getLogger(CSVParser::class.java)
+    private val log = LoggerFactory.getLogger(javaClass)
 
     private const val Start = 0
     private const val Field = 1

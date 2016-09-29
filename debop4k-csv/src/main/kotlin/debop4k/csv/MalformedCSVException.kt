@@ -17,6 +17,7 @@
 package debop4k.csv
 
 /**
+ * Malformed CSV Excaption
  * @author debop sunghyouk.bae@gmail.com
  */
 class MalformedCSVException(message: String) : Exception(message) {

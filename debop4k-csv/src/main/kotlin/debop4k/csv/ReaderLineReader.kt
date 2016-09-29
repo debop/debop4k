@@ -27,7 +27,7 @@ import java.io.Reader
  */
 class ReaderLineReader(val reader: Reader) : LineReader {
 
-  private val log = LoggerFactory.getLogger(ReaderLineReader::class.java)
+  private val log = LoggerFactory.getLogger(javaClass)
 
   val bufferedReader = BufferedReader(reader)
 

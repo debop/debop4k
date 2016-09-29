@@ -21,6 +21,7 @@ import java.io.*
 import java.nio.charset.Charset
 
 /**
+ * CSV Writer
  * @author debop sunghyouk.bae@gmail.com
  */
 class CSVWriter(val writer: Writer,

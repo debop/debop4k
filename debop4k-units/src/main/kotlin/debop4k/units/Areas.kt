@@ -4,13 +4,14 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 @file:JvmName("Areas")
@@ -19,6 +20,9 @@ package debop4k.units
 
 import java.io.Serializable
 
+fun Float.millimeter2(): Area = Area.of(this.toDouble(), AreaUnit.MILLI_METER_2)
+fun Float.centimeter2(): Area = Area.of(this.toDouble(), AreaUnit.CENTI_METER_2)
+fun Float.meter2(): Area = Area.of(this.toDouble(), AreaUnit.METER_2)
 fun Double.millimeter2(): Area = Area.of(this, AreaUnit.MILLI_METER_2)
 fun Double.centimeter2(): Area = Area.of(this, AreaUnit.CENTI_METER_2)
 fun Double.meter2(): Area = Area.of(this, AreaUnit.METER_2)
@@ -61,7 +65,7 @@ enum class AreaUnit(val unitName: String, val factor: Double) {
         lower = lower.dropLast(1)
 
       return AreaUnit.values().find { it.unitName == lower }
-          ?: throw NumberFormatException("Unknown Area unit. unitStr=$unitStr")
+             ?: throw NumberFormatException("Unknown Area unit. unitStr=$unitStr")
     }
   }
 }
@@ -109,7 +113,11 @@ data class Area(val m2: Double = 0.0) : Comparable<Area>, Serializable {
 
     @JvmOverloads
     @JvmStatic
-    fun of(area: Double = 0.0, unit: AreaUnit = AreaUnit.METER_2): Area = Area(area * unit.factor)
+    fun of(area: Float, unit: AreaUnit = AreaUnit.METER_2): Area = of(area.toDouble(), unit)
+
+    @JvmOverloads
+    @JvmStatic
+    fun of(area: Double, unit: AreaUnit = AreaUnit.METER_2): Area = Area(area * unit.factor)
 
     @JvmStatic
     fun parse(areaStr: String): Area {
