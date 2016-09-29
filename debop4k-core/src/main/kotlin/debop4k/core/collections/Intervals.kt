@@ -14,26 +14,46 @@
  *
  */
 
-package debop4k.core.collections.eclipseCollections
+package debop4k.core.collections
 
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList
 import org.eclipse.collections.impl.list.mutable.primitive.LongArrayList
 import org.eclipse.collections.impl.list.primitive.IntInterval
 
-
 /**
  * eclipse-collections 의 [IntInterval] 을 사용하여 [IntArrayList], [LongArrayList] 를 만들 수 있다
  */
 object Intervals {
+
+  /**
+   * 지정된 interval 에 대해, forEach 구문으로 `intConsumer`를 실행합니다.
+
+   * @param interval     인자값 범위를 나타내는 interval
+   * *
+   * @param intProcedure 실행할 consumer
+   */
+  @JvmStatic
+  fun runEach(interval: IntInterval, intProcedure: (Int) -> Unit) {
+    interval.forEach(intProcedure)
+  }
+
   object Ints {
+
+    @JvmStatic
     @JvmOverloads
     fun range(from: Int, to: Int, step: Int = 1): IntArrayList {
       return IntArrayList.newList(IntInterval.fromToBy(from, to, step))
     }
 
+    @JvmStatic
+    fun range(interval: IntInterval): IntArrayList {
+      return IntArrayList.newList(interval)
+    }
+
+    @JvmStatic
     fun grouped(interval: IntInterval, groupSize: Int): FastList<IntArrayList> {
-      assert(groupSize > 0)
+      require(groupSize > 0)
       val partitionCount = interval.size() / groupSize + if (interval.size() % groupSize == 0) 0 else 1
 
       val lists = FastList.newList<IntArrayList>()
@@ -50,11 +70,13 @@ object Intervals {
   }
 
   object Longs {
-    @JvmOverloads fun
-        range(from: Int, to: Int, step: Int = 1): LongArrayList {
+    @JvmStatic
+    @JvmOverloads
+    fun range(from: Int, to: Int, step: Int = 1): LongArrayList {
       return range(IntInterval.fromToBy(from, to, step))
     }
 
+    @JvmStatic
     fun range(interval: IntInterval): LongArrayList {
       val array = LongArrayList(interval.size())
       val iter = interval.intIterator()
@@ -64,8 +86,9 @@ object Intervals {
       return array
     }
 
+    @JvmStatic
     fun group(interval: IntInterval, groupSize: Int): FastList<LongArrayList> {
-      assert(groupSize > 0)
+      require(groupSize > 0)
       val partitionCount = interval.size() / groupSize + if (interval.size() % groupSize == 0) 0 else 1
 
       val lists = FastList.newList<LongArrayList>()

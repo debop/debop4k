@@ -16,7 +16,7 @@
 
 package debop4k.core.collections.permutations
 
-import debop4k.core.collections.eclipseCollections.fastListOf
+import debop4k.core.collections.fastListOf
 import debop4k.core.utils.hashOf
 import java.util.*
 

@@ -14,45 +14,45 @@
  *
  */
 
+@file:JvmName("Graphs")
+
 package debop4k.core.collections
 
-import org.eclipse.collections.impl.factory.Sets
-import org.slf4j.LoggerFactory
+import debop4k.core.loggerOf
+import org.eclipse.collections.impl.list.mutable.FastList
 import java.util.*
 
-private val log = LoggerFactory.getLogger("GraphFunctions")
+private val log = loggerOf("GraphFunctions")
 
 /**
  * Depth First Search
  */
-fun <T> depthFirstSearch(source: T, adjacents: (T) -> Iterable<T>): MutableList<T> {
+inline fun <T> depthFirstSearch(source: T, adjacents: (T) -> Iterable<T>): FastList<T> {
   val toScan = Stack<T>()
-  val scanned = Sets.mutable.of<T>() // new HashSet<>();
+  val scanned = fastListOf<T>()
 
   toScan.add(source)
   while (toScan.size > 0) {
     val current = toScan.pop()
-    log.trace("scanning... {}", current)
     scanned.add(current)
 
     for (item in adjacents(current)) {
       toScan.add(item)
     }
   }
-  return scanned.toMutableList()
+  return scanned
 }
 
 /**
  * Breadth First Search
  */
-fun <T> breadFirstSearch(source: T, adjacents: (T) -> Iterable<T>): MutableList<T> {
+inline fun <T> breadFirstSearch(source: T, adjacents: (T) -> Iterable<T>): FastList<T> {
   val toScan = ArrayDeque<T>()
-  val scanned = Sets.mutable.of<T>() // new HashSet<>();
+  val scanned = fastListOf<T>()
 
   toScan.add(source)
   while (toScan.size > 0) {
-    val current = toScan.peek()
-    log.trace("scanning ... {}", current)
+    val current = toScan.pop()
     scanned.add(current)
 
     for (item in adjacents(current)) {
@@ -60,5 +60,52 @@ fun <T> breadFirstSearch(source: T, adjacents: (T) -> Iterable<T>): MutableList<
     }
   }
 
-  return scanned.toMutableList()
+  return scanned
+}
+
+/**
+ * Filter by Depth First Search
+ */
+inline fun <T> filterByDepthFirstSearch(source: T,
+                                        adjacents: (T) -> Iterable<T>,
+                                        predicate: (T) -> Boolean): FastList<T> {
+  val toScan = Stack<T>()
+  val filtered = fastListOf<T>()
+
+  toScan.add(source)
+  while (toScan.size > 0) {
+    val current = toScan.pop()
+
+    if (predicate(current)) {
+      filtered.add(current)
+    }
+
+    for (item in adjacents(current)) {
+      toScan.add(item)
+    }
+  }
+  return filtered
+}
+
+/**
+ * Filter by Breadth First Search
+ */
+inline fun <T> filterByBreadFirstSearch(source: T,
+                                        adjacents: (T) -> Iterable<T>,
+                                        predicate: (T) -> Boolean): FastList<T> {
+  val toScan = ArrayDeque<T>()
+  val filtered = fastListOf<T>()
+
+  toScan.add(source)
+  while (toScan.size > 0) {
+    val current = toScan.pop()
+    if (predicate(current))
+      filtered.add(current)
+
+    for (item in adjacents(current)) {
+      toScan.add(item)
+    }
+  }
+
+  return filtered
 }

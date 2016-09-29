@@ -14,30 +14,31 @@
  *
  */
 
-package debop4k.core.compress
-
-import debop4k.core.collections.emptyByteArray
-import debop4k.core.collections.isNullOrEmpty
-import org.xerial.snappy.Snappy
+package debop4k.core.io.serializers
 
 /**
- * Snappy 압축 라이브러리를 이용한 압축기
+ * 직렬화 인스턴스를 제공합니다.
+ *
  * @author sunghyouk.bae@gmail.com
  */
-class SnappyCompressor : Compressor {
+object Serializers {
 
-  override fun compress(input: ByteArray?): ByteArray {
-    if (input.isNullOrEmpty)
-      return emptyByteArray
+  /** Binary Serializer */
+  @JvmField val BINARY = BinarySerializer()
 
-    return Snappy.compress(input)
-  }
+  /** FST Serializer for Java 6 */
+  @JvmField val FST = FstSerializer()
 
-  override fun decompress(input: ByteArray?): ByteArray {
-    if (input.isNullOrEmpty)
-      return emptyByteArray
+  /** LZ4 + Binary Serializer */
+  @JvmField val LZ4_BINARY = LZ4BinarySerializer()
 
-    return Snappy.uncompress(input)
-  }
+  /** LZ4 + FST Serializer */
+  @JvmField val LZ4_FST_JAVA6 = LZ4FstJava6Serializer()
+
+  /** SNAPPY + Binary Serializer */
+  @JvmField val SNAPPY_BINARY = SnappyBinarySerializer()
+
+  /** SNAPPY + FST Serializer */
+  @JvmField val SNAPPY_FST_JAVA6 = SnappyFstJava6Serializer()
 
 }

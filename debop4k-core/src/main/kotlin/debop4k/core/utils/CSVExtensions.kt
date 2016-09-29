@@ -18,7 +18,7 @@
 
 package debop4k.core.utils
 
-import debop4k.core.collections.eclipseCollections.fastListOf
+import debop4k.core.collections.fastListOf
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVRecord
 import org.eclipse.collections.impl.list.mutable.FastList

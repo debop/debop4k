@@ -14,7 +14,7 @@
  *
  */
 
-package debop4k.core.collections.eclipseCollections
+package debop4k.core.collections
 
 import org.eclipse.collections.api.map.primitive.ObjectDoubleMap
 import org.eclipse.collections.api.map.primitive.ObjectLongMap

@@ -17,7 +17,85 @@
 package debop4k.core.collections
 
 import debop4k.core.*
+import org.eclipse.collections.api.map.sorted.MutableSortedMap
+import org.eclipse.collections.api.set.sorted.MutableSortedSet
+import org.eclipse.collections.impl.factory.SortedMaps
+import org.eclipse.collections.impl.factory.SortedSets
+import org.eclipse.collections.impl.list.mutable.FastList
+import org.eclipse.collections.impl.map.mutable.UnifiedMap
+import org.eclipse.collections.impl.set.mutable.UnifiedSet
+import java.util.*
 import java.util.concurrent.atomic.*
+
+fun <T> Iterator<T>.toList(): List<T> {
+  return ArrayList<T>().apply {
+    this@toList.forEach { this@apply.add(it) }
+  }
+}
+
+fun <T> Iterator<T>.toMutableList(): MutableList<T> {
+  return ArrayList<T>().apply {
+    this@toMutableList.forEach { this@apply.add(it) }
+  }
+}
+
+fun <T> Iterable<T>.size(): Int = when (this) {
+  is Collection<*> -> this.size
+  else -> this.count()
+}
+
+fun <T> Iterable<T>.headOrNull(): T? = when (this) {
+  is List ->
+    if (this.isNotEmpty()) this[0] else null
+  else ->
+    if (!none()) this.iterator().next() else null
+}
+
+fun <T> Iterable<T>.lastOrNull(): T? = when (this) {
+  is List -> if (this.isNotEmpty()) this[this.lastIndex] else null
+  else -> if (!none()) this.last() else null
+}
+
+
+fun Iterable<*>.asByteArray(): ByteArray {
+  val array = ByteArray(this.size())
+
+  this.forEachIndexed { i, item -> array[i] = item.asByte() }
+  return array
+}
+
+fun Iterable<*>.asShortArray(): ShortArray {
+  val array = ShortArray(this.size())
+
+  this.forEachIndexed { i, item -> array[i] = item.asShort() }
+  return array
+}
+
+fun Iterable<*>.asIntArray(): IntArray {
+  val array = IntArray(this.size())
+
+  this.forEachIndexed { i, item -> array[i] = item.asInt() }
+  return array
+}
+
+fun Iterable<*>.asLongArray(): LongArray {
+  val array = LongArray(this.size())
+
+  this.forEachIndexed { i, item -> array[i] = item.asLong() }
+  return array
+}
+
+fun Iterable<*>.asFloatArray(): FloatArray {
+  val array = FloatArray(this.size())
+  this.forEachIndexed { i, item -> array[i] = item.asFloat() }
+  return array
+}
+
+fun Iterable<*>.asDoubleArray(): DoubleArray {
+  val array = DoubleArray(this.size())
+  this.forEachIndexed { i, item -> array[i] = item.asDouble() }
+  return array
+}
 
 fun <T> Collection<T>.head(): T? = if (this.size > 0) this.elementAt(0) else null
 fun <T> Collection<T>.tail(): List<T> = this.drop(1)
@@ -49,7 +127,7 @@ fun <T> Iterable<T>.batch(batchSize: Int, forEachDo: (List<T>) -> Unit): Unit {
   BatchSequence(this, batchSize).forEach { forEachDo(it) }
 }
 
-class BatchSequence<T>(val source: Iterable<T>, val batchSize: Int = 1) : Sequence<List<T>> {
+class BatchSequence<out T>(val source: Iterable<T>, val batchSize: Int = 1) : Sequence<List<T>> {
   override fun iterator(): Iterator<List<T>> {
     return object : AbstractIterator<List<T>>() {
       private val iter = if (batchSize > 0) source.iterator() else emptyIterator()
@@ -77,7 +155,7 @@ fun <T> Iterable<T>.lazyBatch(batchSize: Int = 1, forEachDo: (Sequence<T>) -> Un
   LazyBatchSequence(this, batchSize).forEach { forEachDo(it) }
 }
 
-class LazyBatchSequence<T>(val stream: Iterable<T>, val groupSize: Int = 1) : Sequence<Sequence<T>> {
+open class LazyBatchSequence<out T>(val stream: Iterable<T>, val groupSize: Int = 1) : Sequence<Sequence<T>> {
   override fun iterator(): Iterator<Sequence<T>> {
     return object : AbstractIterator<Sequence<T>>() {
       private val iter = if (groupSize > 0) stream.iterator() else emptyIterator()
@@ -96,7 +174,7 @@ class LazyBatchSequence<T>(val stream: Iterable<T>, val groupSize: Int = 1) : Se
     }
   }
 
-  class LimitIteratorByCountStream<T>(val iterator: Iterator<T>, val limit: Int) : Sequence<T> {
+  class LimitIteratorByCountStream<out T>(val iterator: Iterator<T>, val limit: Int) : Sequence<T> {
     private var count: Int = 0
 
     private val iteratorRef = AtomicReference<Iterator<T>>(object : AbstractIterator<T>() {
@@ -125,73 +203,59 @@ class LazyBatchSequence<T>(val stream: Iterable<T>, val groupSize: Int = 1) : Se
 
 
 @JvmOverloads
-fun Sequence<Any?>.asCharArray(dv: Char = 0.toChar()): CharArray = map { it.asChar(dv) }.toList().toCharArray()
+fun Sequence<*>.asCharArray(dv: Char = 0.toChar()): CharArray = map { it.asChar(dv) }.toList().toCharArray()
 
 @JvmOverloads
-fun Collection<Any?>.asCharArray(dv: Char = 0.toChar()): CharArray = map { it.asChar(dv) }.toCharArray()
+fun Collection<*>.asCharArray(dv: Char = 0.toChar()): CharArray = map { it.asChar(dv) }.toCharArray()
 
 @JvmOverloads
-fun Sequence<Any?>.asByteArray(dv: Byte = 0): ByteArray = map { it.asByte(dv) }.toList().toByteArray()
+fun Sequence<*>.asByteArray(dv: Byte = 0): ByteArray = map { it.asByte(dv) }.toList().toByteArray()
 
 @JvmOverloads
-fun Collection<Any?>.asByteArray(dv: Byte = 0): ByteArray = map { it.asByte(dv) }.toByteArray()
+fun Collection<*>.asByteArray(dv: Byte = 0): ByteArray = map { it.asByte(dv) }.toByteArray()
 
 @JvmOverloads
-fun Sequence<Any?>.asShortArray(dv: Short = 0): ShortArray = map { it.asShort(dv) }.toList().toShortArray()
+fun Sequence<*>.asShortArray(dv: Short = 0): ShortArray = map { it.asShort(dv) }.toList().toShortArray()
 
 @JvmOverloads
-fun Collection<Any?>.asShortArray(dv: Short = 0): ShortArray = map { it.asShort(dv) }.toShortArray()
+fun Collection<*>.asShortArray(dv: Short = 0): ShortArray = map { it.asShort(dv) }.toShortArray()
 
 @JvmOverloads
-fun Sequence<Any?>.asIntArray(dv: Int = 0): IntArray = map { it.asInt(dv) }.toList().toIntArray()
+fun Sequence<*>.asIntArray(dv: Int = 0): IntArray = map { it.asInt(dv) }.toList().toIntArray()
 
 @JvmOverloads
-fun Collection<Any?>.asIntArray(dv: Int = 0): IntArray = map { it.asInt(dv) }.toIntArray()
+fun Collection<*>.asIntArray(dv: Int = 0): IntArray = map { it.asInt(dv) }.toIntArray()
 
 @JvmOverloads
-fun Sequence<Any?>.asLongArray(dv: Long = 0L): LongArray = map { it.asLong(dv) }.toList().toLongArray()
+fun Sequence<*>.asLongArray(dv: Long = 0L): LongArray = map { it.asLong(dv) }.toList().toLongArray()
 
 @JvmOverloads
-fun Collection<Any?>.asLongArray(dv: Long = 0L): LongArray = map { it.asLong(dv) }.toLongArray()
+fun Collection<*>.asLongArray(dv: Long = 0L): LongArray = map { it.asLong(dv) }.toLongArray()
 
 @JvmOverloads
-fun Sequence<Any?>.asFloatArray(dv: Float = 0F): FloatArray = map { it.asFloat(dv) }.toList().toFloatArray()
+fun Sequence<*>.asFloatArray(dv: Float = 0F): FloatArray = map { it.asFloat(dv) }.toList().toFloatArray()
 
 @JvmOverloads
-fun Collection<Any?>.asFloatArray(dv: Float = 0F): FloatArray = map { it.asFloat(dv) }.toFloatArray()
+fun Collection<*>.asFloatArray(dv: Float = 0F): FloatArray = map { it.asFloat(dv) }.toFloatArray()
 
 @JvmOverloads
-fun Sequence<Any?>.asDoubleArray(dv: Double = 0.0): DoubleArray = map { it.asDouble(dv) }.toList().toDoubleArray()
+fun Sequence<*>.asDoubleArray(dv: Double = 0.0): DoubleArray = map { it.asDouble(dv) }.toList().toDoubleArray()
 
 @JvmOverloads
-fun Collection<Any?>.asDoubleArray(dv: Double = 0.0): DoubleArray = map { it.asDouble(dv) }.toDoubleArray()
-
-
-@JvmOverloads
-fun Sequence<Any?>.asStringArray(dv: String = ""): Array<String> = map { it.asString(dv) }.toList().toTypedArray()
+fun Collection<*>.asDoubleArray(dv: Double = 0.0): DoubleArray = map { it.asDouble(dv) }.toDoubleArray()
 
 @JvmOverloads
-fun Collection<Any?>.asStringArray(dv: String = ""): Array<String> = map { it.asString(dv) }.toTypedArray()
+fun Sequence<*>.asStringArray(dv: String = ""): Array<String> = map { it.asString(dv) }.toList().toTypedArray()
+
+@JvmOverloads
+fun Collection<*>.asStringArray(dv: String = ""): Array<String> = map { it.asString(dv) }.toTypedArray()
 
 
-fun <T> generateByteArray(length: Int, generator: (Int) -> Byte): ByteArray {
-  return (0 until length).map { i -> generator(i) }.asByteArray()
-}
-
-fun <T> generateIntArray(length: Int, generator: (Int) -> Int): IntArray {
-  return (0 until length).map { i -> generator(i) }.asIntArray()
-}
-
-fun <T> generateLongArray(length: Int, generator: (Int) -> Long): LongArray {
-  return (0 until length).map { i -> generator(i) }.asLongArray()
-}
-
-fun <T> generateFloatArray(length: Int, generator: (Int) -> Float): FloatArray {
-  return (0 until length).map { i -> generator(i) }.asFloatArray()
-}
-
-fun <T> generateDoubleArray(length: Int, generator: (Int) -> Double): DoubleArray {
-  return (0 until length).map { i -> generator(i) }.asDoubleArray()
+@Suppress("UNCHECKED_CAST")
+fun <T> Collection<*>.asArray(clazz: Class<T>): Array<T> {
+  val array: Array<T> = java.lang.reflect.Array.newInstance(clazz, this.size) as Array<T>
+  this.forEachIndexed { i, item -> array[i] = item as T }
+  return array
 }
 
 
@@ -205,4 +269,174 @@ fun <T> Collection<T>.padTo(itemCount: Int, item: T): Collection<T> {
     list.add(item)
   }
   return list
+}
+
+fun <T> isSameElements(left: Iterable<T>, right: Iterable<T>): Boolean {
+  if (left is List<T> && right is List<T>) {
+    if (left.size == right.size) {
+      for (i in left.indices) {
+        if (left[i] != right[i])
+          return false
+      }
+      return true
+    }
+    return false
+  }
+  val l = left.iterator()
+  val r = right.iterator()
+
+  while (l.hasNext() && r.hasNext()) {
+    if (!areEquals(l.next(), r.next()))
+      return false
+  }
+  return !l.hasNext() && !r.hasNext()
+}
+
+
+fun <T> Set<T>?.toList(): List<T> {
+  if (this == null)
+    return emptyFastList<T>()
+
+  return FastList.newList(this)
+}
+
+
+fun <K, V> kotlin.collections.Map<K, V>.sortWith(comparator: Comparator<in Pair<K, V>>): MutableSortedMap<K, V>
+    = this.toList().sortedWith(comparator).toMap().toSortedMap()
+
+fun <K : Comparable<K>, V> kotlin.collections.Map<K, V>.sortByKey(): kotlin.collections.Map<K, V>
+    = this.toList().sortedBy { it.first }.toMap()
+
+fun <K : Comparable<K>, V> kotlin.collections.Map<K, V>.sortByKeyDesc(): kotlin.collections.Map<K, V>
+    = this.toList().sortedByDescending { it.first }.toMap()
+
+fun <K, V : Comparable<V>> kotlin.collections.Map<K, V>.sortByValue(): kotlin.collections.Map<K, V>
+    = this.toList().sortedBy { it.second }.toMap()
+
+fun <K, V : Comparable<V>> kotlin.collections.Map<K, V>.sortByValueDesc(): kotlin.collections.Map<K, V>
+    = this.toList().sortedByDescending { it.second }.toMap()
+
+
+fun <K : Comparable<K>, V> kotlin.collections.Map<K, V>.maxByKey(): Pair<K, V>
+    = this.maxBy { it.key }!!.toPair()
+
+fun <K : Comparable<K>, V> kotlin.collections.Map<K, V>.minByKey(): Pair<K, V>
+    = this.minBy { it.key }!!.toPair()
+
+fun <K, V : Comparable<V>> kotlin.collections.Map<K, V>.maxByValue(): Pair<K, V>
+    = this.maxBy { it.value }!!.toPair()
+
+fun <K, V : Comparable<V>> kotlin.collections.Map<K, V>.minByValue(): Pair<K, V>
+    = this.minBy { it.value }!!.toPair()
+
+
+fun <K, V> kotlin.collections.Map<K, V>.toSortedMap(): MutableSortedMap<K, V>
+    = SortedMaps.mutable.ofSortedMap(this)
+
+
+fun <T> emptyFastList(): FastList<T> = FastList.newList<T>()
+fun <T> fastListOf(): FastList<T> = FastList.newList<T>()
+
+/**
+ * Build [FastList]
+ */
+fun <T> fastListOf(vararg elements: T): FastList<T> {
+  return if (elements.size == 0) FastList.newList()
+  else FastList.newListWith(*elements)
+}
+
+fun <T> fastListOf(iterable: Iterable<T>): FastList<T> = FastList.newList(iterable)
+fun <T> fastListOf(iterator: Iterator<T>): FastList<T> {
+  val list = fastListOf<T>()
+  while (iterator.hasNext()) {
+    list.add(iterator.next())
+  }
+  return list
+}
+
+fun <T> Sequence<T>.toFastList(): FastList<T> {
+  return FastList.newList<T>().apply {
+    this@toFastList.forEach { this@apply.add(it) }
+  }
+}
+
+/**
+ * Convert [Iterable] to [FastList]
+ */
+fun <T> Iterable<T>.toFastList(): FastList<T> {
+  return FastList.newList(this)
+}
+
+fun <T> Iterator<T>.toFastList(): FastList<T> {
+  return FastList.newList<T>().apply {
+    this@toFastList.forEach { this@apply.add(it) }
+  }
+}
+
+/**
+ * Convert [Array] to [FastList]
+ */
+fun <T> Array<out T>.toFastList(): FastList<T> = FastList.newListWith(*this)
+
+/**
+ * Convert [Array] to [UnifiedSet]
+ */
+fun <T> Array<out T>.toUnifiedSet(): UnifiedSet<T>
+    = UnifiedSet.newSetWith(*this)
+
+fun <T> emptyUnifiedSet(): UnifiedSet<T> = UnifiedSet.newSet()
+fun <T> unifiedSetOf(): UnifiedSet<T> = UnifiedSet.newSet()
+fun <T> unifiedSetOf(vararg values: T): UnifiedSet<T> = UnifiedSet.newSetWith(*values)
+
+/**
+ * Convert [Array] to [MutableSortedSet]
+ */
+fun <T> Array<out T>.toSortedSet(): MutableSortedSet<T> = sortedSetOf(*this)
+
+/**
+ * Build [MutableSortedSet]
+ */
+fun <T> sortedSetOf(vararg values: T): MutableSortedSet<T>
+    = SortedSets.mutable.of(*values)
+
+/**
+ * Build [MutableSortedSet] with Iterable
+ */
+fun <T> sortedSetOf(iterable: Iterable<T>): MutableSortedSet<T>
+    = SortedSets.mutable.ofAll(iterable)
+
+/**
+ * Map to [UnifiedMap]
+ */
+fun <K, V> kotlin.collections.Map<K, V>.toUnifiedMap(): UnifiedMap<K, V> {
+  if (this is UnifiedMap<K, V>)
+    return this
+
+  val map = UnifiedMap.newMap<K, V>()
+  if (this.size > 0) {
+    for ((k, v) in this) {
+      map.put(k, v)
+    }
+  }
+  return map
+}
+
+/**
+ * build [UnifiedMap]
+ */
+fun <K, V> unifiedMapOf(vararg pairs: Pair<K, V>): UnifiedMap<K, V> {
+  val map = UnifiedMap.newMap<K, V>(pairs.size)
+  for ((k, v) in pairs) {
+    map.put(k, v)
+  }
+  return map
+}
+
+/**
+ * Convert to [UnifiedMap]
+ */
+fun <K, V> Iterable<Pair<K, V>>.toUnifiedMap(): UnifiedMap<K, V> {
+  val map = UnifiedMap.newMap<K, V>()
+  this.forEach { pair -> map.put(pair.first, pair.second) }
+  return map
 }

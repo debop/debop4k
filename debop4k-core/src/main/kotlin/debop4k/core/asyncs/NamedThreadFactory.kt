@@ -13,8 +13,7 @@
  * limitations under the License.
  *
  */
-
-package kesti4j.core.asyncs
+package debop4k.core.asyncs
 
 import java.util.concurrent.*
 import java.util.concurrent.atomic.*

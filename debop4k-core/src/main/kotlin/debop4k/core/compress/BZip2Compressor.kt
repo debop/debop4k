@@ -20,22 +20,24 @@ import debop4k.core.collections.emptyByteArray
 import debop4k.core.collections.isNullOrEmpty
 import debop4k.core.io.fastByteArrayOutputStreamOf
 import debop4k.core.io.toByteArray
+import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream
+import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream
 import java.io.BufferedInputStream
 import java.io.ByteArrayInputStream
-import java.util.zip.*
 
 /**
- * Zip 압축 알고리즘을 사용한 압축기
+ * BZip2 압축기
+ * @author sunghyouk.bae@gmail.com
  */
-class ZipCompressor : Compressor {
+class BZip2Compressor : Compressor {
 
   override fun compress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty)
       return emptyByteArray
 
     fastByteArrayOutputStreamOf().use { bos ->
-      ZipOutputStream(bos).use { zip ->
-        zip.write(input)
+      BZip2CompressorOutputStream(bos).use { bzip2 ->
+        bzip2.write(input!!)
       }
       return bos.toByteArrayUnsafe()
     }
@@ -46,8 +48,8 @@ class ZipCompressor : Compressor {
       return emptyByteArray
 
     BufferedInputStream(ByteArrayInputStream(input)).use { bis ->
-      ZipInputStream(bis).use { zip ->
-        return zip.toByteArray()
+      BZip2CompressorInputStream(bis).use { bzip2 ->
+        return bzip2.toByteArray()
       }
     }
   }

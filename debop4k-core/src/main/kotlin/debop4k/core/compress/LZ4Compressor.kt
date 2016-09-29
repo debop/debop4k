@@ -38,7 +38,7 @@ class LZ4Compressor : Compressor {
     if (input.isNullOrEmpty)
       return emptyByteArray
 
-    return decompressor.decompress(input, input!!.size * 1000)
+    return decompressor.decompress(input, input!!.size * 255)
   }
 
   companion object {

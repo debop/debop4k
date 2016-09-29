@@ -18,7 +18,6 @@ package debop4k.core.collections
 
 import debop4k.core.max
 import debop4k.core.min
-import org.eclipse.collections.impl.list.mutable.FastList
 import org.eclipse.collections.impl.list.mutable.primitive.CharArrayList
 import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList
 import org.eclipse.collections.impl.list.mutable.primitive.LongArrayList
@@ -53,26 +52,29 @@ fun LongProgression.toLongArrayList(): LongArrayList {
   return array
 }
 
-
 /**
  * [IntProgression] 의 요소들을 `groupSize` 만큼의 요소를 가진 서브 그룹의로 만든다.
  * 100개의 요소, groupSize = 25 이면 4개의 IntProgress 의 컬렉션을 반환합니다.
+ * @see partitioning
  */
-fun IntProgression.grouped(groupSize: Int): FastList<IntProgression> {
+fun IntProgression.grouped(groupSize: Int): List<IntProgression> {
   require(groupSize > 0)
 
   val partitionCount = this.size() / groupSize + (if (this.size() % groupSize == 0) 0 else 1)
   return this.partitioning(partitionCount)
 }
 
-fun groupedFromCount(count: Int, groupSize: Int): FastList<IntProgression> {
+fun groupedFromCount(count: Int, groupSize: Int): List<IntProgression> {
   return IntProgression
       .fromClosedRange(0, count - 1, 1)
       .grouped(groupSize)
 }
 
+/**
+ * [start] ~ [end] 범위의 Integer 값을 groupSize 크기의 [IntProgression] 의 컬렉션으로 빌드합니다.
+ */
 @JvmOverloads
-fun groupedFromRange(start: Int, endInclusive: Int, step: Int = 1, groupSize: Int = 1): FastList<IntProgression> {
+fun groupedFromRange(start: Int, endInclusive: Int, step: Int = 1, groupSize: Int = 1): List<IntProgression> {
   return IntProgression
       .fromClosedRange(start, endInclusive, step)
       .grouped(groupSize)
@@ -81,15 +83,17 @@ fun groupedFromRange(start: Int, endInclusive: Int, step: Int = 1, groupSize: In
 /**
  * [IntProgression] 을 지정한 파티션 갯수로 그룹을 나눕니다.
  * 100개의 요소가 있는 IntRange 에 partitionCount = 4 라면 요소 25개를 가진 IntRange 4개를 가지는 리스트를 반환합니다.
+ * @see grouped
  */
 @JvmOverloads
-fun IntProgression.partitioning(partitionCount: Int = 1): FastList<IntProgression> {
+fun IntProgression.partitioning(partitionCount: Int = 1): List<IntProgression> {
   val stepSign = if (this.step >= 0) 1 else -1
   val step = this.step
   val partitionSize = this.size() / partitionCount
   var remainder = this.size() % partitionCount
 
-  val partitions: FastList<IntProgression> = FastList.newList<IntProgression>()
+  //val partitions: FastList<IntProgression> = FastList.newList<IntProgression>()
+  val partitions = arrayListOf<IntProgression>()
 
   var start = this.first
   for (i in 0 until partitionCount) {
@@ -110,7 +114,7 @@ fun IntProgression.partitioning(partitionCount: Int = 1): FastList<IntProgressio
   return partitions
 }
 
-fun partitioningFromCount(count: Int, partitionCount: Int): FastList<IntProgression> {
+fun partitioningFromCount(count: Int, partitionCount: Int): List<IntProgression> {
   return IntProgression.fromClosedRange(0, count - 1, 1).partitioning(partitionCount)
 }
 
@@ -118,22 +122,24 @@ fun partitioningFromCount(count: Int, partitionCount: Int): FastList<IntProgress
 fun partitioningFromRange(start: Int,
                           endInclusive: Int,
                           step: Int = 1,
-                          partitionCount: Int = 1): FastList<IntProgression> {
+                          partitionCount: Int = 1): List<IntProgression> {
   return IntProgression.fromClosedRange(start, endInclusive, step).partitioning(partitionCount)
 }
 
 /**
  * [LongProgression] 의 요소들을 `groupSize` 만큼의 요소를 가진 서브 그룹의로 만든다.
  * 100개의 요소, groupSize = 25 이면 4개의 IntProgress 의 컬렉션을 반환합니다.
+ *
+ * @see partitioning
  */
-fun LongProgression.grouped(groupSize: Long): FastList<LongProgression> {
+fun LongProgression.grouped(groupSize: Long): List<LongProgression> {
   require(groupSize > 0)
 
   val partitionCount = this.size() / groupSize + (if (this.size() % groupSize == 0L) 0 else 1)
   return this.partitioning(partitionCount)
 }
 
-fun groupedLongFromCount(count: Long, groupSize: Long): FastList<LongProgression> {
+fun groupedLongFromCount(count: Long, groupSize: Long): List<LongProgression> {
   return LongProgression
       .fromClosedRange(0, count - 1, 1)
       .grouped(groupSize)
@@ -143,7 +149,7 @@ fun groupedLongFromCount(count: Long, groupSize: Long): FastList<LongProgression
 fun groupedLongFromRange(start: Long,
                          endInclusive: Long,
                          step: Long = 1,
-                         groupSize: Long = 1L): FastList<LongProgression> {
+                         groupSize: Long = 1L): List<LongProgression> {
   return LongProgression
       .fromClosedRange(start, endInclusive, step)
       .grouped(groupSize)
@@ -152,15 +158,18 @@ fun groupedLongFromRange(start: Long,
 /**
  * [LongProgression] 을 지정한 파티션 갯수로 그룹을 나눕니다.
  * 100개의 요소가 있는 LongRange 에 partitionCount = 4 라면 요소 25개를 가진 LongRange 4개를 가지는 리스트를 반환합니다.
+ *
+ * @see grouped
  */
 @JvmOverloads
-fun LongProgression.partitioning(partitionCount: Long = 1L): FastList<LongProgression> {
+fun LongProgression.partitioning(partitionCount: Long = 1L): List<LongProgression> {
   val stepSign = if (this.step >= 0) 1 else -1
   val step = this.step
   val partitionSize = this.size() / partitionCount
   var remainder = this.size() % partitionCount
 
-  val partitions: FastList<LongProgression> = FastList.newList<LongProgression>()
+//  val partitions: FastList<LongProgression> = FastList.newList<LongProgression>()
+  val partitions = arrayListOf<LongProgression>()
 
   var start = this.first
   for (i in 0 until partitionCount) {
@@ -181,7 +190,7 @@ fun LongProgression.partitioning(partitionCount: Long = 1L): FastList<LongProgre
   return partitions
 }
 
-fun partitioningFromCount(count: Long, partitionCount: Long): FastList<LongProgression> {
+fun partitioningFromCount(count: Long, partitionCount: Long): List<LongProgression> {
   return LongProgression.fromClosedRange(0, count - 1, 1).partitioning(partitionCount)
 }
 
@@ -189,7 +198,8 @@ fun partitioningFromCount(count: Long, partitionCount: Long): FastList<LongProgr
 fun partitioningFromRange(start: Long,
                           endInclusive: Long,
                           step: Long = 1,
-                          partitionCount: Long = 1): FastList<LongProgression> {
+                          partitionCount: Long = 1): List<LongProgression> {
   return LongProgression.fromClosedRange(start, endInclusive, step).partitioning(partitionCount)
 }
+
 

@@ -13,24 +13,20 @@
  * limitations under the License.
  *
  */
-package debop4k.core.compress
 
-import debop4k.core.io.toByteArray
-import java.nio.ByteBuffer
+package debop4k.core.io.serializers
 
+/**
+ * 직렬화를 위한 Decorator
+ * @author sunghyouk.bae@gmail.com
+ */
+open class SerializerDecorator(val serializer: Serializer) : Serializer {
 
-fun Compressor.compress(buffer: ByteBuffer): ByteBuffer
-    = ByteBuffer.wrap(this.compress(buffer.toByteArray()))
+  open override fun serialize(graph: Any?): ByteArray {
+    return serializer.serialize(graph)
+  }
 
-fun Compressor.compressAsString(input: String): String {
-  return this.compress(input.toByteArray()).toString(Charsets.UTF_8)
+  open override fun <T> deserialize(bytes: ByteArray?): T {
+    return serializer.deserialize(bytes)
+  }
 }
-
-fun Compressor.decompress(buffer: ByteBuffer): ByteBuffer
-    = ByteBuffer.wrap(this.decompress(buffer.toByteArray()))
-
-fun Compressor.decompressAsString(input: String): String {
-  return this.decompress(input.toByteArray()).toString(Charsets.UTF_8)
-}
-
-

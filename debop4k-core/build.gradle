@@ -23,7 +23,7 @@ dependencies {
     compile "joda-time:joda-time"
     compile "org.joda:joda-convert"
 
-    compile("org.springframework:spring-core") {
+    compile("org.springframework:spring-context") {
         exclude(module: 'commons-logging')
     }
 

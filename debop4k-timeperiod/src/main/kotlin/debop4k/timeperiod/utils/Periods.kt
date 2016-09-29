@@ -19,7 +19,7 @@
 package debop4k.timeperiod.utils
 
 import debop4k.core.NULL_STRING
-import debop4k.core.collections.eclipseCollections.parMap
+import debop4k.core.collections.parMap
 import debop4k.core.kodatimes.*
 import debop4k.timeperiod.*
 import debop4k.timeperiod.models.PeriodRelation

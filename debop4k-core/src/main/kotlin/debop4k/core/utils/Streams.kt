@@ -16,9 +16,9 @@
 
 package debop4k.core.utils
 
-import debop4k.core.collections.eclipseCollections.toDoubleArrayList
-import debop4k.core.collections.eclipseCollections.toIntArrayList
-import debop4k.core.collections.eclipseCollections.toLongArrayList
+import debop4k.core.collections.toDoubleArrayList
+import debop4k.core.collections.toIntArrayList
+import debop4k.core.collections.toLongArrayList
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.eclipse.collections.impl.list.mutable.primitive.DoubleArrayList
 import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList
