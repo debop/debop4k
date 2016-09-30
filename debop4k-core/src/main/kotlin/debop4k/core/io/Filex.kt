@@ -19,17 +19,17 @@ package debop4k.core.io
 
 import com.google.common.io.Files
 import debop4k.core.collections.emptyByteArray
+import debop4k.core.loggerOf
 import debop4k.core.utils.max
 import nl.komponents.kovenant.Promise
 import nl.komponents.kovenant.task
 import org.apache.commons.io.FileUtils
 import org.eclipse.collections.impl.list.mutable.FastList
-import org.slf4j.LoggerFactory
 import java.io.*
 import java.nio.charset.Charset
 import kotlin.concurrent.thread
 
-private val log = LoggerFactory.getLogger("IOFiles")
+private val log = loggerOf("IOFiles")
 
 const val EXTENSION_SEPARATOR = '.'
 
@@ -38,8 +38,12 @@ const val WINDOWS_SEPARATOR = '\\'
 
 val SYSTEM_SEPARATOR = File.separatorChar
 
-/** 디렉토리 생성 */
+/**
+ * 디렉토리 생성
+ * NOTE: 여러 Depth의 directory 라면 분해해서 재귀호출로 생성해야 한다
+ */
 fun createDirectory(dir: String): File? {
+  log.trace("create directory. dir={}", dir)
   try {
     val file = File(dir)
     val created = file.mkdir()
@@ -54,7 +58,7 @@ fun createDirectory(dir: String): File? {
 
 /** 파일 생성 */
 fun createFile(path: String): File {
-  log.debug("create file. path={}", path)
+  log.trace("create file. path={}", path)
 
   val file = File(path)
   Files.createParentDirs(file)

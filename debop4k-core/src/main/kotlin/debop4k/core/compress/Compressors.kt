@@ -13,6 +13,8 @@
  * limitations under the License.
  *
  */
+@file:JvmName("Compressors")
+
 package debop4k.core.compress
 
 import debop4k.core.io.toByteArray

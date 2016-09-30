@@ -54,6 +54,8 @@ dependencies {
     optional "com.google.code.gson:gson"
     optional "com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers"
 
+    optional "io.reactivex:rxjava"
+
     optional "net.jpountz.lz4:lz4"
 
     compile "org.jodd:jodd-core:3.7.1"
