@@ -19,7 +19,7 @@ package debop4k.core.io
 
 import com.google.common.io.Files
 import debop4k.core.collections.emptyByteArray
-import debop4k.core.max
+import debop4k.core.utils.max
 import nl.komponents.kovenant.Promise
 import nl.komponents.kovenant.task
 import org.apache.commons.io.FileUtils

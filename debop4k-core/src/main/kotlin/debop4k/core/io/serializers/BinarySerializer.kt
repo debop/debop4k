@@ -18,14 +18,15 @@ package debop4k.core.io.serializers
 
 
 import debop4k.core.collections.emptyByteArray
-import org.springframework.util.FastByteArrayOutputStream
+import debop4k.core.collections.isNullOrEmpty
+import debop4k.core.io.fastByteArrayOutputStreamOf
+import debop4k.core.uninitialized
 import java.io.ByteArrayInputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 
 /**
- * 이진 방식으로 직렬화/역직렬화를 수행합니다.
- *
+ * JDK 에서 기본적으로 제공하는 방식으로 직렬화 (객체를 바이트 배열에 변환), 역직렬화(바이트 배열을 읽어서 객체로 변환)를 수행합니다
  * @author sunghyouk.bae@gmail.com
  */
 class BinarySerializer : Serializer {
@@ -34,7 +35,7 @@ class BinarySerializer : Serializer {
     if (graph == null)
       return emptyByteArray
 
-    FastByteArrayOutputStream().use { bos ->
+    fastByteArrayOutputStreamOf().use { bos ->
       ObjectOutputStream(bos).use { oos ->
         oos.writeObject(graph)
       }
@@ -43,14 +44,18 @@ class BinarySerializer : Serializer {
   }
 
   @Suppress("UNCHECKED_CAST")
-  override fun <T> deserialize(bytes: ByteArray): T? {
-    if (bytes.isEmpty())
-      return null as T
+  override fun <T> deserialize(bytes: ByteArray?): T {
+    if (bytes.isNullOrEmpty)
+      return uninitialized()
 
     ByteArrayInputStream(bytes).use { bis ->
       ObjectInputStream(bis).use { ois ->
         return ois.readObject() as T
       }
     }
+  }
+
+  companion object {
+    @JvmStatic fun of(): BinarySerializer = BinarySerializer()
   }
 }

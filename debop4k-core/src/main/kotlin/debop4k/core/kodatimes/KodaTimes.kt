@@ -1,17 +1,16 @@
 /*
- * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Copyright (c) 2016. KESTI co, ltd
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 @file:JvmName("KodaTimes")
@@ -27,11 +26,31 @@ import org.joda.time.format.ISODateTimeFormat
 import java.sql.Timestamp
 import java.util.*
 
+val EPOCH: DateTime = DateTime(0)
+
 // yyyy-MM-dd'T'HH:mm:ss.SSSZZ
-val JODA_DEFAULT_DATETIME_FORMATTER = ISODateTimeFormat.dateTime()
+val JODA_DEFAULT_DATETIME_FORMATTER: DateTimeFormatter = ISODateTimeFormat.dateTime()
 
-fun DateTime.asTimestamp(): Timestamp = Timestamp(this.millis)
+/** 기본 [DateTimeFormatter] */
+private val defaultFormatter: DateTimeFormatter = ISODateTimeFormat.dateTime()
 
+/** Timestamp 값을 [DateTime] 으로 변환합니다 */
+fun Long.toDateTime(): DateTime = DateTime(this)
+
+@JvmOverloads
+fun String?.parse(formatter: DateTimeFormatter = defaultFormatter): DateTime
+    = if (this.isNullOrBlank()) DateTime(0) else DateTime.parse(this, formatter)
+
+fun DateTime.weekyearAndWeekOfWeekyear(): Pair<Int, Int>
+    = Pair(this.weekyear, this.weekOfWeekyear)
+
+fun DateTime.monthAndWeekOfMonth(): Pair<Int, Int> {
+  val result = weekOfWeekyear - startOfMonth().weekOfWeekyear + 1
+  if (result > 0)
+    return Pair(monthOfYear, result)
+
+  return Pair(this.plusMonths(1).monthOfYear, 1)
+}
 
 fun utcNow(): DateTime = DateTime.now(DateTimeZone.UTC)
 
@@ -43,7 +62,6 @@ fun String.toDateTime(formatter: DateTimeFormatter): DateTime {
     return DateTime(0)
   return DateTime.parse(this, formatter)
 }
-
 
 fun DateTime.startOfDay(): DateTime = this.withTimeAtStartOfDay()
 fun DateTime.endOfDay(): DateTime = this.startOfDay().plusDays(1).minusMillis(1)
@@ -67,7 +85,7 @@ fun DateTime.getMonthAndWeekOfMonth(): Pair<Int, Int> {
 }
 
 
-val DefaultTimeZone: DateTimeZone = DateTimeZone.getDefault()
+val DefaultTimeZone: DateTimeZone get() = DateTimeZone.getDefault()
 
 @JvmOverloads
 fun Date?.toDateTime(zone: DateTimeZone = DefaultTimeZone): DateTime? {
@@ -106,6 +124,7 @@ fun Int.times(period: Period): Period = period.multipliedBy(this)
 @JvmOverloads
 fun Int.asDateTime(zone: DateTimeZone = DefaultTimeZone): DateTime = DateTime(this, zone)
 
+/** 해당년도의 일수 (day count) */
 fun Int.dayCountOfYear(): Int = asDate(this + 1).minusMillis(1).dayOfYear
 
 
@@ -131,36 +150,43 @@ fun Long.times(period: Period): Period = period.multipliedBy(this.toInt())
 @JvmOverloads
 fun Long.asDateTime(zone: DateTimeZone = DefaultTimeZone): DateTime = DateTime(this, zone)
 
-
 /**
  * String extensions
  */
-fun dateTimeFormat(pattern: String) = DateTimeFormat.forPattern(pattern)
+fun dateTimeFormat(pattern: String): DateTimeFormatter = DateTimeFormat.forPattern(pattern)
 
-fun String.toDateTime(pattern: String? = null): DateTime? = try {
-  if (pattern.isNullOrBlank()) DateTime(this)
-  else DateTime.parse(this, dateTimeFormat(pattern!!))
-} catch(ignored: Exception) {
-  null
+fun String.toDateTime(pattern: String? = null): DateTime? {
+  return try {
+    if (pattern.isNullOrBlank()) DateTime(this)
+    else DateTime.parse(this, dateTimeFormat(pattern!!))
+  } catch(ignored: Exception) {
+    null
+  }
 }
 
-fun String.toInterval(): Interval? = try {
-  Interval.parse(this)
-} catch(ignored: Exception) {
-  null
+fun String.toInterval(): Interval? {
+  return try {
+    Interval.parse(this)
+  } catch(ignored: Exception) {
+    null
+  }
 }
 
-fun String.toLocalDate(pattern: String? = null): LocalDate? = try {
-  if (pattern.isNullOrBlank()) LocalDate(this)
-  else LocalDate.parse(this, dateTimeFormat(pattern!!))
-} catch(ignored: Exception) {
-  null
+fun String.toLocalDate(pattern: String? = null): LocalDate? {
+  return try {
+    if (pattern.isNullOrBlank()) LocalDate(this)
+    else LocalDate.parse(this, dateTimeFormat(pattern!!))
+  } catch(ignored: Exception) {
+    null
+  }
 }
 
-fun String.toLocalTime(pattern: String? = null): LocalTime? = try {
-  if (pattern.isNullOrBlank()) LocalTime(this) else LocalTime.parse(this, dateTimeFormat(pattern!!))
-} catch(ignored: Exception) {
-  null
+fun String.toLocalTime(pattern: String? = null): LocalTime? {
+  return try {
+    if (pattern.isNullOrBlank()) LocalTime(this) else LocalTime.parse(this, dateTimeFormat(pattern!!))
+  } catch(ignored: Exception) {
+    null
+  }
 }
 
 fun String.asDateTimeByPattern(pattern: String): DateTime? {
@@ -168,7 +194,6 @@ fun String.asDateTimeByPattern(pattern: String): DateTime? {
     return DateTime.parse(this, DateTimeFormat.forPattern(pattern))
   return null
 }
-
 
 fun dateTimeFromJson(json: String): DateTime = DateTime(json)
 fun dateTimeOf(year: Int, month: Int, day: Int): DateTime = DateTime(year, month, day, 0, 0)
@@ -226,6 +251,7 @@ fun DateTime.lastWeek(): DateTime = this.minusWeeks(1)
 fun DateTime.lastMonth(): DateTime = this.minusMonths(1)
 fun DateTime.lastYear(): DateTime = this.minusYears(1)
 
+fun DateTime.asTimestamp(): Timestamp = Timestamp(this.millis)
 fun DateTime.toTimestamp(): Timestamp = Timestamp(this.millis)
 fun DateTime.asUtc(): DateTime = this.toDateTime(DateTimeZone.UTC)
 @JvmOverloads
@@ -317,26 +343,22 @@ fun Duration.hours(): Long = this.standardHours
 fun Duration.minutes(): Long = this.standardMinutes
 fun Duration.seconds(): Long = this.standardSeconds
 
-fun Duration.abs(): Duration = if (this.millis < 0L) -this else this
+fun Duration.abs(): Duration = if (this < emptyDuration) -this else this
 fun Duration.fromNow(): DateTime = now() + this
 fun Duration.agoNow(): DateTime = now() - this
 fun Duration.afterEpoch(): DateTime = DateTime(0) + this
 fun Duration.diff(other: Duration): Duration = this - other
 
 operator fun Duration.unaryMinus(): Duration = this.negated()
+operator fun Duration.div(divisor: Int): Duration = this.dividedBy(divisor.toLong())
 operator fun Duration.div(divisor: Long): Duration = this.dividedBy(divisor)
+operator fun Duration.times(multiplicand: Int): Duration = this.multipliedBy(multiplicand.toLong())
 operator fun Duration.times(multiplicand: Long): Duration = this.multipliedBy(multiplicand)
 
 fun Duration.isZero(): Boolean = this.millis == 0L
 
-infix fun Duration.min(that: Duration): Duration {
-  return if (this.compareTo(that) < 0) this else that
-}
-
-infix fun Duration.max(that: Duration): Duration {
-  return if (this.compareTo(that) > 0) this else that
-}
-
+infix fun Duration.min(that: Duration): Duration = if (this.compareTo(that) < 0) this else that
+infix fun Duration.max(that: Duration): Duration = if (this.compareTo(that) > 0) this else that
 
 /**
  * [Period] extensions
@@ -366,40 +388,56 @@ fun thisSecond(): Interval = now().secondOfMinute().toInterval()
 fun thisMinute(): Interval = now().minuteOfHour().toInterval()
 fun thisHour(): Interval = now().hourOfDay().toInterval()
 
-//
-// [ReadableInstant] .. [ReadableInstant] => [Interval]
-//
-operator fun ReadableInstant.rangeTo(other: ReadableInstant): Interval = Interval(this, other)
-
-fun ReadableInterval.millis(): Long = this.toDurationMillis()
-
-fun ReadableInterval.days(): List<DateTime> {
-
-  tailrec fun recur(acc: MutableList<DateTime>, curr: DateTime, target: DateTime): MutableList<DateTime> {
-    if (curr.startOfDay() > target.startOfDay()) {
-      return acc
-    } else {
-      acc += curr
-      return recur(acc, curr.nextDay(), target)
-    }
-  }
-  return recur(mutableListOf(), start, end)
-}
-
-infix fun ReadableInterval.step(instant: ReadablePeriod): List<DateTime> {
-  val acc = mutableListOf(start)
-  var current = start + instant
-  while (current <= end) {
-    acc += current
-    current += instant
-  }
-  return acc
-}
-
 fun DateTimeZone.timeZoneOffset(): Int = this.getOffset(0)
 fun String.timeZoneOffset(): Int = DateTimeZone.forID(this).timeZoneOffset()
 fun Int.timeZoneForOffsetMillis(): DateTimeZone = DateTimeZone.forOffsetMillis(this)
 
 fun availableTimeZone(): ImmutableSet<DateTimeZone> = TimeZones.Zones
 fun availableOffsetMillis(): ImmutableSet<Int> = TimeZones.Offsets
+
+
+//
+// [ReadableInstant] .. [ReadableInstant] => [Interval]
+//
+/**
+ * 시각 .. 시각 => [Interval]이 된다.
+ */
+operator fun ReadableInstant.rangeTo(other: ReadableInstant): Interval = Interval(this, other)
+
+fun ReadableInterval.millis(): Long = this.toDurationMillis()
+
+infix fun ReadableInterval.step(instance: ReadablePeriod): Sequence<DateTime> {
+  return generateSequence(start + instance) { it + instance }.takeWhile { it <= end }
+}
+
+/** 기간을 초 단위로 열거합니다. */
+fun ReadableInterval.seconds(): Sequence<DateTime> {
+  return generateSequence(start) { it.plusSeconds(1) }.takeWhile { it <= end }
+}
+
+/** 기간을 분 단위로 열거합니다. */
+fun ReadableInterval.minutes(): Sequence<DateTime> {
+  return generateSequence(start) { it.plusMinutes(1) }.takeWhile { it <= end }
+}
+
+/** 기간을 시간 단위로 열거합니다. */
+fun ReadableInterval.hours(): Sequence<DateTime> {
+  return generateSequence(start) { it.plusHours(1) }.takeWhile { it <= end }
+}
+
+/** 기간을 일 단위로 열거합니다. */
+fun ReadableInterval.days(): Sequence<DateTime> {
+  return generateSequence(start.startOfDay()) { it.plusDays(1) }.takeWhile { it <= end }
+}
+
+/** 기간을 주 단위로 열거합니다. */
+fun ReadableInterval.weeks(): Sequence<DateTime> {
+  return generateSequence(start.startOfWeek()) { it.plusWeeks(1) }.takeWhile { it <= end }
+}
+
+/** 기간을 월 단위로 열거합니다. */
+fun ReadableInterval.months(): Sequence<DateTime> {
+  return generateSequence(start.startOfMonth()) { it.plusMonths(1) }.takeWhile { it <= end }
+}
+
 

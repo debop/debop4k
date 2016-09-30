@@ -16,8 +16,8 @@
 
 package debop4k.core.collections
 
-import debop4k.core.max
-import debop4k.core.min
+import debop4k.core.utils.max
+import debop4k.core.utils.min
 import org.eclipse.collections.impl.list.mutable.primitive.CharArrayList
 import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList
 import org.eclipse.collections.impl.list.mutable.primitive.LongArrayList

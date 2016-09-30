@@ -14,9 +14,11 @@
  *
  */
 
+@file:JvmName("Assertions")
+
 package debop4k.core
 
-infix inline fun <T> T.firstNotNull(factory: () -> T): T = if (this != null) this else factory()
+infix inline fun <T> T.firstNotNull(factory: () -> T): T = this ?: factory() //if (this != null) this else factory()
 
 infix inline fun <T> T.verifiedBy(verifier: (T) -> Unit): T {
   verifier(this)
@@ -33,15 +35,11 @@ inline fun <T> T.assertBy(assertion: (T) -> Unit): T {
   return this
 }
 
-inline fun <T> T.assertWith(assertWith: T.() -> Unit): T {
-  this.assertWith()
+inline fun <T> T.assertWith(assert: T.() -> Unit): T {
+  this.assert()
   return this
 }
 
-fun Any?.shouldNotBeNull(name: String) {
-  if (this == null)
-    throw RuntimeException("$name should not be null")
-}
 
 fun Number.shouldBePositive(name: String) {
   if (this.toDouble() <= 0)

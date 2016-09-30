@@ -1,57 +1,69 @@
 /*
- * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Copyright (c) 2016. KESTI co, ltd
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.core.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import debop4k.core.EMPTY_STRING
 import debop4k.core.collections.emptyByteArray
+import debop4k.core.collections.isNullOrEmpty
+import debop4k.core.uninitialized
+import debop4k.core.utils.EMPTY_STRING
+
 
 /**
- * JacksonSerializer
+ * Jackson Json Serializer
  * @author debop sunghyouk.bae@gmail.com
  */
-class JacksonSerializer(val objectMapper: ObjectMapper = ObjectMapperFactory.newMapper()) : AbstractJsonSerializer() {
+class JacksonSerializer
+@JvmOverloads constructor(val mapper: ObjectMapper = DEFAULT_OBJECT_MAPPER) : JsonSerializer {
 
+  /** 객체를 Json 직렬화를 수행하여 바이트 배열로 반환한다 */
   override fun toByteArray(graph: Any?): ByteArray {
     if (graph == null)
       return emptyByteArray
 
-    return objectMapper.writeValueAsBytes(graph)
+    return mapper.writeValueAsBytes(graph)
   }
 
+  /** Json 데이터를 가진 바이트 배열을 읽어 지정된 수형의 인스턴스를 생성한다 */
   override fun <T> fromByteArray(jsonBytes: ByteArray?, clazz: Class<T>): T? {
-    if (jsonBytes == null)
-      return null as T
+    if (jsonBytes.isNullOrEmpty)
+      return uninitialized()
 
-    return objectMapper.readValue(jsonBytes, clazz)
+    return mapper.readValue(jsonBytes, clazz)
   }
 
+  /** 객체를 Json 직렬화를 통해 문자열로 변환한다 */
   override fun toString(graph: Any?): String {
     if (graph == null)
       return EMPTY_STRING
 
-    return objectMapper.writeValueAsString(graph)
+    return mapper.writeValueAsString(graph)
   }
 
+  /** Json 문자열을 역직렬화해서 지정된 수형의 인스턴스를 생성한다 */
   override fun <T> fromString(jsonText: String?, clazz: Class<T>): T? {
-    if (jsonText.isNullOrBlank()) {
-      return null as T
-    }
+    if (jsonText.isNullOrEmpty())
+      return uninitialized()
 
-    return objectMapper.readValue(jsonText, clazz)
+    return mapper.readValue(jsonText, clazz)
+  }
+
+  companion object {
+    @JvmStatic
+    @JvmOverloads
+    fun of(mapper: ObjectMapper = DEFAULT_OBJECT_MAPPER) = JacksonSerializer(mapper)
   }
 }

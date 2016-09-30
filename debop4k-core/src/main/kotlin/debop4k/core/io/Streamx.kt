@@ -17,11 +17,11 @@
 
 package debop4k.core.io
 
-import debop4k.core.EMPTY_STRING
 import debop4k.core.collections.emptyByteArray
 import debop4k.core.collections.fastListOf
 import debop4k.core.collections.isNullOrEmpty
 import debop4k.core.collections.toFastList
+import debop4k.core.utils.EMPTY_STRING
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.slf4j.LoggerFactory
 import org.springframework.util.FastByteArrayOutputStream

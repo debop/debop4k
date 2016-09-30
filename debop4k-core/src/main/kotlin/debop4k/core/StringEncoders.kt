@@ -18,6 +18,7 @@
 
 package debop4k.core
 
+import debop4k.core.utils.EMPTY_STRING
 import org.apache.commons.codec.binary.Base64
 import org.apache.commons.codec.binary.Hex
 

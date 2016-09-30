@@ -33,12 +33,12 @@ object Serializers {
   @JvmField val LZ4_BINARY = LZ4BinarySerializer()
 
   /** LZ4 + FST Serializer */
-  @JvmField val LZ4_FST_JAVA6 = LZ4FstJava6Serializer()
+  @JvmField val LZ4_FST = LZ4FstSerializer()
 
   /** SNAPPY + Binary Serializer */
   @JvmField val SNAPPY_BINARY = SnappyBinarySerializer()
 
   /** SNAPPY + FST Serializer */
-  @JvmField val SNAPPY_FST_JAVA6 = SnappyFstJava6Serializer()
+  @JvmField val SNAPPY_FST_JAVA6 = SnappyFstSerializer()
 
 }

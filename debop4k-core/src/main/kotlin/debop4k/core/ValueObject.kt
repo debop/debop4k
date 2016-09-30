@@ -19,24 +19,29 @@ package debop4k.core
 import org.apache.commons.lang3.builder.HashCodeBuilder
 import java.io.Serializable
 
+/**
+ * 값 형식의 데이터를 표현하는 클래스의 기본 인터페이스입니다.
+ *
+ * @author sunghyouk.bae@gmail.com
+ */
 interface ValueObject : Serializable
 
+
+/**
+ * 값 형식의 데이터를 표현하는 클래스의 추상화 클래스
+ *
+ * @author sunghyouk.bae@gmail.com
+ */
 abstract class AbstractValueObject : ValueObject {
 
-  override fun equals(other: Any?): Boolean {
-    return when (other) {
-      null -> false
-      else -> javaClass == other.javaClass && hashCode() == other.hashCode()
-    }
+  override fun equals(other: Any?): Boolean = when (other) {
+    null -> false
+    else -> javaClass == other.javaClass && hashCode() == other.hashCode()
   }
 
-  override fun hashCode(): Int
-      = HashCodeBuilder.reflectionHashCode(this)
+  override fun hashCode(): Int = HashCodeBuilder.reflectionHashCode(this)
 
-  override fun toString(): String {
-    return buildStringHelper().toString()
-  }
+  override fun toString(): String = buildStringHelper().toString()
 
-  open protected fun buildStringHelper(): ToStringHelper
-      = ToStringHelper(this)
+  open protected fun buildStringHelper(): ToStringHelper = ToStringHelper(this)
 }

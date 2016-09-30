@@ -14,6 +14,9 @@
  *
  */
 
+@file:JvmName("Exceptionx")
+@file:Suppress("NOTHING_TO_INLINE", "PLATFORM_CLASS_MAPPED_TO_KOTLIN")
+
 package debop4k.core
 
 import java.lang.reflect.InvocationTargetException

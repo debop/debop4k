@@ -22,7 +22,6 @@ import java.util.concurrent.*
 
 /**
  * Thread Context 별로 Local Storage를 제공하는 클래스입니다.
- *
  * @author sunghyouk.bae@gmail.com
  */
 @Suppress("UNCHECKED_CAST")
@@ -39,7 +38,7 @@ object Local {
   }
 
   @JvmStatic
-  internal val storage: HashMap<Any, Any?> by lazy {
+  val storage: HashMap<Any, Any?> by lazy {
     threadLocal.get()
   }
 
@@ -49,26 +48,32 @@ object Local {
   @JvmStatic
   fun restore(saved: HashMap<Any, Any?>): Unit = threadLocal.set(saved)
 
+  /** Thread Local 저장소에서 해당 key 의 값을 가져옵니다 */
   @Suppress("UNCHECKED_CAST")
   @JvmStatic
   operator fun <T> get(key: Any): T? {
-    return storage[key] as T?
+    return storage[key] as? T?
   }
 
+  /** Thread Local 저장소에 값을 저장합니다. */
   @JvmStatic
   operator fun <T> set(key: Any, value: T?): Unit {
-    if (value != null)
+    if (value == null)
+      storage.remove(key)
+    else
       storage.put(key, value)
   }
 
+  /** Thread Local 저장소의 모든 저장 데이터를 삭제합니다. */
   @JvmStatic
   fun clearAll(): Unit {
     log.debug("clear local storage")
     storage.clear()
   }
 
+  /** Thread Local 에 데이터를 조회합니다. 만약 없다면 새로 생성합니다. */
   @JvmStatic
-  fun <T> getOrPut(key: Any, defaultValue: () -> T?): T? {
+  inline fun <T> getOrPut(key: Any, defaultValue: () -> T?): T? {
     return storage.getOrPut(key, defaultValue) as T?
   }
 

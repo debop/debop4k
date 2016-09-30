@@ -16,11 +16,13 @@
 
 package debop4k.core
 
+import debop4k.core.utils.asString
 import java.io.Serializable
 import java.util.*
 
 /**
- * @author sunghyouk.bae@gmail.com
+ * 객체의 속성 정보를 문자열로 표현하기 위한 Helper class 입니다.
+ * @author debop sunghyouk.bae@gmail.com
  */
 class ToStringHelper(val className: String) : Serializable {
 
@@ -38,5 +40,10 @@ class ToStringHelper(val className: String) : Serializable {
       "${entry.key}=${entry.value}"
     }
     return "className{$properties}"
+  }
+
+  companion object {
+    @JvmStatic fun of(className: String): ToStringHelper = ToStringHelper(className)
+    @JvmStatic fun of(obj: Any): ToStringHelper = ToStringHelper(obj)
   }
 }

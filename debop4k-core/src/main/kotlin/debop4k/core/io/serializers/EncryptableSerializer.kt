@@ -16,6 +16,9 @@
 
 package debop4k.core.io.serializers
 
+import debop4k.core.cryptography.RC2
+import debop4k.core.cryptography.SymmetricEncryptor
+import debop4k.core.cryptography.TRIPLE_DES
 import debop4k.core.cryptography.encryptors.RC2Encryptor
 
 /**
@@ -36,7 +39,7 @@ open class EncryptableSerializer
 }
 
 class RC2BinarySerializer : EncryptableSerializer(Serializers.BINARY, RC2)
-class RC2FstJava6Serializer : EncryptableSerializer(Serializers.FST_JAVA6, RC2)
+class RC2FstSerializer : EncryptableSerializer(Serializers.FST, RC2)
 
 class TripleDESBinarySerializer : EncryptableSerializer(Serializers.BINARY, TRIPLE_DES)
-class TripleDESFstJava6Serializer : EncryptableSerializer(Serializers.FST_JAVA6, TRIPLE_DES)
+class TripleDESFstSerializer : EncryptableSerializer(Serializers.FST, TRIPLE_DES)

@@ -39,7 +39,7 @@ open class CompressableSerializer
 }
 
 class LZ4BinarySerializer : CompressableSerializer(Serializers.BINARY, LZ4)
-class LZ4FstJava6Serializer : CompressableSerializer(Serializers.FST, LZ4)
+class LZ4FstSerializer : CompressableSerializer(Serializers.FST, LZ4)
 
 class SnappyBinarySerializer() : CompressableSerializer(Serializers.BINARY, SNAPPY)
-class SnappyFstJava6Serializer() : CompressableSerializer(Serializers.FST, SNAPPY)
+class SnappyFstSerializer() : CompressableSerializer(Serializers.FST, SNAPPY)

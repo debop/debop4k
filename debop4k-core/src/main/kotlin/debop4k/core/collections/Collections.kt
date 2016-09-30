@@ -16,7 +16,8 @@
 
 package debop4k.core.collections
 
-import debop4k.core.*
+import debop4k.core.areEquals
+import debop4k.core.utils.*
 import org.eclipse.collections.api.map.sorted.MutableSortedMap
 import org.eclipse.collections.api.set.sorted.MutableSortedSet
 import org.eclipse.collections.impl.factory.SortedMaps
