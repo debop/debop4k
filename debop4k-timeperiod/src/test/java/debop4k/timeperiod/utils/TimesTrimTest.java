@@ -41,12 +41,12 @@ public class TimesTrimTest extends AbstractTimePeriodTest {
 
   @Test
   public void trimDayTest() {
-    assertThat(trimToDay(testDate)).isEqualTo(asDate(testDate.getYear(), testDate.getMonthOfYear(), 1));
+    assertThat(trimToDay(testDate)).isEqualTo(asDate(testDate).withDayOfMonth(1));
 
     int maxDay = daysInMonth(testDate);
     for (int day = 0; day < maxDay; day++) {
       assertThat(trimToDay(testDate, day + 1))
-          .isEqualTo(asDate(testDate.getYear(), testDate.getMonthOfYear(), day + 1));
+          .isEqualTo(asDate(testDate.withDayOfMonth(day + 1)));
     }
   }
 

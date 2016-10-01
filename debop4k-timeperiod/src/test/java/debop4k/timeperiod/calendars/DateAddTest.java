@@ -24,14 +24,11 @@ import debop4k.timeperiod.TimeSpec;
 import debop4k.timeperiod.utils.Durations;
 import org.joda.time.DateTime;
 import org.junit.Test;
-import org.slf4j.Logger;
 
 import static debop4k.core.kodatimes.KodaTimes.asDate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DateAddTest extends AbstractTimePeriodTest {
-
-  private static final Logger log = org.slf4j.LoggerFactory.getLogger(DateAddTest.class);
 
   @Test
   public void noPeriodTest() {
@@ -75,7 +72,7 @@ public class DateAddTest extends AbstractTimePeriodTest {
   public void periodLimitsSubtract() {
     DateTime test = asDate(2011, 4, 30);
     ITimePeriod period1 = new TimeRange(asDate(2011, 4, 20), asDate(2011, 4, 25));
-    ITimePeriod period2 = new TimeRange(null, asDate(2011, 4, 6)); // 4월 6일까지
+    ITimePeriod period2 = new TimeRange((DateTime) null, asDate(2011, 4, 6)); // 4월 6일까지
 
     DateAdd dateAdd = new DateAdd();
 
@@ -110,7 +107,7 @@ public class DateAddTest extends AbstractTimePeriodTest {
   @Test
   public void includeOutsideMin() {
     DateTime test = asDate(2011, 4, 12);
-    ITimePeriod period = new TimeRange(null, asDate(2011, 4, 10));
+    ITimePeriod period = new TimeRange((DateTime) null, asDate(2011, 4, 10));
 
     DateAdd dateAdd = new DateAdd();
     dateAdd.getIncludePeriods().add(period);

@@ -100,11 +100,9 @@ public class TimesPeriodTest extends AbstractTimePeriodTest {
       ITimeCalendar calendar = TimeCalendar.EMPTY_OFFSET;
       ITimePeriod period = Periods.periodOf(moment, unit, calendar);
 
+      log.trace("unit={}, period={}, moment={}", unit, period, moment);
       assertThat(period.hasInside(moment)).isTrue();
       assertThat(period.hasInside(endTime)).isFalse();
-
-
-      log.trace("[{}] : period[{}] hasInside=[{}]", unit, period, moment);
     }
   }
 
@@ -123,9 +121,6 @@ public class TimesPeriodTest extends AbstractTimePeriodTest {
         assertThat(period.hasPeriod()).isTrue();
         assertThat(period.hasInside(moment)).isTrue();
         assertThat(period.hasInside(endTime)).isFalse();
-
-
-        log.trace("[{}] : period[{}] hasInside=[{}]", unit, period, moment);
       }
     }
   }

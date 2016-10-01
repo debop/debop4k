@@ -30,7 +30,7 @@ open class DayRangeCollection @JvmOverloads constructor(startTime: DateTime = to
                                                         calendar: ITimeCalendar = DefaultTimeCalendar)
 : DayTimeRange(startTime, dayCount, calendar) {
 
-  fun dayStream(): FastList<DayRange> {
+  fun days(): FastList<DayRange> {
     val days = FastList.newList<DayRange>(dayCount)
     for (i in 0 until dayCount) {
       days.add(DayRange(start.plusDays(i), calendar))

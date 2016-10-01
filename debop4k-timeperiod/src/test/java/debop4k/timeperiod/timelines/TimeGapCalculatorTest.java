@@ -26,15 +26,12 @@ import debop4k.timeperiod.utils.Durations;
 import debop4k.timeperiod.utils.Times;
 import org.joda.time.DateTime;
 import org.junit.Test;
-import org.slf4j.Logger;
 
 import static debop4k.core.kodatimes.KodaTimes.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class TimeGapCalculatorTest extends AbstractTimePeriodTest {
-
-  private static final Logger log = org.slf4j.LoggerFactory.getLogger(TimeGapCalculatorTest.class);
 
   @Test
   public void noPeriods() {
@@ -289,7 +286,7 @@ public class TimeGapCalculatorTest extends AbstractTimePeriodTest {
                                                        timeCalendar);
 
       // limits 의 내부이고, 주말인 DayRange를 제외목록에 추가합니다.
-      for (DayRange day : days.dayStream()) {
+      for (DayRange day : days.days()) {
         if (limits.hasInside(day) && Times.isWeekend(day.getDayOfWeek()))
           excludePeriods.add(day);
       }

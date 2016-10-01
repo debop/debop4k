@@ -90,7 +90,7 @@ public class DateDiffTest extends AbstractTimePeriodTest {
 
       assertThat(dateDiff12.getYears()).isEqualTo(year);
       assertThat(dateDiff12.getQuarters()).isEqualTo(year * QuartersPerYear);
-      assertThat(dateDiff12.getMinutes()).isEqualTo(year * MonthsPerYear);
+      assertThat(dateDiff12.getMonths()).isEqualTo(year * MonthsPerYear);
 
       int date12Days = (int) Durations.of(date1, date2).getStandardDays();
 

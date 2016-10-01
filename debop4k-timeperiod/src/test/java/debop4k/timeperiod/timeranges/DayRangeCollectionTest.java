@@ -47,7 +47,7 @@ public class DayRangeCollectionTest extends AbstractTimePeriodTest {
     assertThat(days.getEndMonthOfYear()).isEqualTo(start.getMonthOfYear());
     assertThat(days.getEndDayOfMonth()).isEqualTo(start.getDayOfMonth());
 
-    List<DayRange> dayList = days.dayStream();
+    List<DayRange> dayList = days.days();
     assertThat(dayList.size()).isEqualTo(1);
     assertThat(dayList.get(0).isSamePeriod(new DayRange(start))).isTrue();
   }
@@ -70,7 +70,7 @@ public class DayRangeCollectionTest extends AbstractTimePeriodTest {
     assertThat(days.getEndMonthOfYear()).isEqualTo(end.getMonthOfYear());
     assertThat(days.getEndDayOfMonth()).isEqualTo(end.getDayOfMonth());
 
-    List<DayRange> dayList = days.dayStream();
+    List<DayRange> dayList = days.days();
     assertThat(dayList.size()).isEqualTo(dayCount);
 
     for (int i = 0; i < dayCount; i++) {

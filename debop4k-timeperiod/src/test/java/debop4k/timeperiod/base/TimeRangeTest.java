@@ -60,7 +60,7 @@ public class TimeRangeTest extends AbstractTimePeriodTest {
     TimeRange range = new TimeRange();
 
     assertThat(range).isNotEqualTo(TimeRange.AnyTime);
-    assertThat(Periods.relation(range, TimeRange.AnyTime)).isEqualTo(PeriodRelation.ExactMatch);
+    assertThat(Periods.relationWith(range, TimeRange.AnyTime)).isEqualTo(PeriodRelation.ExactMatch);
 
     assertThat(range.isAnyTime()).isTrue();
     assertThat(range.isReadonly()).isFalse();
@@ -109,7 +109,7 @@ public class TimeRangeTest extends AbstractTimePeriodTest {
   @Test
   public void hasEndTest() {
     //  ~ 현재까지
-    TimeRange range = new TimeRange(null, Times.now());
+    TimeRange range = new TimeRange((DateTime) null, Times.now());
     assertThat(range.hasStart()).isFalse();
     assertThat(range.hasEnd()).isTrue();
   }

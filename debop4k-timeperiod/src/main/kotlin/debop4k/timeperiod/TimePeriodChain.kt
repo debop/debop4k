@@ -92,7 +92,7 @@ open class TimePeriodChain : TimePeriodContainer(), ITimePeriodChain {
 
     @JvmStatic fun of(vararg elements: ITimePeriod): TimePeriodChain {
       val chain = TimePeriodChain()
-      chain.addAll(elements)
+      chain.addAll(elements.toList())
       return chain
     }
   }

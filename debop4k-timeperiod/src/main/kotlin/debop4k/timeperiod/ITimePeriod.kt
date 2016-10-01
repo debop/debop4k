@@ -46,7 +46,7 @@ interface ITimePeriod : Comparable<ITimePeriod>, Serializable {
 
   fun isReadonly(): Boolean = readonly
 
-  fun setup(newStart: DateTime = MinPeriodTime, newEnd: DateTime = MaxPeriodTime)
+  fun setup(newStart: DateTime? = MinPeriodTime, newEnd: DateTime? = MaxPeriodTime)
 
   fun copy(): ITimePeriod = copy(Duration.ZERO)
   fun copy(offset: Duration = Duration.ZERO): ITimePeriod

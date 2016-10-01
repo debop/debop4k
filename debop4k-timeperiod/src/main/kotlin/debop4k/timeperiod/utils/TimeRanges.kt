@@ -75,7 +75,7 @@ fun monthSequence(year: Int,
                   monthCount: Int,
                   calendar: ITimeCalendar = DefaultTimeCalendar): Sequence<MonthRange> {
   require(monthCount >= 0)
-  val start = MonthRange(year, monthOfYear)
+  val start = MonthRange(year, monthOfYear, calendar)
 
   return generateSequence(start) { it.addMonths(1) }.take(monthCount)
 
@@ -133,7 +133,7 @@ fun minuteSequence(startTime: DateTime,
   require(minuteCount >= 0)
   val start = MinuteRange(startTime, calendar)
 
-  return generateSequence(start) { start.addMinutes(1) }.take(minuteCount)
+  return generateSequence(start) { it.addMinutes(1) }.take(minuteCount)
 //  return (0 until minuteCount).map { m ->
 //    start.addMinutes(m)
 //  }.asSequence()

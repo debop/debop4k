@@ -37,7 +37,7 @@ open class TimeLineMomentCollection : ITimeLineMomentCollection {
   override fun max(): ITimeLineMoment = _moments.max()
 
   override operator fun get(index: Int): ITimeLineMoment {
-    return _moments.get(index)
+    return _moments[index]
   }
 
   protected fun addPeriod(moment: DateTime, period: ITimePeriod): Unit {

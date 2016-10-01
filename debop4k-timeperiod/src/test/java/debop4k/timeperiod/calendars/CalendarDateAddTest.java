@@ -78,7 +78,7 @@ public class CalendarDateAddTest extends AbstractTimePeriodTest {
   public void periodLimitsSubtract() {
     DateTime test = asDate(2011, 4, 30);
     ITimePeriod period1 = new TimeRange(asDate(2011, 4, 20), asDate(2011, 4, 25));
-    ITimePeriod period2 = new TimeRange(null, asDate(2011, 4, 6)); // 4월 6일까지
+    ITimePeriod period2 = new TimeRange((DateTime) null, asDate(2011, 4, 6)); // 4월 6일까지
 
     CalendarDateAdd dateAdd = CalendarDateAdd.of();
 

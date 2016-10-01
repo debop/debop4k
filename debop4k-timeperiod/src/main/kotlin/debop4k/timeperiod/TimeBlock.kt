@@ -25,26 +25,32 @@ import org.joda.time.Duration
 /**
  * @author sunghyouk.bae@gmail.com
  */
-open class TimeBlock @JvmOverloads constructor(start: DateTime? = MinPeriodTime,
-                                               end: DateTime? = MaxPeriodTime,
-                                               readOnly: Boolean = false) : TimePeriod(start ?: MinPeriodTime,
-                                                                                  end ?: MaxPeriodTime,
-                                                                                  readOnly), ITimeBlock {
+open class TimeBlock(start: DateTime?,
+                     end: DateTime?,
+                     readOnly: Boolean = false) : TimePeriod(start ?: MinPeriodTime,
+                                                             end ?: MaxPeriodTime,
+                                                             readOnly), ITimeBlock {
 
+  constructor() : this(MinPeriodTime, MaxPeriodTime, false)
+  constructor(readOnly: Boolean) : this(MinPeriodTime, MaxPeriodTime, readOnly)
+  constructor(start: DateTime?, end: DateTime?) : this(start, end, false)
   constructor(src: ITimePeriod) : this(src.start, src.end, src.readonly)
   constructor(src: ITimePeriod, readOnly: Boolean) : this(src.start, src.end, readOnly)
-  constructor(moment: DateTime?, readOnly: Boolean = false) : this(moment, moment, readOnly)
+  constructor(moment: DateTime?) : this(moment, moment, false)
+  constructor(moment: DateTime?, readOnly: Boolean) : this(moment, moment, readOnly)
+  constructor(start: DateTime, duration: Duration) : this(start, start + duration, false)
+  constructor(start: DateTime, duration: Duration, readOnly: Boolean) : this(start, start + duration, readOnly)
+  constructor(duration: Duration, end: DateTime) : this(end - duration, end, false)
+  constructor(duration: Duration, end: DateTime, readOnly: Boolean) : this(end - duration, end, readOnly)
 
-  @JvmOverloads
-  constructor(start: DateTime, duration: Duration, readOnly: Boolean = false)
-  : this(start, start + duration, readOnly)
+  private var _duration: Duration
 
-  @JvmOverloads
-  constructor(duration: Duration, end: DateTime, readOnly: Boolean = false)
-  : this(end - duration, end, readOnly)
+  init {
+    _duration = super.duration
+  }
 
   override var duration: Duration
-    get() = super.duration
+    get() = _duration
     set(value) {
       assertMutable()
       assertValidDuartion(value)
@@ -64,10 +70,10 @@ open class TimeBlock @JvmOverloads constructor(start: DateTime? = MinPeriodTime,
     assertValidDuartion(nd)
 
     if (nd == MaxDuration) {
-      this.duration = nd
+      _duration = nd
       end = MaxPeriodTime
     } else {
-      this.duration = nd
+      _duration = nd
       end = start + nd
     }
   }
@@ -77,11 +83,11 @@ open class TimeBlock @JvmOverloads constructor(start: DateTime? = MinPeriodTime,
     assertValidDuartion(nd)
 
     if (nd == MaxDuration) {
-      this.duration = nd
-      start = MinPeriodTime
+      _duration = nd
+      super.start = MinPeriodTime
     } else {
-      this.duration = nd
-      start = end - nd
+      _duration = nd
+      super.start = end - nd
     }
   }
 

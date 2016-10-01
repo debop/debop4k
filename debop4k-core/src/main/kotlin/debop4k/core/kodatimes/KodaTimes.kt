@@ -198,7 +198,8 @@ fun String.toDateTime(pattern: String? = null): DateTime? {
 }
 
 fun String?.tryToDateTime(defaultValue: DateTime): DateTime {
-
+  if (this.isNullOrBlank())
+    return defaultValue
   try {
     return this?.toDateTime(ISODateTimeFormat.dateTime()) ?: defaultValue
   } catch(e: Exception) {
@@ -234,7 +235,7 @@ fun String.toLocalTime(pattern: String? = null): LocalTime? {
 fun dateTimeFromJson(json: String): DateTime = DateTime(json)
 fun dateTimeOf(year: Int, month: Int, day: Int): DateTime = DateTime(year, month, day, 0, 0)
 
-fun adjustPeriod(a: DateTime, b: DateTime): Pair<DateTime, DateTime> {
+fun adjustPeriod(a: DateTime?, b: DateTime?): Pair<DateTime?, DateTime?> {
   return Pair(a min b, a max b)
 }
 
@@ -245,18 +246,26 @@ fun adjustPeriod(m: DateTime, d: Duration): Pair<DateTime, Duration> {
 }
 
 fun DateTime.trimToYear(): DateTime = asDate(this.year, 1, 1)
-@JvmOverloads fun DateTime.trimToMonth(monthOfYear: Int = 1): DateTime = asDate(this.year, monthOfYear, 1)
-@JvmOverloads fun DateTime.trimToDay(dayOfMonth: Int = 1): DateTime = asDate(this.year, this.monthOfYear, dayOfMonth)
-@JvmOverloads fun DateTime.trimToHour(hourOfDay: Int = 0): DateTime
+@JvmOverloads
+fun DateTime.trimToMonth(monthOfYear: Int = 1): DateTime = asDate(this.year, monthOfYear, 1)
+
+@JvmOverloads
+fun DateTime.trimToDay(dayOfMonth: Int = 1): DateTime = asDate().withDayOfMonth(dayOfMonth)
+
+@JvmOverloads
+fun DateTime.trimToHour(hourOfDay: Int = 0): DateTime
     = trimToDay(this.dayOfMonth).withHourOfDay(hourOfDay)
 
-@JvmOverloads fun DateTime.trimToMinute(minuteOfHour: Int = 0): DateTime
+@JvmOverloads
+fun DateTime.trimToMinute(minuteOfHour: Int = 0): DateTime
     = trimToHour(this.hourOfDay).withMinuteOfHour(minuteOfHour)
 
-@JvmOverloads fun DateTime.trimToSecond(secondOfMinute: Int = 0): DateTime
+@JvmOverloads
+fun DateTime.trimToSecond(secondOfMinute: Int = 0): DateTime
     = trimToMinute(this.minuteOfHour).withSecondOfMinute(secondOfMinute)
 
-@JvmOverloads fun DateTime.trimToMillis(millisOfSecond: Int = 0): DateTime
+@JvmOverloads
+fun DateTime.trimToMillis(millisOfSecond: Int = 0): DateTime
     = this.withMillisOfSecond(millisOfSecond)
 
 
@@ -301,11 +310,15 @@ fun DateTime.toIsoFormatHMSString(): String = ISODateTimeFormat.dateHourMinuteSe
 
 fun DateTime.toTimestampZoneText(): TimestampZoneText = TimestampZoneText(this)
 
-infix fun DateTime.min(that: DateTime): DateTime {
+infix fun DateTime?.min(that: DateTime?): DateTime? {
+  if (this == null) return that
+  if (that == null) return this
   return if (this.compareTo(that) < 0) this else that
 }
 
-infix fun DateTime.max(that: DateTime): DateTime {
+infix fun DateTime?.max(that: DateTime?): DateTime? {
+  if (this == null) return that
+  if (that == null) return this
   return if (this.compareTo(that) > 0) this else that
 }
 

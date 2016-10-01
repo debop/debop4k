@@ -162,7 +162,7 @@ open class DateDiff @JvmOverloads constructor(val start: DateTime,
     val w1 = start.startTimeOfWeek()
     val w2 = end.startTimeOfWeek()
 
-    return if (w1 == w2) 0L else Duration(w2, w1).standardDays / DaysPerWeek
+    return if (w1 == w2) 0L else Duration(w1, w2).standardDays / DaysPerWeek
   }
 
   private fun roundEx(n: Double): Double {

@@ -286,13 +286,16 @@ fun DateTime.endTimeOfMonth(): DateTime
     = endTimeOfMonth(this.year, this.monthOfYear)
 
 fun startTimeOfWeek(weekyear: Int, weekOfWeekyear: Int): DateTime
-    = today().withWeekyear(weekyear).withWeekOfWeekyear(weekOfWeekyear)
+    = DateTime().withWeekyear(weekyear).withWeekOfWeekyear(weekOfWeekyear)
 
 fun YearWeek.startTimeOfWeek(): DateTime
     = startTimeOfWeek(this.weekyear, this.weekOfWeekyear)
 
-fun DateTime.startTimeOfWeek(): DateTime
-    = startTimeOfWeek(this.weekyear, this.weekOfWeekyear)
+fun DateTime.startTimeOfWeek(): DateTime {
+  val day = asDate()
+  val dayOfWeek = day.dayOfWeek
+  return day.minusDays(dayOfWeek - 1)
+}
 
 fun endTimeOfWeek(weekyear: Int, weekOfWeekyear: Int): DateTime
     = startTimeOfWeek(weekyear, weekOfWeekyear).plusWeeks(1).minusMillis(1)
@@ -300,8 +303,9 @@ fun endTimeOfWeek(weekyear: Int, weekOfWeekyear: Int): DateTime
 fun YearWeek.endTimeOfWeek(): DateTime
     = endTimeOfWeek(this.weekyear, this.weekOfWeekyear)
 
-fun DateTime.endTimeOfWeek(): DateTime
-    = endTimeOfWeek(this.weekyear, this.weekOfWeekyear)
+fun DateTime.endTimeOfWeek(): DateTime {
+  return startTimeOfWeek().plusDays(7)
+}
 
 fun DateTime.startTimeOfDay(): DateTime = this.withTimeAtStartOfDay()
 fun DateTime.endTimeOfDay(): DateTime = startTimeOfDay().plusDays(1).minusMillis(1)
@@ -312,7 +316,7 @@ fun DateTime.endTimeOfHour(): DateTime = startTimeOfHour().plusHours(1).minusMil
 fun DateTime.startTimeOfMinute(): DateTime = startTimeOfHour().plusMinutes(this.minuteOfHour)
 fun DateTime.endTimeOfMinute(): DateTime = startTimeOfMinute().plusMinutes(1).minusMillis(1)
 
-fun DateTime.startTimeOfSecond(): DateTime = startTimeOfHour().plusSeconds(this.secondOfMinute)
+fun DateTime.startTimeOfSecond(): DateTime = startTimeOfMinute().plusSeconds(this.secondOfMinute)
 fun DateTime.endTimeOfSecond(): DateTime = startTimeOfSecond().plusSeconds(1).minusMillis(1)
 
 fun halfyearOf(monthOfYear: Int): Halfyear = Halfyear.ofMonth(monthOfYear)

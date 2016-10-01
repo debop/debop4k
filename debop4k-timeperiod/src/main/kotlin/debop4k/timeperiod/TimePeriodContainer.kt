@@ -60,7 +60,7 @@ open class TimePeriodContainer : TimePeriod(), ITimePeriodContainer {
 
   override fun isEmpty(): Boolean = _periods.isEmpty()
 
-  override fun setup(newStart: DateTime, newEnd: DateTime) {
+  override fun setup(newStart: DateTime?, newEnd: DateTime?) {
     throw UnsupportedOperationException("TimePeriodContainer 는 setup 메소드를 지원하지 않습니다.")
   }
 
@@ -99,10 +99,6 @@ open class TimePeriodContainer : TimePeriod(), ITimePeriodContainer {
       _periods.add(element)
     }
   }
-
-//  override fun addAll(vararg elements: ITimePeriod) {
-//    elements.forEach { e -> add(e) }
-//  }
 
   override fun addAll(elements: Collection<ITimePeriod>): Boolean {
     elements.forEach { e -> add(e) }
@@ -211,7 +207,7 @@ open class TimePeriodContainer : TimePeriod(), ITimePeriodContainer {
     @JvmStatic
     fun of(vararg elements: ITimePeriod): TimePeriodContainer {
       val container = TimePeriodContainer()
-      container.addAll(elements.asIterable())
+      container.addAll(elements.toList())
       return container
     }
   }

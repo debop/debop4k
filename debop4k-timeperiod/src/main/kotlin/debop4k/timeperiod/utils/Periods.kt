@@ -21,6 +21,7 @@ package debop4k.timeperiod.utils
 import debop4k.core.NotSupportedException
 import debop4k.core.collections.parMap
 import debop4k.core.kodatimes.*
+import debop4k.core.loggerOf
 import debop4k.core.utils.NULL_STRING
 import debop4k.timeperiod.*
 import debop4k.timeperiod.models.PeriodRelation
@@ -30,16 +31,15 @@ import debop4k.timeperiod.timeranges.*
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.joda.time.DateTime
 import org.joda.time.Duration
-import org.slf4j.LoggerFactory
 
-private val log = LoggerFactory.getLogger("Periods")
+private val log = loggerOf("Periods")
 
-fun adjustPeriod(start: DateTime, end: DateTime): Pair<DateTime, DateTime>
+fun adjustPeriod(start: DateTime?, end: DateTime?): Pair<DateTime?, DateTime?>
     = Pair(start min end, start max end)
 
 fun adjustPeriod(start: DateTime, duration: Duration): Pair<DateTime, Duration> {
-  if (duration.millis >= 0) return Pair(start, duration)
-  return Pair(start + duration, -duration)
+  return if (duration.millis >= 0) Pair(start, duration)
+  else Pair(start + duration, -duration)
 }
 
 fun assertValidPeriod(start: DateTime?, end: DateTime?) {
@@ -175,7 +175,7 @@ fun ITimePeriod?.isNotAnyTime(): Boolean = (this != null) && !this.isAnyTime()
 /**
  * 두 [ITimePeriod] 의 관계를 파악합니다.
  */
-fun ITimePeriod.relation(target: ITimePeriod): PeriodRelation {
+fun ITimePeriod.relationWith(target: ITimePeriod): PeriodRelation {
   var relation = NoRelation
 
   if (this.start > target.end) {
@@ -215,7 +215,7 @@ fun ITimePeriod.relation(target: ITimePeriod): PeriodRelation {
     }
   }
 
-  log.debug("relation={}, period={}, target={}", relation, this, target)
+  log.debug("relationWith={}, period={}, target={}", relation, this, target)
   return relation
 }
 
@@ -225,7 +225,7 @@ fun ITimePeriod.intersectWith(target: ITimePeriod): Boolean
 val NotOverlapedRelations: List<PeriodRelation> = listOf(After, StartTouching, EndTouching, Before)
 
 fun ITimePeriod.overlapWith(target: ITimePeriod): Boolean
-    = NotOverlapedRelations.contains(this.relation(target))
+    = !NotOverlapedRelations.contains(this.relationWith(target))
 
 fun ITimePeriod.intersectBlock(target: ITimePeriod): TimeBlock? {
   var intersection: TimeBlock? = null

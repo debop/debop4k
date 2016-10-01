@@ -32,7 +32,7 @@ import java.io.Serializable
  */
 open class CalendarVisitorFilter : ICalendarVisitorFilter, Serializable {
 
-  private val _excludePeriods = TimePeriodCollection.of()
+  private val _excludePeriods = TimePeriodCollection()
   private val _years = IntArrayList()
   private val _monthOfYears = IntArrayList()
   private val _dayOfMonths = IntArrayList()

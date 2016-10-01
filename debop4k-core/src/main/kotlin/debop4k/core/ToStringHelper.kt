@@ -39,7 +39,7 @@ class ToStringHelper(val className: String) : Serializable {
     val properties = map.entries.joinToString(separator = ",") { entry ->
       "${entry.key}=${entry.value}"
     }
-    return "className{$properties}"
+    return "$className{$properties}"
   }
 
   companion object {

@@ -102,7 +102,7 @@ object Durations {
     return duration
   }
 
-  @JvmField val Hour = hourOf(1)
+  @JvmField val Hour: Duration = hourOf(1)
 
   @JvmStatic
   @JvmOverloads
@@ -110,7 +110,7 @@ object Durations {
     return dayOf(0, hour, minute, second, milli)
   }
 
-  @JvmField val Minute = minuteOf(1)
+  @JvmField val Minute: Duration = minuteOf(1)
 
   @JvmStatic
   @JvmOverloads
@@ -118,15 +118,15 @@ object Durations {
     return hourOf(0, minute, second, milli)
   }
 
-  @JvmField val Second = secondOf(1)
+  @JvmField val Second: Duration = secondOf(1)
 
   @JvmStatic
   @JvmOverloads
   fun secondOf(second: Int, milli: Int = 0): Duration {
-    return minuteOf(second, milli)
+    return minuteOf(0, second, milli)
   }
 
-  @JvmField val Millisecond = millisOf(1)
+  @JvmField val Millisecond: Duration = millisOf(1)
 
   @JvmStatic
   fun millisOf(milli: Int): Duration = Duration.millis(milli.toLong())

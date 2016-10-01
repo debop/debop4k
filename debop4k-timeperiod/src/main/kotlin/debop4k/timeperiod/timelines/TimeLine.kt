@@ -16,9 +16,9 @@
 
 package debop4k.timeperiod.timelines
 
+import debop4k.core.loggerOf
 import debop4k.timeperiod.*
 import org.joda.time.DateTime
-import org.slf4j.LoggerFactory
 
 /**
  * TimePeriod의 컬렉션을 가지며, 이를 통해 여러 기간에 대한 Union, Intersection, Gap 등을 구할 수 있도록 합니다.
@@ -27,19 +27,20 @@ import org.slf4j.LoggerFactory
  * @since 1.0
  */
 open class TimeLine<T : ITimePeriod>(override val periods: ITimePeriodContainer,
-                                     val _limits: ITimePeriod? = TimeRange(periods),
+                                     private val _limits: ITimePeriod? = null,
                                      override val mapper: ITimePeriodMapper? = null) : ITimeLine {
+
+  private val log = loggerOf(javaClass)
+
   override val limits: ITimePeriod
     get() = if (_limits != null) TimeRange(_limits) else TimeRange(periods)
-
-  private val log = LoggerFactory.getLogger(TimeLine::class.java)
 
   override fun combinePeriods(): ITimePeriodCollection {
     if (periods.isEmpty())
       return TimePeriodCollection()
 
     val moments = timeLineMoments()
-    if (moments.isEmpty) {
+    if (moments == null || moments.isEmpty) {
       return TimePeriodCollection.of(TimeRange(periods))
     }
     return TimeLines.combinePeriods(moments)
@@ -59,8 +60,7 @@ open class TimeLine<T : ITimePeriod>(override val periods: ITimePeriodContainer,
 
   override fun calculateCaps(): ITimePeriodCollection {
     val tpc = TimePeriodCollection()
-
-    log.trace("periods={}, limits={}", periods, limits)
+    log.debug("periods={}, limits={}", periods, limits)
 
     periods.periods
         .filter { limits.intersectsWith(it) }
@@ -68,6 +68,7 @@ open class TimeLine<T : ITimePeriod>(override val periods: ITimePeriodContainer,
 
     val moments = timeLineMoments()
     if (moments.isEmpty) {
+      log.debug("moments is null or empty. moments={}, limits={}, periods={}", moments, limits, periods)
       return TimePeriodCollection.of(limits)
     }
     val range = TimeRange(mapPeriodStart(limits.start), mapPeriodEnd(limits.end))
@@ -88,7 +89,7 @@ open class TimeLine<T : ITimePeriod>(override val periods: ITimePeriodContainer,
     val intersections = TimePeriodCollection()
 
     periods
-        .filter { it.isMoment() }
+        .filter { !it.isMoment() }
         .forEach { p ->
           val intersection = limits.intersection(p)
           if (intersection != null && !intersection.isMoment()) {

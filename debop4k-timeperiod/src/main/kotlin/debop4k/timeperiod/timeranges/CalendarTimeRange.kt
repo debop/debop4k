@@ -35,12 +35,12 @@ import org.joda.time.Duration
  * @author sunghyouk.bae@gmail.com
  */
 @Suppress("EqualsOrHashCode")
-open class CalendarTimeRange @JvmOverloads constructor(val period: ITimePeriod,
-                                                       val calendar: ITimeCalendar = DefaultTimeCalendar)
-: TimeRange(calendar.mapStart(period.start),
-            calendar.mapEnd(period.end),
-            true) {
+open class CalendarTimeRange(val period: ITimePeriod,
+                             val calendar: ITimeCalendar) : TimeRange(calendar.mapStart(period.start),
+                                                                      calendar.mapEnd(period.end),
+                                                                      true) {
 
+  constructor(period: ITimePeriod) : this(period, DefaultTimeCalendar)
   constructor(calendar: ITimeCalendar = DefaultTimeCalendar) : this(TimeRange.AnyTime, calendar)
 
   @JvmOverloads
@@ -67,7 +67,7 @@ open class CalendarTimeRange @JvmOverloads constructor(val period: ITimePeriod,
     @JvmStatic
     @JvmOverloads
     fun of(start: DateTime, end: DateTime, calendar: ITimeCalendar = DefaultTimeCalendar): CalendarTimeRange {
-      return CalendarTimeRange(start, end, calendar)
+      return of(TimeRange(start, end), calendar)
     }
   }
 

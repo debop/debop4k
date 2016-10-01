@@ -19,6 +19,8 @@ package debop4k.timeperiod
 import debop4k.timeperiod.models.PeriodRelation
 import debop4k.timeperiod.utils.hasInsideWith
 import debop4k.timeperiod.utils.intersectWith
+import debop4k.timeperiod.utils.overlapWith
+import debop4k.timeperiod.utils.relationWith
 import org.joda.time.DateTime
 
 /**
@@ -31,7 +33,7 @@ open class TimePeriodCollection : TimePeriodContainer(), ITimePeriodCollection {
   }
 
   override fun hasOverlapPeriods(that: ITimePeriod): Boolean {
-    return periods.any { it.overlapsWith(that) }
+    return periods.any { it.overlapWith(that) }
   }
 
   override fun hasIntersectionPeriods(moment: DateTime): Boolean {
@@ -47,7 +49,7 @@ open class TimePeriodCollection : TimePeriodContainer(), ITimePeriodCollection {
   }
 
   override fun overlapPeriods(target: ITimePeriod): List<ITimePeriod> {
-    return periods.filter { it.overlapsWith(target) }
+    return periods.filter { it.overlapWith(target) }
   }
 
   override fun intersectionPeriods(moment: DateTime): List<ITimePeriod> {
@@ -59,7 +61,7 @@ open class TimePeriodCollection : TimePeriodContainer(), ITimePeriodCollection {
   }
 
   override fun relationPeriods(target: ITimePeriod, vararg relations: PeriodRelation): List<ITimePeriod> {
-    return periods.filter { relations.contains(it.relation(target)) }
+    return periods.filter { relations.contains(it.relationWith(target)) }
   }
 
   companion object {
@@ -73,7 +75,7 @@ open class TimePeriodCollection : TimePeriodContainer(), ITimePeriodCollection {
     @JvmStatic
     fun of(vararg elements: ITimePeriod): TimePeriodCollection {
       val collection = TimePeriodCollection()
-      collection.addAll(elements)
+      collection.addAll(elements.toList())
       return collection
     }
   }

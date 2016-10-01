@@ -18,6 +18,7 @@ package debop4k.timeperiod.models
 
 import debop4k.core.AbstractValueObject
 import debop4k.core.ToStringHelper
+import debop4k.core.kodatimes.zeroTime
 import debop4k.core.utils.hashOf
 import debop4k.timeperiod.MillisPerHour
 import debop4k.timeperiod.MillisPerMinute
@@ -42,7 +43,7 @@ class Timepart @JvmOverloads constructor(hour: Int = 0,
   val value: DateTime
 
   init {
-    value = DateTime(0).withTime(hour, minute, second, millis)
+    value = zeroTime().withTime(hour, minute, second, millis)
   }
 
   val hourOfDay: Int get() = value.hourOfDay
@@ -87,6 +88,6 @@ class Timepart @JvmOverloads constructor(hour: Int = 0,
     fun of(time: DateTime): Timepart = Timepart(time)
 
     @JvmStatic
-    fun of(duration: Duration): Timepart = Timepart(DateTime(0).plus(duration))
+    fun of(duration: Duration): Timepart = Timepart(zeroTime().plus(duration))
   }
 }

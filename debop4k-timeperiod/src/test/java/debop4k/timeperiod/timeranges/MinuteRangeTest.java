@@ -22,7 +22,6 @@ import debop4k.timeperiod.TimeSpec;
 import debop4k.timeperiod.utils.Times;
 import org.joda.time.DateTime;
 import org.junit.Test;
-import org.slf4j.Logger;
 
 import java.util.List;
 
@@ -31,7 +30,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class MinuteRangeTest extends AbstractTimePeriodTest {
-  private static final Logger log = org.slf4j.LoggerFactory.getLogger(MinuteRangeTest.class);
 
   @Test
   public void initValues() {
@@ -134,10 +132,13 @@ public class MinuteRangeTest extends AbstractTimePeriodTest {
     HourRange hourRange = new HourRange();
     List<MinuteRange> minutes = hourRange.minutes();
 
+    log.trace("hourRange={}", hourRange);
+
     assertThat(minutes.size()).isEqualTo(TimeSpec.MinutesPerHour);
 
     for (int i = 0; i < TimeSpec.MinutesPerHour; i++) {
       MinuteRange minute = minutes.get(i);
+      log.trace("i={}, minute={}", i, minute);
 
       assertThat(minute.getStart()).isEqualTo(hourRange.getStart().plusMinutes(i));
       assertThat(minute.getUnmappedStart()).isEqualTo(hourRange.getStart().plusMinutes(i));

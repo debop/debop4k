@@ -16,7 +16,6 @@
 package debop4k.timeperiod.timelines
 
 import debop4k.core.shouldBePositive
-import debop4k.core.uninitialized
 import debop4k.timeperiod.ITimePeriod
 import debop4k.timeperiod.ITimePeriodCollection
 import debop4k.timeperiod.TimePeriodCollection
@@ -90,6 +89,7 @@ object TimeLines {
 
   fun calculateGap(moments: ITimeLineMomentCollection?,
                    range: ITimePeriod): ITimePeriodCollection {
+
     val gaps = TimePeriodCollection()
     if (moments == null || moments.isEmpty) {
       return gaps
@@ -110,7 +110,7 @@ object TimeLines {
       assert(moment.startCount > 0) { "moment.startCount 값이 0보다 커야합니다. startCount=${moment.startCount}" }
 
       var balance = moment.startCount
-      var gapStart: ITimeLineMoment? = uninitialized<ITimeLineMoment>()
+      var gapStart: ITimeLineMoment? = null
 
       while (itemIndex < moments.size - 1 && balance > 0) {
         itemIndex++
@@ -125,7 +125,7 @@ object TimeLines {
       if (gapStart!!.startCount <= 0) {
         // found a gap
         if (itemIndex < moments.size - 1) {
-          gaps += TimeRange(gapStart.moment, moments.get(itemIndex + 1).moment)
+          gaps += TimeRange(gapStart.moment, moments[itemIndex + 1].moment)
         }
       }
       itemIndex++

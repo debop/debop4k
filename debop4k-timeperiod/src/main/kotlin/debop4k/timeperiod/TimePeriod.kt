@@ -27,38 +27,62 @@ import org.joda.time.Duration
 /**
  * Time Period
  */
-open class TimePeriod @JvmOverloads constructor(override var start: DateTime = MinPeriodTime,
-                                                override var end: DateTime = MaxPeriodTime,
-                                                override val readonly: Boolean = false) : ITimePeriod {
+open class TimePeriod(var _start: DateTime? = MinPeriodTime,
+                      var _end: DateTime? = MaxPeriodTime,
+                      override val readonly: Boolean = false) : ITimePeriod {
 
   constructor(src: ITimePeriod) : this(src.start, src.end, src.readonly)
+  constructor(src: ITimePeriod, readonly: Boolean) : this(src.start, src.end, readonly)
+  constructor(start: DateTime, duration: Duration) : this(start, start + duration, false)
+  constructor(start: DateTime, duration: Duration, readOnly: Boolean) : this(start, start + duration, readOnly)
 
-  @JvmOverloads
-  constructor(start: DateTime, duration: Duration, readOnly: Boolean = false)
-  : this(start, start + duration, readOnly)
+  init {
+    val pair = adjustPeriod(_start, _end)
+    _start = pair.first ?: MinPeriodTime
+    _end = pair.second ?: MaxPeriodTime
+  }
+
+  override var start: DateTime
+    get() = _start!!
+    set(value) {
+      assertMutable()
+//      assert(value <= _end) { "start 는 $_end 보다 이전이어야 합니다. value=$value" }
+      _start = value
+    }
+
+  override var end: DateTime
+    get() = _end!!
+    set(value) {
+      assertMutable()
+//      assert(value >= _start) { "end 는 $_start 보다 이후이어야 합니다. value=$value" }
+      _end = value
+    }
 
   companion object {
     @JvmField val AnyTime: TimePeriod = TimePeriod(readonly = true)
   }
 
-  override var duration: Duration
-    get() = Duration(start, end)
-    set(d) {
-      assertMutable()
-      require(d.millis > 0, { "Duration 은 0보다 커야 합니다." })
 
-      if (hasStart()) {
-        end = start + d
-      }
-    }
+//  override var duration: Duration
+//    get() = Duration(start, end)
+//    set(d) {
+//      assertMutable()
+//      require(d.millis >= 0, { "Duration 은 0보다 커야 합니다." })
+//
+//      if (hasStart()) {
+//        end = start + d
+//      }
+//    }
 
-  override fun setup(newStart: DateTime, newEnd: DateTime) {
-    if (newStart < newEnd) {
-      start = newStart
-      end = newEnd
+  override fun setup(newStart: DateTime?, newEnd: DateTime?) {
+    val ns = newStart ?: MinPeriodTime
+    val ne = newEnd ?: MaxPeriodTime
+    if (ns < ne) {
+      _start = ns
+      _end = ne
     } else {
-      start = newEnd
-      end = newStart
+      _start = ne
+      _end = ns
     }
   }
 
@@ -76,8 +100,13 @@ open class TimePeriod @JvmOverloads constructor(override var start: DateTime = M
     if (offset.millis == 0L) return
     assertMutable()
 
-    if (hasStart()) start += offset
-    if (hasEnd()) end += offset
+    if (offset > Duration.ZERO) {
+      if (hasEnd()) end += offset
+      if (hasStart()) start += offset
+    } else {
+      if (hasStart()) start += offset
+      if (hasEnd()) end += offset
+    }
   }
 
   override fun isSamePeriod(other: ITimePeriod): Boolean {
@@ -107,7 +136,7 @@ open class TimePeriod @JvmOverloads constructor(override var start: DateTime = M
   }
 
   override fun relation(other: ITimePeriod): PeriodRelation {
-    return this.relation(other)
+    return relationWith(other)
   }
 
   override fun intersection(other: ITimePeriod): ITimePeriod? {
