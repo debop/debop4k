@@ -96,7 +96,7 @@ abstract class CalendarVisitor<out F : ICalendarVisitorFilter, in C : ICalendarV
     }
   }
 
-  open protected fun startYearVisit(year: YearRange, context: C, direction: SeekDirection): YearRange {
+  open protected fun startYearVisit(year: YearRange, context: C, direction: SeekDirection): YearRange? {
     onVisitStart()
 
     val offset = direction.value
@@ -113,10 +113,10 @@ abstract class CalendarVisitor<out F : ICalendarVisitorFilter, in C : ICalendarV
     onVisitEnd()
 
     log.trace("마지막 탐색 Year. lastVisited={}", lastVisited)
-    return lastVisited!!
+    return lastVisited
   }
 
-  open protected fun startMonthVisit(month: MonthRange, context: C, direction: SeekDirection): MonthRange {
+  open protected fun startMonthVisit(month: MonthRange, context: C, direction: SeekDirection): MonthRange? {
     onVisitStart()
 
     val offset = direction.value
@@ -133,17 +133,17 @@ abstract class CalendarVisitor<out F : ICalendarVisitorFilter, in C : ICalendarV
     onVisitEnd()
 
     log.trace("마지막 탐색 Month. lastVisited={}", lastVisited)
-    return lastVisited!!
+    return lastVisited
   }
 
-  open protected fun startDayVisit(day: DayRange, context: C, direction: SeekDirection): DayRange {
+  open protected fun startDayVisit(day: DayRange, context: C, direction: SeekDirection): DayRange? {
     onVisitStart()
 
     val offset = direction.value
     var current = day
     var lastVisited: DayRange? = null
 
-    while (lastVisited == null && MAX_PERIOD.hasPureInsideWith(current)) {
+    while (lastVisited == null && current.hasPureInsideWith(MAX_PERIOD)) {
       if (!onVisitDay(current, context)) {
         lastVisited = current
       } else {
@@ -151,18 +151,19 @@ abstract class CalendarVisitor<out F : ICalendarVisitorFilter, in C : ICalendarV
       }
     }
     onVisitEnd()
+
     log.trace("Day 단위 탐색을 완료했습니다. lastVisited={}", lastVisited)
-    return lastVisited!!
+    return lastVisited
   }
 
-  open protected fun startHourVisit(hour: HourRange, context: C, direction: SeekDirection): HourRange {
+  open protected fun startHourVisit(hour: HourRange, context: C, direction: SeekDirection): HourRange? {
     onVisitStart()
 
     val offset = direction.value
     var current = hour
     var lastVisited: HourRange? = null
 
-    while (lastVisited == null && MAX_PERIOD.hasPureInsideWith(current)) {
+    while (lastVisited == null && current.hasPureInsideWith(MAX_PERIOD)) {
       if (!onVisitHour(current, context)) {
         lastVisited = current
       } else {
@@ -172,7 +173,7 @@ abstract class CalendarVisitor<out F : ICalendarVisitorFilter, in C : ICalendarV
     onVisitEnd()
 
     log.trace("Hour 단위 탐색 완료. lastVisited={}", lastVisited)
-    return lastVisited!!
+    return lastVisited
   }
 
   open protected fun onVisitStart(): Unit {

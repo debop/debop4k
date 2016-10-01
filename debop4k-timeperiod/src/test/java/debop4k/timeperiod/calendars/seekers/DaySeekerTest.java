@@ -43,6 +43,7 @@ public class DaySeekerTest extends AbstractTimePeriodTest {
     assertThat(day1.isSamePeriod(start)).isTrue();
 
     DayRange day2 = daySeeker.findDay(start, 1);
+    assertThat(day2).isNotNull();
     assertThat(day2.isSamePeriod(start.nextDay())).isTrue();
 
     for (int i = -10; i < 20; i++) {

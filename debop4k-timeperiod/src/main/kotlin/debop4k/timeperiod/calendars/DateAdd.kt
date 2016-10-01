@@ -18,6 +18,7 @@ package debop4k.timeperiod.calendars
 
 import debop4k.core.loggerOf
 import debop4k.timeperiod.*
+import debop4k.timeperiod.calendars.SeekBoundaryMode.Next
 import debop4k.timeperiod.timelines.TimeGapCalculator
 import org.joda.time.DateTime
 import org.joda.time.Duration
@@ -36,8 +37,22 @@ open class DateAdd {
     @JvmStatic fun of(): DateAdd = DateAdd()
   }
 
-  open protected val includePeriods: TimePeriodCollection = TimePeriodCollection()
-  open protected val excludePeriods: TimePeriodCollection = TimePeriodCollection()
+  protected val _includePeriods: TimePeriodCollection = TimePeriodCollection()
+  protected val _excludePeriods: TimePeriodCollection = TimePeriodCollection()
+
+  open protected val includePeriods: TimePeriodCollection get() = _includePeriods
+  open protected val excludePeriods: TimePeriodCollection get() = _excludePeriods
+
+  /**
+   * 시작 일자로부터 offset 기간이 지난 일자를 계산합니다. (기간에 포함될 기간과 제외할 기간을 명시적으로 지정해 놓을 수 있습니다.)
+   *
+   * @param start        시작 일자
+   * @param offset       기간
+   * @return 시작 일자로부터 offset 기간 이후의 일자
+   */
+  open fun add(start: DateTime, offset: Duration): DateTime? {
+    return add(start, offset, Next)
+  }
 
   /**
    * 시작 일자로부터 offset 기간이 지난 일자를 계산합니다. (기간에 포함될 기간과 제외할 기간을 명시적으로 지정해 놓을 수 있습니다.)
@@ -47,14 +62,13 @@ open class DateAdd {
    * @param seekBoundary 마지막 일자 포함 여부
    * @return 시작 일자로부터 offset 기간 이후의 일자
    */
-  @JvmOverloads
   open fun add(start: DateTime,
                offset: Duration,
-               seekBoundary: SeekBoundaryMode = SeekBoundaryMode.Next): DateTime? {
+               seekBoundary: SeekBoundaryMode = Next): DateTime? {
     log.debug("Add start={}, offset={}, seekBoundary={}", start, offset, seekBoundary)
 
     // 예외 조건이 없으면 단순 계산으로 처리
-    if (includePeriods.isEmpty() && excludePeriods.isEmpty()) {
+    if (_includePeriods.isEmpty() && _excludePeriods.isEmpty()) {
       return start.plus(offset)
     }
 
@@ -76,14 +90,25 @@ open class DateAdd {
    * @param seekBoundary 마지막 일자 포함 여부
    * @return 시작 일자로부터 offset 기간 이전의 일자
    */
-  @JvmOverloads
+  open fun subtract(start: DateTime, offset: Duration): DateTime? {
+    return subtract(start, offset, Next);
+  }
+
+  /**
+   * 시작 일자로부터 offset 기간 이전의 일자를 계산합니다. (기간에 포함될 기간과 제외할 기간을 명시적으로 지정해 놓을 수 있습니다.)
+   *
+   * @param start        시작 일자
+   * @param offset       기간
+   * @param seekBoundary 마지막 일자 포함 여부
+   * @return 시작 일자로부터 offset 기간 이전의 일자
+   */
   open fun subtract(start: DateTime,
                     offset: Duration,
-                    seekBoundary: SeekBoundaryMode = SeekBoundaryMode.Next): DateTime? {
+                    seekBoundary: SeekBoundaryMode = Next): DateTime? {
     log.debug("Subtract start={}, offset={}, seekBoundary={}", start, offset, seekBoundary)
 
     // 예외 조건이 없으면 단순 계산으로 처리
-    if (includePeriods.isEmpty() && excludePeriods.isEmpty()) {
+    if (_includePeriods.isEmpty() && _excludePeriods.isEmpty()) {
       return start - offset
     }
 
@@ -106,7 +131,7 @@ open class DateAdd {
 
     log.debug("calculateEnd start={}, offset={}, seekDir={}, seekBoundary={}", start, offset, seekDir, seekBoundary)
 
-    val searchPeriods = TimePeriodCollection.of(includePeriods.periods)
+    val searchPeriods = TimePeriodCollection.of(_includePeriods.periods)
     if (searchPeriods.isEmpty()) {
       searchPeriods += TimeRange.AnyTime
     }
@@ -120,7 +145,7 @@ open class DateAdd {
     val periodCombiner = TimePeriodCombiner<TimeRange>()
     availablePeriods = periodCombiner.combinePeriods(availablePeriods)
 
-    val startPeriod = if (seekDir === SeekDirection.Forward)
+    val startPeriod = if (seekDir == SeekDirection.Forward)
       findNextPeriod(start, availablePeriods)
     else
       findPrevPeriod(start, availablePeriods)
@@ -136,7 +161,7 @@ open class DateAdd {
 
     log.debug("startPeriod={}, offset={}", startPeriod, offset)
 
-    return if (seekDir === SeekDirection.Forward)
+    return if (seekDir == SeekDirection.Forward)
       findPeriodForward(availablePeriods,
                         offset,
                         startPeriod.first,
@@ -153,14 +178,14 @@ open class DateAdd {
   private fun getAvailablePeriods(searchPeriods: ITimePeriodCollection): ITimePeriodCollection {
     val availablePeriods = TimePeriodCollection()
 
-    if (excludePeriods.isEmpty()) {
+    if (_excludePeriods.isEmpty()) {
       availablePeriods.addAll(searchPeriods)
     } else {
       val gapCalculator = TimeGapCalculator<TimeRange>()
 
       for (p in searchPeriods) {
-        if (excludePeriods.hasOverlapPeriods(p)) {
-          for (gap in gapCalculator.gaps(excludePeriods, p)) {
+        if (_excludePeriods.hasOverlapPeriods(p)) {
+          for (gap in gapCalculator.gaps(_excludePeriods, p)) {
             availablePeriods += gap
           }
         } else {
@@ -168,7 +193,7 @@ open class DateAdd {
         }
       }
     }
-    log.trace("availablePeriods={}", availablePeriods)
+    log.debug("availablePeriods={}", availablePeriods)
     return availablePeriods
   }
 
@@ -186,21 +211,21 @@ open class DateAdd {
     val startIndex = availablePeriods.indexOf(startPeriod)
     val length = availablePeriods.size
 
-    for (i in startIndex..(length - 1)) {
+    for (i in startIndex until length) {
       val gap = availablePeriods[i]
       val gapRemaining = Duration(_seekMoment, gap.end)
 
       log.trace("gap={}, gamRemaining={}, remaning={}, seekMoment={}", gap, gapRemaining, _remaining, _seekMoment)
 
       val isTargetPeriod =
-          if (seekBoundary === SeekBoundaryMode.Fill)
+          if (seekBoundary == SeekBoundaryMode.Fill)
             gapRemaining >= _remaining
           else
             gapRemaining > _remaining
 
       if (isTargetPeriod) {
-        log.debug("find datetime={}", seekMoment.plus(_remaining))
-        return Pair(seekMoment.plus(_remaining), null)
+        log.debug("find datetime={}", _seekMoment.plus(_remaining))
+        return Pair(_seekMoment.plus(_remaining), null)
       }
       _remaining = _remaining?.minus(gapRemaining)
 
@@ -233,7 +258,7 @@ open class DateAdd {
                 gap, gapRemaining, _remaining, _seekMoment)
 
       val isTargetPeriod =
-          if (seekBoundary === SeekBoundaryMode.Fill)
+          if (seekBoundary == SeekBoundaryMode.Fill)
             gapRemaining >= _remaining
           else
             gapRemaining > _remaining

@@ -30,9 +30,10 @@ object TimeLines {
       return periods
     }
 
+    val momentSize = moments.size
     var itemIndex = 0
 
-    while (itemIndex < moments.size) {
+    while (itemIndex < momentSize) {
       val periodStart = moments[itemIndex]
       var balance = periodStart.startCount
       balance.shouldBePositive("balance")
@@ -48,7 +49,7 @@ object TimeLines {
 
       assert(periodEnd != null)
 
-      if (periodEnd!!.startCount == 0L && itemIndex < moments.size) {
+      if (periodEnd!!.startCount <= 0L && itemIndex < momentSize) {
         val period = TimeRange(periodStart.moment, periodEnd.moment)
         periods += period
       }

@@ -40,7 +40,7 @@ open class TimeLine<T : ITimePeriod>(override val periods: ITimePeriodContainer,
       return TimePeriodCollection()
 
     val moments = timeLineMoments()
-    if (moments == null || moments.isEmpty) {
+    if (moments.isEmpty) {
       return TimePeriodCollection.of(TimeRange(periods))
     }
     return TimeLines.combinePeriods(moments)
