@@ -48,6 +48,7 @@
 
     <module>debop4k-examples</module>
 
+    <module>debop4k-http</module>
     <module>debop4k-reactive</module>
     <module>debop4k-redis</module>
     <module>debop4k-science</module>
@@ -61,6 +62,7 @@
     <module>debop4k-timeperiod</module>
     <module>debop4k-units</module>
     <module>debop4k-web</module>
+
 
   </modules>
 
@@ -1056,7 +1058,7 @@
         <artifactId>maven-idea-plugin</artifactId>
         <version>2.2</version>
         <configuration>
-          <downloadSources>false</downloadSources>
+          <downloadSources>true</downloadSources>
           <downloadJavadocs>false</downloadJavadocs>
           <dependenciesAsLibraries>true</dependenciesAsLibraries>
           <useFullNames>false</useFullNames>
@@ -1156,7 +1158,7 @@
           <show>private</show>
           <nohelp>false</nohelp>
           <failOnError>false</failOnError>
-          <footer>kesti4j</footer>
+          <footer>debop4k</footer>
           <stylesheetfile>${project.basedir}/../stylesheet.css</stylesheetfile>
         </configuration>
         <executions>
@@ -1188,11 +1190,18 @@
           <execution>
             <phase>package</phase>
             <goals>
+              <goal>dokka</goal>
               <goal>javadoc</goal>
               <goal>javadocJar</goal>
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <sourceDirectories>
+            <sourceDirectory>src/main/kotlin</sourceDirectory>
+          </sourceDirectories>
+        </configuration>
+
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

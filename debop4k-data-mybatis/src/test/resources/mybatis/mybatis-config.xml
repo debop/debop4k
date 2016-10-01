@@ -30,7 +30,7 @@
   </typeAliases>
   <!-- 굳이 이렇게 하나씩 정의할 필요없이, java config 에서 전체를 mybatis.mappers/**/*.xml 로 추가할 수 있다 -->
   <!--<mybatis.mappers>-->
-  <!--<mapper resource="mybatis.mappers/ActorMapper.xml"/>-->
+  <!--<mapper resource="mybatis.mappers/KotlinActorMapper.xml"/>-->
   <!--</mybatis.mappers>-->
 
   <typeHandlers>

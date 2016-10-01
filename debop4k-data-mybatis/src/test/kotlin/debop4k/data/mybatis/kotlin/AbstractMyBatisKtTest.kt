@@ -14,8 +14,21 @@
  *
  */
 
-dependencies {
+package debop4k.data.mybatis.kotlin
 
-    compile project(":debop4k-core")
+import debop4k.core.loggerOf
+import debop4k.data.mybatis.config.MyBatisConfiguration
+import org.junit.runner.RunWith
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.junit4.SpringRunner
 
+/**
+ * AbstractMyBatisKtTest
+ * @author sunghyouk.bae@gmail.com
+ */
+@RunWith(SpringRunner::class)
+@SpringBootTest(classes = arrayOf(MyBatisConfiguration::class))
+abstract class AbstractMyBatisKtTest {
+
+  protected val log = loggerOf(javaClass)
 }
