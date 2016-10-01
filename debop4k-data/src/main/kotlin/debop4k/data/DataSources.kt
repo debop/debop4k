@@ -130,13 +130,13 @@ object DataSources {
     log.debug("props={}", dataSourceProps)
     val setting = DatabaseSetting("",
                                   "",
-                                  dataSourceProps.driverClassName ?: "",
-                                  dataSourceProps.jdbcUrl ?: "",
+                                  dataSourceProps.driverClassName,
+                                  dataSourceProps.jdbcUrl,
                                   dataSourceProps.username,
                                   dataSourceProps.password,
                                   dataSourceProps.maxPoolSize,
                                   dataSourceProps.minIdleSize,
-                                  dataSourceProps.testQuery ?: DatabaseConfigElement.TEST_QUERY,
+                                  dataSourceProps.testQuery,
                                   Maps.mutable.of<String, String>())
 
     dataSourceProps.postgres?.let {

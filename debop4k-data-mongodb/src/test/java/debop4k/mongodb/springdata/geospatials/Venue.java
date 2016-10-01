@@ -17,9 +17,9 @@
 package debop4k.mongodb.springdata.geospatials;
 
 import debop4k.core.ToStringHelper;
-import debop4k.gis.coords.BoundingBox;
-import debop4k.gis.coords.BoundingBoxEx;
 import debop4k.mongodb.AbstractMongoDocument;
+import debop4k.science.gis.coords.BoundingBox;
+import debop4k.science.gis.coords.BoundingBoxEx;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;

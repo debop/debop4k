@@ -20,7 +20,7 @@ import debop4k.mongodb.springdata.model.EmailAddress;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import static debop4k.core.utils.StringEx.isEmpty;
+import static debop4k.core.utils.Stringx.isEmpty;
 
 /**
  * @author sunghyouk.bae@gmail.com

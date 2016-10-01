@@ -340,14 +340,14 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     assertThat(noMove).isEqualTo(noMove);
 
     Duration forwardOffset = Durations.hourOf(2, 30, 15);
-    TimeBlock forward = range.copy(forwardOffset);
+    TimeBlock forward = (TimeBlock) range.copy(forwardOffset);
 
     assertThat(forward.getStart()).isEqualTo(start.plus(forwardOffset));
     assertThat(forward.getEnd()).isEqualTo(end.plus(forwardOffset));
     assertThat(forward.getDuration()).isEqualTo(duration);
 
     Duration backwardOffset = Durations.hourOf(-1, 10, 30);
-    TimeBlock backward = range.copy(backwardOffset);
+    TimeBlock backward = (TimeBlock) range.copy(backwardOffset);
 
     assertThat(backward.getStart()).isEqualTo(start.plus(backwardOffset));
     assertThat(backward.getEnd()).isEqualTo(end.plus(backwardOffset));

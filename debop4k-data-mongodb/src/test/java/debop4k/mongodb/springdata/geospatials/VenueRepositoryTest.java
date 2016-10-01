@@ -16,10 +16,10 @@
 
 package debop4k.mongodb.springdata.geospatials;
 
-import debop4k.gis.coords.BoundingBox;
 import debop4k.mongodb.AbstractMongoTest;
-import debop4k.mongodb.geometry.MongoGeometry;
 import debop4k.mongodb.springdata.SpringDataMongoConfiguration;
+import debop4k.mongondb.geometry.MongoGeometry;
+import debop4k.science.gis.coords.BoundingBox;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;

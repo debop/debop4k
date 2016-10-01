@@ -42,34 +42,34 @@ public class UtmZonexTest extends AbstractGisTest {
   @Test
   public void testUtmZone() {
 
-    double latitude = UtmZoneEx.getLatitudeByUtm(utm51S.getLatitudeZone());
-    double longitude = UtmZoneEx.getLongitudeByUtm(utm51S.getLongitudeZone());
+    double latitude = UtmZonex.getLatitudeByUtm(utm51S.getLatitudeZone());
+    double longitude = UtmZonex.getLongitudeByUtm(utm51S.getLongitudeZone());
 
     assertThat(latitude).isEqualTo(32D);
     assertThat(longitude).isEqualTo(120D);
 
-    UtmZone utm51S2 = UtmZoneEx.getUtmZone(GeoLocation.of(latitude, longitude));
+    UtmZone utm51S2 = UtmZonex.utmZoneOf(GeoLocation.of(latitude, longitude));
     assertThat(utm51S2).isEqualTo(utm51S);
 
-    UtmZone utmZone2 = UtmZoneEx.getUtmZone(GeoLocation.of(38, 127));
+    UtmZone utmZone2 = UtmZonex.utmZoneOf(GeoLocation.of(38, 127));
     assertThat(utmZone2).isEqualTo(utm52S);
 
-    UtmZone utmZone3 = UtmZoneEx.getUtmZone(GeoLocation.of(0, 0));
+    UtmZone utmZone3 = UtmZonex.utmZoneOf(GeoLocation.of(0, 0));
     assertThat(utmZone3).isEqualTo(utm31N);
   }
 
   @Test
   public void utmZoneToBoundingBox() {
-    BoundingBox bbox31N = UtmZoneEx.getBoundingBox(utm31N);
+    BoundingBox bbox31N = UtmZonex.getBoundingBox(utm31N);
 
     assertThat(bbox31N.getBottom()).isEqualTo(0);
     assertThat(bbox31N.getLeft()).isEqualTo(0);
 
-    BoundingBox bbox51S = UtmZoneEx.getBoundingBox(utm51S);
+    BoundingBox bbox51S = UtmZonex.getBoundingBox(utm51S);
     assertThat(bbox51S.getWidth()).isEqualTo(UtmZonex.UTM_LONGITUDE_SIZE);
     assertThat(bbox51S.getHeight()).isEqualTo(UtmZonex.UTM_LATITUDE_SIZE);
 
-    GeoLocation loc51S = UtmZoneEx.getGeoLocation(utm51S);
+    GeoLocation loc51S = UtmZonex.toGeoLocation(utm51S);
     assertThat(bbox51S.contains(loc51S)).isTrue();
   }
 
@@ -85,18 +85,18 @@ public class UtmZonexTest extends AbstractGisTest {
   public void cellBoundingBox() {
     double cellUnitSize = 1. / 120.;
 
-    BoundingBox utmBbox = UtmZoneEx.getBoundingBox(utm51S);
-    BoundingBox cellBbox = UtmZoneEx.getCellBoundingBox(utm51S, cellUnitSize, 0, 0);
+    BoundingBox utmBbox = UtmZonex.getBoundingBox(utm51S);
+    BoundingBox cellBbox = UtmZonex.getCellBoundingBox(utm51S, cellUnitSize, 0, 0);
 
     assertThat(cellBbox.getLeft()).isEqualTo(utmBbox.getLeft(), Offset.offset(1e-6));
     assertThat(cellBbox.getTop()).isEqualTo(utmBbox.getTop(), Offset.offset(1e-6));
     assertThat(cellBbox.getWidth()).isEqualTo(cellUnitSize, Offset.offset(1e-6));
     assertThat(cellBbox.getHeight()).isEqualTo(cellUnitSize, Offset.offset(1e-6));
 
-    cellBbox = UtmZoneEx.getCellBoundingBox(utm51S,
-                                            cellUnitSize,
-                                            120 * UtmZonex.UTM_LATITUDE_SIZE - 1,
-                                            120 * UtmZonex.UTM_LONGITUDE_SIZE - 1);
+    cellBbox = UtmZonex.getCellBoundingBox(utm51S,
+                                           cellUnitSize,
+                                           120 * UtmZonex.UTM_LATITUDE_SIZE - 1,
+                                           120 * UtmZonex.UTM_LONGITUDE_SIZE - 1);
 
     assertThat(cellBbox.getRight()).isEqualTo(utmBbox.getRight(), Offset.offset(1e-6));
     assertThat(cellBbox.getBottom()).isEqualTo(utmBbox.getBottom(), Offset.offset(1e-6));

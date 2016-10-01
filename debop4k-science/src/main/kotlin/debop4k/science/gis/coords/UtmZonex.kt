@@ -112,6 +112,12 @@ fun utmZoneOf(location: GeoLocation): UtmZone {
   return utmZoneOf(location.longitude, location.latitude)
 }
 
+fun UtmZone.toGeoLocation(): GeoLocation {
+  val lon = longitudeZone.toLongitudeByUtm()
+  val lat = latitudeZone.toLatitudeByUtm()
+  return GeoLocation(lat + UTM_LATITUDE_SIZE, lon)
+}
+
 val Char.isUtmLatitude: Boolean get() = UtmLatitudes.keys.contains(this.toUpperCase())
 
 fun Int.toLongitudeByUtm(): Double {
