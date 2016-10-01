@@ -14,63 +14,139 @@
  *
  */
 
-@file:JvmName("DataSources")
-
 package debop4k.data
 
-import debop4k.core.min
+import com.zaxxer.hikari.HikariConfig
+import com.zaxxer.hikari.HikariDataSource
+import debop4k.config.database.DatabaseConfigElement
+import debop4k.config.database.DatabaseSetting
+import debop4k.core.loggerOf
+import debop4k.core.utils.min
 import debop4k.data.factory.HikariDataSourceFactory
+import debop4k.data.spring.boot.autoconfigure.HikariDataSourceProperties
+import org.apache.commons.lang3.builder.ToStringBuilder
+import org.eclipse.collections.impl.factory.Maps
 import org.eclipse.collections.impl.map.mutable.ConcurrentHashMap
+import org.slf4j.Logger
 import javax.sql.DataSource
 
-//
-// TODO: Extension Functions 로 바꾸자
-//
-
 /**
- * [DataSource]를 생성해주는 클래스입니다.
+ * [DataSource] 를 생성해주는 Object
  *
- * @author debop sunghyouk.bae@gmail.com
+ * @author sunghyouk.bae@gmail.com
  */
 object DataSources {
 
-  private val processCount by lazy { Runtime.getRuntime().availableProcessors() }
-  val MAX_POOL_SIZE: Int by lazy { processCount * 16 }
-  val MIN_POOL_SIZE: Int by lazy { processCount }
-  val MIN_IDLE_SIZE: Int by lazy { 2 min processCount }
+  private val log: Logger = loggerOf(DataSources::class.java)
 
-  private val dataSourceCache: ConcurrentHashMap<DatabaseSetting, DataSource>
-      = ConcurrentHashMap<DatabaseSetting, DataSource>()
+  @JvmField val PROCESS_COUNT: Int = Runtime.getRuntime().availableProcessors()
 
-  private val dataSourceFactory = HikariDataSourceFactory()
+  @JvmField val MAX_POOL_SIZE: Int = PROCESS_COUNT * 8
+  @JvmField val MIN_POOL_SIZE: Int = PROCESS_COUNT
+  @JvmField val MIN_IDLE_SIZE: Int = PROCESS_COUNT min 2
 
-  @JvmOverloads
-  @JvmStatic
-  fun of(driverClassName: String,
-         jdbcUrl: String,
-         username: String? = null,
-         password: String? = null): DataSource {
+  /** 생성된 DataSource 를 캐시합니다 */
+  private val dataSourceCache = ConcurrentHashMap<DatabaseSetting, DataSource>()
 
-    val setting = DatabaseSetting(driverClassName = driverClassName,
-                                  jdbcUrl = jdbcUrl,
-                                  username = username,
-                                  password = password)
-    return of(setting)
+  private val dataSourceFactory by lazy { HikariDataSourceFactory() }
+
+  /**
+   * Database 접속 설정 정보를 이용하여 DataSource를 생성합니다.
+   * @param setting Database 설정 정보 {@link DatabaseSetting}
+   * @return DataSource instance.
+   */
+  @JvmStatic fun of(setting: DatabaseSetting): DataSource {
+    return dataSourceFactory.create(setting)
+//    return dataSourceCache.getIfAbsentPut(setting, dataSourceFactory.create(setting))
   }
 
-  @JvmStatic
-  fun of(setting: DatabaseSetting): DataSource {
-    return dataSourceCache.getIfAbsentPut(setting, dataSourceFactory.create(setting))
+  /**
+   * Database 접속 설정 정보를 이용하여 DataSource 를 생성합니다.
+   * @param dataSourceProps spring boot 용 환경설정 정보
+   * @return DataSource instance.
+   */
+  @JvmStatic fun of(dataSourceProps: HikariDataSourceProperties): DataSource
+      = of(convertToDatabaseSetting(dataSourceProps))
+
+  /**
+   * [HikariConfig] 를 이용하여 DataSource를 생성합니다.
+
+   * @param config [HikariConfig] 인스턴스
+   * *
+   * @return [DataSource] 인스턴스
+   */
+  @JvmStatic fun withConfig(config: HikariConfig): DataSource {
+    log.info("Hikari DataSource를 빌드합니다. config={}", ToStringBuilder.reflectionToString(config))
+    return HikariDataSource(config)
   }
 
-  @JvmStatic fun ofEmbeddedH2(): DataSource = of(h2Mem)
-  @JvmStatic fun ofEmbeddedHsql(): DataSource = of(hsqlMem)
+  /**
+   * HSQL DB 용 DataSource 를 생성합니다.
+   * NOTE: HSQL는 Multi Thread 에서 In-Memory DB를 지원하지 않습니다.
+   * @return HSQL DB 용 DataSource
+   */
+  @JvmStatic fun ofEmbeddedHSql(): DataSource {
+    return of(hsqlMem)
+  }
 
-  @JvmStatic val h2Mem = DatabaseSetting(driverClassName = JdbcDrivers.DRIVER_CLASS_H2,
-                                         jdbcUrl = "jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE;MVCC=TRUE;")
+  /**
+   * H2 Database 용 DataSource 를 생성합니다.
+   * @return DataSource for H2 Database
+   */
+  @JvmStatic fun ofEmbeddedH2(): DataSource {
+    return of(h2Mem)
+  }
 
-  @JvmStatic val hsqlMem = DatabaseSetting(driverClassName = JdbcDrivers.DRIVER_CLASS_HSQL,
-                                           jdbcUrl = "jdbc:hsqldb:mem:test",
-                                           username = "sa",
-                                           testQuery = "SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS")
+  /**
+   * Memory HSQL DB 용 Database Setting 정보
+   */
+  @JvmField val hsqlMem = DatabaseSetting("",
+                                          "",
+                                          JdbcDrivers.DRIVER_CLASS_HSQL,
+                                          "jdbc:hsqldb:mem:test",
+                                          "sa",
+                                          "",
+                                          MAX_POOL_SIZE,
+                                          MIN_IDLE_SIZE,
+                                          "SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS",
+                                          Maps.mutable.of<String, String>())
+
+  /**
+   * Memory H2 DB 용 Database Setting 정보
+   */
+  @JvmField val h2Mem = DatabaseSetting("",
+                                        "",
+                                        JdbcDrivers.DRIVER_CLASS_H2,
+                                        "jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE;MVCC=TRUE;",
+                                        "sa",
+                                        "",
+                                        MAX_POOL_SIZE,
+                                        MIN_IDLE_SIZE,
+                                        DatabaseConfigElement.TEST_QUERY,
+                                        Maps.mutable.of<String, String>())
+
+  @JvmStatic
+  private fun convertToDatabaseSetting(dataSourceProps: HikariDataSourceProperties): DatabaseSetting {
+    log.debug("props={}", dataSourceProps)
+    val setting = DatabaseSetting("",
+                                  "",
+                                  dataSourceProps.driverClassName ?: "",
+                                  dataSourceProps.jdbcUrl ?: "",
+                                  dataSourceProps.username,
+                                  dataSourceProps.password,
+                                  dataSourceProps.maxPoolSize,
+                                  dataSourceProps.minIdleSize,
+                                  dataSourceProps.testQuery ?: DatabaseConfigElement.TEST_QUERY,
+                                  Maps.mutable.of<String, String>())
+
+    dataSourceProps.postgres?.let {
+      setting.props.putAll(it.toMap())
+    }
+
+    dataSourceProps.mysql?.let {
+      setting.props.putAll(it.toMap())
+    }
+
+    return setting
+  }
 }

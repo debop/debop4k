@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+debop4k.mongodb.spring.boot.autoconfigure.MongodbAutoConfiguration

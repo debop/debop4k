@@ -16,8 +16,10 @@
 
 package debop4k.ignite.examples
 
-import debop4k.core.io.use
-import org.apache.ignite.Ignition
+import debop4k.core.loggerOf
+import debop4k.core.use
+import debop4k.data.ignite.getCache
+import debop4k.data.ignite.usingIgnite
 import org.apache.ignite.configuration.IgniteConfiguration
 import org.apache.ignite.lang.IgniteCallable
 import org.junit.Test
@@ -29,26 +31,30 @@ import java.util.*
  */
 class SimpleExample {
 
+  private val log = loggerOf(javaClass)
+
   private val cfg = IgniteConfiguration()
 
   @Test
   fun testConfiguration() {
-    Ignition.getOrStart(cfg).use { ignite ->
-      val cache = ignite.getOrCreateCache<String, Any?>("default")
-      cache.put("a", "abc")
-      println("cache matrics =${cache.metrics()}")
+    usingIgnite { ignite ->
+      ignite.getCache<String, Any?>("default").use { cache ->
+        cache.put("a", "abc")
+        println("cache matrics =${cache.metrics()}")
+      }
     }
   }
 
   @Test
   fun testCompute() {
-    Ignition.getOrStart(cfg).use { ignite ->
+    usingIgnite(cfg) { ignite ->
 
       val calls = ArrayList<IgniteCallable<Int>>()
 
       // Iterate through all the words in the sentence and create Callable jobs.
-      for (word in "Count characters using callable".split(" "))
+      "Count characters using callable".split(" ").forEach { word ->
         calls.add(IgniteCallable { word.length })
+      }
 
       // Execute collection of Callables on the grid.
       val res = ignite.compute().call(calls)
@@ -62,15 +68,18 @@ class SimpleExample {
 
   @Test
   fun testDataGrid() {
-    Ignition.getOrStart(cfg).use { ignite ->
-      val cache = ignite.getOrCreateCache<Int, String>("myCacheName")
+    usingIgnite(cfg) { ignite ->
+      ignite.getCache<Int, String>("dataGrid").use { cache ->
 
-      // Store keys in cache (values will end up on different cache nodes).
-      for (i in 0..9)
-        cache.put(i, i.toString())
+        // Store keys in cache (values will end up on different cache nodes).
+        (0..9).forEach {
+          cache.put(it, it.toString())
+        }
 
-      for (i in 0..9)
-        println("Got [key=$i, val=${cache.get(i)}]")
+        (0..9).forEach {
+          println("\tGot [key=$it, value=${cache.get(it)}]")
+        }
+      }
     }
   }
 

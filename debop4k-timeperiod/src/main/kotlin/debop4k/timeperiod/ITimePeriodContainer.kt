@@ -33,7 +33,7 @@ interface ITimePeriodContainer : MutableList<ITimePeriod>, ITimePeriod {
 
   override var start: DateTime
 
-  override val readOnly: Boolean
+  override val readonly: Boolean
 
   abstract fun containsPeriod(target: ITimePeriod): Boolean
 

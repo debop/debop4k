@@ -27,9 +27,9 @@ import org.joda.time.DateTime
 /**
  * Created by debop
  */
-open class DayTimeRange(startTime: DateTime = today(),
-                        val dayCount: Int = 1,
-                        calendar: ITimeCalendar = DefaultTimeCalendar)
+open class DayTimeRange @JvmOverloads constructor(startTime: DateTime = today(),
+                                                  val dayCount: Int = 1,
+                                                  calendar: ITimeCalendar = DefaultTimeCalendar)
 : CalendarTimeRange(startTime.relativeDayPeriod(dayCount), calendar) {
 
   fun hourSequence(): Sequence<HourRange> {

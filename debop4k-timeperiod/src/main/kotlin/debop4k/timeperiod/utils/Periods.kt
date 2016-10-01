@@ -18,9 +18,9 @@
 
 package debop4k.timeperiod.utils
 
-import debop4k.core.NULL_STRING
 import debop4k.core.collections.parMap
 import debop4k.core.kodatimes.*
+import debop4k.core.utils.NULL_STRING
 import debop4k.timeperiod.*
 import debop4k.timeperiod.models.PeriodRelation
 import debop4k.timeperiod.models.PeriodRelation.*
@@ -210,7 +210,7 @@ fun ITimePeriod.intersectBlock(target: ITimePeriod): TimeBlock? {
   if (this.intersectWith(target)) {
     val start = this.start max target.start
     val end = this.end min target.end
-    intersection = TimeBlock(start, end, this.readOnly)
+    intersection = TimeBlock(start, end, this.readonly)
   }
   return intersection
 }
@@ -221,7 +221,7 @@ fun ITimePeriod.intersectRange(target: ITimePeriod): TimeRange? {
   if (this.intersectWith(target)) {
     val start = this.start max target.start
     val end = this.end min target.end
-    intersection = TimeRange(start, end, this.readOnly)
+    intersection = TimeRange(start, end, this.readonly)
   }
   return intersection
 }
@@ -230,18 +230,18 @@ fun ITimePeriod.unionBlock(target: ITimePeriod): TimeBlock {
   val start = this.start min target.start
   val end = this.end max target.end
 
-  return TimeBlock(start, end, this.readOnly)
+  return TimeBlock(start, end, this.readonly)
 }
 
 fun ITimePeriod.unionRange(target: ITimePeriod): TimeRange {
   val start = this.start min target.start
   val end = this.end max target.end
 
-  return TimeRange(start, end, this.readOnly)
+  return TimeRange(start, end, this.readonly)
 }
 
 fun ITimePeriod.assertMutable(): Unit {
-  assert(!this.readOnly, { "ITimePeriod 가 읽기전용입니다." })
+  assert(!this.readonly, { "ITimePeriod 가 읽기전용입니다." })
 }
 
 fun ITimePeriod.periodSequence(unit: PeriodUnit): FastList<out ITimePeriod> = when (unit) {
@@ -523,7 +523,7 @@ fun ITimePeriod.minuteSequence(): FastList<out ITimePeriod> {
 }
 
 fun ITimePeriod?.assertHasPeriod(): Unit {
-  assert(this != null && this.hasPeriod) { "기간이 설정되지 않았습니다. period=$this" }
+  assert(this != null && this.hasPeriod()) { "기간이 설정되지 않았습니다. period=$this" }
 }
 
 fun <R> ITimePeriod.mapPeriod(unit: PeriodUnit, func: (ITimePeriod) -> R): FastList<R> {

@@ -52,11 +52,11 @@ open class TimePeriodContainer : TimePeriod(), ITimePeriodContainer {
     }
 
   override var duration: Duration
-    get() = if (hasPeriod) Duration(start, end) else MaxDuration
+    get() = if (hasPeriod()) Duration(start, end) else MaxDuration
     set(value) { /* noting to do */
     }
 
-  override val readOnly: Boolean get() = false
+  override val readonly: Boolean get() = false
 
   override fun isEmpty(): Boolean = _periods.isEmpty()
 

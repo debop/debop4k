@@ -25,8 +25,8 @@ import org.joda.time.DateTime
 /**
  * @author sunghyouk.bae@gmail.com
  */
-open class WeekRange(startTime: DateTime = today().startTimeOfWeek(),
-                     calendar: ITimeCalendar = DefaultTimeCalendar) :
+open class WeekRange @JvmOverloads constructor(startTime: DateTime = today().startTimeOfWeek(),
+                                               calendar: ITimeCalendar = DefaultTimeCalendar) :
     WeekTimeRange(startTime, 1, calendar) {
 
   constructor(weekyear: Int, weekOfWeekyear: Int, calendar: ITimeCalendar = DefaultTimeCalendar) :

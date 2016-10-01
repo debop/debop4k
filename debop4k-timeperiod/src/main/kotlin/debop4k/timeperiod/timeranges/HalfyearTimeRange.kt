@@ -28,9 +28,9 @@ import debop4k.timeperiod.utils.quarterSequence
 import debop4k.timeperiod.utils.relativeHalfyearPeriod
 import org.joda.time.DateTime
 
-open class HalfyearTimeRange(moment: DateTime = today(),
-                             val halfyearCount: Int = 1,
-                             calendar: ITimeCalendar = DefaultTimeCalendar) :
+open class HalfyearTimeRange @JvmOverloads constructor(moment: DateTime = today(),
+                                                       val halfyearCount: Int = 1,
+                                                       calendar: ITimeCalendar = DefaultTimeCalendar) :
     CalendarTimeRange(moment.relativeHalfyearPeriod(halfyearCount), calendar) {
 
   val halfyearOfStart: Halfyear get() = start.halfyearOf()

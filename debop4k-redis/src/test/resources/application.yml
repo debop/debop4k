@@ -1,0 +1,3 @@
+debop4k:
+  redisson:
+    config: redisson.yml

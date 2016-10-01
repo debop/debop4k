@@ -16,17 +16,20 @@
 
 package debop4k.data.factory
 
-import debop4k.data.DatabaseSetting
+import debop4k.config.database.DatabaseSetting
 import javax.sql.DataSource
 
 /**
- * [DataSource] 를 생성해주는 Factory 인터페이스
+ * [DataSource] 를 생성해주는 Factory의 인터페이스입니다.
+ *
  * @author sunghyouk.bae@gmail.com
  */
 interface DataSourceFactory {
 
   /**
-   * [DataSource] 생성
+   * [DataSource] 를 생성합니다.
+   * @param setting 데이터베이스 연결 정보
+   * @return 생성된 [DataSource] 인스턴스. 실패 시 null 반환
    */
   fun create(setting: DatabaseSetting): DataSource
 

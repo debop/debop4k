@@ -25,13 +25,15 @@ import org.joda.time.Duration
 /**
  * @author sunghyouk.bae@gmail.com
  */
-class TimeBlock(start: DateTime = MinPeriodTime,
-                end: DateTime = MaxPeriodTime,
-                readOnly: Boolean = false) : TimePeriod(start, end, readOnly), ITimeBlock {
+class TimeBlock @JvmOverloads constructor(start: DateTime? = MinPeriodTime,
+                                          end: DateTime? = MaxPeriodTime,
+                                          readOnly: Boolean = false) : TimePeriod(start ?: MinPeriodTime,
+                                                                                  end ?: MaxPeriodTime,
+                                                                                  readOnly), ITimeBlock {
 
-  constructor(src: ITimePeriod) : this(src.start, src.end, src.readOnly)
+  constructor(src: ITimePeriod) : this(src.start, src.end, src.readonly)
   constructor(src: ITimePeriod, readOnly: Boolean) : this(src.start, src.end, readOnly)
-  constructor(moment: DateTime, readOnly: Boolean = false) : this(moment, moment, readOnly)
+  constructor(moment: DateTime?, readOnly: Boolean = false) : this(moment, moment, readOnly)
 
   @JvmOverloads
   constructor(start: DateTime, duration: Duration, readOnly: Boolean = false)
@@ -94,4 +96,5 @@ class TimeBlock(start: DateTime = MinPeriodTime,
   private fun assertValidDuartion(v: Duration): Unit {
     assert(v.millis >= 0, { "nd 은 0 이상의 값을 가져야 합니다." })
   }
+
 }

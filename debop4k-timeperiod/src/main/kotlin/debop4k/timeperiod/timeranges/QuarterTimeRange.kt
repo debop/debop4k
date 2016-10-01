@@ -26,9 +26,9 @@ import debop4k.timeperiod.utils.relativeQuarterPeriod
 import debop4k.timeperiod.utils.startTimeOfQuarter
 import org.joda.time.DateTime
 
-open class QuarterTimeRange(moment: DateTime,
-                            val quarterCount: Int = 1,
-                            calendar: ITimeCalendar = DefaultTimeCalendar) :
+open class QuarterTimeRange @JvmOverloads constructor(moment: DateTime,
+                                                      val quarterCount: Int = 1,
+                                                      calendar: ITimeCalendar = DefaultTimeCalendar) :
     CalendarTimeRange(moment.relativeQuarterPeriod(quarterCount), calendar) {
 
   @JvmOverloads

@@ -20,9 +20,6 @@ package debop4k.units
 
 import java.io.Serializable
 
-fun Float.millimeter2(): Area = Area.of(this.toDouble(), AreaUnit.MILLI_METER_2)
-fun Float.centimeter2(): Area = Area.of(this.toDouble(), AreaUnit.CENTI_METER_2)
-fun Float.meter2(): Area = Area.of(this.toDouble(), AreaUnit.METER_2)
 fun Double.millimeter2(): Area = Area.of(this, AreaUnit.MILLI_METER_2)
 fun Double.centimeter2(): Area = Area.of(this, AreaUnit.CENTI_METER_2)
 fun Double.meter2(): Area = Area.of(this, AreaUnit.METER_2)
@@ -104,28 +101,24 @@ data class Area(val m2: Double = 0.0) : Comparable<Area>, Serializable {
   }
 
   companion object {
-    val ZERO = Area(0.0)
-    val MAX_VALUE = Area(Double.MAX_VALUE)
-    val MIN_VALUE = Area(Double.MIN_VALUE)
-    val POSITIVE_INF = Area(Double.POSITIVE_INFINITY)
-    val NEGATIVE_INF = Area(Double.NEGATIVE_INFINITY)
-    val NaN = Area(Double.NaN)
+    @JvmField val ZERO = Area(0.0)
+    @JvmField val MAX_VALUE = Area(Double.MAX_VALUE)
+    @JvmField val MIN_VALUE = Area(Double.MIN_VALUE)
+    @JvmField val POSITIVE_INF = Area(Double.POSITIVE_INFINITY)
+    @JvmField val NEGATIVE_INF = Area(Double.NEGATIVE_INFINITY)
+    @JvmField val NaN = Area(Double.NaN)
 
     @JvmOverloads
     @JvmStatic
-    fun of(area: Float, unit: AreaUnit = AreaUnit.METER_2): Area = of(area.toDouble(), unit)
-
-    @JvmOverloads
-    @JvmStatic
-    fun of(area: Double, unit: AreaUnit = AreaUnit.METER_2): Area = Area(area * unit.factor)
+    fun of(area: Double = 0.0, unit: AreaUnit = AreaUnit.METER_2): Area = Area(area * unit.factor)
 
     @JvmStatic
-    fun parse(areaStr: String): Area {
-      if (areaStr.isBlank())
+    fun parse(areaStr: String?): Area {
+      if (areaStr.isNullOrBlank())
         return ZERO
 
       try {
-        val (v, u) = areaStr.split(" ", limit = 2)
+        val (v, u) = areaStr!!.split(" ", limit = 2)
         return Area.of(v.toDouble(), AreaUnit.parse(u))
 
       } catch(e: Exception) {

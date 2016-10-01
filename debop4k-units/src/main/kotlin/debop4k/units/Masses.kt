@@ -4,13 +4,14 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 @file:JvmName("Masses")
@@ -27,17 +28,17 @@ const val GRAM_IN_GRAM: Double = 1.0
 const val KILOGRAM_IN_GRAM: Double = 1000.0
 const val TON_IN_GRAM: Double = 1000.0 * 1000.0
 
-fun Int.toMilligram(): Mass = Mass.of(this.toDouble(), MassUnit.MILLIGRAM)
-fun Int.toGram(): Mass = Mass.of(this.toDouble(), MassUnit.GRAM)
-fun Int.toKilogram(): Mass = Mass.of(this.toDouble(), MassUnit.KILOGRAM)
-fun Int.toTon(): Mass = Mass.of(this.toDouble(), MassUnit.TON)
+fun Int.milligram(): Mass = Mass.of(this.toDouble(), MassUnit.MILLIGRAM)
+fun Int.gram(): Mass = Mass.of(this.toDouble(), MassUnit.GRAM)
+fun Int.kilogram(): Mass = Mass.of(this.toDouble(), MassUnit.KILOGRAM)
+fun Int.ton(): Mass = Mass.of(this.toDouble(), MassUnit.TON)
 
 operator fun Int.times(m: Mass): Mass = m.times(this.toDouble())
 
-fun Double.toMilligram(): Mass = Mass.of(this, MassUnit.MILLIGRAM)
-fun Double.toGram(): Mass = Mass.of(this, MassUnit.GRAM)
-fun Double.toKilogram(): Mass = Mass.of(this, MassUnit.KILOGRAM)
-fun Double.toTon(): Mass = Mass.of(this, MassUnit.TON)
+fun Double.milligram(): Mass = Mass.of(this, MassUnit.MILLIGRAM)
+fun Double.gram(): Mass = Mass.of(this, MassUnit.GRAM)
+fun Double.kilogram(): Mass = Mass.of(this, MassUnit.KILOGRAM)
+fun Double.ton(): Mass = Mass.of(this, MassUnit.TON)
 
 operator fun Double.times(m: Mass): Mass = m.times(this)
 

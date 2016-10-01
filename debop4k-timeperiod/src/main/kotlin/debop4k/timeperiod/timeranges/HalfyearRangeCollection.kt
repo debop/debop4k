@@ -26,9 +26,9 @@ import org.joda.time.DateTime
 /**
  * @author sunghyouk.bae@gmail.com
  */
-open class HalfyearRangeCollection(moment: DateTime,
-                                   val halfyearCount: Int = 1,
-                                   calendar: ITimeCalendar = DefaultTimeCalendar)
+open class HalfyearRangeCollection @JvmOverloads constructor(moment: DateTime,
+                                                             val halfyearCount: Int = 1,
+                                                             calendar: ITimeCalendar = DefaultTimeCalendar)
 : CalendarTimeRange(moment.relativeHalfyearPeriod(halfyearCount), calendar) {
 
   @JvmOverloads

@@ -27,9 +27,9 @@ import org.joda.time.DateTime
 /**
  * Created by debop
  */
-open class WeekTimeRange(startTime: DateTime = today(),
-                         val weekCount: Int,
-                         calendar: ITimeCalendar = DefaultTimeCalendar)
+open class WeekTimeRange @JvmOverloads constructor(startTime: DateTime = today(),
+                                                   val weekCount: Int,
+                                                   calendar: ITimeCalendar = DefaultTimeCalendar)
 : CalendarTimeRange(startTime.relativeWeekPeriod(weekCount), calendar) {
 
   val year: Int get() = startYear

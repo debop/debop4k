@@ -4,13 +4,14 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 @file:JvmName("Pressures")
@@ -18,6 +19,22 @@
 package debop4k.units
 
 import java.io.Serializable
+
+
+fun Double.atom(): Pressure = Pressure.of(this, PressureUnit.ATM)
+fun Double.pascal(): Pressure = Pressure.of(this, PressureUnit.PASCAL)
+fun Double.hectopascal(): Pressure = Pressure.of(this, PressureUnit.HECTO_PASCAL)
+fun Double.kilopascal(): Pressure = Pressure.of(this, PressureUnit.KILO_PASCAL)
+fun Double.megapascal(): Pressure = Pressure.of(this, PressureUnit.MEGA_PASCLA)
+
+fun Double.bar(): Pressure = Pressure.of(this, PressureUnit.BAR)
+fun Double.deciBar(): Pressure = Pressure.of(this, PressureUnit.DECI_BAR)
+fun Double.milliBar(): Pressure = Pressure.of(this, PressureUnit.MILLI_BAR)
+
+fun Double.psi(): Pressure = Pressure.of(this, PressureUnit.PSI)
+fun Double.torr(): Pressure = Pressure.of(this, PressureUnit.TORR)
+fun Double.mmHg(): Pressure = Pressure.of(this, PressureUnit.MMHG)
+
 
 /**
  * 압력 단위 종류
@@ -104,20 +121,6 @@ enum class PressureUnit(val unitName: String, val factor: Double) {
 }
 
 
-fun Double.toAtm(): Pressure = Pressure.of(this, PressureUnit.ATM)
-fun Double.toPascal(): Pressure = Pressure.of(this, PressureUnit.PASCAL)
-fun Double.toHectoPascal(): Pressure = Pressure.of(this, PressureUnit.HECTO_PASCAL)
-fun Double.toKiloPascal(): Pressure = Pressure.of(this, PressureUnit.KILO_PASCAL)
-fun Double.toMegaPascal(): Pressure = Pressure.of(this, PressureUnit.MEGA_PASCLA)
-
-fun Double.toBar(): Pressure = Pressure.of(this, PressureUnit.BAR)
-fun Double.toDeciBar(): Pressure = Pressure.of(this, PressureUnit.DECI_BAR)
-fun Double.toMilliBar(): Pressure = Pressure.of(this, PressureUnit.MILLI_BAR)
-
-fun Double.toPsi(): Pressure = Pressure.of(this, PressureUnit.PSI)
-fun Double.toTorr(): Pressure = Pressure.of(this, PressureUnit.TORR)
-fun Double.toMMHg(): Pressure = Pressure.of(this, PressureUnit.MMHG)
-
 /**
  * 압력 (Pressure) 를 나타내는 클래스
  */
@@ -154,12 +157,12 @@ data class Pressure(val pascal: Double = 0.0) : Comparable<Pressure>, Serializab
 
   companion object {
 
-    final val ZERO = Pressure(0.0)
-    final val MIN_VALUE = Pressure(Double.MIN_VALUE)
-    final val MAX_VALUE = Pressure(Double.MAX_VALUE)
-    final val POSITIVE_INF = Pressure(Double.POSITIVE_INFINITY)
-    final val NEGATIVE_INF = Pressure(Double.NEGATIVE_INFINITY)
-    final val NaN = Pressure(Double.NaN)
+    @JvmField val ZERO = Pressure(0.0)
+    @JvmField val MIN_VALUE = Pressure(Double.MIN_VALUE)
+    @JvmField val MAX_VALUE = Pressure(Double.MAX_VALUE)
+    @JvmField val POSITIVE_INF = Pressure(Double.POSITIVE_INFINITY)
+    @JvmField val NEGATIVE_INF = Pressure(Double.NEGATIVE_INFINITY)
+    @JvmField val NaN = Pressure(Double.NaN)
 
     @JvmOverloads
     @JvmStatic

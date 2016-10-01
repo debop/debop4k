@@ -27,8 +27,8 @@ import org.joda.time.DateTime
 /**
  * Created by debop
  */
-open class QuarterRange(moment: DateTime = today(),
-                        calendar: ITimeCalendar = DefaultTimeCalendar) : QuarterTimeRange(moment, 1, calendar) {
+open class QuarterRange @JvmOverloads constructor(moment: DateTime = today(),
+                                                  calendar: ITimeCalendar = DefaultTimeCalendar) : QuarterTimeRange(moment, 1, calendar) {
 
   @JvmOverloads
   constructor(year: Int, quarter: Quarter, calendar: ITimeCalendar = DefaultTimeCalendar)

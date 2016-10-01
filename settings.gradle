@@ -38,5 +38,7 @@ include 'debop4k-spring-security'
 include 'debop4k-spring-boot-autoconfigure'
 
 include 'debop4k-examples'
-
+include 'debop4k-data-mybatis'
+include 'debop4k-data-orm'
+include 'debop4k-data-mongodb'
 

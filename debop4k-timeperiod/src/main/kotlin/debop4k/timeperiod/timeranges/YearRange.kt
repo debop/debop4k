@@ -24,10 +24,10 @@ import org.joda.time.DateTime
 /**
  * Created by debop
  */
-open class YearRange(year: Int,
-                     calendar: ITimeCalendar = DefaultTimeCalendar) : YearTimeRange(year, 1, calendar) {
+open class YearRange @JvmOverloads constructor(year: Int = 0,
+                                               calendar: ITimeCalendar = DefaultTimeCalendar) : YearTimeRange(year, 1, calendar) {
 
-  constructor(m: DateTime, calendar: ITimeCalendar = DefaultTimeCalendar) : this(m.year, calendar)
+  @JvmOverloads constructor(m: DateTime, calendar: ITimeCalendar = DefaultTimeCalendar) : this(m.year, calendar)
 
   val nextYear: YearRange get() = addYears(1)
   val prevYear: YearRange get() = addYears(-1)

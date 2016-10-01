@@ -4,13 +4,14 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 @file:JvmName("Storages")
@@ -19,39 +20,39 @@ package debop4k.units
 
 import java.io.Serializable
 
-fun Int.toBytes(): Storage = Storage(this.toDouble())
-fun Int.toKBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.KBYTE)
-fun Int.toMBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.MBYTE)
-fun Int.toGBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.GBYTE)
-fun Int.toTBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.TBYTE)
-fun Int.toPBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.PBYTE)
-fun Int.toXBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.XBYTE)
-fun Int.toZBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.ZBYTE)
-fun Int.toYBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.YBYTE)
+fun Int.bytes(): Storage = Storage(this.toDouble())
+fun Int.kilobytes(): Storage = Storage.of(this.toDouble(), StorageUnit.KBYTE)
+fun Int.megabytes(): Storage = Storage.of(this.toDouble(), StorageUnit.MBYTE)
+fun Int.gigabytes(): Storage = Storage.of(this.toDouble(), StorageUnit.GBYTE)
+fun Int.terabytes(): Storage = Storage.of(this.toDouble(), StorageUnit.TBYTE)
+fun Int.petabytes(): Storage = Storage.of(this.toDouble(), StorageUnit.PBYTE)
+fun Int.exabytes(): Storage = Storage.of(this.toDouble(), StorageUnit.XBYTE)
+fun Int.zetabytes(): Storage = Storage.of(this.toDouble(), StorageUnit.ZBYTE)
+fun Int.yotabytes(): Storage = Storage.of(this.toDouble(), StorageUnit.YBYTE)
 
 operator fun Int.times(storage: Storage): Storage = storage.times(this)
 
-fun Long.toBytes(): Storage = Storage(this.toDouble())
-fun Long.toKBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.KBYTE)
-fun Long.toMBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.MBYTE)
-fun Long.toGBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.GBYTE)
-fun Long.toTBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.TBYTE)
-fun Long.toPBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.PBYTE)
-fun Long.toXBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.XBYTE)
-fun Long.toZBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.ZBYTE)
-fun Long.toYBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.YBYTE)
+fun Long.bytes(): Storage = Storage(this.toDouble())
+fun Long.kilobytes(): Storage = Storage.of(this.toDouble(), StorageUnit.KBYTE)
+fun Long.megabytes(): Storage = Storage.of(this.toDouble(), StorageUnit.MBYTE)
+fun Long.gigabytes(): Storage = Storage.of(this.toDouble(), StorageUnit.GBYTE)
+fun Long.terabytes(): Storage = Storage.of(this.toDouble(), StorageUnit.TBYTE)
+fun Long.petabytes(): Storage = Storage.of(this.toDouble(), StorageUnit.PBYTE)
+fun Long.exabytes(): Storage = Storage.of(this.toDouble(), StorageUnit.XBYTE)
+fun Long.zetabytes(): Storage = Storage.of(this.toDouble(), StorageUnit.ZBYTE)
+fun Long.yotabytes(): Storage = Storage.of(this.toDouble(), StorageUnit.YBYTE)
 
 operator fun Long.times(storage: Storage): Storage = storage.times(this)
 
-fun Double.toBytes(): Storage = Storage(this)
-fun Double.toKBytes(): Storage = Storage.of(this, StorageUnit.KBYTE)
-fun Double.toMBytes(): Storage = Storage.of(this, StorageUnit.MBYTE)
-fun Double.toGBytes(): Storage = Storage.of(this, StorageUnit.GBYTE)
-fun Double.toTBytes(): Storage = Storage.of(this, StorageUnit.TBYTE)
-fun Double.toPBytes(): Storage = Storage.of(this, StorageUnit.PBYTE)
-fun Double.toXBytes(): Storage = Storage.of(this, StorageUnit.XBYTE)
-fun Double.toZBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.ZBYTE)
-fun Double.toYBytes(): Storage = Storage.of(this.toDouble(), StorageUnit.YBYTE)
+fun Double.bytes(): Storage = Storage(this)
+fun Double.kilobytes(): Storage = Storage.of(this, StorageUnit.KBYTE)
+fun Double.megabytes(): Storage = Storage.of(this, StorageUnit.MBYTE)
+fun Double.gigabytes(): Storage = Storage.of(this, StorageUnit.GBYTE)
+fun Double.terabytes(): Storage = Storage.of(this, StorageUnit.TBYTE)
+fun Double.petabytes(): Storage = Storage.of(this, StorageUnit.PBYTE)
+fun Double.exabytes(): Storage = Storage.of(this, StorageUnit.XBYTE)
+fun Double.zetabytes(): Storage = Storage.of(this.toDouble(), StorageUnit.ZBYTE)
+fun Double.yotabytes(): Storage = Storage.of(this.toDouble(), StorageUnit.YBYTE)
 
 operator fun Double.times(storage: Storage): Storage = storage.times(this)
 
@@ -90,24 +91,24 @@ enum class StorageUnit(val unitName: String, val factor: Double) {
  */
 data class Storage(val bytes: Double = 0.0) : Comparable<Storage>, Serializable {
 
-  final operator fun plus(that: Storage): Storage = Storage(bytes + that.bytes)
-  final operator fun plus(scalar: Long): Storage = Storage(bytes + scalar)
-  final operator fun minus(that: Storage): Storage = Storage(bytes - that.bytes)
-  final operator fun minus(scalar: Long): Storage = Storage(bytes - scalar)
+  operator fun plus(that: Storage): Storage = Storage(bytes + that.bytes)
+  operator fun plus(scalar: Long): Storage = Storage(bytes + scalar)
+  operator fun minus(that: Storage): Storage = Storage(bytes - that.bytes)
+  operator fun minus(scalar: Long): Storage = Storage(bytes - scalar)
 
-  final operator fun times(that: Storage): Storage = Storage(bytes * that.bytes)
-  final operator fun times(scalar: Long): Storage = Storage(bytes * scalar)
-  final operator fun times(scalar: Int): Storage = Storage(bytes * scalar)
-  final operator fun times(scalar: Float): Storage = Storage(bytes * scalar)
-  final operator fun times(scalar: Double): Storage = Storage(bytes * scalar)
+  operator fun times(that: Storage): Storage = Storage(bytes * that.bytes)
+  operator fun times(scalar: Long): Storage = Storage(bytes * scalar)
+  operator fun times(scalar: Int): Storage = Storage(bytes * scalar)
+  operator fun times(scalar: Float): Storage = Storage(bytes * scalar)
+  operator fun times(scalar: Double): Storage = Storage(bytes * scalar)
 
-  final operator fun div(that: Storage): Storage = Storage(bytes / that.bytes)
-  final operator fun div(scalar: Long): Storage = Storage(bytes / scalar)
-  final operator fun div(scalar: Int): Storage = Storage(bytes / scalar)
-  final operator fun div(scalar: Float): Storage = Storage(bytes / scalar)
-  final operator fun div(scalar: Double): Storage = Storage(bytes / scalar)
+  operator fun div(that: Storage): Storage = Storage(bytes / that.bytes)
+  operator fun div(scalar: Long): Storage = Storage(bytes / scalar)
+  operator fun div(scalar: Int): Storage = Storage(bytes / scalar)
+  operator fun div(scalar: Float): Storage = Storage(bytes / scalar)
+  operator fun div(scalar: Double): Storage = Storage(bytes / scalar)
 
-  final operator fun unaryMinus(): Storage = Storage(-bytes)
+  operator fun unaryMinus(): Storage = Storage(-bytes)
 
   fun inBytes() = bytes
   fun inKBytes() = bytes / StorageUnit.KBYTE.factor
@@ -139,12 +140,12 @@ data class Storage(val bytes: Double = 0.0) : Comparable<Storage>, Serializable 
 
   companion object {
 
-    final val ZERO = Storage(0.0)
-    final val MAX_VALUE = Storage(Double.MAX_VALUE)
-    final val MIN_VALUE = Storage(Double.MIN_VALUE)
-    final val POSITIVE_INF = Storage(Double.POSITIVE_INFINITY)
-    final val NEGATIVE_INF = Storage(Double.NEGATIVE_INFINITY)
-    final val NaN = Storage(Double.NaN)
+    @JvmField val ZERO = Storage(0.0)
+    @JvmField val MAX_VALUE = Storage(Double.MAX_VALUE)
+    @JvmField val MIN_VALUE = Storage(Double.MIN_VALUE)
+    @JvmField val POSITIVE_INF = Storage(Double.POSITIVE_INFINITY)
+    @JvmField val NEGATIVE_INF = Storage(Double.NEGATIVE_INFINITY)
+    @JvmField val NaN = Storage(Double.NaN)
 
     @JvmOverloads
     @JvmStatic

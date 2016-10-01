@@ -1,0 +1,130 @@
+dependencies {
+    compile project(':debop4k-config')
+    compile project(':debop4k-core')
+    compile project(':debop4k-data')
+    compile project(':debop4k-timeperiod')
+    compile project(':debop4k-redis')
+
+    compile "org.springframework.boot:spring-boot-autoconfigure:$spring_boot_version"
+    compile "org.springframework.boot:spring-boot-starter-jdbc:$spring_boot_version"
+    compile("org.springframework.boot:spring-boot-starter-data-jpa:$spring_boot_version") {
+        exclude(module: 'javax.transaction-api')
+    }
+    compile "org.springframework.boot:spring-boot-starter-aop:$spring_boot_version"
+    compile "org.springframework.data:spring-data-commons:$spring_data_commons_version"
+    compile "org.springframework.data:spring-data-jpa:$spring_data_jpa_version"
+
+    // for Java 6
+    compile "org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:$jboss_transaction_api_1_2_spec_version"
+
+    compile "org.hibernate:hibernate-core:$hibernate_version"
+    compile "org.hibernate:hibernate-entitymanager:$hibernate_version"
+    optional "org.hibernate:hibernate-spatial:$hibernate_version"
+
+    compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:$hibernate_jpa_2_1_api_version"
+    compile "org.hibernate:hibernate-validator:$hibernate_validator_version"
+
+    compile "com.github.debop:hibernate-redis:$hibernate_redis_version"
+
+    compile 'javax.el:javax.el-api:1.1.2'
+    compile("com.querydsl:querydsl-jpa:$querydsl_version") {
+        exclude(module: 'jsr305')
+    }
+    compile("com.querydsl:querydsl-jpa-codegen:$querydsl_version") {
+        exclude(module: 'hibernate-jpa-2.0-api')
+    }
+    testCompile("org.hibernate:hibernate-testing:$hibernate_version") {
+        exclude(module: 'log4j')
+    }
+    testCompile "org.hsqldb:hsqldb:$hsqldb_version"
+    testCompile "com.h2database:h2:$h2_version"
+    testCompile "mysql:mysql-connector-java:$mysql_connector_java_version"
+    testCompile "org.postgresql:postgresql:$postgresql_java6_version"
+
+    optional "com.querydsl:querydsl-apt:$querydsl_version"
+
+
+}
+
+sourceSets {
+    main.java.srcDirs = ['src/main/java']
+    main.kotlin.srcDirs = ['src/main/java']
+
+    generated.java.srcDirs = ['src/main/generated']
+    testGenerated.java.srcDirs = ['src/test/generated']
+}
+
+task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
+    source = sourceSets.main.java
+    classpath = configurations.compile
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor"
+    ]
+    destinationDir = sourceSets.generated.java.srcDirs.iterator().next()
+}
+
+compileJava {
+    dependsOn generateQueryDSL
+    source generateQueryDSL.destinationDir
+}
+
+compileGeneratedJava {
+    dependsOn generateQueryDSL
+    options.warnings = false
+    classpath += sourceSets.main.runtimeClasspath
+}
+
+task testGenerateQueryDSL(type: JavaCompile, group: 'verification', description: 'Generates the Test QueryDSL query types') {
+    source = [sourceSets.main.java, sourceSets.test.java]
+    classpath = configurations.testCompile
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor"
+    ]
+    destinationDir = sourceSets.testGenerated.java.srcDirs.iterator().next()
+}
+
+compileTestJava {
+    dependsOn testGenerateQueryDSL
+    source += testGenerateQueryDSL.destinationDir
+}
+
+compileTestGeneratedJava {
+    dependsOn testGenerateQueryDSL
+    options.warnings = false
+    classpath += sourceSets.test.runtimeClasspath
+}
+
+clean {
+    delete sourceSets.generated.java.srcDirs
+    delete sourceSets.testGenerated.java.srcDirs
+}
+
+idea {
+    module {
+        sourceDirs += file("src/generated/java")
+        testSourceDirs += file("src/test-generated/java")
+    }
+}
+
+/*
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+// Spring Boot AutoConfigure 처리
+// http://docs.spring.io/spring-boot/docs/1.3.5.RELEASE/reference/html/configuration-metadata.html#configuration-metadata-annotation-processor
+compileJava.dependsOn(processResources)
+compileKotlin.dependsOn(processResources)

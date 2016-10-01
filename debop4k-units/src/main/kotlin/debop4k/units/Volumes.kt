@@ -4,13 +4,14 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 @file:JvmName("Volumnes")
@@ -19,18 +20,18 @@ package debop4k.units
 
 import java.io.Serializable
 
-fun Double.toCC(): Volumn = Volumn.of(this, VolumnUnit.CC)
-fun Double.toMilliLiter(): Volumn = Volumn.of(this, VolumnUnit.MILLILETER)
-fun Double.toDeciLiter(): Volumn = Volumn.of(this, VolumnUnit.DECILITER)
-fun Double.toLiter(): Volumn = Volumn.of(this, VolumnUnit.LITER)
-fun Double.toCentiMeter3(): Volumn = Volumn.of(this, VolumnUnit.CENTIMETER_3)
-fun Double.toMeter3(): Volumn = Volumn.of(this, VolumnUnit.METER_3)
-fun Double.toInch3(): Volumn = Volumn.of(this, VolumnUnit.INCH_3)
-fun Double.toFeet3(): Volumn = Volumn.of(this, VolumnUnit.FEET_3)
-fun Double.toYard3(): Volumn = Volumn.of(this, VolumnUnit.YARD_3)
-fun Double.toGallon(): Volumn = Volumn.of(this, VolumnUnit.GALLON)
-fun Double.toBarrel(): Volumn = Volumn.of(this, VolumnUnit.BARREL)
-fun Double.toOnce(): Volumn = Volumn.of(this, VolumnUnit.ONCE)
+fun Double.cc(): Volumn = Volumn.of(this, VolumnUnit.CC)
+fun Double.milliliter(): Volumn = Volumn.of(this, VolumnUnit.MILLILETER)
+fun Double.deciliter(): Volumn = Volumn.of(this, VolumnUnit.DECILITER)
+fun Double.liter(): Volumn = Volumn.of(this, VolumnUnit.LITER)
+fun Double.centimeter3(): Volumn = Volumn.of(this, VolumnUnit.CENTIMETER_3)
+fun Double.meter3(): Volumn = Volumn.of(this, VolumnUnit.METER_3)
+fun Double.inch3(): Volumn = Volumn.of(this, VolumnUnit.INCH_3)
+fun Double.feet3(): Volumn = Volumn.of(this, VolumnUnit.FEET_3)
+fun Double.yard3(): Volumn = Volumn.of(this, VolumnUnit.YARD_3)
+fun Double.gallon(): Volumn = Volumn.of(this, VolumnUnit.GALLON)
+fun Double.barrel(): Volumn = Volumn.of(this, VolumnUnit.BARREL)
+fun Double.once(): Volumn = Volumn.of(this, VolumnUnit.ONCE)
 
 enum class VolumnUnit(val unitName: String, val factor: Double) {
 
@@ -91,12 +92,12 @@ data class Volumn(val liter: Double = 0.0) : Comparable<Volumn>, Serializable {
   override fun toString(): String = "%.1f %s".format(liter, VolumnUnit.LITER.unitName)
 
   companion object {
-    final val ZERO = Volumn(0.0)
-    final val MAX_VALUE = Volumn(Double.MAX_VALUE)
-    final val MIN_VALUE = Volumn(Double.MIN_VALUE)
-    final val POSITIVE_INF = Volumn(Double.POSITIVE_INFINITY)
-    final val NEGATIVE_INF = Volumn(Double.NEGATIVE_INFINITY)
-    final val NaN = Volumn(Double.NaN)
+    @JvmField val ZERO = Volumn(0.0)
+    @JvmField val MAX_VALUE = Volumn(Double.MAX_VALUE)
+    @JvmField val MIN_VALUE = Volumn(Double.MIN_VALUE)
+    @JvmField val POSITIVE_INF = Volumn(Double.POSITIVE_INFINITY)
+    @JvmField val NEGATIVE_INF = Volumn(Double.NEGATIVE_INFINITY)
+    @JvmField val NaN = Volumn(Double.NaN)
 
     @JvmOverloads
     @JvmStatic

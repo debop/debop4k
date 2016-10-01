@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+debop4k.data.spring.boot.autoconfigure.HikariDataSourceAutoConfiguration

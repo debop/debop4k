@@ -21,10 +21,15 @@ dependencies {
 
     compile "com.zaxxer:HikariCP:$hikaricp_java7_version"
     optional "org.apache.tomcat:tomcat-jdbc"
+    compile "org.flywaydb:flyway-core:$flyway_core_version"
+
+    compile "org.lazyluke:log4jdbc-remix:0.2.7"
 
     compile "org.springframework:spring-jdbc"
     compile "org.springframework.boot:spring-boot-starter-jdbc"
     optional "org.springframework.boot:spring-boot-configuration-processor"
+
+    optional "org.hibernate:hibernate-validator:$hibernate_validator_version"
 
     testCompile "com.h2database:h2"
     testCompile 'org.hsqldb:hsqldb'

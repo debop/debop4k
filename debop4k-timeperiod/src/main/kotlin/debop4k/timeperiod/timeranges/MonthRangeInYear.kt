@@ -23,8 +23,8 @@ import debop4k.core.ToStringHelper
  * 1년 내의 Month 단위의 기간을 표현합니다.
  * Created by debop
  */
-open class MonthRangeInYear(val startMonthOfYear: Int = 1,
-                            val endMonthOfYear: Int = 12) : AbstractValueObject(), Comparable<MonthRangeInYear> {
+open class MonthRangeInYear @JvmOverloads constructor(val startMonthOfYear: Int = 1,
+                                                      val endMonthOfYear: Int = 12) : AbstractValueObject(), Comparable<MonthRangeInYear> {
 
   init {
     require(startMonthOfYear >= 1)

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <typeAliases>
+    <typeAlias alias="UUID" type="java.util.UUID"/>
+    <typeAlias alias="UUIDBean" type="debop4k.data.mybatis.typehandlers.models.UUIDBean"/>
+    <typeAlias alias="UUIDTypeHandler" type="debop4k.data.mybatis.typehandlers.postgres.UUIDTypeHandler"/>
+    <typeAlias alias="EncryptedStringTypeHandler" type="debop4k.data.mybatis.typehandlers.EncryptedStringTypeHandler"/>
+
+    <package name="debop4k.data.mybatis.models"/>
+    <package name="debop4k.data.mybatis.typehandlers.models"/>
+  </typeAliases>
+  <!-- 굳이 이렇게 하나씩 정의할 필요없이, java config 에서 전체를 mybatis.mappers/**/*.xml 로 추가할 수 있다 -->
+  <!--<mybatis.mappers>-->
+  <!--<mapper resource="mybatis.mappers/ActorMapper.xml"/>-->
+  <!--</mybatis.mappers>-->
+
+  <typeHandlers>
+    <typeHandler handler="debop4k.data.mybatis.typehandlers.EncryptedStringTypeHandler" javaType="String"
+                 jdbcType="VARCHAR"/>
+    <typeHandler handler="debop4k.data.mybatis.typehandlers.postgres.UUIDTypeHandler" javaType="UUID" jdbcType="OTHER"/>
+    <package name="debop4k.data.mybatis.typehandlers"/>
+    <package name="debop4k.data.mybatis.typehandlers.joda"/>
+    <package name="debop4k.data.mybatis.typehandlers.postgres"/>
+  </typeHandlers>
+</configuration>

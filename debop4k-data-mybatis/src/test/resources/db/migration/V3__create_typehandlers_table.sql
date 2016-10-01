@@ -1,0 +1,5 @@
+CREATE TABLE UUIDBeanTable (
+  testId UUID PRIMARY KEY ,
+  name VARCHAR(255),
+  password VARCHAR(255)
+)

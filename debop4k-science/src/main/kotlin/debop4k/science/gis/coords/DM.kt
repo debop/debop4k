@@ -16,19 +16,16 @@
 
 package debop4k.science.gis.coords
 
-import debop4k.core.asDouble
-import debop4k.core.asInt
+import debop4k.core.utils.hashOf
+import java.io.Serializable
 
 /**
  * 도 (Degree) 와 분(Decimal Minutes) 으로 좌표를 표현하는 방식을 표현하는 클래스입니다.
  *
  * @author sunghyouk.bae@gmail.com
- * @see DMS
  */
-data class DM(val d: Int = 0,
-              val m: Double = 0.0) : Comparable<DM> {
-
-  fun toDegree(): Double = d + m / 60.0
+data class DM @JvmOverloads constructor(val d: Int = 0,
+                                        val m: Double = 0.0) : Comparable<DM>, Serializable {
 
   override fun compareTo(other: DM): Int {
     var diff = d.compareTo(other.d)
@@ -37,25 +34,10 @@ data class DM(val d: Int = 0,
     return diff
   }
 
+  override fun hashCode(): Int = hashOf(d, m)
+
   companion object {
-
     @JvmStatic
-    fun of(degree: Double): DM {
-      val d = degree.toInt()
-      val m = (degree - d) * 60
-
-      return DM(d, m)
-    }
-
-    @JvmStatic
-    fun parse(str: String): DM {
-      if (str.isNullOrBlank())
-        return DM()
-
-      val items = str.split(' ', limit = 2)
-      val d = if (items.size > 0) items[0].asInt() else 0
-      val m = if (items.size > 1) items[1].asDouble() else 0.0
-      return DM(d, m)
-    }
+    fun of(degree: Double): DM = degree.toDM()
   }
 }

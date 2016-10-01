@@ -21,9 +21,9 @@ singleServerConfig:
   dnsMonitoringInterval: 5000
 threads: 0
 
-# Java 6 에서는 debop4k.redisson.codec.SnappyJava6Codec 을 쓰고,
+# Java 6 에서는 debop4k.redisson.codec.SnappyCodec 을 쓰고,
 # Java 7 이상에서는 org.redisson.codec.SnappyCodec 을 쓰고, fst 도 2.x 이상을 써야 합니다.
-# codec: !<debop4k.redisson.codec.SnappyJava6Codec> {}
+# codec: !<debop4k.redisson.codec.SnappyCodec> {}
 
 useLinuxNativeEpoll: false
 eventLoopGroup: null

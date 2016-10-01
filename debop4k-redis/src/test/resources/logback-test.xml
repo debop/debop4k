@@ -16,20 +16,13 @@
   -->
 
 <configuration>
-  <!-- help : http://logback.qos.ch/manual/appenders.html -->
-  <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-    <withJansi>true</withJansi>
-    <encoder>
-      <pattern>%d{ISO8601} %-5level [%.16thread] %logger{36}.%method: %m%n</pattern>
-      <immediateFlush>true</immediateFlush>
-      <charset>UTF-8</charset>
-    </encoder>
-  </appender>
 
-  <logger name="debop4k.redis" level="TRACE"/>
+  <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+  <logger name="debop4k.redisson" level="TRACE"/>
 
   <root level="INFO">
-    <appender-ref ref="console"/>
+    <appender-ref ref="CONSOLE"/>
   </root>
 
 </configuration>

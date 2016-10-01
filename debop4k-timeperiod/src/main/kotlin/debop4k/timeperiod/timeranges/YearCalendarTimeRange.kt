@@ -24,8 +24,8 @@ import debop4k.timeperiod.TimePeriod
 /**
  * Created by debop
  */
-open class YearCalendarTimeRange(period: ITimePeriod = TimePeriod.AnyTime,
-                                 calendar: ITimeCalendar = TimeCalendar.DEFAULT)
+open class YearCalendarTimeRange @JvmOverloads constructor(period: ITimePeriod = TimePeriod.AnyTime,
+                                                           calendar: ITimeCalendar = TimeCalendar.DEFAULT)
 : CalendarTimeRange(period, calendar) {
 
   private val baseMonth = 1

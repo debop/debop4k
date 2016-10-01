@@ -25,8 +25,8 @@ import org.joda.time.DateTime
 /**
  * Created by debop
  */
-open class DayRange(startTime: DateTime = today(),
-                    calendar: ITimeCalendar = DefaultTimeCalendar)
+open class DayRange @JvmOverloads constructor(startTime: DateTime = today(),
+                                              calendar: ITimeCalendar = DefaultTimeCalendar)
 : DayTimeRange(startTime, 1, calendar) {
 
   val year: Int get() = startYear

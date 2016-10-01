@@ -29,19 +29,22 @@ interface ITimePeriod : Comparable<ITimePeriod>, Serializable {
 
   val start: DateTime
   val end: DateTime
-  val readOnly: Boolean
+  val readonly: Boolean
 
   val duration: Duration get() = Duration(start, end)
-  val hasStart: Boolean get() = start != MinPeriodTime
-  val hasEnd: Boolean get() = end != MaxPeriodTime
-  val hasPeriod: Boolean get() = hasStart && hasEnd
-  val isMoment: Boolean get() = start == end
-  val isAnyTime: Boolean get() = !hasStart && !hasEnd
-//  fun hasStart(): Boolean = start != MinPeriodTime
-//  fun hasEnd(): Boolean = end != MaxPeriodTime
-//  fun hasPeriod(): Boolean = hasStart() && hasEnd()
-//  fun isMoment(): Boolean = start == end
-//  fun isAnyTime(): Boolean = !hasStart() && !hasEnd()
+  //  val hasStart: Boolean get() = start != MinPeriodTime
+//  val hasEnd: Boolean get() = end != MaxPeriodTime
+//  val hasPeriod: Boolean get() = hasStart && hasEnd
+//  val isMoment: Boolean get() = start == end
+//  val isAnyTime: Boolean get() = !hasStart && !hasEnd
+  fun hasStart(): Boolean = start != MinPeriodTime
+
+  fun hasEnd(): Boolean = end != MaxPeriodTime
+  fun hasPeriod(): Boolean = hasStart() && hasEnd()
+  fun isMoment(): Boolean = start == end
+  fun isAnyTime(): Boolean = !hasStart() && !hasEnd()
+
+  fun isReadonly(): Boolean = readonly
 
   fun setup(newStart: DateTime = MinPeriodTime, newEnd: DateTime = MaxPeriodTime)
 

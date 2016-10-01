@@ -23,9 +23,8 @@ dependencies {
     compile "joda-time:joda-time"
     compile "org.joda:joda-convert"
 
-    compile("org.springframework:spring-context") {
-        exclude(module: 'commons-logging')
-    }
+    compile "org.springframework:spring-context:$spring_version"
+    compile "org.springframework:spring-context-support:$spring_version"
 
     compile "de.ruedigermoeller:fst:$fst_java7_version"
     compile "org.xerial.snappy:snappy-java"

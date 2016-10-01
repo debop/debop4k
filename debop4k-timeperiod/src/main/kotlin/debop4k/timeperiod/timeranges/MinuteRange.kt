@@ -25,10 +25,11 @@ import org.joda.time.DateTime
 /**
  * Created by debop
  */
-open class MinuteRange(moment: DateTime,
-                       calendar: ITimeCalendar = DefaultTimeCalendar)
+open class MinuteRange @JvmOverloads constructor(moment: DateTime,
+                                                 calendar: ITimeCalendar = DefaultTimeCalendar)
 : MinuteTimeRange(moment, 1, calendar) {
 
+  @JvmOverloads
   constructor(calendar: ITimeCalendar = DefaultTimeCalendar) : this(now(), calendar)
 
   val year: Int get() = startYear

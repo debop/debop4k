@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-debop4k.redis.spring.boot.autoconfigure.RedissonAutoConfiguration
+debop4k.redisson.spring.boot.autoconfigure.RedissonAutoConfiguration

@@ -4,13 +4,14 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 @file:JvmName("Temperatures")
@@ -20,9 +21,9 @@ package debop4k.units
 import java.io.Serializable
 
 
-fun Double.toKelvin(): Temperature = Temperature.of(this)
-fun Double.toCelcius(): Temperature = Temperature.of(this, TemperatureUnit.CELCIUS)
-fun Double.toFahrenheit(): Temperature = Temperature.of(this, TemperatureUnit.FAHRENHEIT)
+fun Double.kelvin(): Temperature = Temperature.of(this)
+fun Double.celcius(): Temperature = Temperature.of(this, TemperatureUnit.CELCIUS)
+fun Double.fahrenheit(): Temperature = Temperature.of(this, TemperatureUnit.FAHRENHEIT)
 
 fun Double.C2F(): Double = this * 1.8 + 32.0
 fun Double.F2C(): Double = (this - 32.0) / 1.8
@@ -41,7 +42,7 @@ enum class TemperatureUnit(val unitName: String, val factor: Double) {
         upper = upper.dropLast(1)
 
       return TemperatureUnit.values().find { it.unitName == upper }
-          ?: throw NumberFormatException("Unknown Temperature unit. unitStr=$unitStr")
+             ?: throw NumberFormatException("Unknown Temperature unit. unitStr=$unitStr")
     }
   }
 }
@@ -62,12 +63,12 @@ data class Temperature(val kelvin: Double = 0.0) : Comparable<Temperature>, Seri
   override fun toString(): String = "%.1f %s".format(kelvin, TemperatureUnit.KELVIN.unitName)
 
   companion object {
-    final val ZERO = Temperature(0.0)
-    final val MIN_VALUE = Temperature(Double.MIN_VALUE)
-    final val MAX_VALUE = Temperature(Double.MAX_VALUE)
-    final val POSITIVE_INF = Temperature(Double.POSITIVE_INFINITY)
-    final val NEGATIVE_INF = Temperature(Double.NEGATIVE_INFINITY)
-    final val NaN = Temperature(Double.NaN)
+    @JvmField val ZERO = Temperature(0.0)
+    @JvmField val MIN_VALUE = Temperature(Double.MIN_VALUE)
+    @JvmField val MAX_VALUE = Temperature(Double.MAX_VALUE)
+    @JvmField val POSITIVE_INF = Temperature(Double.POSITIVE_INFINITY)
+    @JvmField val NEGATIVE_INF = Temperature(Double.NEGATIVE_INFINITY)
+    @JvmField val NaN = Temperature(Double.NaN)
 
     @JvmOverloads
     @JvmStatic

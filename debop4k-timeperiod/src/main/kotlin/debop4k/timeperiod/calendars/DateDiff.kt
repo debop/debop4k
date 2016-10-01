@@ -22,8 +22,8 @@ import debop4k.core.kodatimes.months
 import debop4k.core.kodatimes.now
 import debop4k.core.kodatimes.years
 import debop4k.core.loggerOf
-import debop4k.core.min
 import debop4k.core.utils.hashOf
+import debop4k.core.utils.min
 import debop4k.timeperiod.*
 import debop4k.timeperiod.utils.quarterOfMonth
 import debop4k.timeperiod.utils.startTimeOfWeek

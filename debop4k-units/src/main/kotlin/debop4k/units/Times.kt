@@ -4,13 +4,14 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 @file:JvmName("Times")
@@ -37,7 +38,7 @@ enum class TimeUnit(val unitName: String, val factor: Double) {
         lower = lower.dropLast(1)
       }
       return TimeUnit.values().find { it.unitName == lower }
-          ?: throw NumberFormatException("Unknown Time unit. unitStr=$unitStr")
+             ?: throw NumberFormatException("Unknown Time unit. unitStr=$unitStr")
     }
   }
 }
@@ -73,12 +74,12 @@ data class Time(val second: Double = 0.0) : Comparable<Time>, Serializable {
   override fun toString() = "%.1f %s".format(second, TimeUnit.SECOND.unitName)
 
   companion object {
-    final val ZERO = Time(0.0)
-    final val MAX_VALUE = Time(Double.MAX_VALUE)
-    final val MIN_VALUE = Time(Double.MIN_VALUE)
-    final val POSITIVE_INF = Time(Double.POSITIVE_INFINITY)
-    final val NEGATIVE_INF = Time(Double.NEGATIVE_INFINITY)
-    final val NaN = Time(Double.NaN)
+    @JvmField val ZERO = Time(0.0)
+    @JvmField val MAX_VALUE = Time(Double.MAX_VALUE)
+    @JvmField val MIN_VALUE = Time(Double.MIN_VALUE)
+    @JvmField val POSITIVE_INF = Time(Double.POSITIVE_INFINITY)
+    @JvmField val NEGATIVE_INF = Time(Double.NEGATIVE_INFINITY)
+    @JvmField val NaN = Time(Double.NaN)
 
     @JvmOverloads
     @JvmStatic

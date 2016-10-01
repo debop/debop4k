@@ -1,0 +1,13 @@
+logging:
+  level:
+    root: info
+    debop4k.mongodb: trace
+
+
+debop4k:
+  mongodb:
+    host: localhost
+    # port: 27017
+
+    options:
+      max-connection-per-host: 100

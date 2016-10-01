@@ -16,20 +16,28 @@
 
 package debop4k.science.gis.coords
 
-import debop4k.core.max
-import debop4k.core.min
-import java.io.Serializable
+import debop4k.core.AbstractValueObject
+import debop4k.core.utils.hashOf
+import debop4k.core.utils.max
+import debop4k.core.utils.min
 
 /**
- * Created by debop
+ * 지구를 위경도 좌표를 이용하여, 사각형 격자로 영역을 표현하는 클래스입니다.
+ * @author sunghyouk.bae@gmail.com
+ *
+ * @param left   최소 경도
+ * @param top    최대 위도
+ * @param right  최대 경도
+ * @param bottom 최소 위도
  */
-data class BoundingBox(private val _left: Double,
-                       private val _top: Double,
-                       private val _right: Double,
-                       private val _bottom: Double) : Comparable<BoundingBox>, Serializable {
+class BoundingBox
+@JvmOverloads constructor(private val _left: Double = 0.0,
+                          private val _top: Double = 0.0,
+                          private val _right: Double = 0.0,
+                          private val _bottom: Double = 0.0) : AbstractValueObject(), Comparable<BoundingBox> {
 
-  constructor(topLeft: GeoLocation, bottomRight: GeoLocation) :
-  this(topLeft.lon, topLeft.lat, bottomRight.lon, bottomRight.lat)
+  constructor(topLeft: GeoLocation, bottomRight: GeoLocation)
+  : this(topLeft.longitude, topLeft.latitude, bottomRight.longitude, bottomRight.latitude)
 
   val left: Double
   val top: Double
@@ -38,8 +46,8 @@ data class BoundingBox(private val _left: Double,
 
   init {
     this.left = _left min _right
-    this.right = _left max _right
     this.top = _top max _bottom
+    this.right = _left max _right
     this.bottom = _top min _bottom
   }
 
@@ -48,38 +56,78 @@ data class BoundingBox(private val _left: Double,
   val x2: Double get() = right
   val y2: Double get() = bottom
 
-  val minX: Double by lazy { left min right }
-  val maxX: Double by lazy { left max right }
-  val minY: Double by lazy { top min bottom }
-  val maxY: Double by lazy { top max bottom }
+  // NOTE: lazy 를 사용하면 MongoDB 에서 MongoDB Converter에서 예외가 발생합니다!!!
+  val minX: Double get() = x1 min x2
+  val maxX: Double get() = x1 max x2
+  val minY: Double get() = y1 min y2
+  val maxY: Double get() = y1 max y2
 
-  val width: Double by lazy { Math.abs(right - left) }
-  val height: Double by lazy { Math.abs(top - bottom) }
+  val width: Double get() = Math.abs(right - left)
+  val height: Double get() = Math.abs(top - bottom)
 
-  val meanX: Double by lazy { (left + right) / 2.0 }
-  val meanY: Double by lazy { (top + bottom) / 2.0 }
+  val meanX: Double get() = (left + right) / 2.0
+  val meanY: Double get() = (top + bottom) / 2.0
 
   val topLeft: GeoLocation get() = GeoLocation(top, left)
   val bottomRight: GeoLocation get() = GeoLocation(bottom, right)
 
   fun contains(loc: GeoLocation): Boolean {
-    return contains(loc.lat, loc.lon)
+    return contains(loc.latitude, loc.longitude)
   }
 
   fun contains(lat: Double, lon: Double): Boolean {
     return minX <= lon && lon <= maxX &&
-        minY <= lat && lat <= maxY
+           minY <= lat && lat <= maxY
+  }
+
+  @JvmOverloads
+  fun copy(left: Double = this.left,
+           top: Double = this.top,
+           right: Double = this.right,
+           bottom: Double = this.bottom): BoundingBox {
+    return BoundingBox(left, top, right, bottom)
   }
 
   override fun compareTo(other: BoundingBox): Int {
-    var result = left.compareTo(other.left)
-    if (result == 0)
-      result = top.compareTo(other.top)
-    if (result == 0)
-      result = right.compareTo(other.right)
-    if (result == 0)
-      result = bottom.compareTo(other.bottom)
+    var diff = left.compareTo(other.left)
+    if (diff == 0)
+      diff = top.compareTo(other.top)
+    if (diff == 0)
+      diff = right.compareTo(other.right)
+    if (diff == 0)
+      diff = bottom.compareTo(other.bottom)
 
-    return result
+    return diff
   }
+
+  override fun hashCode(): Int {
+    return hashOf(left, top, right, bottom)
+  }
+
+  override fun toString(): String {
+    return "BoundingBox(left=$left, top=$top, right=$right, bottom=$bottom)"
+  }
+
+  companion object {
+    @JvmStatic
+    @JvmOverloads
+    fun of(left: Double = 0.0,
+           top: Double = 0.0,
+           right: Double = 0.0,
+           bottom: Double = 0.0): BoundingBox {
+      return BoundingBox(left min right,
+                         top max bottom,
+                         left max right,
+                         top min bottom)
+    }
+
+    @JvmStatic
+    fun of(leftTop: GeoLocation, rightBottom: GeoLocation): BoundingBox {
+      return BoundingBox(leftTop, rightBottom)
+    }
+
+    @JvmStatic
+    fun of(src: BoundingBox): BoundingBox = src.copy()
+  }
+
 }

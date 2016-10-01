@@ -16,42 +16,47 @@
 
 package debop4k.data.factory
 
-import debop4k.data.DataSources.MAX_POOL_SIZE
-import debop4k.data.DataSources.MIN_IDLE_SIZE
-import debop4k.data.DataSources.MIN_POOL_SIZE
-import debop4k.data.DatabaseSetting
+import debop4k.config.database.DatabaseSetting
+import debop4k.data.DataSources
 import org.apache.tomcat.jdbc.pool.PoolProperties
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import javax.sql.DataSource
 
 /**
- * Tomcat Database Connection Pool 을 이용한 DataSource 를 생성합니다.
+ * Tomcat Connection Pool 을 이용한 DataSource 를 생성합니다.
  *
  * @author sunghyouk.bae@gmail.com
  */
 class TomcatDataSourceFactory : DataSourceFactory {
-  private val log = LoggerFactory.getLogger(javaClass)
 
+  private val log: Logger = LoggerFactory.getLogger(javaClass)
+
+  /**
+   * [DataSource] 를 생성합니다.
+   * @param setting 데이터베이스 연결 정보
+   * @return 생성된 [DataSource] 인스턴스. 실패 시 null 반환
+   */
   override fun create(setting: DatabaseSetting): DataSource {
     log.info("Tomcat DataSource를 빌드합니다. {}", setting)
 
     val p = PoolProperties().apply {
-      driverClassName = setting.driverClassName
+      driverClassName = setting.driverClass
       url = setting.jdbcUrl
       username = setting.username
       password = setting.password
 
-      initialSize = MIN_POOL_SIZE
-      maxActive = MAX_POOL_SIZE
-      maxIdle = MIN_POOL_SIZE
-      minIdle = MIN_IDLE_SIZE
+      initialSize = DataSources.MIN_POOL_SIZE
+      maxActive = DataSources.MAX_POOL_SIZE
+      maxIdle = DataSources.MIN_POOL_SIZE
+      minIdle = DataSources.MIN_IDLE_SIZE
 
       timeBetweenEvictionRunsMillis = 30000
       minEvictableIdleTimeMillis = 30000
-      validationQuery = "SELECT 1"
-      validationInterval = 34000
+      validationQuery = setting.testQuery
+      validationInterval = 60000
       isTestOnBorrow = true
-      maxWait = 10000
+      maxWait = 60000
       isLogAbandoned = true
       isRemoveAbandoned = true
     }

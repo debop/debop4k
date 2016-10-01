@@ -28,9 +28,9 @@ import org.joda.time.DateTime
 /**
  * Created by debop
  */
-open class HourTimeRange(startTime: DateTime = now().startTimeOfHour(),
-                         val hourCount: Int = 1,
-                         calendar: ITimeCalendar = DefaultTimeCalendar)
+open class HourTimeRange @JvmOverloads constructor(startTime: DateTime = now().startTimeOfHour(),
+                                                   val hourCount: Int = 1,
+                                                   calendar: ITimeCalendar = DefaultTimeCalendar)
 : CalendarTimeRange(startTime.relativeHourPeriod(hourCount), calendar) {
 
   val hourOfDayOfEnd: Int get() = end.hourOfDay

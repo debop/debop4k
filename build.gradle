@@ -183,9 +183,11 @@ subprojects {
         compile "javax.inject:javax.inject"
         compile "com.google.code.findbugs:jsr305"
 
+        // Java 코드가 혼용되어 있어서
+        compile "org.projectlombok:lombok"
+
         testCompile "junit:junit"
         testCompile "org.assertj:assertj-core"
-        testCompile "org.projectlombok:lombok"
 
         testCompile("org.springframework.boot:spring-boot-starter") {
             exclude(module: 'commons-logging')
@@ -203,6 +205,9 @@ subprojects {
         testCompile "com.nhaarman:mockito-kotlin:0.5.2"
         testCompile "com.carrotsearch:junit-benchmarks:0.7.2"
         testCompile "org.openjdk.jmh:jmh-core:1.12"
+
+        // Java코드를 모두 포팅한 경우에는 testCompile 로 변경합니다.
+        provided 'org.projectlombok:lombok:1.16.10'
     }
 
 //    if (name.endsWith("java8")) {

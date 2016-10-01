@@ -73,9 +73,9 @@ open class DateAdd {
    * @return 시작 일자로부터 offset 기간 이전의 일자
    */
   @JvmOverloads
-  open fun substract(start: DateTime,
-                     offset: Duration,
-                     seekBoundary: SeekBoundaryMode = SeekBoundaryMode.Next): DateTime? {
+  open fun subtract(start: DateTime,
+                    offset: Duration,
+                    seekBoundary: SeekBoundaryMode = SeekBoundaryMode.Next): DateTime? {
     log.debug("Subtract start={}, offset={}, seekBoundary={}", start, offset, seekBoundary)
 
     // 예외 조건이 없으면 단순 계산으로 처리

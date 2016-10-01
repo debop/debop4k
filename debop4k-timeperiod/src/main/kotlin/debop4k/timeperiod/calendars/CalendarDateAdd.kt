@@ -75,7 +75,7 @@ open class CalendarDateAdd : DateAdd() {
     return pair.first
   }
 
-  override fun substract(start: DateTime, offset: Duration, seekBoundary: SeekBoundaryMode): DateTime? {
+  override fun subtract(start: DateTime, offset: Duration, seekBoundary: SeekBoundaryMode): DateTime? {
     log.trace("subtract... start={}, offset={}, seekBoundary={}", start, offset, seekBoundary)
 
     if (weekDays.isEmpty && excludePeriods.isEmpty() && workingHours.isEmpty) {

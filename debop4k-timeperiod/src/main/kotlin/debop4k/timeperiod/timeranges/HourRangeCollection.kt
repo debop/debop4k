@@ -27,9 +27,9 @@ import org.joda.time.DateTime
 /**
  * Created by debop
  */
-open class HourRangeCollection(startTime: DateTime = now(),
-                               hourCount: Int = 1,
-                               calendar: ITimeCalendar = DefaultTimeCalendar)
+open class HourRangeCollection @JvmOverloads constructor(startTime: DateTime = now(),
+                                                         hourCount: Int = 1,
+                                                         calendar: ITimeCalendar = DefaultTimeCalendar)
 : HourTimeRange(startTime, hourCount, calendar) {
 
   constructor(year: Int, monthOfYear: Int, hourCount: Int = 1, calendar: ITimeCalendar = DefaultTimeCalendar)

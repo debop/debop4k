@@ -16,19 +16,34 @@
 
 package debop4k.science.gis.coords
 
+import debop4k.core.utils.hashOf
 import java.io.Serializable
 
 /**
- * 경위도를 표현합니다.
+ * 위경도 정보 (Geographical Location)
+ *
+ * @author sunghyouk.bae@gmail.com
  */
-data class GeoLocation(val lat: Double = 0.0,
-                       val lon: Double = 0.0) : Comparable<GeoLocation>, Serializable {
+data class GeoLocation @JvmOverloads constructor(val latitude: Double = 0.0,
+                                                 val longitude: Double = 0.0) : Comparable<GeoLocation>, Serializable {
+
+  companion object {
+    @JvmStatic
+    @JvmOverloads
+    fun of(latitude: Double = 0.0, longitude: Double = 0.0): GeoLocation
+        = GeoLocation(latitude, longitude)
+
+    @JvmStatic
+    fun of(src: GeoLocation): GeoLocation = of(src.latitude, src.longitude)
+  }
+
+  override fun hashCode(): Int = hashOf(latitude, longitude)
 
   override fun compareTo(other: GeoLocation): Int {
-    var diff = lat.compareTo(other.lat)
-    if (diff == 0) {
-      diff = lon.compareTo(other.lon)
-    }
+    var diff = latitude.compareTo(other.latitude)
+    if (diff == 0)
+      diff = longitude.compareTo(other.longitude)
     return diff
   }
+
 }

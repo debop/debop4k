@@ -35,44 +35,59 @@ import org.joda.time.Duration
  */
 object Durations {
 
+  @JvmField val Zero: Duration = Duration.ZERO
+
+  @JvmStatic
+  fun negate(duration: Duration) = duration.negated()
+
+  @JvmStatic
   fun of(start: DateTime, end: DateTime): Duration = Duration(start, end)
 
-  fun yearDurationOf(year: Int): Duration {
+  @JvmStatic
+  fun yearOf(year: Int): Duration {
     val start = startTimeOfYear(year)
     return of(start, start.plusYears(1))
   }
 
-  fun halfyearDurationOf(year: Int, halfyear: Halfyear): Duration {
+  @JvmStatic
+  fun halfyearOf(year: Int, halfyear: Halfyear): Duration {
     val start = startTimeOfHalfyear(year, halfyear)
     return of(start, start.plusMonths(MonthsPerHalfyear))
   }
 
+  @JvmStatic
   fun halfyearOf(yearHalfyear: YearHalfyear): Duration
-      = halfyearDurationOf(yearHalfyear.year, yearHalfyear.halfyear)
+      = halfyearOf(yearHalfyear.year, yearHalfyear.halfyear)
 
-  fun quarterDurationOf(year: Int, quarter: Quarter): Duration {
+  @JvmStatic
+  fun quarterOf(year: Int, quarter: Quarter): Duration {
     val start = startTimeOfQuarter(year, quarter)
     return of(start, start.plusMonths(MonthsPerQuarter))
   }
 
-  fun quarterDurationOf(yq: YearQuarter): Duration = quarterDurationOf(yq.year, yq.quarter)
+  @JvmStatic
+  fun quarterOf(yq: YearQuarter): Duration = quarterOf(yq.year, yq.quarter)
 
-  fun monthDurationOf(year: Int, monthOfYear: Int): Duration {
+  @JvmStatic
+  fun monthOf(year: Int, monthOfYear: Int): Duration {
     val start = startTimeOfMonth(year, monthOfYear)
     return of(start, start.plusMonths(1))
   }
 
-  fun monthDurationOf(ym: YearMonth): Duration = monthDurationOf(ym.year, ym.monthOfYear)
+  @JvmStatic
+  fun monthOf(ym: YearMonth): Duration = monthOf(ym.year, ym.monthOfYear)
 
-  val Week = weekDurationOf(1)
+  @JvmField val Week = weekOf(1)
 
-  fun weekDurationOf(week: Int): Duration
-      = if (week == 0) Duration.ZERO else dayDurationOf(week * DaysPerWeek)
+  @JvmStatic
+  fun weekOf(week: Int): Duration
+      = if (week == 0) Duration.ZERO else dayOf(week * DaysPerWeek)
 
-  val Day = dayDurationOf(1)
+  @JvmField val Day = dayOf(1)
 
+  @JvmStatic
   @JvmOverloads
-  fun dayDurationOf(day: Int, hour: Int = 0, minute: Int = 0, second: Int = 0, milli: Int = 0): Duration {
+  fun dayOf(day: Int, hour: Int = 0, minute: Int = 0, second: Int = 0, milli: Int = 0): Duration {
     var duration = day.days().toStandardDuration()
 
     if (hour != 0)
@@ -87,28 +102,32 @@ object Durations {
     return duration
   }
 
-  val Hour = hourDurationOf(1)
+  @JvmField val Hour = hourOf(1)
 
+  @JvmStatic
   @JvmOverloads
-  fun hourDurationOf(hour: Int, minute: Int = 0, second: Int = 0, milli: Int = 0): Duration {
-    return dayDurationOf(0, hour, minute, second, milli)
+  fun hourOf(hour: Int, minute: Int = 0, second: Int = 0, milli: Int = 0): Duration {
+    return dayOf(0, hour, minute, second, milli)
   }
 
-  val Minute = minuteDurationOf(1)
+  @JvmField val Minute = minuteOf(1)
 
+  @JvmStatic
   @JvmOverloads
-  fun minuteDurationOf(minute: Int, second: Int = 0, milli: Int = 0): Duration {
-    return hourDurationOf(0, minute, second, milli)
+  fun minuteOf(minute: Int, second: Int = 0, milli: Int = 0): Duration {
+    return hourOf(0, minute, second, milli)
   }
 
-  val Second = secondDurationOf(1)
+  @JvmField val Second = secondOf(1)
 
+  @JvmStatic
   @JvmOverloads
-  fun secondDurationOf(second: Int, milli: Int = 0): Duration {
-    return minuteDurationOf(second, milli)
+  fun secondOf(second: Int, milli: Int = 0): Duration {
+    return minuteOf(second, milli)
   }
 
-  val MilliSecond = millisecondsOf(1)
+  @JvmField val Millisecond = millisOf(1)
 
-  fun millisecondsOf(milli: Int): Duration = Duration.millis(milli.toLong())
+  @JvmStatic
+  fun millisOf(milli: Int): Duration = Duration.millis(milli.toLong())
 }

@@ -26,9 +26,9 @@ import org.joda.time.DateTime
 /**
  * @author sunghyouk.bae@gmail.com
  */
-open class QuarterRangeCollection(moment: DateTime,
-                                  quarterCount: Int,
-                                  calendar: ITimeCalendar = DefaultTimeCalendar) :
+open class QuarterRangeCollection @JvmOverloads constructor(moment: DateTime,
+                                                            quarterCount: Int,
+                                                            calendar: ITimeCalendar = DefaultTimeCalendar) :
     QuarterTimeRange(moment, quarterCount, calendar) {
 
   @JvmOverloads

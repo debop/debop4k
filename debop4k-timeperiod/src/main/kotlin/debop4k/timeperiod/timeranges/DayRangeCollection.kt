@@ -25,9 +25,9 @@ import org.joda.time.DateTime
 /**
  * Created by debop
  */
-open class DayRangeCollection(startTime: DateTime = today(),
-                              dayCount: Int = 1,
-                              calendar: ITimeCalendar = DefaultTimeCalendar)
+open class DayRangeCollection @JvmOverloads constructor(startTime: DateTime = today(),
+                                                        dayCount: Int = 1,
+                                                        calendar: ITimeCalendar = DefaultTimeCalendar)
 : DayTimeRange(startTime, dayCount, calendar) {
 
   fun dayStream(): FastList<DayRange> {

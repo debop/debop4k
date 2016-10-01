@@ -16,35 +16,45 @@
 
 package debop4k.data
 
+
+import debop4k.core.AbstractValueObject
+import debop4k.core.ToStringHelper
 import debop4k.core.utils.hashOf
+import java.io.Serializable
 import java.sql.JDBCType
 
-interface INamedParameter {
+interface INamedParameter : Serializable {
   val name: String
   var value: Any?
 }
 
-open class NamedParameter(override val name: String,
-                          override var value: Any?) : INamedParameter {
+abstract class AbstractNamedParameter(override val name: String,
+                                      override var value: Any?) :
+    AbstractValueObject(), INamedParameter {
 
-  override fun equals(other: Any?): Boolean {
-    return (other != null) && (other is NamedParameter) && name == other.name
+  override fun equals(other: Any?): Boolean = when (other) {
+    is INamedParameter -> hashCode() == other.hashCode()
+    else -> false
   }
 
   override fun hashCode(): Int {
     return hashOf(name)
   }
 
-  override fun toString(): String {
-    return "NamedParameter(name=$name, value=$value)"
+  override fun buildStringHelper(): ToStringHelper {
+    return super.buildStringHelper()
+        .add("name", name)
+        .add("value", value)
   }
 }
 
 open class JdbcNamedParameter(name: String,
                               value: Any?,
-                              var type: JDBCType = JDBCType.INTEGER)
-: NamedParameter(name, value) {
-  override fun toString(): String {
-    return "NamedParameter(name=$name, value=$value, type=$type)"
+                              var type: JDBCType = JDBCType.INTEGER) :
+    AbstractNamedParameter(name, value) {
+
+  override fun buildStringHelper(): ToStringHelper {
+    return super.buildStringHelper()
+        .add("type", type)
   }
 }

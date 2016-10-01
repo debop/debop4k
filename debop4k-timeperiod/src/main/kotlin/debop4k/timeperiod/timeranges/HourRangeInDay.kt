@@ -23,11 +23,9 @@ import debop4k.core.utils.hashOf
 /**
  * Created by debop
  */
-open class HourRangeInDay(val startHourOfDay: Int = 0,
-                          val endHourOfDay: Int = 23) :
+open class HourRangeInDay @JvmOverloads constructor(val startHourOfDay: Int = 0,
+                                                    val endHourOfDay: Int = 23) :
     AbstractValueObject(), Comparable<HourRangeInDay> {
-
-  constructor(hourOfDay: Int) : this(hourOfDay, hourOfDay)
 
   override fun compareTo(other: HourRangeInDay): Int {
     return startHourOfDay.compareTo(other.startHourOfDay)

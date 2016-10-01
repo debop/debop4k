@@ -26,7 +26,7 @@
     </encoder>
   </appender>
 
-  <logger name="debop4k.ignite" level="TRACE"/>
+  <logger name="debop4k.data.ignite" level="TRACE"/>
 
   <root level="INFO">
     <appender-ref ref="console"/>

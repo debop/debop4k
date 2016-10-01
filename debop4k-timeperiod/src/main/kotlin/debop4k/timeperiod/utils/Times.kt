@@ -17,13 +17,18 @@
 
 package debop4k.timeperiod.utils
 
-import debop4k.core.kodatimes.*
+import debop4k.core.kodatimes.asDate
+import debop4k.core.kodatimes.months
+import debop4k.core.kodatimes.startOfDay
+import debop4k.core.kodatimes.today
 import debop4k.timeperiod.*
 import debop4k.timeperiod.models.*
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
 import java.util.*
+
+fun now(): DateTime = DateTime.now()
 
 
 fun DateTime.localDate(): LocalDate = this.toLocalDate()

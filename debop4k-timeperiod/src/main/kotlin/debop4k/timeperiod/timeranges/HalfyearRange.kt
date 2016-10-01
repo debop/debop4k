@@ -27,8 +27,8 @@ import org.joda.time.DateTime
 /**
  * Created by debop
  */
-open class HalfyearRange(moment: DateTime = today(),
-                         calendar: ITimeCalendar = DefaultTimeCalendar)
+open class HalfyearRange @JvmOverloads constructor(moment: DateTime = today(),
+                                                   calendar: ITimeCalendar = DefaultTimeCalendar)
 : HalfyearTimeRange(moment, 1, calendar) {
 
   @JvmOverloads

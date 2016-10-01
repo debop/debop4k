@@ -24,9 +24,9 @@ import debop4k.timeperiod.models.DayOfWeek
  * 특정 요일의 하루 동안의 시간 간격
  * Created by debop
  */
-open class DayOfWeekHourRange(val dayOfWeek: DayOfWeek,
-                              startHourOfDay: Int = 0,
-                              endHourOfDay: Int = 23) : HourRangeInDay(startHourOfDay, endHourOfDay) {
+open class DayOfWeekHourRange @JvmOverloads constructor(val dayOfWeek: DayOfWeek,
+                                                        startHourOfDay: Int = 0,
+                                                        endHourOfDay: Int = 23) : HourRangeInDay(startHourOfDay, endHourOfDay) {
 
   override fun hashCode(): Int {
     return hashOf(dayOfWeek, startHourOfDay, endHourOfDay)

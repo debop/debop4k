@@ -25,8 +25,8 @@ import org.joda.time.DateTime
 /**
  * Created by debop
  */
-open class MonthRange(startTime: DateTime = today(),
-                      calendar: ITimeCalendar = DefaultTimeCalendar) :
+open class MonthRange @JvmOverloads constructor(startTime: DateTime = today(),
+                                                calendar: ITimeCalendar = DefaultTimeCalendar) :
     MonthTimeRange(startTime, 1, calendar) {
 
   constructor(year: Int, monthOfYear: Int, calendar: ITimeCalendar = DefaultTimeCalendar)

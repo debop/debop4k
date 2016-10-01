@@ -26,9 +26,9 @@ import org.joda.time.DateTime
 /**
  * Created by debop
  */
-open class MonthTimeRange(startTime: DateTime = today(),
-                          val monthCount: Int = 1,
-                          calendar: ITimeCalendar = DefaultTimeCalendar) :
+open class MonthTimeRange @JvmOverloads constructor(startTime: DateTime = today(),
+                                                    val monthCount: Int = 1,
+                                                    calendar: ITimeCalendar = DefaultTimeCalendar) :
     CalendarTimeRange(startTime.relativeMonthPeriod(monthCount), calendar) {
 
   fun daySequence(): Sequence<DayRange> {

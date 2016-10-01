@@ -15,8 +15,25 @@
  */
 
 dependencies {
+    compile project(":debop4k-config")
     compile project(":debop4k-core")
 
-    compile "org.redisson:redisson"
-    optional "net.jpountz.lz4:lz4"
+    compile "org.redisson:redisson:$redisson_version"
+    compile "de.ruedigermoeller:fst:$fst_java7_version"
+
+    optional "org.springframework.boot:spring-boot-autoconfigure:$spring_boot_version"
+    optional "org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version"
+
+    optional "org.springframework:spring-context:$spring_version"
+    optional "org.springframework:spring-context-support:$spring_version"
+
+    testCompile "net.jpountz.lz4:lz4:$lz4_version"
+    testCompile "com.esotericsoftware:kryo:$kryo_version"
+    testCompile "com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:$jackson_dataformat_cbor_version"
+    testCompile "org.msgpack:jackson-dataformat-msgpack:$jackson_dataformat_msgpack_version"
 }
+
+// Spring Boot AutoConfigure 처리
+// http://docs.spring.io/spring-boot/docs/1.3.5.RELEASE/reference/html/configuration-metadata.html#configuration-metadata-annotation-processor
+compileJava.dependsOn(processResources)
+compileKotlin.dependsOn(processResources)

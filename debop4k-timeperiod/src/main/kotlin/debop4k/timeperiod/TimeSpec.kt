@@ -70,47 +70,47 @@ const val WeekDaysPerWeek = 5
 const val WeekEndsPerWeek = 2
 
 /** 주중 요일  */
-val Weekdays = arrayOf<DayOfWeek>(DayOfWeek.MONDAY,
-                                  DayOfWeek.TUESDAY,
-                                  DayOfWeek.WEDNESDAY,
-                                  DayOfWeek.THURSDAY,
-                                  DayOfWeek.FRIDAY)
+@JvmField val Weekdays = arrayOf<DayOfWeek>(DayOfWeek.MONDAY,
+                                            DayOfWeek.TUESDAY,
+                                            DayOfWeek.WEDNESDAY,
+                                            DayOfWeek.THURSDAY,
+                                            DayOfWeek.FRIDAY)
 
-val WeekdayList: ImmutableList<DayOfWeek> = Lists.immutable.of(*Weekdays)
+@JvmField val WeekdayList: ImmutableList<DayOfWeek> = Lists.immutable.of(*Weekdays)
 /** 주말 요일  */
-val Weekends = arrayOf<DayOfWeek>(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
-val WeekendList: ImmutableList<DayOfWeek> = Lists.immutable.of(*Weekends)
+@JvmField val Weekends = arrayOf<DayOfWeek>(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
+@JvmField val WeekendList: ImmutableList<DayOfWeek> = Lists.immutable.of(*Weekends)
 
 fun DayOfWeek.isWeekday(): Boolean = WeekdayList.contains(this)
 fun DayOfWeek.isWeekend(): Boolean = WeekendList.contains(this)
 
 /** 한 주의 첫번째 주중 요일 (월요일)  */
-val FirstWorkingDayOfWeek = DayOfWeek.MONDAY
+@JvmField val FirstWorkingDayOfWeek = DayOfWeek.MONDAY
 
 /** 한 주의 첫번째 요일 (월요일) - ISO8601을 따른다.  */
-val FirstDayOfWeek = DayOfWeek.MONDAY
+@JvmField val FirstDayOfWeek = DayOfWeek.MONDAY
 
 /** 전반기에 속하는 월 (1월~6월)  */
-val FirstHalfyearMonths = intArrayOf(1, 2, 3, 4, 5, 6)
+@JvmField val FirstHalfyearMonths = intArrayOf(1, 2, 3, 4, 5, 6)
 
 /** 후반기에 속하는 월 (7월~12월)  */
-val SecondHalfyearMonths = intArrayOf(7, 8, 9, 10, 11, 12)
+@JvmField val SecondHalfyearMonths = intArrayOf(7, 8, 9, 10, 11, 12)
 /** 1분기 시작 월 (1월)  */
-val FirstQuarterMonth = 1
+@JvmField val FirstQuarterMonth = 1
 /** 2분기 시작 월 (4월)  */
-val SecondQuarterMonth = FirstQuarterMonth + MonthsPerQuarter
+@JvmField val SecondQuarterMonth = FirstQuarterMonth + MonthsPerQuarter
 /** 3분기 시작 월 (7월)  */
-val ThirdQuarterMonth = SecondQuarterMonth + MonthsPerQuarter
+@JvmField val ThirdQuarterMonth = SecondQuarterMonth + MonthsPerQuarter
 /** 4분기 시작 월 (10월)  */
-val FourthQuarterMonth = ThirdQuarterMonth + MonthsPerQuarter
+@JvmField val FourthQuarterMonth = ThirdQuarterMonth + MonthsPerQuarter
 /** 1분기에 속하는 월 (1월~3월)  */
-val FirstQuarterMonths = intArrayOf(1, 2, 3)
+@JvmField val FirstQuarterMonths = intArrayOf(1, 2, 3)
 /** 2분기에 속하는 월 (4월~6월)  */
-val SecondQuarterMonths = intArrayOf(4, 5, 6)
+@JvmField val SecondQuarterMonths = intArrayOf(4, 5, 6)
 /** 3분기에 속하는 월 (7월~9월)  */
-val ThirdQuarterMonths = intArrayOf(7, 8, 9)
+@JvmField val ThirdQuarterMonths = intArrayOf(7, 8, 9)
 /** 4분기에 속하는 월 (10월~12월)  */
-val FourthQuarterMonths = intArrayOf(10, 11, 12)
+@JvmField val FourthQuarterMonths = intArrayOf(10, 11, 12)
 /**
  * Number of daysView in a non-leap year
  */
@@ -134,45 +134,45 @@ const val OneMillis: Long = 1L
 const val MaxMillis: Long = DaysTo10000 * MillisPerDay - 1
 
 /** 기간 없음 (Duration.ZERO)  */
-val NoDuration: Duration = Duration.ZERO
+@JvmField val NoDuration: Duration = Duration.ZERO
 
 /** 기간 없음 Duration.ZERO)  */
-val EmptyDuration: Duration = Duration.ZERO
+@JvmField val EmptyDuration: Duration = Duration.ZERO
 
 /** 기간 없음 Duration.ZERO)  */
-val ZeroDuration: Duration = Duration.ZERO
+@JvmField val ZeroDuration: Duration = Duration.ZERO
 
 /** 양(Positive)의 최소 기간 (Duration.millis(1L))  */
-val MinPositiveDuration: Duration = Duration.millis(1L)
+@JvmField val MinPositiveDuration: Duration = Duration.millis(1L)
 
 /** 음(Negative)의 최소 기간 (TimeSpan(-1))  */
-val MinNegativeDuration: Duration = Duration.millis(-1L)
+@JvmField val MinNegativeDuration: Duration = Duration.millis(-1L)
 
 /** 최소 기간에 해당하는 일자  */
-val MinPeriodTime: DateTime = DateTime(MinMillis)
+@JvmField val MinPeriodTime: DateTime = DateTime(MinMillis)
 
 /** 최대 기간에 해당하는 일자  */
-val MaxPeriodTime: DateTime = DateTime(MaxMillis)
+@JvmField val MaxPeriodTime: DateTime = DateTime(MaxMillis)
 
 /** 최소 기간 (0입니다)  */
-val MinPeriodDuration: Long = ZeroMillis
+@JvmField val MinPeriodDuration: Long = ZeroMillis
 
 /** 최대 기간 MaxMillis - MinMillis  */
-val MaxPeriodDuration: Long = MaxMillis
+@JvmField val MaxPeriodDuration: Long = MaxMillis
 
 /** 최소 기간 (0입니다. Duration.ZERO)  */
-val MinDuration: Duration = Duration.millis(MinPeriodDuration)
+@JvmField val MinDuration: Duration = Duration.millis(MinPeriodDuration)
 
 /** 최대 기간 MaxPeriodDuration - MinPeriodDuration  */
-val MaxDuration: Duration = Duration.millis(MaxPeriodDuration)
+@JvmField val MaxDuration: Duration = Duration.millis(MaxPeriodDuration)
 
-val DefaultStartOffset: Duration = EmptyDuration
+@JvmField val DefaultStartOffset: Duration = EmptyDuration
 
-val DefaultEndOffset: Duration = MinNegativeDuration
+@JvmField val DefaultEndOffset: Duration = MinNegativeDuration
 
-val DefaultTimeCalendar: TimeCalendar = TimeCalendar.DEFAULT
+@JvmField val DefaultTimeCalendar: TimeCalendar = TimeCalendar.DEFAULT
 
-val EmptyOffsetTimeCalendar: TimeCalendar = TimeCalendar.EMPTY_OFFSET
+@JvmField val EmptyOffsetTimeCalendar: TimeCalendar = TimeCalendar.EMPTY_OFFSET
 
 
 //val dateTimeComparator: Comparator<DateTime> = Comparator { dt1, dt2 -> dt1.compareTo(dt2) }

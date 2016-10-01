@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    separator: /;
+
+logging:
+  level:
+    root: info
+    debop4k.data.orm: debug
+
+debop4k:
+  datasource:
+    driver-class-name: org.h2.Driver # org.postgresql.Driver
+    jdbc-url: jdbc:h2:mem:test  # jdbc:postgresql://localhost/hibernate
+
+    # username:
+    # password:
+
+    max-pool-size: 64
+    min-idle-size: 2
+    test-query: SELECT 1
+
+
+  hibernate:
+    mapped-pakage-names:
+      - debop4k.data.orm.model
+      - debop4k.data.orm.mapping
+
+    dialect: org.hibernate.dialect.H2Dialect # org.hibernate.dialect.PostgreSQL9Dialect
+
+    hbm2ddl: create-drop
+    show-sql: true
+    format-sql: true
+    batch-fetch-size: 30
+    #isolation: TRANSACtION_READ_COMMITTED
+    auto-commit: true
+
+    useSecondCache: false
+    cache-provider-config: hibernate-redis.properties
+

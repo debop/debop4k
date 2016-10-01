@@ -22,21 +22,23 @@ import java.sql.Connection
 import javax.sql.DataSource
 
 /**
+ * Spring framework 의 Transactional annotation 을 이용하여 Transaction 하에서 DB 작업이 가능하도록 해 줍니다.
+ *
  * @author sunghyouk.bae@gmail.com
  */
-open class SpringTransactionalDataSource : AbstractDataSource() {
+class SpringTransactionalDataSource : AbstractDataSource() {
 
-  private var inner: DataSource? = null
+  public var inner: DataSource? = null
 
-  override fun getConnection(): Connection? {
-    val connection = DataSourceUtils.getConnection(inner)
-    if (!DataSourceUtils.isConnectionTransactional(connection, inner)) {
+  override fun getConnection(): Connection {
+    val conn = DataSourceUtils.getConnection(inner)
+    if (!DataSourceUtils.isConnectionTransactional(conn, inner)) {
       throw IllegalStateException("Connection is not transactional")
     }
-    return connection
+    return conn
   }
 
-  override fun getConnection(username: String?, password: String?): Connection? {
-    throw UnsupportedOperationException("지원하지 않습니다.")
+  override fun getConnection(username: String?, password: String?): Connection {
+    throw UnsupportedOperationException("Not supported operation")
   }
 }

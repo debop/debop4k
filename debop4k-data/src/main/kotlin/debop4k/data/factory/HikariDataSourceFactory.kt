@@ -18,12 +18,12 @@ package debop4k.data.factory
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import debop4k.data.DataSources.MAX_POOL_SIZE
-import debop4k.data.DataSources.MIN_IDLE_SIZE
-import debop4k.data.DatabaseSetting
-import debop4k.data.isMySQL
-import debop4k.data.isPostgreSQL
-import org.apache.commons.lang3.builder.ToStringBuilder
+import debop4k.config.database.DatabaseConfigElement
+import debop4k.config.database.DatabaseSetting
+import debop4k.core.utils.max
+import debop4k.data.DataSources
+import debop4k.data.JdbcDrivers
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import javax.sql.DataSource
 
@@ -36,74 +36,77 @@ import javax.sql.DataSource
  */
 class HikariDataSourceFactory : DataSourceFactory {
 
-  private val log = LoggerFactory.getLogger(javaClass)
+  private val log: Logger = LoggerFactory.getLogger(javaClass)
 
   /**
-   * [HikariDataSource] 를 생성합니다.
+   * [DataSource] 를 생성합니다.
+   * @param setting 데이터베이스 연결 정보
+   * @return 생성된 [DataSource] 인스턴스. 실패 시 null 반환
    */
   override fun create(setting: DatabaseSetting): DataSource {
-    log.info("Hikari DataSource를 빌드합니다. {}", setting)
+    log.info("Hikari DataSource를 빌드합니다... setting={}", setting)
 
     val config = HikariConfig().apply {
       isInitializationFailFast = true
-      driverClassName = setting.driverClassName
+      driverClassName = setting.driverClass
       jdbcUrl = setting.jdbcUrl
       username = setting.username
       password = setting.password
+
+      maximumPoolSize = setting.maxPoolSize max DataSources.MAX_POOL_SIZE
+      minimumIdle = setting.minIdleSize max DataSources.MIN_IDLE_SIZE
+      maxLifetime = 600000  // 10 minutes
+      idleTimeout = 300000  // 5 minutes
+
+      // NOTE: HikariCP 2.4.3 이상에서만 지원하는데, 이놈이랑 PostgreSQL Driver 가 궁합이 안맞는다. ㅠ.ㅠ
+      if (setting.testQuery.isNotBlank()) {
+        connectionTestQuery = setting.testQuery
+      } else {
+        connectionTestQuery = DatabaseConfigElement.TEST_QUERY;
+      }
     }
 
     val props = setting.props
-    if (props != null && props.isNotEmpty()) {
-
-      for (key in props) {
-        if (key != null && props.get(key) != null) {
-          config.addDataSourceProperty(key, props.get(key))
-        }
+    if (props.isNotEmpty()) {
+      props.forEachKeyValue { k, v ->
+        if (k != null && v != null)
+          config.addDataSourceProperty(k, v)
       }
-
-      if (setting.isMySQL()) {
-        config.setMySqlProperty(setting)
-      }
-
-      if (setting.isPostgreSQL()) {
-        config.setPostgresProperty(setting)
-      }
+      setVendorProperties(config, setting)
     }
 
-    // NOTE: HikariCP 2.4.3 이상에서만 지원하는데, 이놈이랑 PostgreSQL Driver 가 궁합이 안맞는다. ㅠ.ㅠ
-    config.apply {
-      connectionTestQuery = if (setting.testQuery.isNullOrBlank()) "SELECT 1" else setting.testQuery
-
-      maximumPoolSize = Math.max(setting.maxPoolSize, MAX_POOL_SIZE)
-      minimumIdle = Math.max(setting.minIdleSize, MIN_IDLE_SIZE)
-
-      // Timeout 설정
-      maxLifetime = 600000 // 10 minutes
-      idleTimeout = 300000 // 5 minutes
-    }
-
-    log.info("Hikari DataSource 를 생성했습니다. config={}", ToStringBuilder.reflectionToString(config))
+    log.info("Hikari DataSource를 생성했습니다. conofig={}", config)
 
     return HikariDataSource(config)
   }
 
-}
+  fun setVendorProperties(config: HikariConfig, setting: DatabaseSetting): Unit {
+    val isMySQL = JdbcDrivers.isMySQL(setting.driverClass)
+    if (isMySQL) {
+      setMySQLProperties(config, setting)
+    }
 
+    val isPostgreSQL = JdbcDrivers.isPostgreSQL(setting.driverClass)
+    if (isPostgreSQL) {
+      setPostgreSQLProperties(config, setting)
+    }
+  }
 
-fun HikariConfig.setMySqlProperty(setting: DatabaseSetting): HikariConfig {
-  // log.debug("MySQL용 추가 설정을 수행합니다.")
-  addDataSourceProperty("cachePrepStmts", setting.props?.getIfAbsentValue("cachePrepStmts", "true"))
-  addDataSourceProperty("prepStmtCacheSize", setting.props?.getIfAbsentValue("prepStmtCacheSize", "500"))
-  addDataSourceProperty("prepStmtCacheSqlLimit", setting.props?.getIfAbsentValue("prepStmtCacheSqlLimit", "4096"))
-  addDataSourceProperty("useServerPrepStmts", setting.props?.getIfAbsentValue("useServerPrepStmts", "true"))
-  return this
-}
+  fun setMySQLProperties(config: HikariConfig, setting: DatabaseSetting): Unit {
+    with(setting.props) {
+      config.addDataSourceProperty("cachePrepStmts", getIfAbsentValue("cachePrepStmts", "true"))
+      config.addDataSourceProperty("prepStmtCacheSize", getIfAbsentValue("prepStmtCacheSize", "500"))
+      config.addDataSourceProperty("prepStmtCacheSqlLimit", getIfAbsentValue("prepStmtCacheSqlLimit", "4096"))
+      config.addDataSourceProperty("useServerPrepStmts", getIfAbsentValue("useServerPrepStmts", "true"))
+    }
+  }
 
-fun HikariConfig.setPostgresProperty(setting: DatabaseSetting): HikariConfig {
-  // log.debug("PostgreSQL용 추가 설정을 수행합니다.")
-  addDataSourceProperty("preparedStatementCacheQueries", setting.props?.getIfAbsentValue("preparedStatementCacheQueries", "1024"))
-  addDataSourceProperty("preparedStatementCacheSizeMiB", setting.props?.getIfAbsentValue("preparedStatementCacheSizeMiB", "64"))
-  addDataSourceProperty("tcpKeepAlive", setting.props?.getIfAbsentValue("tcpKeepAlive", "true"))
-  addDataSourceProperty("charset", setting.props?.getIfAbsentValue("charset", "UTF-8"))
-  return this
+  fun setPostgreSQLProperties(config: HikariConfig, setting: DatabaseSetting): Unit {
+    with(setting.props) {
+      config.addDataSourceProperty("preparedStatementCacheQueries", getIfAbsentValue("preparedStatementCacheQueries", "1024"))
+      config.addDataSourceProperty("preparedStatementCacheSizeMiB", getIfAbsentValue("preparedStatementCacheSizeMiB", "64"))
+      config.addDataSourceProperty("tcpKeepAlive", getIfAbsentValue("tcpKeepAlive", "true"))
+      config.addDataSourceProperty("charset", getIfAbsentValue("charset", "UTF-8"))
+    }
+  }
 }

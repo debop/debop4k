@@ -16,6 +16,7 @@
 
 package debop4k.data
 
+import debop4k.config.database.DatabaseSetting
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.sql.SQLException
@@ -54,7 +55,7 @@ class DataSourcesKotlinTest : AbstractDataKotlinTest() {
   }
 
   @Test fun `embedded hsqldb`() {
-    val ds = DataSources.ofEmbeddedHsql()
+    val ds = DataSources.ofEmbeddedHSql()
 
     val conn = ds.connection
     try {
@@ -65,7 +66,7 @@ class DataSourcesKotlinTest : AbstractDataKotlinTest() {
   }
 
   @Test fun `create datasource directly`() {
-    val setting = DatabaseSetting(driverClassName = JdbcDrivers.DRIVER_CLASS_H2,
+    val setting = DatabaseSetting(driverClass = JdbcDrivers.DRIVER_CLASS_H2,
                                   jdbcUrl = "jdbc:h2:mem:direct",
                                   username = "sa",
                                   maxPoolSize = 10,
@@ -75,7 +76,7 @@ class DataSourcesKotlinTest : AbstractDataKotlinTest() {
   }
 
   @Test fun `create postgresql connection`() {
-    val setting = DatabaseSetting(driverClassName = JdbcDrivers.DRIVER_CLASS_POSTGRESQL,
+    val setting = DatabaseSetting(driverClass = JdbcDrivers.DRIVER_CLASS_POSTGRESQL,
                                   jdbcUrl = "jdbc:postgresql://localhost/hibernate",
                                   username = "root",
                                   password = "root")

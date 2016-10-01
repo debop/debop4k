@@ -4,13 +4,14 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 @file:JvmName("Velocities")
@@ -19,16 +20,16 @@ package debop4k.units
 
 import java.io.Serializable
 
-fun Double.toMps(): Velocity = Velocity.of(this, VelocityUnit.METER_PER_SEC)
-fun Double.toMph(): Velocity = Velocity.of(this, VelocityUnit.METER_PER_HOUR)
-fun Double.toKps(): Velocity = Velocity.of(this, VelocityUnit.KILOMETER_PER_SEC)
-fun Double.toKph(): Velocity = Velocity.of(this, VelocityUnit.KILOMETER_PER_HOUR)
+fun Double.mps(): Velocity = Velocity.of(this, VelocityUnit.METER_PER_SEC)
+fun Double.mph(): Velocity = Velocity.of(this, VelocityUnit.METER_PER_HOUR)
+fun Double.kps(): Velocity = Velocity.of(this, VelocityUnit.KILOMETER_PER_SEC)
+fun Double.kph(): Velocity = Velocity.of(this, VelocityUnit.KILOMETER_PER_HOUR)
 
-fun Double.toMilePerSec(): Velocity = Velocity.of(this, VelocityUnit.MILE_PER_SEC)
-fun Double.toMilePerHr(): Velocity = Velocity.of(this, VelocityUnit.MILE_PER_HOUR)
+fun Double.milepersec(): Velocity = Velocity.of(this, VelocityUnit.MILE_PER_SEC)
+fun Double.mileperhour(): Velocity = Velocity.of(this, VelocityUnit.MILE_PER_HOUR)
 
-fun Double.toKnot(): Velocity = Velocity.of(this, VelocityUnit.KNOT)
-fun Double.toMach(): Velocity = Velocity.of(this, VelocityUnit.MACH)
+fun Double.knot(): Velocity = Velocity.of(this, VelocityUnit.KNOT)
+fun Double.mach(): Velocity = Velocity.of(this, VelocityUnit.MACH)
 
 enum class VelocityUnit(val unitName: String, val factor: Double) {
 
@@ -50,7 +51,7 @@ enum class VelocityUnit(val unitName: String, val factor: Double) {
       val lower = unitStr.toLowerCase()
 
       return VelocityUnit.values().find { it.unitName == lower }
-          ?: throw NumberFormatException("Unknown Velocity unit. unitStr=$unitStr")
+             ?: throw NumberFormatException("Unknown Velocity unit. unitStr=$unitStr")
     }
   }
 }
@@ -78,12 +79,12 @@ data class Velocity(val ms: Double = 0.0) : Comparable<Velocity>, Serializable {
 
   companion object {
 
-    final val ZERO = Velocity(0.0)
-    final val MAX_VALUE = Velocity(Double.MAX_VALUE)
-    final val MIN_VALUE = Velocity(Double.MIN_VALUE)
-    final val POSITIVE_INF = Velocity(Double.POSITIVE_INFINITY)
-    final val NEGATIVE_INF = Velocity(Double.NEGATIVE_INFINITY)
-    final val NaN = Velocity(Double.NaN)
+    @JvmField val ZERO = Velocity(0.0)
+    @JvmField val MAX_VALUE = Velocity(Double.MAX_VALUE)
+    @JvmField val MIN_VALUE = Velocity(Double.MIN_VALUE)
+    @JvmField val POSITIVE_INF = Velocity(Double.POSITIVE_INFINITY)
+    @JvmField val NEGATIVE_INF = Velocity(Double.NEGATIVE_INFINITY)
+    @JvmField val NaN = Velocity(Double.NaN)
 
     @JvmOverloads
     @JvmStatic

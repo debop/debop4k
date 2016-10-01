@@ -22,21 +22,17 @@ import org.joda.time.Duration
 /**
  * @author sunghyouk.bae@gmail.com
  */
-open class TimeRange(start: DateTime = MinPeriodTime,
-                     end: DateTime = MaxPeriodTime,
-                     readOnly: Boolean = false) : TimePeriod(start, end, readOnly), ITimeRange {
-
+open class TimeRange @JvmOverloads constructor(start: DateTime? = MinPeriodTime,
+                                               end: DateTime? = MaxPeriodTime,
+                                               readOnly: Boolean = false) : TimePeriod(start ?: MinPeriodTime,
+                                                                                       end ?: MaxPeriodTime,
+                                                                                       readOnly), ITimeRange {
+  @JvmOverloads
+  constructor(start: DateTime?, offset: Duration?, readOnly: Boolean = false)
+  : this(start, (start ?: MaxPeriodTime) + (offset ?: Duration.ZERO), readOnly)
 
   @JvmOverloads
-  constructor(moment: DateTime, readOnly: Boolean = false)
-  : this(moment, moment, readOnly)
-
-  @JvmOverloads
-  constructor(start: DateTime, offset: Duration, readOnly: Boolean = false)
-  : this(start, start + offset, readOnly)
-
-  @JvmOverloads
-  constructor(src: ITimePeriod, readOnly: Boolean = src.readOnly)
+  constructor(src: ITimePeriod, readOnly: Boolean = src.readonly)
   : this(src.start, src.end, readOnly)
 
   companion object {
@@ -49,9 +45,9 @@ open class TimeRange(start: DateTime = MinPeriodTime,
     if (offset == Duration.ZERO)
       return TimeRange(this)
 
-    val ns = if (hasStart) start + offset else start
-    val ne = if (hasEnd) end + offset else end
-    return TimeRange(ns, ne, readOnly)
+    val ns = if (hasStart()) start + offset else start
+    val ne = if (hasEnd()) end + offset else end
+    return TimeRange(ns, ne, readonly)
   }
 
   override fun expandStartTo(moment: DateTime) {
@@ -72,10 +68,10 @@ open class TimeRange(start: DateTime = MinPeriodTime,
   }
 
   override fun expandTo(period: ITimePeriod) {
-    if (period.hasStart)
+    if (period.hasStart())
       expandStartTo(period.start)
 
-    if (period.hasEnd)
+    if (period.hasEnd())
       expandEndTo(period.end)
   }
 
@@ -97,7 +93,7 @@ open class TimeRange(start: DateTime = MinPeriodTime,
   }
 
   override fun shrinkTo(period: ITimePeriod) {
-    if (period.hasStart) shrinkStartTo(period.start)
-    if (period.hasEnd) shrinkEndTo(period.end)
+    if (period.hasStart()) shrinkStartTo(period.start)
+    if (period.hasEnd()) shrinkEndTo(period.end)
   }
 }

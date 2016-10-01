@@ -27,22 +27,18 @@ import org.joda.time.Duration
 /**
  * Time Period
  */
-open class TimePeriod(override var start: DateTime = MinPeriodTime,
-                      override var end: DateTime = MaxPeriodTime,
-                      override val readOnly: Boolean = false) : ITimePeriod {
+open class TimePeriod @JvmOverloads constructor(override var start: DateTime = MinPeriodTime,
+                                                override var end: DateTime = MaxPeriodTime,
+                                                override val readonly: Boolean = false) : ITimePeriod {
 
-  constructor(src: ITimePeriod) : this(src.start, src.end, src.readOnly)
-
-  @JvmOverloads
-  constructor(moment: DateTime, readOnly: Boolean = false)
-  : this(moment, moment, readOnly)
+  constructor(src: ITimePeriod) : this(src.start, src.end, src.readonly)
 
   @JvmOverloads
   constructor(start: DateTime, duration: Duration, readOnly: Boolean = false)
   : this(start, start + duration, readOnly)
 
   companion object {
-    @JvmField val AnyTime: TimePeriod = TimePeriod(readOnly = true)
+    @JvmField val AnyTime: TimePeriod = TimePeriod(readonly = true)
   }
 
   override var duration: Duration
@@ -51,7 +47,7 @@ open class TimePeriod(override var start: DateTime = MinPeriodTime,
       assertMutable()
       require(d.millis > 0, { "Duration 은 0보다 커야 합니다." })
 
-      if (hasStart) {
+      if (hasStart()) {
         end = start + d
       }
     }
@@ -68,20 +64,20 @@ open class TimePeriod(override var start: DateTime = MinPeriodTime,
 
   override fun copy(offset: Duration): ITimePeriod {
     if (offset.millis == 0L) {
-      return TimePeriod(this)
+      return TimeBlock(this)
     }
-    val s = if (hasStart) start + offset else start
-    val e = if (hasEnd) end + offset else end
+    val s = if (hasStart()) start + offset else start
+    val e = if (hasEnd()) end + offset else end
 
-    return TimePeriod(s, e, readOnly)
+    return TimeBlock(s, e, readonly)
   }
 
   override fun move(offset: Duration) {
     if (offset.millis == 0L) return
     assertMutable()
 
-    if (hasStart) start += offset
-    if (hasEnd) end += offset
+    if (hasStart()) start += offset
+    if (hasEnd()) end += offset
   }
 
   override fun isSamePeriod(other: ITimePeriod): Boolean {
@@ -131,14 +127,14 @@ open class TimePeriod(override var start: DateTime = MinPeriodTime,
   }
 
   override fun hashCode(): Int {
-    return hashOf(start, end, readOnly)
+    return hashOf(start, end, readonly)
   }
 
   override fun toString(): String {
     return ToStringHelper(this)
         .add("start", start)
         .add("end", end)
-        .add("readOnly", readOnly)
+        .add("readonly", readonly)
         .toString()
   }
 }

@@ -27,9 +27,9 @@ import org.joda.time.DateTime
 /**
  * Created by debop
  */
-open class YearTimeRange(val year: Int,
-                         val yearCount: Int = 1,
-                         calendar: ITimeCalendar = DefaultTimeCalendar)
+open class YearTimeRange @JvmOverloads constructor(val year: Int,
+                                                   val yearCount: Int = 1,
+                                                   calendar: ITimeCalendar = DefaultTimeCalendar)
 : YearCalendarTimeRange(relativeYearPeriod(year, yearCount),
                         calendar) {
 

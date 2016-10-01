@@ -1,16 +1,17 @@
 /*
- * Copyright (c) 2016. KESTI co, ltd
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 @file:JvmName("KodaTimes")
@@ -56,6 +57,36 @@ fun utcNow(): DateTime = DateTime.now(DateTimeZone.UTC)
 
 fun DateTime.toISOString(): String = JODA_DEFAULT_DATETIME_FORMATTER.print(this)
 fun DateTime.toISODateHourMinuteSecond(): String = ISODateTimeFormat.dateHourMinuteSecond().print(this)
+
+fun DateTime?.asIsoFormatDateTimeString(): String? {
+  return if (this != null) ISODateTimeFormat.dateTime().print(this) else null
+}
+
+fun String?.asIsoFormatDateTime(): DateTime? {
+  return if (!isNullOrBlank())
+    DateTime.parse(this, ISODateTimeFormat.dateTime().withOffsetParsed())
+  else
+    null
+}
+
+fun DateTime?.asIsoFormatDateHMSString(): String? {
+  return if (this != null) ISODateTimeFormat.dateHourMinuteSecond().print(this) else null
+}
+
+fun String?.asIsoFormatDateHMS(): DateTime? {
+  return if (!isNullOrBlank())
+    DateTime.parse(this, ISODateTimeFormat.dateHourMinuteSecond().withOffsetParsed())
+  else
+    null
+}
+
+fun String?.asDateTimeByPattern(pattern: String): DateTime? {
+  return if (!isNullOrBlank())
+    DateTime.parse(this, DateTimeFormat.forPattern(pattern))
+  else
+    null
+}
+
 
 fun String.toDateTime(formatter: DateTimeFormatter): DateTime {
   if (this.isNullOrBlank())
@@ -150,6 +181,7 @@ fun Long.times(period: Period): Period = period.multipliedBy(this.toInt())
 @JvmOverloads
 fun Long.asDateTime(zone: DateTimeZone = DefaultTimeZone): DateTime = DateTime(this, zone)
 
+
 /**
  * String extensions
  */
@@ -187,12 +219,6 @@ fun String.toLocalTime(pattern: String? = null): LocalTime? {
   } catch(ignored: Exception) {
     null
   }
-}
-
-fun String.asDateTimeByPattern(pattern: String): DateTime? {
-  if (!this.isNullOrBlank())
-    return DateTime.parse(this, DateTimeFormat.forPattern(pattern))
-  return null
 }
 
 fun dateTimeFromJson(json: String): DateTime = DateTime(json)

@@ -16,19 +16,12 @@
 
 package debop4k.science.gis.coords
 
-import java.awt.geom.Point2D
+import java.io.Serializable
 
 /**
- * Created by debop
+ * Vector 를 표현합니다. ( 각도와 길이 )
+ * NOTE: 각도는 +X 축으로부터 시계반대방향으로 증가한다.
+ *
+ * @author sunghyouk.bae@gmail.com
  */
-data class Vector(val degree: Double, val length: Double) {
-
-
-  companion object {
-    @JvmStatic
-    fun of(start: Point2D.Double, end: Point2D.Double): Vector {
-      return vectorOf(start, end)
-    }
-  }
-
-}
+data class Vector(val degree: Double, val length: Double) : Serializable

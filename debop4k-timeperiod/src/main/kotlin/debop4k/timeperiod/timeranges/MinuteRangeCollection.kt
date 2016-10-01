@@ -25,9 +25,9 @@ import org.joda.time.DateTime
 /**
  * Created by debop
  */
-open class MinuteRangeCollection(startTime: DateTime = now(),
-                                 minuteCount: Int = 1,
-                                 calendar: ITimeCalendar = DefaultTimeCalendar)
+open class MinuteRangeCollection @JvmOverloads constructor(startTime: DateTime = now(),
+                                                           minuteCount: Int = 1,
+                                                           calendar: ITimeCalendar = DefaultTimeCalendar)
 : MinuteTimeRange(startTime, minuteCount, calendar) {
 
   fun minuteSequence(): Sequence<MinuteRange> {
