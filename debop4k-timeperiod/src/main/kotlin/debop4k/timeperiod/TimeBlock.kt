@@ -25,9 +25,9 @@ import org.joda.time.Duration
 /**
  * @author sunghyouk.bae@gmail.com
  */
-class TimeBlock @JvmOverloads constructor(start: DateTime? = MinPeriodTime,
-                                          end: DateTime? = MaxPeriodTime,
-                                          readOnly: Boolean = false) : TimePeriod(start ?: MinPeriodTime,
+open class TimeBlock @JvmOverloads constructor(start: DateTime? = MinPeriodTime,
+                                               end: DateTime? = MaxPeriodTime,
+                                               readOnly: Boolean = false) : TimePeriod(start ?: MinPeriodTime,
                                                                                   end ?: MaxPeriodTime,
                                                                                   readOnly), ITimeBlock {
 

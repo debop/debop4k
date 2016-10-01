@@ -20,24 +20,26 @@ import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeCalendar;
 import debop4k.timeperiod.TimeSpec;
 import debop4k.timeperiod.utils.Times;
-import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 import java.util.List;
 
+import static debop4k.core.kodatimes.KodaTimes.trimToSecond;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@Slf4j
 public class MinuteRangeTest extends AbstractTimePeriodTest {
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(MinuteRangeTest.class);
+
   @Test
   public void initValues() {
     DateTime now = Times.now();
-    DateTime firstMin = Times.trimToSecond(now);
+    DateTime firstMin = trimToSecond(now);
     DateTime secondMin = firstMin.plusMinutes(1);
 
-    MinuteRange minRange = new MinuteRange(now, TimeCalendar.emptyOffset());
+    MinuteRange minRange = new MinuteRange(now, TimeCalendar.EMPTY_OFFSET);
 
     assertThat(minRange.getStart().getYear()).isEqualTo(firstMin.getYear());
     assertThat(minRange.getStart().getMonthOfYear()).isEqualTo(firstMin.getMonthOfYear());
@@ -95,21 +97,21 @@ public class MinuteRangeTest extends AbstractTimePeriodTest {
   public void addHourTest() {
     MinuteRange minRange = new MinuteRange();
 
-    assertThat(minRange.prevMinute().getMinuteOfHour()).isEqualTo(minRange.getStart().plusMinutes(-1).getMinuteOfHour());
-    assertThat(minRange.nextMinute().getMinuteOfHour()).isEqualTo(minRange.getStart().plusMinutes(1).getMinuteOfHour());
+    assertThat(minRange.getPrevMinute().getMinuteOfHour()).isEqualTo(minRange.getStart().plusMinutes(-1).getMinuteOfHour());
+    assertThat(minRange.getNextMinute().getMinuteOfHour()).isEqualTo(minRange.getStart().plusMinutes(1).getMinuteOfHour());
 
-    minRange = new MinuteRange(TimeCalendar.emptyOffset());
+    minRange = new MinuteRange(TimeCalendar.EMPTY_OFFSET);
 
     assertThat(minRange.addMinutes(0)).isEqualTo(minRange);
 
-    MinuteRange prevRange = minRange.prevMinute();
+    MinuteRange prevRange = minRange.getPrevMinute();
     assertThat(minRange.addMinutes(-1).getYear()).isEqualTo(prevRange.getYear());
     assertThat(minRange.addMinutes(-1).getMonthOfYear()).isEqualTo(prevRange.getMonthOfYear());
     assertThat(minRange.addMinutes(-1).getDayOfMonth()).isEqualTo(prevRange.getDayOfMonth());
     assertThat(minRange.addMinutes(-1).getHourOfDay()).isEqualTo(prevRange.getHourOfDay());
     assertThat(minRange.addMinutes(-1).getMinuteOfHour()).isEqualTo(prevRange.getMinuteOfHour());
 
-    MinuteRange nextRange = minRange.nextMinute();
+    MinuteRange nextRange = minRange.getNextMinute();
     assertThat(minRange.addMinutes(1).getYear()).isEqualTo(nextRange.getYear());
     assertThat(minRange.addMinutes(1).getMonthOfYear()).isEqualTo(nextRange.getMonthOfYear());
     assertThat(minRange.addMinutes(1).getDayOfMonth()).isEqualTo(nextRange.getDayOfMonth());
@@ -130,7 +132,7 @@ public class MinuteRangeTest extends AbstractTimePeriodTest {
   @Test
   public void getMinutesTest() {
     HourRange hourRange = new HourRange();
-    List<MinuteRange> minutes = hourRange.minuteStream();
+    List<MinuteRange> minutes = hourRange.minutes();
 
     assertThat(minutes.size()).isEqualTo(TimeSpec.MinutesPerHour);
 
@@ -138,10 +140,10 @@ public class MinuteRangeTest extends AbstractTimePeriodTest {
       MinuteRange minute = minutes.get(i);
 
       assertThat(minute.getStart()).isEqualTo(hourRange.getStart().plusMinutes(i));
-      assertThat(minute.unmappedStart()).isEqualTo(hourRange.getStart().plusMinutes(i));
+      assertThat(minute.getUnmappedStart()).isEqualTo(hourRange.getStart().plusMinutes(i));
 
       assertThat(minute.getEnd()).isEqualTo(minute.getCalendar().mapEnd(hourRange.getStart().plusMinutes(i + 1)));
-      assertThat(minute.unmappedEnd()).isEqualTo(hourRange.getStart().plusMinutes(i + 1));
+      assertThat(minute.getUnmappedEnd()).isEqualTo(hourRange.getStart().plusMinutes(i + 1));
     }
   }
 }

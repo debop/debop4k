@@ -21,40 +21,40 @@ import debop4k.timeperiod.ITimePeriod;
 import debop4k.timeperiod.TimeRange;
 import debop4k.timeperiod.TimeSpec;
 import debop4k.timeperiod.models.PeriodUnit;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import org.eclipse.collections.api.block.function.Function;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.impl.list.mutable.FastList;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static debop4k.timeperiod.utils.Times.asDateTime;
+import static debop4k.core.kodatimes.KodaTimes.asDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 public class TimesForEachTest extends AbstractTimePeriodTest {
 
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(TimesForEachTest.class);
   private DateTime startTime = asDateTime(2008, 4, 10, 5, 33, 24, 345);
   private DateTime endTime = asDateTime(2009, 10, 20, 13, 43, 12, 599);
 
-  @Getter private TimeRange period = new TimeRange(startTime, endTime);
+  private TimeRange period = new TimeRange(startTime, endTime);
 
-  List<PeriodUnit> excludeUnits = Arrays.asList(PeriodUnit.All,
-                                                PeriodUnit.Minute,
-                                                PeriodUnit.Second,
-                                                PeriodUnit.Millisecond);
+  List<PeriodUnit> excludeUnits = Arrays.asList(PeriodUnit.ALL,
+                                                PeriodUnit.MINUTE,
+                                                PeriodUnit.SECOND,
+                                                PeriodUnit.MILLISECOND);
 
   @Test
   public void foreachYearsTest() {
     int count = 0;
-    for (ITimePeriod p : Periods.yearStream(period)) {
+    for (ITimePeriod p : Periods.yearSequence(period)) {
       log.trace("year [{}] = [{}]", count++, p.getStart().getYear());
     }
     assertThat(count).isEqualTo(period.getEnd().getYear() - period.getStart().getYear() + 1);
@@ -64,7 +64,7 @@ public class TimesForEachTest extends AbstractTimePeriodTest {
   public void foreachYearsInSameYearTest() throws Exception {
     ITimePeriod period = Periods.relativeWeekPeriod(startTime, 1);
 
-    MutableList<ITimePeriod> years = Periods.yearStream(period);
+    FastList<ITimePeriod> years = Periods.yearSequence(period);
     assertThat(years.size()).isEqualTo(1);
   }
 
@@ -72,7 +72,7 @@ public class TimesForEachTest extends AbstractTimePeriodTest {
   @Ignore
   public void foreachMonthsTest() {
     int count = 0;
-    for (ITimePeriod p : Periods.monthStream(period)) {
+    for (ITimePeriod p : Periods.monthSequence(period)) {
       log.trace("month [{}] = [{}]", count++, p.getStart().getMonthOfYear());
     }
 
@@ -85,7 +85,7 @@ public class TimesForEachTest extends AbstractTimePeriodTest {
   public void foreachWeeksTest() {
     int count = 0;
     DateTimeFormatter shortDate = DateTimeFormat.shortDate();
-    MutableList<ITimePeriod> weeks = Periods.weekStream(period);
+    MutableList<ITimePeriod> weeks = Periods.weekSequence(period);
 
     for (ITimePeriod p : weeks) {
       log.trace("week[{}] = [{}]~[{}], WeekOfYear=({},{})",
@@ -99,7 +99,7 @@ public class TimesForEachTest extends AbstractTimePeriodTest {
 
   @Test
   public void foreachDaysTest() {
-    MutableList<ITimePeriod> days = Periods.dayStream(period);
+    MutableList<ITimePeriod> days = Periods.daySequence(period);
 
     assertThat(days.get(0).getStart()).isEqualTo(period.getStart());
     assertThat(days.get(days.size() - 1).getEnd()).isEqualTo(period.getEnd());
@@ -110,7 +110,7 @@ public class TimesForEachTest extends AbstractTimePeriodTest {
 
   @Test
   public void foreachHoursTest() {
-    MutableList<ITimePeriod> hours = Periods.hourStream(period);
+    MutableList<ITimePeriod> hours = Periods.hourSequence(period);
 
     assertThat(hours.get(0).getStart()).isEqualTo(period.getStart());
     assertThat(hours.get(hours.size() - 1).getEnd()).isEqualTo(period.getEnd());
@@ -120,7 +120,7 @@ public class TimesForEachTest extends AbstractTimePeriodTest {
 
   @Test
   public void foreachMinuteTest() {
-    MutableList<ITimePeriod> minutes = Periods.minuteStream(period);
+    MutableList<ITimePeriod> minutes = Periods.minuteSequence(period);
 
     assertThat(minutes.get(0).getStart()).isEqualTo(period.getStart());
     assertThat(minutes.get(minutes.size() - 1).getEnd()).isEqualTo(period.getEnd());
@@ -132,13 +132,13 @@ public class TimesForEachTest extends AbstractTimePeriodTest {
   public void foreachPeriodsTest() {
 
     for (PeriodUnit periodUnit : PeriodUnit.values()) {
-      if (periodUnit == PeriodUnit.All ||
-          periodUnit == PeriodUnit.Second ||
-          periodUnit == PeriodUnit.Millisecond)
+      if (periodUnit == PeriodUnit.ALL ||
+          periodUnit == PeriodUnit.SECOND ||
+          periodUnit == PeriodUnit.MILLISECOND)
         continue;
 
       int count = 0;
-      for (ITimePeriod p : Periods.periodStream(period, periodUnit)) {
+      for (ITimePeriod p : Periods.periodSequence(period, periodUnit)) {
         count++;
         if (count == 1000)
           break;
@@ -152,7 +152,7 @@ public class TimesForEachTest extends AbstractTimePeriodTest {
     for (PeriodUnit unit : PeriodUnit.values()) {
       if (!excludeUnits.contains(unit)) {
         final int[] count = {0};
-        List<Integer> results = Periods.periodStream(period, unit)
+        List<Integer> results = Periods.periodSequence(period, unit)
                                        .collect(new Function<ITimePeriod, Integer>() {
                                          @Override
                                          public Integer valueOf(ITimePeriod p) {
@@ -170,6 +170,7 @@ public class TimesForEachTest extends AbstractTimePeriodTest {
   public void runPeriodAsParallelTest() {
 
     final AtomicInteger count = new AtomicInteger(0);
+
     Function<ITimePeriod, Integer> increment = new Function<ITimePeriod, Integer>() {
       @Override
       public Integer valueOf(ITimePeriod p) {
@@ -180,10 +181,12 @@ public class TimesForEachTest extends AbstractTimePeriodTest {
     for (PeriodUnit unit : PeriodUnit.values()) {
       if (!excludeUnits.contains(unit)) {
         count.set(0);
-        List<Integer> results = Periods.mapPeriodAsParallel(period, unit, increment);
+        List<Integer> results = Periods.parMapPeriod(period, unit, p -> count.getAndIncrement());
 
         assertThat(results.size()).isEqualTo(count.get());
       }
     }
   }
+
+  public TimeRange getPeriod() {return this.period;}
 }

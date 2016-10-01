@@ -25,6 +25,8 @@ import org.joda.time.DateTime
  */
 data class YearWeek(val weekyear: Int, val weekOfWeekyear: Int) {
 
+  constructor(moment: DateTime) : this(moment.weekyear, moment.weekOfWeekyear)
+
   operator fun plus(weeks: Int): YearWeek {
     return of(this.startTimeOfWeek().plusWeeks(weeks))
   }

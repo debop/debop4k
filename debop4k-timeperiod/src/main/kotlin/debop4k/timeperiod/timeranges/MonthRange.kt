@@ -16,9 +16,11 @@
 
 package debop4k.timeperiod.timeranges
 
+import debop4k.core.kodatimes.asDate
 import debop4k.core.kodatimes.today
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
+import debop4k.timeperiod.models.YearMonth
 import debop4k.timeperiod.utils.startTimeOfMonth
 import org.joda.time.DateTime
 
@@ -29,8 +31,11 @@ open class MonthRange @JvmOverloads constructor(startTime: DateTime = today(),
                                                 calendar: ITimeCalendar = DefaultTimeCalendar) :
     MonthTimeRange(startTime, 1, calendar) {
 
+  @JvmOverloads
   constructor(year: Int, monthOfYear: Int, calendar: ITimeCalendar = DefaultTimeCalendar)
   : this(startTimeOfMonth(year, monthOfYear), calendar)
+
+  constructor(startYm: YearMonth) : this(asDate(startYm.year, startYm.monthOfYear))
 
   val year: Int get() = startYear
   val monthOfYear: Int get() = startMonthOfYear

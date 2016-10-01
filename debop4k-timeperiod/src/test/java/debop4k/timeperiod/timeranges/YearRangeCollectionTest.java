@@ -16,31 +16,33 @@
 
 package debop4k.timeperiod.timeranges;
 
+import debop4k.core.kodatimes.KodaTimes;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeCalendar;
 import debop4k.timeperiod.utils.Times;
-import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@Slf4j
 public class YearRangeCollectionTest extends AbstractTimePeriodTest {
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(YearRangeCollectionTest.class);
+
   @Test
   public void singleYears() {
     final int startYear = 2004;
 
-    YearRangeCollection yearRanges = YearRangeCollection.of(startYear, 1);
+    YearRangeCollection yearRanges = new YearRangeCollection(startYear, 1);
     assertThat(yearRanges.getYearCount()).isEqualTo(1);
 
     assertThat(yearRanges.getStartYear()).isEqualTo(startYear);
     assertThat(yearRanges.getEndYear()).isEqualTo(startYear);
 
-    List<YearRange> years = yearRanges.yearStream();
+    List<YearRange> years = yearRanges.years();
     assertThat(years.size()).isEqualTo(1);
     log.trace("years={}, expected={}", years, YearRange.of(startYear));
     assertThat(years.get(0).isSamePeriod(YearRange.of(startYear))).isTrue();
@@ -51,7 +53,7 @@ public class YearRangeCollectionTest extends AbstractTimePeriodTest {
     final int startYear = 2004;
     final int yearCount = 5;
 
-    YearRangeCollection yearRanges = new YearRangeCollection(startYear, yearCount, TimeCalendar.emptyOffset());
+    YearRangeCollection yearRanges = new YearRangeCollection(startYear, yearCount, TimeCalendar.EMPTY_OFFSET);
 
     assertThat(yearRanges.getYearCount()).isEqualTo(yearCount);
     assertThat(yearRanges.getStartYear()).isEqualTo(startYear);
@@ -66,25 +68,25 @@ public class YearRangeCollectionTest extends AbstractTimePeriodTest {
     DateTime today = Times.today();
 
     for (int yearCount : yearCounts) {
-      final YearRangeCollection yearRanges = YearRangeCollection.of(now, yearCount);
+      final YearRangeCollection yearRanges = new YearRangeCollection(now, yearCount);
 
-      DateTime startTime = yearRanges.getCalendar().mapStart(Times.trimToYear(today));
+      DateTime startTime = yearRanges.getCalendar().mapStart(KodaTimes.trimToYear(today));
       DateTime endTime = yearRanges.getCalendar().mapEnd(startTime.plusYears(yearCount));
 
       assertThat(yearRanges.getStart()).isEqualTo(startTime);
       assertThat(yearRanges.getEnd()).isEqualTo(endTime);
 
-      List<YearRange> items = yearRanges.yearStream();
+      List<YearRange> items = yearRanges.years();
 
       for (int y = 0; y < yearCount; y++) {
         final YearRange item = items.get(y);
         assertThat(item.getStart()).isEqualTo(startTime.plusYears(y));
         assertThat(item.getEnd()).isEqualTo(yearRanges.getCalendar().mapEnd(startTime.plusYears(y + 1)));
 
-        assertThat(item.unmappedStart()).isEqualTo(startTime.plusYears(y));
-        assertThat(item.unmappedEnd()).isEqualTo(startTime.plusYears(y + 1));
+        assertThat(item.getUnmappedStart()).isEqualTo(startTime.plusYears(y));
+        assertThat(item.getUnmappedEnd()).isEqualTo(startTime.plusYears(y + 1));
 
-        assertThat(item.isSamePeriod(YearRange.of(yearRanges.getStart().plusYears(y)))).isTrue();
+        assertThat(item.isSamePeriod(new YearRange(yearRanges.getStart().plusYears(y)))).isTrue();
       }
     }
   }

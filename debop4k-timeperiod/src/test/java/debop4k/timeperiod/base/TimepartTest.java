@@ -20,15 +20,16 @@ import debop4k.core.kodatimes.KodaTimes;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.models.Timepart;
 import debop4k.timeperiod.utils.Durations;
-import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 public class TimepartTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(TimepartTest.class);
 
   @Test
   public void timeConstructorTest() {

@@ -43,7 +43,7 @@ enum class Quarter(val value: Int) {
 
   operator fun minus(delta: Int): Quarter = plus(-(delta % 12))
 
-  val monthsOfQuarter: IntArray get() = when (this) {
+  val months: IntArray get() = when (this) {
     FIRST -> FirstQuarterMonths
     SECOND -> SecondQuarterMonths
     THIRD -> ThirdQuarterMonths

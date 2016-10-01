@@ -17,14 +17,16 @@
 package debop4k.timeperiod.utils;
 
 import debop4k.timeperiod.AbstractTimePeriodTest;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+import org.slf4j.Logger;
 
+import static debop4k.core.kodatimes.KodaTimes.asDate;
 import static debop4k.timeperiod.utils.Times.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 public class TimesDateTimeTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(TimesDateTimeTest.class);
 
   @Test
   public void getDateTest() {

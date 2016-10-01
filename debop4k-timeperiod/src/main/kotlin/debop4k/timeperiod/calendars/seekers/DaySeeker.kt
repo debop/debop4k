@@ -28,9 +28,9 @@ import debop4k.timeperiod.calendars.SeekDirection.Forward
 import debop4k.timeperiod.timeranges.*
 import org.slf4j.LoggerFactory
 
-open class DaySeeker(filter: ICalendarVisitorFilter = CalendarVisitorFilter(),
-                     seekDir: SeekDirection = Forward,
-                     calendar: ITimeCalendar = DefaultTimeCalendar)
+open class DaySeeker @JvmOverloads constructor(filter: ICalendarVisitorFilter = CalendarVisitorFilter(),
+                                               seekDir: SeekDirection = Forward,
+                                               calendar: ITimeCalendar = DefaultTimeCalendar)
 : CalendarVisitor<ICalendarVisitorFilter, DaySeekerContext>(filter,
                                                             TimeRange.AnyTime,
                                                             seekDir,

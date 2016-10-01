@@ -22,13 +22,24 @@ import debop4k.timeperiod.timeranges.*
 /**
  * Created by debop
  */
-open class CalendarPeriodCollector(
+open class CalendarPeriodCollector @JvmOverloads constructor(
     filter: CalendarPeriodCollectorFilter,
     limits: ITimePeriod,
     seekDir: SeekDirection = SeekDirection.Forward,
-    calendar: ITimeCalendar = DefaultTimeCalendar) :
-    CalendarVisitor<CalendarPeriodCollectorFilter, CalendarPeriodCollectorContext>(
-        filter, limits, seekDir, calendar) {
+    calendar: ITimeCalendar = DefaultTimeCalendar)
+: CalendarVisitor<CalendarPeriodCollectorFilter, CalendarPeriodCollectorContext>(
+    filter, limits, seekDir, calendar) {
+
+  companion object {
+    @JvmStatic
+    @JvmOverloads
+    fun of(filter: CalendarPeriodCollectorFilter,
+           limits: ITimePeriod,
+           seekDir: SeekDirection = SeekDirection.Forward,
+           calendar: ITimeCalendar = DefaultTimeCalendar): CalendarPeriodCollector {
+      return CalendarPeriodCollector(filter, limits, seekDir, calendar)
+    }
+  }
 
   val periods: ITimePeriodCollection = TimePeriodCollection()
 

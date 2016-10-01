@@ -22,21 +22,22 @@ import debop4k.timeperiod.calendars.CalendarVisitorFilter;
 import debop4k.timeperiod.calendars.SeekDirection;
 import debop4k.timeperiod.timeranges.DayRange;
 import debop4k.timeperiod.timeranges.DayRangeCollection;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+import org.slf4j.Logger;
 
-import static debop4k.timeperiod.utils.Times.asDate;
-import static debop4k.timeperiod.utils.Times.asDateTime;
+import static debop4k.core.kodatimes.KodaTimes.asDate;
+import static debop4k.core.kodatimes.KodaTimes.asDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 public class DaySeekerTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(DaySeekerTest.class);
 
   @Test
   public void simpleForward() {
 
     final DayRange start = new DayRange();
-    final DaySeeker daySeeker = DaySeeker.of();
+    final DaySeeker daySeeker = new DaySeeker();
 
     DayRange day1 = daySeeker.findDay(start, 0);
     assertThat(day1.isSamePeriod(start)).isTrue();
@@ -56,7 +57,7 @@ public class DaySeekerTest extends AbstractTimePeriodTest {
   public void simpleBackward() {
 
     final DayRange start = new DayRange();
-    final DaySeeker daySeeker = DaySeeker.of(SeekDirection.Backward);
+    final DaySeeker daySeeker = new DaySeeker(new CalendarVisitorFilter(), SeekDirection.Backward);
 
     DayRange day1 = daySeeker.findDay(start, 0);
     assertThat(day1.isSamePeriod(start)).isTrue();
@@ -75,7 +76,7 @@ public class DaySeekerTest extends AbstractTimePeriodTest {
   @Test
   public void seekDirectionTest() {
     final DayRange start = new DayRange();
-    final DaySeeker daySeeker = DaySeeker.of();
+    final DaySeeker daySeeker = new DaySeeker();
 
     for (int i = -10; i < 20; i++) {
       Integer offset = i * 5;
@@ -84,7 +85,7 @@ public class DaySeekerTest extends AbstractTimePeriodTest {
       assertThat(day.isSamePeriod(start.addDays(offset))).isTrue();
     }
 
-    final DaySeeker backwardSeeker = DaySeeker.of(SeekDirection.Backward);
+    final DaySeeker backwardSeeker = new DaySeeker(new CalendarVisitorFilter(), SeekDirection.Backward);
 
     for (int i = -10; i < 20; i++) {
       Integer offset = i * 5;
@@ -96,14 +97,14 @@ public class DaySeekerTest extends AbstractTimePeriodTest {
 
   @Test
   public void minDateTest() {
-    DaySeeker daySeeker = DaySeeker.of();
+    DaySeeker daySeeker = new DaySeeker();
     DayRange day = daySeeker.findDay(new DayRange(TimeSpec.MinPeriodTime), -10);
     assertThat(day).isNull();
   }
 
   @Test
   public void maxDateTest() {
-    DaySeeker daySeeker = DaySeeker.of();
+    DaySeeker daySeeker = new DaySeeker();
     DayRange day = daySeeker.findDay(new DayRange(TimeSpec.MaxPeriodTime), 10);
     assertThat(day).isNull();
   }
@@ -115,10 +116,10 @@ public class DaySeekerTest extends AbstractTimePeriodTest {
 
     CalendarVisitorFilter filter = new CalendarVisitorFilter();
     filter.addWorkingWeekdays();
-    filter.getExcludePeriods().add(DayRangeCollection.of(asDateTime(2011, 2, 27), 14)); // 14 daysView -> week 9
+    filter.getExcludePeriods().add(new DayRangeCollection(asDateTime(2011, 2, 27), 14)); // 14 daysView -> week 9
     // and week 10
 
-    DaySeeker daySeeker = DaySeeker.of(filter);
+    DaySeeker daySeeker = new DaySeeker(filter);
 
     DayRange day1 = daySeeker.findDay(start, 3);
     assertThat(day1).isEqualTo(new DayRange(2011, 2, 18));

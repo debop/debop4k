@@ -18,14 +18,15 @@ package debop4k.timeperiod.utils;
 
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeSpec;
-import lombok.extern.slf4j.Slf4j;
 import org.joda.time.Duration;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 public class TimeSpecTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(TimeSpecTest.class);
 
   @Test
   public void dateUnitTest() {

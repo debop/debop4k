@@ -20,15 +20,16 @@ import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeRange;
 import debop4k.timeperiod.timeranges.*;
 import debop4k.timeperiod.utils.Times;
-import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 import static debop4k.core.kodatimes.KodaTimes.trimToSecond;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 public class BusinessCaseTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(BusinessCaseTest.class);
 
   @Test
   public void timeRangeCalendarTimeRange() {

@@ -19,16 +19,18 @@ package debop4k.timeperiod.utils;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeSpec;
 import debop4k.timeperiod.models.YearWeek;
-import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.slf4j.Logger;
 
+import static debop4k.core.kodatimes.KodaTimes.asDate;
 import static debop4k.timeperiod.utils.Times.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@Slf4j
 public class TimesCompareTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(TimesCompareTest.class);
 
   @Test
   public void isSameYearTest() {
@@ -73,7 +75,7 @@ public class TimesCompareTest extends AbstractTimePeriodTest {
 
     YearWeek yw = Times.weekOfYear(testDate);
 
-    DateTime startOfWeek = Times.startOfYearWeek(YearWeek.of(yw.getWeekyear(), yw.getWeekOfWeekyear()));
+    DateTime startOfWeek = Times.startOfYearWeek(new YearWeek(yw.getWeekyear(), yw.getWeekOfWeekyear()));
 
     YearWeek yw2 = Times.weekOfYear(startOfWeek);
     log.debug("yw=[{}], yw2=[{}], startOfWeek=[{}], testDate=[{}]", yw, yw2, startOfWeek, testDate);

@@ -20,24 +20,27 @@ import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeCalendar;
 import debop4k.timeperiod.TimeSpec;
 import debop4k.timeperiod.utils.Times;
-import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 import java.util.List;
 
+import static debop4k.core.kodatimes.KodaTimes.now;
+import static debop4k.core.kodatimes.KodaTimes.trimToMinute;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 public class HourRangeTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(HourRangeTest.class);
 
   @Test
   public void initValues() {
     DateTime now = Times.now();
-    DateTime firstHour = Times.trimToMinute(now);
+    DateTime firstHour = trimToMinute(now);
     DateTime secondHour = firstHour.plusHours(1);
 
-    HourRange hourRange = new HourRange(now, TimeCalendar.emptyOffset());
+    HourRange hourRange = new HourRange(now, TimeCalendar.EMPTY_OFFSET);
 
     assertThat(hourRange.getStart().getYear()).isEqualTo(firstHour.getYear());
     assertThat(hourRange.getStart().getMonthOfYear()).isEqualTo(firstHour.getMonthOfYear());
@@ -81,7 +84,7 @@ public class HourRangeTest extends AbstractTimePeriodTest {
     assertThat(hourRange.getDayOfMonth()).isEqualTo(now.getDayOfMonth());
     assertThat(hourRange.getHourOfDay()).isEqualTo(now.getHourOfDay());
 
-    hourRange = new HourRange(Times.trimToMinute(now));
+    hourRange = new HourRange(trimToMinute(now));
     assertThat(hourRange.getYear()).isEqualTo(now.getYear());
     assertThat(hourRange.getMonthOfYear()).isEqualTo(now.getMonthOfYear());
     assertThat(hourRange.getDayOfMonth()).isEqualTo(now.getDayOfMonth());
@@ -95,7 +98,7 @@ public class HourRangeTest extends AbstractTimePeriodTest {
     assertThat(hourRange.prevHour().getHourOfDay()).isEqualTo(hourRange.getStart().plusHours(-1).getHourOfDay());
     assertThat(hourRange.nextHour().getHourOfDay()).isEqualTo(hourRange.getStart().plusHours(1).getHourOfDay());
 
-    hourRange = new HourRange(TimeCalendar.emptyOffset());
+    hourRange = new HourRange(now(), TimeCalendar.EMPTY_OFFSET);
 
     assertThat(hourRange.addHours(0)).isEqualTo(hourRange);
 
@@ -124,7 +127,7 @@ public class HourRangeTest extends AbstractTimePeriodTest {
   @Test
   public void getMinutesTest() {
     HourRange hourRange = new HourRange();
-    List<MinuteRange> minutes = hourRange.minuteStream();
+    List<MinuteRange> minutes = hourRange.minutes();
 
     assertThat(minutes.size()).isEqualTo(TimeSpec.MinutesPerHour);
 
@@ -132,10 +135,10 @@ public class HourRangeTest extends AbstractTimePeriodTest {
       MinuteRange minute = minutes.get(i);
 
       assertThat(minute.getStart()).isEqualTo(hourRange.getStart().plusMinutes(i));
-      assertThat(minute.unmappedStart()).isEqualTo(hourRange.getStart().plusMinutes(i));
+      assertThat(minute.getUnmappedStart()).isEqualTo(hourRange.getStart().plusMinutes(i));
 
       assertThat(minute.getEnd()).isEqualTo(minute.getCalendar().mapEnd(hourRange.getStart().plusMinutes(i + 1)));
-      assertThat(minute.unmappedEnd()).isEqualTo(hourRange.getStart().plusMinutes(i + 1));
+      assertThat(minute.getUnmappedEnd()).isEqualTo(hourRange.getStart().plusMinutes(i + 1));
     }
   }
 }

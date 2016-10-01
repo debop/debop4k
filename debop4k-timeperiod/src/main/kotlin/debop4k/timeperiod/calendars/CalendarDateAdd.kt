@@ -16,6 +16,7 @@
 
 package debop4k.timeperiod.calendars
 
+import debop4k.core.loggerOf
 import debop4k.timeperiod.*
 import debop4k.timeperiod.models.DayOfWeek
 import debop4k.timeperiod.timelines.TimeGapCalculator
@@ -26,7 +27,6 @@ import org.eclipse.collections.api.block.procedure.Procedure
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.joda.time.DateTime
 import org.joda.time.Duration
-import org.slf4j.LoggerFactory
 
 /**
  * 특정 일자로부터 미래로(Forward)로 특정 기간을 이후의 일자를 계산합니다.
@@ -36,7 +36,11 @@ import org.slf4j.LoggerFactory
  */
 open class CalendarDateAdd : DateAdd() {
 
-  private val log = LoggerFactory.getLogger(javaClass)
+  private val log = loggerOf(javaClass)
+
+  companion object {
+    @JvmStatic fun of(): CalendarDateAdd = CalendarDateAdd()
+  }
 
   val calendar: TimeCalendar = TimeCalendar.EMPTY_OFFSET
   val weekDays: FastList<DayOfWeek> = FastList.newList<DayOfWeek>()

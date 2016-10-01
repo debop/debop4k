@@ -19,17 +19,19 @@ package debop4k.timeperiod.timeranges;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeCalendar;
 import debop4k.timeperiod.TimeSpec;
-import lombok.extern.slf4j.Slf4j;
-import org.eclipse.collections.api.list.MutableList;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.slf4j.Logger;
+
+import java.util.List;
 
 import static debop4k.timeperiod.utils.Times.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@Slf4j
 public class WeekRangeTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(WeekRangeTest.class);
 
   @Test
   public void initValues() {
@@ -37,7 +39,7 @@ public class WeekRangeTest extends AbstractTimePeriodTest {
     DateTime firstWeek = startTimeOfWeek(now);
     DateTime secondWeek = firstWeek.plusWeeks(1);
 
-    WeekRange weekRange = new WeekRange(now, TimeCalendar.emptyOffset());
+    WeekRange weekRange = new WeekRange(now, TimeCalendar.EMPTY_OFFSET);
 
     assertThat(weekRange.getStart()).isEqualTo(firstWeek);
     assertThat(weekRange.getEnd()).isEqualTo(secondWeek);
@@ -53,8 +55,8 @@ public class WeekRangeTest extends AbstractTimePeriodTest {
       assertThat(weekRange.getYear()).isEqualTo(yearStart.getYear());
       assertThat(weekRange.getWeekOfWeekyear()).isEqualTo(yearStart.plusWeeks(w).getWeekOfWeekyear());
 
-      assertThat(weekRange.unmappedStart()).isEqualTo(startTimeOfWeek(yearStart.plusWeeks(w)));
-      assertThat(weekRange.unmappedEnd()).isEqualTo(startTimeOfWeek(yearStart.plusWeeks(w)).plusWeeks(1));
+      assertThat(weekRange.getUnmappedStart()).isEqualTo(startTimeOfWeek(yearStart.plusWeeks(w)));
+      assertThat(weekRange.getUnmappedEnd()).isEqualTo(startTimeOfWeek(yearStart.plusWeeks(w)).plusWeeks(1));
     }
   }
 
@@ -63,7 +65,7 @@ public class WeekRangeTest extends AbstractTimePeriodTest {
   public void getDaysTest() {
     final DateTime now = now();
     final WeekRange weekRange = new WeekRange();
-    final MutableList<DayRange> days = weekRange.dayStream();
+    final List<DayRange> days = weekRange.days();
 
     int index = 0;
     for (DayRange day : days) {
@@ -83,8 +85,8 @@ public class WeekRangeTest extends AbstractTimePeriodTest {
 
     log.trace("startWeek=[{}], weekRange=[{}]", startWeek, weekRange);
 
-    assertThat(weekRange.prevWeek().getStart()).isEqualTo(startWeek.minusWeeks(1));
-    assertThat(weekRange.nextWeek().getStart()).isEqualTo(startWeek.plusWeeks(1));
+    assertThat(weekRange.getPrevWeek().getStart()).isEqualTo(startWeek.minusWeeks(1));
+    assertThat(weekRange.getNextWeek().getStart()).isEqualTo(startWeek.plusWeeks(1));
 
     assertThat(weekRange.addWeeks(0)).isEqualTo(weekRange);
 

@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory
 /**
  * Created by debop
  */
-abstract class AbstractTimePeriodTest {
+abstract class AbstractTimePeriodKotlinTest {
 
   protected val log = LoggerFactory.getLogger(javaClass)
 

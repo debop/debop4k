@@ -16,20 +16,21 @@
 
 package debop4k.timeperiod.timeranges;
 
+import debop4k.core.kodatimes.KodaTimes;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.ITimeCalendar;
 import debop4k.timeperiod.TimeCalendar;
 import debop4k.timeperiod.TimeRange;
-import debop4k.timeperiod.utils.Times;
-import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@Slf4j
 public class CalendarTimeRangeTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(CalendarTimeRangeTest.class);
 
   @Test
   public void calendarTest() {
@@ -42,7 +43,7 @@ public class CalendarTimeRangeTest extends AbstractTimePeriodTest {
 
   @Test(expected = AssertionError.class)
   public void momentTest() {
-    DateTime today = Times.today();
+    DateTime today = KodaTimes.today();
     CalendarTimeRange.of(today, today);
   }
 }

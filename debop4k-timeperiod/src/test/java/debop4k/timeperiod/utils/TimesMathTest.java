@@ -17,52 +17,53 @@
 package debop4k.timeperiod.utils;
 
 import debop4k.timeperiod.AbstractTimePeriodTest;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.tuple.Pair;
+import kotlin.Pair;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.junit.Test;
+import org.slf4j.Logger;
 
+import static debop4k.core.kodatimes.KodaTimes.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 public class TimesMathTest extends AbstractTimePeriodTest {
 
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(TimesMathTest.class);
   public final DateTime min = new DateTime(2000, 10, 2, 13, 45, 53, 754);
   public final DateTime max = new DateTime(2002, 9, 3, 7, 14, 22, 234);
 
   @Test
   public void minTest() {
-    assertThat(Times.min(min, max)).isEqualTo(min);
-    assertThat(Times.min(min, min)).isEqualTo(min);
-    assertThat(Times.min(max, max)).isEqualTo(max);
+    assertThat(min(min, max)).isEqualTo(min);
+    assertThat(min(min, min)).isEqualTo(min);
+    assertThat(min(max, max)).isEqualTo(max);
 
-    assertThat(Times.min(min, null)).isEqualTo(min);
-    assertThat(Times.min(null, min)).isEqualTo(min);
-    assertThat(Times.min((DateTime) null, null)).isNull();
+    assertThat(min(min, null)).isEqualTo(min);
+    assertThat(min(null, min)).isEqualTo(min);
+    assertThat(min((DateTime) null, null)).isNull();
   }
 
   @Test
   public void maxTest() {
-    assertThat(Times.max(min, max)).isEqualTo(max);
-    assertThat(Times.max(min, min)).isEqualTo(min);
-    assertThat(Times.max(max, max)).isEqualTo(max);
+    assertThat(max(min, max)).isEqualTo(max);
+    assertThat(max(min, min)).isEqualTo(min);
+    assertThat(max(max, max)).isEqualTo(max);
 
-    assertThat(Times.max(max, null)).isEqualTo(max);
-    assertThat(Times.max(null, max)).isEqualTo(max);
-    assertThat(Times.max((DateTime) null, null)).isNull();
+    assertThat(max(max, null)).isEqualTo(max);
+    assertThat(max(null, max)).isEqualTo(max);
+    assertThat(max((DateTime) null, null)).isNull();
   }
 
   @Test
   public void adjustPeriodTest() {
 
-    Pair<DateTime, DateTime> pair = Times.adjustPeriod(max, min);
-    assertThat(pair.getLeft()).isEqualTo(min);
-    assertThat(pair.getRight()).isEqualTo(max);
+    Pair<DateTime, DateTime> pair = adjustPeriod(max, min);
+    assertThat(pair.getFirst()).isEqualTo(min);
+    assertThat(pair.getSecond()).isEqualTo(max);
 
-    pair = Times.adjustPeriod(min, max);
-    assertThat(pair.getLeft()).isEqualTo(min);
-    assertThat(pair.getRight()).isEqualTo(max);
+    pair = adjustPeriod(min, max);
+    assertThat(pair.getFirst()).isEqualTo(min);
+    assertThat(pair.getSecond()).isEqualTo(max);
   }
 
   @Test
@@ -70,13 +71,13 @@ public class TimesMathTest extends AbstractTimePeriodTest {
     DateTime start = min;
     Duration duration = Durations.Day;
 
-    Pair<DateTime, Duration> pair = Times.adjustPeriod(start, duration);
-    assertThat(pair.getLeft()).isEqualTo(min);
-    assertThat(pair.getRight()).isEqualTo(Durations.Day);
+    Pair<DateTime, Duration> pair = adjustPeriod(start, duration);
+    assertThat(pair.getFirst()).isEqualTo(min);
+    assertThat(pair.getSecond()).isEqualTo(Durations.Day);
 
-    pair = Times.adjustPeriod(start, Durations.negate(duration));
-    assertThat(pair.getLeft()).isEqualTo(min.minus(Durations.Day));
-    assertThat(pair.getRight()).isEqualTo(Durations.Day);
+    pair = adjustPeriod(start, Durations.negate(duration));
+    assertThat(pair.getFirst()).isEqualTo(min.minus(Durations.Day));
+    assertThat(pair.getSecond()).isEqualTo(Durations.Day);
   }
 
 }

@@ -16,6 +16,7 @@
 
 package debop4k.timeperiod.timeranges
 
+import debop4k.core.collections.fastListOf
 import debop4k.core.kodatimes.today
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.HoursPerDay
@@ -37,5 +38,9 @@ open class DayTimeRange @JvmOverloads constructor(startTime: DateTime = today(),
     val hourCount = dayCount * HoursPerDay
 
     return hourSequence(startDay, hourCount, calendar)
+  }
+
+  fun hours(): List<HourRange> {
+    return fastListOf(hourSequence().iterator())
   }
 }

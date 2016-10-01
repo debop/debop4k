@@ -22,15 +22,16 @@ import debop4k.timeperiod.ITimePeriod;
 import debop4k.timeperiod.TimeRange;
 import debop4k.timeperiod.TimeSpec;
 import debop4k.timeperiod.utils.Durations;
-import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.slf4j.Logger;
 
-import static debop4k.timeperiod.utils.Times.asDate;
+import static debop4k.core.kodatimes.KodaTimes.asDate;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 public class DateAddTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(DateAddTest.class);
 
   @Test
   public void noPeriodTest() {
@@ -131,8 +132,8 @@ public class DateAddTest extends AbstractTimePeriodTest {
     dateAdd.getExcludePeriods().add(period);
 
     assertThat(dateAdd.add(test, Durations.Zero)).isNull();
-    assertThat(dateAdd.add(test, Durations.year(2011))).isNull();
-    assertThat(dateAdd.subtract(test, Durations.year(2011))).isNull();
+    assertThat(dateAdd.add(test, Durations.yearOf(2011))).isNull();
+    assertThat(dateAdd.subtract(test, Durations.yearOf(2011))).isNull();
   }
 
   @Test
@@ -150,8 +151,8 @@ public class DateAddTest extends AbstractTimePeriodTest {
     dateAdd.getExcludePeriods().add(period3);
 
     assertThat(dateAdd.add(test, Durations.Zero)).isNull();
-    assertThat(dateAdd.add(test, Durations.year(2011))).isNull();
-    assertThat(dateAdd.subtract(test, Durations.year(2011))).isNull();
+    assertThat(dateAdd.add(test, Durations.yearOf(2011))).isNull();
+    assertThat(dateAdd.subtract(test, Durations.yearOf(2011))).isNull();
   }
 
   @Test

@@ -37,8 +37,6 @@ interface ITimePeriodContainer : MutableList<ITimePeriod>, ITimePeriod {
 
   abstract fun containsPeriod(target: ITimePeriod): Boolean
 
-//  fun addAll(vararg elements: ITimePeriod): Unit
-
   override fun addAll(elements: Collection<ITimePeriod>): Boolean
 
   abstract fun removeIf(filter: (ITimePeriod) -> Boolean): Boolean

@@ -16,12 +16,12 @@
 
 package debop4k.timeperiod.timeranges
 
-import debop4k.core.kodatimes.asDate
+import debop4k.core.collections.fastListOf
+import debop4k.core.kodatimes.asDateTime
 import debop4k.core.kodatimes.now
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
 import debop4k.timeperiod.utils.hourSequence
-
 import org.joda.time.DateTime
 
 /**
@@ -32,9 +32,41 @@ open class HourRangeCollection @JvmOverloads constructor(startTime: DateTime = n
                                                          calendar: ITimeCalendar = DefaultTimeCalendar)
 : HourTimeRange(startTime, hourCount, calendar) {
 
-  constructor(year: Int, monthOfYear: Int, hourCount: Int = 1, calendar: ITimeCalendar = DefaultTimeCalendar)
-  : this(asDate(year, monthOfYear), hourCount, calendar)
+  @JvmOverloads
+  constructor(year: Int,
+              monthOfYear: Int,
+              dayOfMonth: Int,
+              hour: Int,
+              hourCount: Int = 1, calendar: ITimeCalendar = DefaultTimeCalendar)
+  : this(asDateTime(year, monthOfYear, dayOfMonth, hour), hourCount, calendar)
 
-  fun hourSequence(): Sequence<HourRange>
-      = hourSequence(startHourOfStart, hourCount, calendar)
+  fun hourSequence(): Sequence<HourRange> {
+    return hourSequence(startHourOfStart, hourCount, calendar)
+  }
+
+  fun hours(): List<HourRange> {
+    return fastListOf(hourSequence().iterator())
+  }
+
+
+  companion object {
+    @JvmStatic
+    @JvmOverloads
+    fun of(startTime: DateTime = now(),
+           hourCount: Int = 1,
+           calendar: ITimeCalendar = DefaultTimeCalendar): HourRangeCollection {
+      return HourRangeCollection(startTime, hourCount, calendar)
+    }
+
+    @JvmStatic
+    @JvmOverloads
+    fun of(year: Int,
+           monthOfYear: Int,
+           dayOfMonth: Int,
+           hour: Int,
+           hourCount: Int = 1,
+           calendar: ITimeCalendar = DefaultTimeCalendar): HourRangeCollection {
+      return HourRangeCollection(year, monthOfYear, dayOfMonth, hour, hourCount, calendar)
+    }
+  }
 }

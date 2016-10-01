@@ -19,24 +19,26 @@ package debop4k.timeperiod.timeranges;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeCalendar;
 import debop4k.timeperiod.utils.Times;
-import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 import java.util.List;
 
+import static debop4k.core.kodatimes.KodaTimes.trimToSecond;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 public class MinuteRangeCollectionTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(MinuteRangeCollectionTest.class);
 
   @Test
   public void singleMinutes() {
     DateTime now = Times.now();
-    MinuteRangeCollection minutes = MinuteRangeCollection.of(now, 1, TimeCalendar.emptyOffset());
+    MinuteRangeCollection minutes = new MinuteRangeCollection(now, 1, TimeCalendar.EMPTY_OFFSET);
 
-    DateTime startTime = Times.trimToSecond(now);
-    DateTime endTime = Times.trimToSecond(now).plusMinutes(1);
+    DateTime startTime = trimToSecond(now);
+    DateTime endTime = trimToSecond(now).plusMinutes(1);
 
     assertThat(minutes.getMinuteCount()).isEqualTo(1);
 
@@ -55,10 +57,10 @@ public class MinuteRangeCollectionTest extends AbstractTimePeriodTest {
     DateTime now = Times.now();
 
     for (int m = 1; m < 97; m += 5) {
-      MinuteRangeCollection minutes = MinuteRangeCollection.of(now, m);
+      MinuteRangeCollection minutes = new MinuteRangeCollection(now, m);
 
-      DateTime startTime = Times.trimToSecond(now);
-      DateTime endTime = Times.trimToSecond(now).plusMinutes(m).plus(minutes.getCalendar().getEndOffset());
+      DateTime startTime = trimToSecond(now);
+      DateTime endTime = trimToSecond(now).plusMinutes(m).plus(minutes.getCalendar().getEndOffset());
 
       assertThat(minutes.getMinuteCount()).isEqualTo(m);
       assertThat(minutes.getStart()).isEqualTo(startTime);
@@ -68,10 +70,10 @@ public class MinuteRangeCollectionTest extends AbstractTimePeriodTest {
 
       for (int i = 0; i < m; i++) {
         assertThat(items.get(i).getStart()).isEqualTo(startTime.plusMinutes(i));
-        assertThat(items.get(i).unmappedStart()).isEqualTo(startTime.plusMinutes(i));
+        assertThat(items.get(i).getUnmappedStart()).isEqualTo(startTime.plusMinutes(i));
 
         assertThat(items.get(i).getEnd()).isEqualTo(minutes.getCalendar().mapEnd(startTime.plusMinutes(i + 1)));
-        assertThat(items.get(i).unmappedEnd()).isEqualTo(startTime.plusMinutes(i + 1));
+        assertThat(items.get(i).getUnmappedEnd()).isEqualTo(startTime.plusMinutes(i + 1));
       }
     }
   }
@@ -83,8 +85,8 @@ public class MinuteRangeCollectionTest extends AbstractTimePeriodTest {
     final DateTime now = Times.now();
 
     for (int minuteCount : minuteCounts) {
-      final MinuteRangeCollection minuteRanges = MinuteRangeCollection.of(now, minuteCount);
-      final DateTime startTime = Times.trimToSecond(now).plus(minuteRanges.getCalendar().getStartOffset());
+      final MinuteRangeCollection minuteRanges = new MinuteRangeCollection(now, minuteCount);
+      final DateTime startTime = trimToSecond(now).plus(minuteRanges.getCalendar().getStartOffset());
       final DateTime endTime = startTime.plusMinutes(minuteCount).plus(minuteRanges.getCalendar().getEndOffset());
 
       assertThat(minuteRanges.getStart()).isEqualTo(startTime);
@@ -97,7 +99,7 @@ public class MinuteRangeCollectionTest extends AbstractTimePeriodTest {
       for (int m = 0; m < minuteCount; m++) {
         assertThat(items.get(m).getStart()).isEqualTo(startTime.plusMinutes(m));
         assertThat(items.get(m).getEnd()).isEqualTo(minuteRanges.getCalendar().mapEnd(startTime.plusMinutes(m + 1)));
-        assertThat(items.get(m).unmappedEnd()).isEqualTo(startTime.plusMinutes(m + 1));
+        assertThat(items.get(m).getUnmappedEnd()).isEqualTo(startTime.plusMinutes(m + 1));
       }
     }
   }

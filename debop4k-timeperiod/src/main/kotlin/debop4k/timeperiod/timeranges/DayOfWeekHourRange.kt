@@ -29,7 +29,7 @@ open class DayOfWeekHourRange @JvmOverloads constructor(val dayOfWeek: DayOfWeek
                                                         endHourOfDay: Int = 23) : HourRangeInDay(startHourOfDay, endHourOfDay) {
 
   override fun hashCode(): Int {
-    return hashOf(dayOfWeek, startHourOfDay, endHourOfDay)
+    return hashOf(dayOfWeek, start, endExclusive)
   }
 
   override fun buildStringHelper(): ToStringHelper {

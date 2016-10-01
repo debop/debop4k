@@ -16,6 +16,7 @@
 
 package debop4k.timeperiod.timeranges
 
+import debop4k.core.collections.fastListOf
 import debop4k.core.kodatimes.now
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
@@ -32,5 +33,9 @@ open class MinuteRangeCollection @JvmOverloads constructor(startTime: DateTime =
 
   fun minuteSequence(): Sequence<MinuteRange> {
     return minuteSequence(startMinuteOfStart, minuteCount, calendar)
+  }
+
+  fun minutes(): List<MinuteRange> {
+    return fastListOf(minuteSequence().iterator())
   }
 }

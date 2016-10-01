@@ -24,7 +24,8 @@ import debop4k.timeperiod.ITimePeriodMapper
 /**
  * Created by debop
  */
-open class TimeGapCalculator<T : ITimePeriod>(val mapper: ITimePeriodMapper? = null) {
+open class TimeGapCalculator<T : ITimePeriod>
+@JvmOverloads constructor(val mapper: ITimePeriodMapper? = null) {
 
   @JvmOverloads
   fun gaps(excludePeriods: ITimePeriodContainer, limits: ITimePeriod? = null): ITimePeriodCollection {

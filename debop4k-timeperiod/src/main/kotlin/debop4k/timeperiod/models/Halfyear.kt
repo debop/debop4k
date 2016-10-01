@@ -39,7 +39,7 @@ enum class Halfyear(val value: Int) {
     return plus(-(halfyear % 2))
   }
 
-  fun months(): IntArray = when (this) {
+  val months: IntArray get() = when (this) {
     First -> FirstHalfyearMonths
     Second -> SecondHalfyearMonths
   }

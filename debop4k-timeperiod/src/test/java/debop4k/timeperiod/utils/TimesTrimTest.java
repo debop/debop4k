@@ -18,21 +18,24 @@ package debop4k.timeperiod.utils;
 
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeSpec;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+import org.slf4j.Logger;
 
+import static debop4k.core.kodatimes.KodaTimes.*;
 import static debop4k.timeperiod.utils.Times.daysInMonth;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
-@Slf4j
 public class TimesTrimTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(TimesTrimTest.class);
 
   @Test
   public void trimMonthTest() {
     assertThat(trimToMonth(testDate)).isEqualTo(asDate(testDate.getYear(), 1, 1));
 
     for (int m = 0; m < TimeSpec.MonthsPerYear; m++) {
-      assertThat(Times.trimToMonth(testDate, m + 1)).isEqualTo(asDate(testDate.getYear(), m + 1, 1));
+      assertThat(trimToMonth(testDate, m + 1)).isEqualTo(asDate(testDate.getYear(), m + 1, 1));
     }
   }
 
@@ -52,7 +55,7 @@ public class TimesTrimTest extends AbstractTimePeriodTest {
     assertThat(trimToHour(testDate)).isEqualTo(asDate(testDate));
 
     for (int h = 0; h < TimeSpec.HoursPerDay; h++) {
-      assertThat(Times.trimToHour(testDate, h)).isEqualTo(asDate(testDate).plusHours(h));
+      assertThat(trimToHour(testDate, h)).isEqualTo(asDate(testDate).plusHours(h));
     }
   }
 
@@ -73,7 +76,7 @@ public class TimesTrimTest extends AbstractTimePeriodTest {
                                                                    0,
                                                                    0));
     for (int s = 0; s < TimeSpec.SecondsPerMinute; s++) {
-      assertThat(Times.trimToSecond(testDate, s))
+      assertThat(trimToSecond(testDate, s))
           .isEqualTo(testDate.withTime(testDate.getHourOfDay(),
                                        testDate.getMinuteOfHour(),
                                        s,

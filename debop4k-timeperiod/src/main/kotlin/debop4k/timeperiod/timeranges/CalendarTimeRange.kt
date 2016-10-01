@@ -51,6 +51,26 @@ open class CalendarTimeRange @JvmOverloads constructor(val period: ITimePeriod,
     assertValidPeriod(calendar.mapStart(period.start), calendar.mapEnd(period.end))
   }
 
+  companion object {
+    @JvmStatic
+    @JvmOverloads
+    fun of(calendar: ITimeCalendar = DefaultTimeCalendar): CalendarTimeRange {
+      return CalendarTimeRange(calendar)
+    }
+
+    @JvmStatic
+    @JvmOverloads
+    fun of(period: ITimePeriod, calendar: ITimeCalendar = DefaultTimeCalendar): CalendarTimeRange {
+      return CalendarTimeRange(period, calendar)
+    }
+
+    @JvmStatic
+    @JvmOverloads
+    fun of(start: DateTime, end: DateTime, calendar: ITimeCalendar = DefaultTimeCalendar): CalendarTimeRange {
+      return CalendarTimeRange(start, end, calendar)
+    }
+  }
+
   override fun copy(offset: Duration): CalendarTimeRange {
     return CalendarTimeRange(super.copy(offset), calendar)
   }

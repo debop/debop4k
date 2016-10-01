@@ -19,23 +19,25 @@ package debop4k.timeperiod.timeranges;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.models.YearWeek;
 import debop4k.timeperiod.utils.Times;
-import lombok.extern.slf4j.Slf4j;
-import org.eclipse.collections.api.list.MutableList;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.slf4j.Logger;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@Slf4j
 public class WeekRangeCollectionTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(WeekRangeCollectionTest.class);
 
   @Test
   public void singleMonths() {
     final int startYear = 2004;
     final int startWeek = 22;
 
-    WeekRangeCollection weekRanges = WeekRangeCollection.of(startYear, startWeek, 1);
+    WeekRangeCollection weekRanges = new WeekRangeCollection(startYear, startWeek, 1);
     assertThat(weekRanges.getWeekCount()).isEqualTo(1);
 
     assertThat(weekRanges.getStartYear()).isEqualTo(startYear);
@@ -43,7 +45,7 @@ public class WeekRangeCollectionTest extends AbstractTimePeriodTest {
     assertThat(weekRanges.getStartWeekOfWeekyear()).isEqualTo(startWeek);
     assertThat(weekRanges.getEndWeekOfWeekyear()).isEqualTo(startWeek);
 
-    MutableList<WeekRange> weeks = weekRanges.weekStream();
+    List<WeekRange> weeks = weekRanges.weeks();
     assertThat(weeks.size()).isEqualTo(1);
     assertThat(weeks.get(0).isSamePeriod(new WeekRange(startYear, startWeek))).isTrue();
   }
@@ -54,7 +56,7 @@ public class WeekRangeCollectionTest extends AbstractTimePeriodTest {
     final int startWeek = 22;
     final int weekCount = 5;
 
-    WeekRangeCollection weekRanges = WeekRangeCollection.of(startYear, startWeek, weekCount);
+    WeekRangeCollection weekRanges = new WeekRangeCollection(startYear, startWeek, weekCount);
 
     assertThat(weekRanges.getWeekCount()).isEqualTo(weekCount);
     assertThat(weekRanges.getStartYear()).isEqualTo(startYear);
@@ -71,7 +73,7 @@ public class WeekRangeCollectionTest extends AbstractTimePeriodTest {
     final DateTime today = Times.today();
 
     for (int weekCount : weekCounts) {
-      final WeekRangeCollection weekRanges = WeekRangeCollection.of(now, weekCount);
+      final WeekRangeCollection weekRanges = new WeekRangeCollection(now, weekCount);
 
       final DateTime startTime = weekRanges.getCalendar().mapStart(Times.startTimeOfWeek(today));
       final DateTime endTime = weekRanges.getCalendar().mapEnd(startTime.plusWeeks(weekCount));
@@ -79,19 +81,18 @@ public class WeekRangeCollectionTest extends AbstractTimePeriodTest {
       assertThat(weekRanges.getStart()).isEqualTo(startTime);
       assertThat(weekRanges.getEnd()).isEqualTo(endTime);
 
-      final MutableList<WeekRange> items = weekRanges.weekStream();
+      final List<WeekRange> items = weekRanges.weeks();
 
       for (int w = 0; w < weekCount; w++) {
         final WeekRange item = items.get(w);
         assertThat(item.getStart()).isEqualTo(startTime.plusWeeks(w));
         assertThat(item.getEnd()).isEqualTo(weekRanges.getCalendar().mapEnd(startTime.plusWeeks(w + 1)));
 
-        assertThat(item.unmappedStart()).isEqualTo(startTime.plusWeeks(w));
-        assertThat(item.unmappedEnd()).isEqualTo(startTime.plusWeeks(w + 1));
+        assertThat(item.getUnmappedStart()).isEqualTo(startTime.plusWeeks(w));
+        assertThat(item.getUnmappedEnd()).isEqualTo(startTime.plusWeeks(w + 1));
 
         assertThat(item.isSamePeriod(new WeekRange(weekRanges.getStart().plusWeeks(w)))).isTrue();
-
-        YearWeek yw = Times.addWeeks(YearWeek.of(now), w);
+        YearWeek yw = YearWeek.of(now).plus(w);
         assertThat(item.isSamePeriod(new WeekRange(yw))).isTrue();
       }
     }

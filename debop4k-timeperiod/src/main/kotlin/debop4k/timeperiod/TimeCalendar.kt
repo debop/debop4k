@@ -26,7 +26,7 @@ import java.util.*
  * TimeCalendar
  * @author debop sunghyouk.bae@gmail.com
  */
-class TimeCalendar(val cfg: TimeCalendarConfig = TimeCalendarConfig.DEFAULT) : ITimeCalendar {
+open class TimeCalendar @JvmOverloads constructor(val cfg: TimeCalendarConfig = TimeCalendarConfig.DEFAULT) : ITimeCalendar {
 
   init {
     require(cfg.startOffset >= Duration.ZERO, { "startOffset must be greater than or equal zero." })
@@ -34,8 +34,16 @@ class TimeCalendar(val cfg: TimeCalendarConfig = TimeCalendarConfig.DEFAULT) : I
   }
 
   companion object {
-    val DEFAULT: TimeCalendar by lazy { TimeCalendar() }
-    val EMPTY_OFFSET: TimeCalendar by lazy { TimeCalendar(TimeCalendarConfig.EMPTY_OFFSET) }
+    @JvmField val DEFAULT: TimeCalendar = TimeCalendar()
+    @JvmField val EMPTY_OFFSET: TimeCalendar = TimeCalendar(TimeCalendarConfig.EMPTY_OFFSET)
+
+    @JvmOverloads
+    @JvmStatic
+    fun of(cfg: TimeCalendarConfig = TimeCalendarConfig.DEFAULT): TimeCalendar {
+      return TimeCalendar(cfg)
+    }
+
+
   }
 
   override val locale: Locale get() = cfg.locale

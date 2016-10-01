@@ -16,6 +16,7 @@
 
 package debop4k.timeperiod.timeranges
 
+import debop4k.core.collections.fastListOf
 import debop4k.core.kodatimes.today
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
@@ -31,13 +32,19 @@ open class MonthRangeCollection @JvmOverloads constructor(startTime: DateTime = 
                                                           calendar: ITimeCalendar = DefaultTimeCalendar)
 : MonthTimeRange(startTime.startTimeOfMonth(), monthCount, calendar) {
 
+  @JvmOverloads
   constructor(year: Int,
               month: Int,
               monthCount: Int = 1,
-              calendar: ITimeCalendar = DefaultTimeCalendar) :
-  this(startTimeOfMonth(year, month), monthCount, calendar)
+              calendar: ITimeCalendar = DefaultTimeCalendar)
+  : this(startTimeOfMonth(year, month), monthCount, calendar)
 
 
-  fun monthSequence(): Sequence<MonthRange>
-      = monthSequence(start, monthCount, calendar)
+  fun monthSequence(): Sequence<MonthRange> {
+    return monthSequence(start, monthCount, calendar)
+  }
+
+  fun months(): List<MonthRange> {
+    return fastListOf(monthSequence().iterator())
+  }
 }

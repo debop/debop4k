@@ -21,17 +21,20 @@ import debop4k.timeperiod.TimeCalendar;
 import debop4k.timeperiod.models.Halfyear;
 import debop4k.timeperiod.models.Quarter;
 import debop4k.timeperiod.utils.Times;
-import lombok.extern.slf4j.Slf4j;
-import org.eclipse.collections.api.list.MutableList;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.slf4j.Logger;
 
+import java.util.List;
+
+import static debop4k.core.kodatimes.KodaTimes.asDate;
 import static debop4k.timeperiod.TimeSpec.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@Slf4j
 public class HalfyearRangeTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(HalfyearRangeTest.class);
 
   @Test
   public void initValues() {
@@ -39,7 +42,7 @@ public class HalfyearRangeTest extends AbstractTimePeriodTest {
     DateTime firstHalfyear = Times.startTimeOfHalfyear(now.getYear(), Halfyear.First);
     DateTime secondHalfyear = Times.startTimeOfHalfyear(now.getYear(), Halfyear.Second);
 
-    HalfyearRange hyr = new HalfyearRange(now.getYear(), Halfyear.First, TimeCalendar.emptyOffset());
+    HalfyearRange hyr = new HalfyearRange(now.getYear(), Halfyear.First, TimeCalendar.EMPTY_OFFSET);
 
     assertThat(hyr.getStart().getYear()).isEqualTo(firstHalfyear.getYear());
     assertThat(hyr.getStart().getMonthOfYear()).isEqualTo(firstHalfyear.getMonthOfYear());
@@ -80,10 +83,10 @@ public class HalfyearRangeTest extends AbstractTimePeriodTest {
     assertThat(new HalfyearRange().getHalfyear()).isEqualTo(
         now.getMonthOfYear() < 7 ? Halfyear.First : Halfyear.Second);
 
-    assertThat(new HalfyearRange(Times.asDate(currentYear, 1, 1)).getHalfyear()).isEqualTo(Halfyear.First);
-    assertThat(new HalfyearRange(Times.asDate(currentYear, 6, 30)).getHalfyear()).isEqualTo(Halfyear.First);
-    assertThat(new HalfyearRange(Times.asDate(currentYear, 7, 1)).getHalfyear()).isEqualTo(Halfyear.Second);
-    assertThat(new HalfyearRange(Times.asDate(currentYear, 12, 31)).getHalfyear()).isEqualTo(Halfyear.Second);
+    assertThat(new HalfyearRange(asDate(currentYear, 1, 1)).getHalfyear()).isEqualTo(Halfyear.First);
+    assertThat(new HalfyearRange(asDate(currentYear, 6, 30)).getHalfyear()).isEqualTo(Halfyear.First);
+    assertThat(new HalfyearRange(asDate(currentYear, 7, 1)).getHalfyear()).isEqualTo(Halfyear.Second);
+    assertThat(new HalfyearRange(asDate(currentYear, 12, 31)).getHalfyear()).isEqualTo(Halfyear.Second);
   }
 
   @Test
@@ -109,48 +112,48 @@ public class HalfyearRangeTest extends AbstractTimePeriodTest {
   public void calendarHalfyear() {
     final DateTime now = Times.now();
     final int currentYear = now.getYear();
-    final TimeCalendar calendar = TimeCalendar.emptyOffset();
+    final TimeCalendar calendar = TimeCalendar.EMPTY_OFFSET;
 
     HalfyearRange h1 = new HalfyearRange(currentYear, Halfyear.First, calendar);
 
     assertThat(h1.isReadonly()).isTrue();
     assertThat(h1.getHalfyear()).isEqualTo(Halfyear.First);
-    assertThat(h1.getStart()).isEqualTo(Times.asDate(currentYear, 1, 1));
-    assertThat(h1.getEnd()).isEqualTo(Times.asDate(currentYear, 7, 1));
+    assertThat(h1.getStart()).isEqualTo(asDate(currentYear, 1, 1));
+    assertThat(h1.getEnd()).isEqualTo(asDate(currentYear, 7, 1));
 
     HalfyearRange h2 = new HalfyearRange(currentYear, Halfyear.Second, calendar);
 
     assertThat(h2.isReadonly()).isTrue();
     assertThat(h2.getHalfyear()).isEqualTo(Halfyear.Second);
-    assertThat(h2.getStart()).isEqualTo(Times.asDate(currentYear, 7, 1));
-    assertThat(h2.getEnd()).isEqualTo(Times.asDate(currentYear + 1, 1, 1));
+    assertThat(h2.getStart()).isEqualTo(asDate(currentYear, 7, 1));
+    assertThat(h2.getEnd()).isEqualTo(asDate(currentYear + 1, 1, 1));
   }
 
   @Test
   public void getQuartersTest() {
     final DateTime now = Times.now();
     final int currentYear = now.getYear();
-    final TimeCalendar calendar = TimeCalendar.emptyOffset();
+    final TimeCalendar calendar = TimeCalendar.EMPTY_OFFSET;
 
     HalfyearRange h1 = new HalfyearRange(currentYear, Halfyear.First, calendar);
-    MutableList<QuarterRange> h1Quarters = h1.quarterStream();
+    List<QuarterRange> h1Quarters = h1.quarters();
 
     int h1Index = 0;
     for (QuarterRange h1Quarter : h1Quarters) {
       log.trace("h1Quarter[{}] = [{}]", h1Index, h1Quarter);
-      assertThat(h1Quarter.getQuarter()).isEqualTo(h1Index == 0 ? Quarter.First : Quarter.Second);
+      assertThat(h1Quarter.getQuarter()).isEqualTo(h1Index == 0 ? Quarter.FIRST : Quarter.SECOND);
       assertThat(h1Quarter.getStart()).isEqualTo(h1.getStart().plusMonths(h1Index * MonthsPerQuarter));
       assertThat(h1Quarter.getEnd()).isEqualTo(h1Quarter.getCalendar().mapEnd(h1Quarter.getStart().plusMonths(MonthsPerQuarter)));
       h1Index++;
     }
 
     HalfyearRange h2 = new HalfyearRange(currentYear, Halfyear.Second, calendar);
-    MutableList<QuarterRange> h2Quarters = h2.quarterStream();
+    List<QuarterRange> h2Quarters = h2.quarters();
 
     int h2Index = 0;
     for (QuarterRange h2Quarter : h2Quarters) {
       log.trace("h2Quarter[{}] = [{}]", h2Index, h2Quarter);
-      assertThat(h2Quarter.getQuarter()).isEqualTo(h2Index == 0 ? Quarter.Third : Quarter.Fourth);
+      assertThat(h2Quarter.getQuarter()).isEqualTo(h2Index == 0 ? Quarter.THIRD : Quarter.FOURTH);
       assertThat(h2Quarter.getStart()).isEqualTo(h2.getStart().plusMonths(h2Index * MonthsPerQuarter));
       assertThat(h2Quarter.getEnd()).isEqualTo(h2Quarter.getCalendar().mapEnd(h2Quarter.getStart().plusMonths(MonthsPerQuarter)));
       h2Index++;
@@ -161,10 +164,10 @@ public class HalfyearRangeTest extends AbstractTimePeriodTest {
   public void getMonthsTest() {
     final DateTime now = Times.now();
     final int currentYear = now.getYear();
-    final TimeCalendar calendar = TimeCalendar.emptyOffset();
+    final TimeCalendar calendar = TimeCalendar.EMPTY_OFFSET;
 
     HalfyearRange h1 = new HalfyearRange(currentYear, Halfyear.First, calendar);
-    MutableList<MonthRange> months = h1.monthStream();
+    List<MonthRange> months = h1.months();
     assertThat(months.size()).isEqualTo(MonthsPerHalfyear);
 
     int index = 0;
@@ -179,7 +182,7 @@ public class HalfyearRangeTest extends AbstractTimePeriodTest {
   public void addHalfyearsTest() {
     final DateTime now = Times.now();
     final int currentYear = now.getYear();
-    final TimeCalendar calendar = TimeCalendar.emptyOffset();
+    final TimeCalendar calendar = TimeCalendar.EMPTY_OFFSET;
 
     HalfyearRange h1 = new HalfyearRange(currentYear, Halfyear.First, calendar);
 

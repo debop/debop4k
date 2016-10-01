@@ -20,16 +20,18 @@ import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeCalendar;
 import debop4k.timeperiod.TimeSpec;
 import debop4k.timeperiod.utils.Times;
-import lombok.extern.slf4j.Slf4j;
-import org.eclipse.collections.api.list.MutableList;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.slf4j.Logger;
+
+import java.util.List;
 
 import static debop4k.timeperiod.utils.Times.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 public class MonthRangeTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(MonthRangeTest.class);
 
   @Test
   public void initValues() {
@@ -37,7 +39,7 @@ public class MonthRangeTest extends AbstractTimePeriodTest {
     DateTime firstMonth = startTimeOfMonth(now);
     DateTime secondMonth = firstMonth.plusMonths(1);
 
-    MonthRange monthRange = new MonthRange(now, TimeCalendar.emptyOffset());
+    MonthRange monthRange = new MonthRange(now, TimeCalendar.EMPTY_OFFSET);
 
     assertThat(monthRange.getStart()).isEqualTo(firstMonth);
     assertThat(monthRange.getEnd()).isEqualTo(secondMonth);
@@ -53,8 +55,8 @@ public class MonthRangeTest extends AbstractTimePeriodTest {
       assertThat(monthRange.getYear()).isEqualTo(yearStart.getYear());
       assertThat(monthRange.getMonthOfYear()).isEqualTo(m + 1);
 
-      assertThat(monthRange.unmappedStart()).isEqualTo(yearStart.plusMonths(m));
-      assertThat(monthRange.unmappedEnd()).isEqualTo(yearStart.plusMonths(m + 1));
+      assertThat(monthRange.getUnmappedStart()).isEqualTo(yearStart.plusMonths(m));
+      assertThat(monthRange.getUnmappedEnd()).isEqualTo(yearStart.plusMonths(m + 1));
     }
   }
 
@@ -63,7 +65,7 @@ public class MonthRangeTest extends AbstractTimePeriodTest {
   public void getDaysTest() {
     final DateTime now = now();
     final MonthRange monthRange = new MonthRange();
-    MutableList<DayRange> days = monthRange.dayStream();
+    List<DayRange> days = monthRange.days();
 
     int index = 0;
     for (DayRange day : days) {
@@ -82,9 +84,9 @@ public class MonthRangeTest extends AbstractTimePeriodTest {
     final MonthRange monthRange = new MonthRange(now);
 
 
-    assertThat(monthRange.prevMonth().getStart())
+    assertThat(monthRange.getPrevMonth().getStart())
         .isEqualTo(startMonth.minusMonths(1));
-    assertThat(monthRange.nextMonth().getStart())
+    assertThat(monthRange.getNextMonth().getStart())
         .isEqualTo(startMonth.plusMonths(1));
 
     assertThat(monthRange.addMonths(0)).isEqualTo(monthRange);

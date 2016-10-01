@@ -16,24 +16,26 @@
 
 package debop4k.timeperiod.timeranges;
 
+import debop4k.core.kodatimes.KodaTimes;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeSpec;
 import debop4k.timeperiod.utils.Times;
-import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 public class DayRangeCollectionTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(DayRangeCollectionTest.class);
 
   @Test
   public void singleDays() {
-    final DateTime start = Times.asDate(2004, 2, 22);
-    DayRangeCollection days = DayRangeCollection.of(start, 1);
+    final DateTime start = KodaTimes.asDate(2004, 2, 22);
+    DayRangeCollection days = new DayRangeCollection(start, 1);
 
     assertThat(days.getDayCount()).isEqualTo(1);
 
@@ -54,9 +56,9 @@ public class DayRangeCollectionTest extends AbstractTimePeriodTest {
   public void calendarDays() {
     final int dayCount = 5;
 
-    final DateTime start = Times.asDate(2004, 2, 22);
+    final DateTime start = KodaTimes.asDate(2004, 2, 22);
     final DateTime end = start.plusDays(dayCount - 1);
-    DayRangeCollection days = DayRangeCollection.of(start, dayCount);
+    DayRangeCollection days = new DayRangeCollection(start, dayCount);
 
     assertThat(days.getDayCount()).isEqualTo(dayCount);
 
@@ -83,7 +85,7 @@ public class DayRangeCollectionTest extends AbstractTimePeriodTest {
 
     for (int dayCount : dayCounts) {
       DateTime now = Times.now();
-      DayRangeCollection days = DayRangeCollection.of(now, dayCount);
+      DayRangeCollection days = new DayRangeCollection(now, dayCount);
 
       DateTime startTime = now.withTimeAtStartOfDay().plus(days.getCalendar().getStartOffset());
       DateTime endTime = startTime.plusDays(dayCount).plus(days.getCalendar().getEndOffset());
@@ -93,7 +95,7 @@ public class DayRangeCollectionTest extends AbstractTimePeriodTest {
 
       assertThat(days.getDayCount()).isEqualTo(dayCount);
 
-      List<HourRange> items = days.hourStream();
+      List<HourRange> items = days.hours();
       assertThat(items.size()).isEqualTo(dayCount * TimeSpec.HoursPerDay);
 
       for (int i = 0; i < items.size(); i++) {

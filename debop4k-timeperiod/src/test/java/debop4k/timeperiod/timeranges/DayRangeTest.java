@@ -16,22 +16,25 @@
 
 package debop4k.timeperiod.timeranges;
 
+import debop4k.core.kodatimes.KodaTimes;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeCalendar;
 import debop4k.timeperiod.TimeSpec;
 import debop4k.timeperiod.utils.Times;
-import lombok.extern.slf4j.Slf4j;
-import org.eclipse.collections.api.block.procedure.Procedure;
-import org.eclipse.collections.api.list.MutableList;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.slf4j.Logger;
 
+import java.util.List;
+
+import static debop4k.core.kodatimes.KodaTimes.asDate;
 import static debop4k.timeperiod.utils.Times.endTimeOfMonth;
 import static debop4k.timeperiod.utils.Times.startTimeOfYear;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 public class DayRangeTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(DayRangeTest.class);
 
   @Test
   public void initValues() {
@@ -39,7 +42,7 @@ public class DayRangeTest extends AbstractTimePeriodTest {
     DateTime firstDay = Times.startTimeOfDay(now);
     DateTime secondDay = firstDay.plusDays(1);
 
-    DayRange dr = new DayRange(now, TimeCalendar.emptyOffset());
+    DayRange dr = new DayRange(now, TimeCalendar.EMPTY_OFFSET);
 
     assertThat(dr.getStart()).isEqualTo(firstDay);
     assertThat(dr.getEnd()).isEqualTo(secondDay);
@@ -84,8 +87,8 @@ public class DayRangeTest extends AbstractTimePeriodTest {
   @Test
   public void addDaysTest() {
 
-    final DateTime now = Times.now();
-    final DateTime today = Times.today();
+    final DateTime now = KodaTimes.now();
+    final DateTime today = KodaTimes.today();
     final DayRange dr = new DayRange(now);
 
 
@@ -102,16 +105,13 @@ public class DayRangeTest extends AbstractTimePeriodTest {
   @Test
   public void getHoursTest() {
     final DayRange dr = new DayRange();
-    MutableList<HourRange> hours = dr.hourStream();
+    List<HourRange> hours = dr.hours();
 
     final int[] index = new int[]{0};
-    hours.forEach(new Procedure<HourRange>() {
-      @Override
-      public void value(HourRange h) {
-        assertThat(h.getStart()).isEqualTo(dr.getStart().plusHours(index[0]));
-        assertThat(h.getEnd()).isEqualTo(h.getCalendar().mapEnd(h.getStart().plusHours(1)));
-        index[0]++;
-      }
+    hours.forEach(h -> {
+      assertThat(h.getStart()).isEqualTo(dr.getStart().plusHours(index[0]));
+      assertThat(h.getEnd()).isEqualTo(h.getCalendar().mapEnd(h.getStart().plusHours(1)));
+      index[0]++;
     });
     assertThat(index[0]).isEqualTo(TimeSpec.HoursPerDay);
   }

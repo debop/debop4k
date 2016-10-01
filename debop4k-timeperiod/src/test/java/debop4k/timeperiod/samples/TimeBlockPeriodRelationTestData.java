@@ -19,8 +19,6 @@ package debop4k.timeperiod.samples;
 import debop4k.timeperiod.ITimeBlock;
 import debop4k.timeperiod.ITimePeriod;
 import debop4k.timeperiod.TimeBlock;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.val;
 import org.eclipse.collections.impl.list.mutable.FastList;
 import org.joda.time.DateTime;
@@ -30,8 +28,6 @@ import java.util.Arrays;
 import java.util.List;
 
 
-@Getter
-@Setter
 public class TimeBlockPeriodRelationTestData {
 
   List<ITimePeriod> allPeriods = FastList.newList();
@@ -91,4 +87,64 @@ public class TimeBlockPeriodRelationTestData {
                                     before
                                    ));
   }
+
+  public List<ITimePeriod> getAllPeriods() {return this.allPeriods;}
+
+  public ITimeBlock getReference() {return this.reference;}
+
+  public ITimeBlock getBefore() {return this.before;}
+
+  public ITimeBlock getStartTouching() {return this.startTouching;}
+
+  public ITimeBlock getStartInside() {return this.startInside;}
+
+  public ITimeBlock getInsideStartTouching() {return this.insideStartTouching;}
+
+  public ITimeBlock getEnclosingStartTouching() {return this.enclosingStartTouching;}
+
+  public ITimeBlock getInside() {return this.inside;}
+
+  public ITimeBlock getEnclosingEndTouching() {return this.enclosingEndTouching;}
+
+  public ITimeBlock getExactMatch() {return this.exactMatch;}
+
+  public ITimeBlock getEnclosing() {return this.enclosing;}
+
+  public ITimeBlock getInsideEndTouching() {return this.insideEndTouching;}
+
+  public ITimeBlock getEndInside() {return this.endInside;}
+
+  public ITimeBlock getEndTouching() {return this.endTouching;}
+
+  public ITimeBlock getAfter() {return this.after;}
+
+  public void setAllPeriods(List<ITimePeriod> allPeriods) {this.allPeriods = allPeriods; }
+
+  public void setReference(ITimeBlock reference) {this.reference = reference; }
+
+  public void setBefore(ITimeBlock before) {this.before = before; }
+
+  public void setStartTouching(ITimeBlock startTouching) {this.startTouching = startTouching; }
+
+  public void setStartInside(ITimeBlock startInside) {this.startInside = startInside; }
+
+  public void setInsideStartTouching(ITimeBlock insideStartTouching) {this.insideStartTouching = insideStartTouching; }
+
+  public void setEnclosingStartTouching(ITimeBlock enclosingStartTouching) {this.enclosingStartTouching = enclosingStartTouching; }
+
+  public void setInside(ITimeBlock inside) {this.inside = inside; }
+
+  public void setEnclosingEndTouching(ITimeBlock enclosingEndTouching) {this.enclosingEndTouching = enclosingEndTouching; }
+
+  public void setExactMatch(ITimeBlock exactMatch) {this.exactMatch = exactMatch; }
+
+  public void setEnclosing(ITimeBlock enclosing) {this.enclosing = enclosing; }
+
+  public void setInsideEndTouching(ITimeBlock insideEndTouching) {this.insideEndTouching = insideEndTouching; }
+
+  public void setEndInside(ITimeBlock endInside) {this.endInside = endInside; }
+
+  public void setEndTouching(ITimeBlock endTouching) {this.endTouching = endTouching; }
+
+  public void setAfter(ITimeBlock after) {this.after = after; }
 }

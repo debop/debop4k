@@ -88,7 +88,7 @@ fun String?.asDateTimeByPattern(pattern: String): DateTime? {
 }
 
 
-fun String.toDateTime(formatter: DateTimeFormatter): DateTime {
+fun String?.toDateTime(formatter: DateTimeFormatter): DateTime {
   if (this.isNullOrBlank())
     return DateTime(0)
   return DateTime.parse(this, formatter)
@@ -152,11 +152,11 @@ fun Int.years(): Period = Period.years(this)
 fun Int.times(builder: DurationBuilder): DurationBuilder = DurationBuilder(builder.period.multipliedBy(this))
 fun Int.times(period: Period): Period = period.multipliedBy(this)
 
-@JvmOverloads
-fun Int.asDateTime(zone: DateTimeZone = DefaultTimeZone): DateTime = DateTime(this, zone)
-
 /** 해당년도의 일수 (day count) */
 fun Int.dayCountOfYear(): Int = asDate(this + 1).minusMillis(1).dayOfYear
+
+fun Int.startTimeOfYear(): DateTime = asDate(this, 1, 1)
+fun Int.endTimeOfYear(): DateTime = startTimeOfYear().plusYears(1).minusDays(1)
 
 
 fun Long.millis(): DurationBuilder = DurationBuilder(Period.millis(this.toInt()))
@@ -187,12 +187,22 @@ fun Long.asDateTime(zone: DateTimeZone = DefaultTimeZone): DateTime = DateTime(t
  */
 fun dateTimeFormat(pattern: String): DateTimeFormatter = DateTimeFormat.forPattern(pattern)
 
+@JvmOverloads
 fun String.toDateTime(pattern: String? = null): DateTime? {
   return try {
     if (pattern.isNullOrBlank()) DateTime(this)
     else DateTime.parse(this, dateTimeFormat(pattern!!))
   } catch(ignored: Exception) {
     null
+  }
+}
+
+fun String?.tryToDateTime(defaultValue: DateTime): DateTime {
+
+  try {
+    return this?.toDateTime(ISODateTimeFormat.dateTime()) ?: defaultValue
+  } catch(e: Exception) {
+    return defaultValue
   }
 }
 
@@ -346,6 +356,17 @@ fun asDate(year: Int,
            minuteOfHour: Int = 0,
            secondOfMinute: Int = 0,
            millisOfSecond: Int = 0): DateTime {
+  return DateTime(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond)
+}
+
+@JvmOverloads
+fun asDateTime(year: Int,
+               monthOfYear: Int = 1,
+               dayOfMonth: Int = 1,
+               hourOfDay: Int = 0,
+               minuteOfHour: Int = 0,
+               secondOfMinute: Int = 0,
+               millisOfSecond: Int = 0): DateTime {
   return DateTime(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond)
 }
 

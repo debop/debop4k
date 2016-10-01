@@ -16,6 +16,7 @@
 
 package debop4k.timeperiod.timeranges
 
+import debop4k.core.collections.fastListOf
 import debop4k.core.kodatimes.today
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
@@ -31,13 +32,19 @@ open class WeekRangeCollection @JvmOverloads constructor(startTime: DateTime = t
                                                          calendar: ITimeCalendar = DefaultTimeCalendar)
 : WeekTimeRange(startTime.startTimeOfWeek(), weekCount, calendar) {
 
+  @JvmOverloads
   constructor(weekyear: Int,
               weekOfWeekyear: Int,
               weekCount: Int = 1,
               calendar: ITimeCalendar = DefaultTimeCalendar)
   : this(startTimeOfWeek(weekyear, weekOfWeekyear), weekCount, calendar)
 
-  fun weekSequence(): Sequence<WeekRange>
-      = weekSequence(start, weekCount, calendar)
+  fun weekSequence(): Sequence<WeekRange> {
+    return weekSequence(start, weekCount, calendar)
+  }
+
+  fun weeks(): List<WeekRange> {
+    return fastListOf(weekSequence().iterator())
+  }
 
 }

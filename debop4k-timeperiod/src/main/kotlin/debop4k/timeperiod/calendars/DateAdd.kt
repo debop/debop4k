@@ -32,6 +32,10 @@ open class DateAdd {
 
   private val log = loggerOf(javaClass)
 
+  companion object {
+    @JvmStatic fun of(): DateAdd = DateAdd()
+  }
+
   open protected val includePeriods: TimePeriodCollection = TimePeriodCollection()
   open protected val excludePeriods: TimePeriodCollection = TimePeriodCollection()
 

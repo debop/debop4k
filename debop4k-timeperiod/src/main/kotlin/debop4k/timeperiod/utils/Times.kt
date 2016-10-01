@@ -23,17 +23,17 @@ import debop4k.core.kodatimes.startOfDay
 import debop4k.core.kodatimes.today
 import debop4k.timeperiod.*
 import debop4k.timeperiod.models.*
+import debop4k.timeperiod.timeranges.WeekRange
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
 import java.util.*
 
 fun now(): DateTime = DateTime.now()
-
+fun today(): DateTime = DateTime.now().withTimeAtStartOfDay()
 
 fun DateTime.localDate(): LocalDate = this.toLocalDate()
 fun DateTime.localTime(): LocalTime = this.toLocalTime()
-
 
 @Suppress("UNUSED_PARAMETER")
 @JvmOverloads
@@ -65,7 +65,7 @@ fun YearHalfyear.nextHalfyear(): YearHalfyear = this.addHalfyear(1)
 fun prevHalfyear(year: Int, halfyear: Halfyear): YearHalfyear = addHalfyear(year, halfyear, -1)
 fun YearHalfyear.prevHalfyear(): YearHalfyear = this.addHalfyear(-1)
 
-fun halfyearOfMonth(monthOfYear: Int) = if (FirstHalfyearMonths.contains(monthOfYear)) Halfyear.First else Halfyear.Second
+fun halfyearOfMonth(monthOfYear: Int): Halfyear = if (FirstHalfyearMonths.contains(monthOfYear)) Halfyear.First else Halfyear.Second
 
 fun addQuarter(year: Int, quarter: Quarter, delta: Int): YearQuarter {
   if (delta == 0)
@@ -209,8 +209,7 @@ fun currentMinute(): DateTime = today().startTimeOfMinute()
 fun currentSecond(): DateTime = today().startTimeOfSecond()
 
 
-fun startTimeOfYear(year: Int): DateTime
-    = asDate(year, 1, 1)
+fun startTimeOfYear(year: Int): DateTime = asDate(year, 1, 1)
 
 fun DateTime.startTimeOfYear(): DateTime
     = startTimeOfYear(this.year)
@@ -378,4 +377,12 @@ fun DateTime.addDate(unit: PeriodUnit, delta: Int): DateTime = when (unit) {
 
   else -> throw IllegalArgumentException("Unsupported period unit. unit=$unit")
 }
+
+fun startWeekRangeOfYear(year: Int): WeekRange = WeekRange(YearWeek(year, 1))
+fun endWeekRangeOfYear(year: Int): WeekRange = WeekRange(lastWeekOfYear(year))
+
+fun maxWeekOfYear(year: Int): YearWeek = YearWeek.of(asDate(year, 12, 28))
+
+fun DayOfWeek.isWeekday(): Boolean = WeekdayList.contains(this)
+fun DayOfWeek.isWeekend(): Boolean = WeekendList.contains(this)
 

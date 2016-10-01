@@ -16,6 +16,7 @@
 
 package debop4k.timeperiod.timeranges
 
+import debop4k.core.collections.fastListOf
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
 import debop4k.timeperiod.MonthsPerQuarter
@@ -48,6 +49,10 @@ open class QuarterTimeRange @JvmOverloads constructor(moment: DateTime,
 
   fun monthSequence(): Sequence<MonthRange> {
     return monthSequence(start, quarterCount * MonthsPerQuarter, calendar)
+  }
+
+  fun months(): List<MonthRange> {
+    return fastListOf(monthSequence().iterator())
   }
 
 }

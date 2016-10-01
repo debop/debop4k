@@ -37,11 +37,21 @@ import org.joda.time.Duration
  *
  * @author sunghyouk.bae@gmail.com
  */
-open class DateDiff(val start: DateTime,
-                    val end: DateTime = now(),
-                    val calendar: ITimeCalendar = DefaultTimeCalendar) {
+open class DateDiff @JvmOverloads constructor(val start: DateTime,
+                                              val end: DateTime = now(),
+                                              val calendar: ITimeCalendar = DefaultTimeCalendar) {
 
   val log = loggerOf(javaClass)
+
+  companion object {
+    @JvmStatic
+    @JvmOverloads
+    fun of(start: DateTime,
+           end: DateTime = now(),
+           calendar: ITimeCalendar = DefaultTimeCalendar): DateDiff {
+      return DateDiff(start, end, calendar)
+    }
+  }
 
   val difference: Duration = Duration(start, end)
   val isEmpty: Boolean = (difference == Duration.ZERO)

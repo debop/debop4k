@@ -16,6 +16,7 @@
 
 package debop4k.timeperiod.timeranges
 
+import debop4k.core.collections.fastListOf
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
 import debop4k.timeperiod.models.Quarter
@@ -41,5 +42,9 @@ open class QuarterRangeCollection @JvmOverloads constructor(moment: DateTime,
 
   fun quarterSequence(): Sequence<QuarterRange> {
     return quarterSequence(start, quarterCount, calendar)
+  }
+
+  fun quarters(): List<QuarterRange> {
+    return fastListOf(quarterSequence().iterator())
   }
 }

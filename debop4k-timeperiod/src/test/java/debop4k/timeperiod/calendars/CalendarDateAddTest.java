@@ -23,17 +23,17 @@ import debop4k.timeperiod.models.Timepart;
 import debop4k.timeperiod.timeranges.DayRange;
 import debop4k.timeperiod.timeranges.HourRangeInDay;
 import debop4k.timeperiod.utils.Durations;
-import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.junit.Test;
+import org.slf4j.Logger;
 
-import static debop4k.core.kodatimes.KodaTimes.asDate;
-import static debop4k.core.kodatimes.KodaTimes.now;
+import static debop4k.core.kodatimes.KodaTimes.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 public class CalendarDateAddTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(CalendarDateAddTest.class);
 
   @Test
   public void noPeriodTest() {
@@ -137,7 +137,7 @@ public class CalendarDateAddTest extends AbstractTimePeriodTest {
 
     dateAdd.addWorkingWeekdays();
     dateAdd.getExcludePeriods().add(new DayRange(asDate(2011, 4, 4), dateAdd.getCalendar()));
-    dateAdd.getWorkingHours().add(HourRangeInDay.of(8, 18));
+    dateAdd.getWorkingHours().add(new HourRangeInDay(8, 18));
 
     DateTime start = asDateTime(2011, 4, 1, 9, 0);
 
@@ -152,7 +152,7 @@ public class CalendarDateAddTest extends AbstractTimePeriodTest {
 
     dateAdd.addWorkingWeekdays();
     dateAdd.getExcludePeriods().add(new DayRange(asDate(2011, 4, 4), dateAdd.getCalendar()));
-    dateAdd.getWorkingHours().add(HourRangeInDay.of(8, 18));
+    dateAdd.getWorkingHours().add(new HourRangeInDay(8, 18));
 
     DateTime start = asDateTime(2011, 4, 1, 9, 0);
 
@@ -169,8 +169,8 @@ public class CalendarDateAddTest extends AbstractTimePeriodTest {
 
     dateAdd.addWorkingWeekdays();
     dateAdd.getExcludePeriods().add(new DayRange(asDate(2011, 4, 4), dateAdd.getCalendar()));
-    dateAdd.getWorkingHours().add(HourRangeInDay.of(8, 12));
-    dateAdd.getWorkingHours().add(HourRangeInDay.of(13, 18));
+    dateAdd.getWorkingHours().add(new HourRangeInDay(8, 12));
+    dateAdd.getWorkingHours().add(new HourRangeInDay(13, 18));
 
     DateTime start = asDateTime(2011, 4, 1, 9, 0);
 
@@ -185,8 +185,8 @@ public class CalendarDateAddTest extends AbstractTimePeriodTest {
 
     dateAdd.addWorkingWeekdays();
     dateAdd.getExcludePeriods().add(new DayRange(asDate(2011, 4, 4), dateAdd.getCalendar()));
-    dateAdd.getWorkingHours().add(HourRangeInDay.of(Timepart.of(8, 30), Timepart.of(12)));
-    dateAdd.getWorkingHours().add(HourRangeInDay.of(Timepart.of(13, 30), Timepart.of(18)));
+    dateAdd.getWorkingHours().add(new HourRangeInDay(new Timepart(8, 30), new Timepart(12)));
+    dateAdd.getWorkingHours().add(new HourRangeInDay(new Timepart(13, 30), new Timepart(18)));
 
     DateTime start = asDateTime(2011, 4, 1, 9, 0);
 

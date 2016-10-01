@@ -16,6 +16,7 @@
 
 package debop4k.timeperiod.timeranges
 
+import debop4k.core.kodatimes.asDate
 import debop4k.core.kodatimes.today
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
@@ -28,6 +29,12 @@ import org.joda.time.DateTime
 open class DayRange @JvmOverloads constructor(startTime: DateTime = today(),
                                               calendar: ITimeCalendar = DefaultTimeCalendar)
 : DayTimeRange(startTime, 1, calendar) {
+
+  @JvmOverloads constructor(year: Int,
+                            monthOfYear: Int = 1,
+                            dayOfMonth: Int = 1,
+                            calendar: ITimeCalendar = DefaultTimeCalendar)
+  : this(asDate(year, monthOfYear, dayOfMonth), calendar)
 
   val year: Int get() = startYear
   val monthOfYear: Int get() = startMonthOfYear

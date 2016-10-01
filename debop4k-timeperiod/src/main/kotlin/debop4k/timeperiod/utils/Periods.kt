@@ -18,6 +18,7 @@
 
 package debop4k.timeperiod.utils
 
+import debop4k.core.NotSupportedException
 import debop4k.core.collections.parMap
 import debop4k.core.kodatimes.*
 import debop4k.core.utils.NULL_STRING
@@ -129,6 +130,28 @@ fun DateTime.periodOf(unit: PeriodUnit, calendar: ITimeCalendar = DefaultTimeCal
     PeriodUnit.SECOND -> TimeRange(this.startTimeOfSecond(), 1.seconds().duration)
     else ->
       throw UnsupportedOperationException("지원하지 않는 Period Unit 입니다. unit=$unit")
+  }
+}
+
+@JvmOverloads
+fun DateTime.periodOf(unit: PeriodUnit,
+                      periodCount: Int,
+                      calendar: ITimeCalendar = DefaultTimeCalendar): CalendarTimeRange {
+  when (unit) {
+    PeriodUnit.YEAR -> return YearTimeRange(this, periodCount, calendar)
+    PeriodUnit.HALFYEAR -> return HalfyearTimeRange(this, periodCount, calendar)
+    PeriodUnit.QUARTER -> return QuarterTimeRange(this, periodCount, calendar)
+    PeriodUnit.MONTH -> return MonthTimeRange(this, periodCount, calendar)
+    PeriodUnit.WEEK -> return WeekTimeRange(this, periodCount, calendar)
+    PeriodUnit.DAY -> return DayTimeRange(this, periodCount, calendar)
+    PeriodUnit.HOUR -> return HourTimeRange(this, periodCount, calendar)
+    PeriodUnit.MINUTE -> return MinuteTimeRange(this, periodCount, calendar)
+    PeriodUnit.SECOND -> {
+      val start = this.trimToMillis()
+      return CalendarTimeRange.of(start, start.plusSeconds(periodCount), calendar)
+    }
+
+    else -> throw NotSupportedException("지원하지 않는 PeriodUnit 입니다. unit=" + unit)
   }
 }
 
@@ -244,7 +267,7 @@ fun ITimePeriod.assertMutable(): Unit {
   assert(!this.readonly, { "ITimePeriod 가 읽기전용입니다." })
 }
 
-fun ITimePeriod.periodSequence(unit: PeriodUnit): FastList<out ITimePeriod> = when (unit) {
+fun ITimePeriod.periodSequence(unit: PeriodUnit): FastList<ITimePeriod> = when (unit) {
   PeriodUnit.YEAR -> this.yearSequence()
   PeriodUnit.HALFYEAR -> this.halfyearSequence()
   PeriodUnit.QUARTER -> this.quarterSequence()
@@ -257,7 +280,7 @@ fun ITimePeriod.periodSequence(unit: PeriodUnit): FastList<out ITimePeriod> = wh
 }
 
 // TODO: 실제로 Iterator 를 만들던가 Sequence 를 이용하여 만들던가 해야 한다
-fun ITimePeriod.yearSequence(): FastList<out ITimePeriod> {
+fun ITimePeriod.yearSequence(): FastList<ITimePeriod> {
   val years = FastList.newList<ITimePeriod>()
 
   if (this.isAnyTime())
@@ -287,7 +310,7 @@ fun ITimePeriod.yearSequence(): FastList<out ITimePeriod> {
 }
 
 
-fun ITimePeriod.halfyearSequence(): FastList<out ITimePeriod> {
+fun ITimePeriod.halfyearSequence(): FastList<ITimePeriod> {
   val halfyears = FastList.newList<ITimePeriod>()
 
   if (this.isAnyTime())
@@ -323,7 +346,7 @@ fun ITimePeriod.halfyearSequence(): FastList<out ITimePeriod> {
   return halfyears
 }
 
-fun ITimePeriod.quarterSequence(): FastList<out ITimePeriod> {
+fun ITimePeriod.quarterSequence(): FastList<ITimePeriod> {
   val quarters = FastList.newList<ITimePeriod>()
 
   if (this.isAnyTime()) {
@@ -359,7 +382,7 @@ fun ITimePeriod.quarterSequence(): FastList<out ITimePeriod> {
   return quarters
 }
 
-fun ITimePeriod.monthSequence(): FastList<out ITimePeriod> {
+fun ITimePeriod.monthSequence(): FastList<ITimePeriod> {
   val months = FastList.newList<ITimePeriod>()
 
   if (isAnyTime()) {
@@ -392,7 +415,7 @@ fun ITimePeriod.monthSequence(): FastList<out ITimePeriod> {
   return months
 }
 
-fun ITimePeriod.weekSequence(): FastList<out ITimePeriod> {
+fun ITimePeriod.weekSequence(): FastList<ITimePeriod> {
   val weeks = FastList.newList<ITimePeriod>()
   if (isAnyTime()) {
     return weeks
@@ -429,7 +452,7 @@ fun ITimePeriod.weekSequence(): FastList<out ITimePeriod> {
   return weeks
 }
 
-fun ITimePeriod.daySequence(): FastList<out ITimePeriod> {
+fun ITimePeriod.daySequence(): FastList<ITimePeriod> {
   val days = FastList.newList<ITimePeriod>()
 
   if (isAnyTime()) {
@@ -461,7 +484,7 @@ fun ITimePeriod.daySequence(): FastList<out ITimePeriod> {
 
 }
 
-fun ITimePeriod.hourSequence(): FastList<out ITimePeriod> {
+fun ITimePeriod.hourSequence(): FastList<ITimePeriod> {
   val hours = FastList.newList<ITimePeriod>()
 
   if (isAnyTime()) {
@@ -492,7 +515,7 @@ fun ITimePeriod.hourSequence(): FastList<out ITimePeriod> {
   return hours
 }
 
-fun ITimePeriod.minuteSequence(): FastList<out ITimePeriod> {
+fun ITimePeriod.minuteSequence(): FastList<ITimePeriod> {
   val minutes = FastList.newList<ITimePeriod>()
 
   if (isAnyTime()) {

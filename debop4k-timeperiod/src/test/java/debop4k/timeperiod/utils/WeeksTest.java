@@ -20,20 +20,20 @@ import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeSpec;
 import debop4k.timeperiod.models.YearWeek;
 import debop4k.timeperiod.timeranges.WeekRange;
-import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.junit.Test;
+import org.slf4j.Logger;
 
-import static debop4k.timeperiod.utils.Times.*;
+import static debop4k.core.kodatimes.KodaTimes.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 public class WeeksTest extends AbstractTimePeriodTest {
 
   public static final DateTime[] testTimes = new DateTime[]{
       asDate(2003, 12, 28)
   };
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(WeeksTest.class);
 
   @Test
   public void getYearAndWeek() {
@@ -66,15 +66,15 @@ public class WeeksTest extends AbstractTimePeriodTest {
       WeekRange startWeekRange = new WeekRange(year, 1);
       log.trace("year={}, startWeekRange={}", year, startWeekRange);
 
-      assertThat(new Duration(asDate(year - 1, 12, 28), startWeekRange.startDayOfStart()).getStandardDays()).isGreaterThan(0);
-      assertThat(new Duration(asDate(year, 1, 3), startWeekRange.startDayOfEnd()).getStandardDays()).isGreaterThan(0);
+      assertThat(new Duration(asDate(year - 1, 12, 28), startWeekRange.getStartDayOfStart()).getStandardDays()).isGreaterThan(0);
+      assertThat(new Duration(asDate(year, 1, 3), startWeekRange.getStartDayOfEnd()).getStandardDays()).isGreaterThan(0);
     }
   }
 
   @Test
   public void getEndYearAndWeekTest() {
     for (int year = 1980; year < 2100; year++) {
-      YearWeek yw = lastWeekOfYear(year);
+      YearWeek yw = Times.lastWeekOfYear(year);
       assertThat(year).isEqualTo(yw.getWeekyear());
       assertThat(yw.getWeekOfWeekyear()).isGreaterThanOrEqualTo(52);
     }
@@ -83,19 +83,19 @@ public class WeeksTest extends AbstractTimePeriodTest {
   @Test
   public void getEndWeekRangeOfYear() {
     for (int year = 2000; year < 2100; year++) {
-      WeekRange startWeekRange = startWeekRangeOfYear(year);
-      WeekRange endWeekRange = endWeekRangeOfYear(year - 1);
+      WeekRange startWeekRange = Times.startWeekRangeOfYear(year);
+      WeekRange endWeekRange = Times.endWeekRangeOfYear(year - 1);
 
       log.trace("year=[{}], startWeek=[{}], endWeek=[{}]",
-                year, startWeekRange.startDayOfStart(), endWeekRange.startDayOfStart());
+                year, startWeekRange.getStartDayOfStart(), endWeekRange.getStartDayOfStart());
 
-      assertThat(new Duration(asDate(year - 1, 12, 28), startWeekRange.startDayOfStart()).getStandardDays())
+      assertThat(new Duration(asDate(year - 1, 12, 28), startWeekRange.getStartDayOfStart()).getStandardDays())
           .isGreaterThan(0);
-      assertThat(new Duration(asDate(year, 1, 3), startWeekRange.startDayOfEnd()).getStandardDays())
+      assertThat(new Duration(asDate(year, 1, 3), startWeekRange.getStartDayOfEnd()).getStandardDays())
           .isGreaterThan(0);
 
-      assertThat(endWeekRange.startDayOfStart().plusWeeks(1)).isEqualTo(startWeekRange.startDayOfStart());
-      assertThat(endWeekRange.startDayOfEnd().plusDays(1)).isEqualTo(startWeekRange.startDayOfStart());
+      assertThat(endWeekRange.getStartDayOfStart().plusWeeks(1)).isEqualTo(startWeekRange.getStartDayOfStart());
+      assertThat(endWeekRange.getStartDayOfEnd().plusDays(1)).isEqualTo(startWeekRange.getStartDayOfStart());
     }
   }
 
@@ -135,12 +135,12 @@ public class WeeksTest extends AbstractTimePeriodTest {
       final int maxAddWeeks = 40;
 
       YearWeek prevResult = null;
-      YearWeek maxWeek = maxWeekOfYear(year);
+      YearWeek maxWeek = Times.maxWeekOfYear(year);
 
       for (int week = 1; week < maxWeek.getWeekOfWeekyear(); week += step) {
         for (int addWeeks = -maxAddWeeks; addWeeks <= maxAddWeeks; addWeeks += step) {
           YearWeek current = new YearWeek(year, week);
-          YearWeek result = addWeeks(current, addWeeks);
+          YearWeek result = current.plus(addWeeks);
 
           log.trace("current={}, result={}, addWeeks={}", current, result, addWeeks);
           if (addWeeks != 0 && prevResult != null) {

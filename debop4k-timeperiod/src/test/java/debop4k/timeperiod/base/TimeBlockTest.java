@@ -25,17 +25,17 @@ import debop4k.timeperiod.samples.TimeBlockPeriodRelationTestData;
 import debop4k.timeperiod.utils.Durations;
 import debop4k.timeperiod.utils.Periods;
 import debop4k.timeperiod.utils.Times;
-import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@Slf4j
 public class TimeBlockTest extends AbstractTimePeriodTest {
 
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(TimeBlockTest.class);
   private final Duration duration = Durations.Hour;
   private final Duration offset = Durations.Second;
 

@@ -17,17 +17,21 @@
 package debop4k.timeperiod.timeranges;
 
 import debop4k.timeperiod.AbstractTimePeriodTest;
-import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.slf4j.Logger;
 
-import static debop4k.timeperiod.TimeCalendar.emptyOffset;
-import static debop4k.timeperiod.utils.Times.*;
+import static debop4k.core.kodatimes.KodaTimes.asDate;
+import static debop4k.core.kodatimes.KodaTimes.now;
+import static debop4k.timeperiod.TimeCalendar.EMPTY_OFFSET;
+import static debop4k.timeperiod.utils.Times.currentYear;
+import static debop4k.timeperiod.utils.Times.startTimeOfYear;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@Slf4j
 public class YearRangeTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(YearRangeTest.class);
 
   @Test
   public void initValuesTest() {
@@ -35,7 +39,7 @@ public class YearRangeTest extends AbstractTimePeriodTest {
     DateTime thisYear = startTimeOfYear(now);
     DateTime nextYear = thisYear.plusYears(1);
 
-    YearRange yearRange = YearRange.of(now, emptyOffset());
+    YearRange yearRange = new YearRange(now, EMPTY_OFFSET);
 
     assertThat(yearRange.getStart().getYear()).isEqualTo(thisYear.getYear());
     assertThat(yearRange.getStart()).isEqualTo(thisYear);
@@ -46,13 +50,13 @@ public class YearRangeTest extends AbstractTimePeriodTest {
   public void startYear() {
     int currentYear = currentYear().getYear();
 
-    assertThat(YearRange.of(asDate(2008, 7, 28)).getYear()).isEqualTo(2008);
+    assertThat(new YearRange(asDate(2008, 7, 28)).getYear()).isEqualTo(2008);
   }
 
   @Test
   public void yearIndex() {
     int yearIndex = 1994;
-    YearRange yearRange = new YearRange(yearIndex, emptyOffset());
+    YearRange yearRange = new YearRange(yearIndex, EMPTY_OFFSET);
     assertThat(yearRange.isReadonly()).isTrue();
     assertThat(yearRange.getStart()).isEqualTo(startTimeOfYear(yearIndex));
     assertThat(yearRange.getEnd()).isEqualTo(startTimeOfYear(yearIndex + 1));
@@ -63,11 +67,11 @@ public class YearRangeTest extends AbstractTimePeriodTest {
 
     final DateTime now = now();
     final DateTime startYear = startTimeOfYear(now);
-    final YearRange yearRange = YearRange.of(now);
+    final YearRange yearRange = new YearRange(now);
 
 
-    assertThat(yearRange.prevYear().getStart()).isEqualTo(startYear.plusYears(-1));
-    assertThat(yearRange.nextYear().getStart()).isEqualTo(startYear.plusYears(1));
+    assertThat(yearRange.getPrevYear().getStart()).isEqualTo(startYear.plusYears(-1));
+    assertThat(yearRange.getNextYear().getStart()).isEqualTo(startYear.plusYears(1));
 
     assertThat(yearRange.addYears(0)).isEqualTo(yearRange);
 

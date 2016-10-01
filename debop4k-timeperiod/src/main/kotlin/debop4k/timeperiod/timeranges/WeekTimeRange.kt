@@ -16,6 +16,7 @@
 
 package debop4k.timeperiod.timeranges
 
+import debop4k.core.collections.fastListOf
 import debop4k.core.kodatimes.today
 import debop4k.timeperiod.DaysPerWeek
 import debop4k.timeperiod.DefaultTimeCalendar
@@ -41,6 +42,11 @@ open class WeekTimeRange @JvmOverloads constructor(startTime: DateTime = today()
   val endWeekyear: Int get() = end.weekyear
   val endWeekOfWeekyear: Int get() = end.weekOfWeekyear
 
-  fun daySequence(): Sequence<DayRange>
-      = daySequence(start, weekCount * DaysPerWeek, calendar)
+  fun daySequence(): Sequence<DayRange> {
+    return daySequence(start, weekCount * DaysPerWeek, calendar)
+  }
+
+  fun days(): List<DayRange> {
+    return fastListOf(daySequence().iterator())
+  }
 }

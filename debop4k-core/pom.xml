@@ -35,11 +35,6 @@
       <groupId>javax.inject</groupId>
       <artifactId>javax.inject</artifactId>
     </dependency>
-    <dependency>
-      <groupId>com.google.code.findbugs</groupId>
-      <artifactId>findbugs</artifactId>
-      <optional>true</optional>
-    </dependency>
 
     <dependency>
       <groupId>commons-codec</groupId>

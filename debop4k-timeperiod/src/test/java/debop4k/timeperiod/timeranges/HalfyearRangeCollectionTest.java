@@ -16,28 +16,30 @@
 
 package debop4k.timeperiod.timeranges;
 
+import debop4k.core.kodatimes.KodaTimes;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.models.Halfyear;
 import debop4k.timeperiod.utils.Times;
-import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 public class HalfyearRangeCollectionTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(HalfyearRangeCollectionTest.class);
 
   @Test
   public void yearBaseMonthTest() {
 
-    DateTime moment = Times.asDate(2009, 2, 15);
+    DateTime moment = KodaTimes.asDate(2009, 2, 15);
     int year = Times.yearOf(moment.getYear(), moment.getMonthOfYear());
-    HalfyearRangeCollection halfyears = HalfyearRangeCollection.of(moment, 3);
+    HalfyearRangeCollection halfyears = new HalfyearRangeCollection(moment, 3);
 
-    assertThat(halfyears.getStart()).isEqualTo(Times.asDate(year, 1, 1));
+    assertThat(halfyears.getStart()).isEqualTo(KodaTimes.asDate(year, 1, 1));
   }
 
   @Test
@@ -45,14 +47,14 @@ public class HalfyearRangeCollectionTest extends AbstractTimePeriodTest {
     final int startYear = 2004;
     final Halfyear startHalfyear = Halfyear.Second;
 
-    HalfyearRangeCollection halfyears = HalfyearRangeCollection.of(startYear, startHalfyear, 1);
+    HalfyearRangeCollection halfyears = new HalfyearRangeCollection(startYear, startHalfyear, 1);
 
     assertThat(halfyears.getHalfyearCount()).isEqualTo(1);
     assertThat(halfyears.getHalfyearOfStart()).isEqualTo(startHalfyear);
     assertThat(halfyears.getEndYear()).isEqualTo(startYear);
     assertThat(halfyears.getHalfyearOfEnd()).isEqualTo(startHalfyear);
 
-    List<HalfyearRange> halfyearList = halfyears.halfyearStream();
+    List<HalfyearRange> halfyearList = halfyears.halfyears();
     assertThat(halfyearList.size()).isEqualTo(1);
     assertThat(halfyearList.get(0).isSamePeriod(new HalfyearRange(2004, Halfyear.Second))).isTrue();
   }
@@ -63,14 +65,14 @@ public class HalfyearRangeCollectionTest extends AbstractTimePeriodTest {
     final Halfyear startHalfyear = Halfyear.First;
     final int halfyearCount = 3;
 
-    HalfyearRangeCollection halfyears = HalfyearRangeCollection.of(startYear, startHalfyear, halfyearCount);
+    HalfyearRangeCollection halfyears = new HalfyearRangeCollection(startYear, startHalfyear, halfyearCount);
 
     assertThat(halfyears.getHalfyearCount()).isEqualTo(halfyearCount);
     assertThat(halfyears.getHalfyearOfStart()).isEqualTo(startHalfyear);
     assertThat(halfyears.getEndYear()).isEqualTo(startYear + 1);
     assertThat(halfyears.getHalfyearOfEnd()).isEqualTo(Halfyear.First);
 
-    List<HalfyearRange> halfyearList = halfyears.halfyearStream();
+    List<HalfyearRange> halfyearList = halfyears.halfyears();
 
     assertThat(halfyearList.size()).isEqualTo(halfyearCount);
     assertThat(halfyearList.get(0).isSamePeriod(new HalfyearRange(2004, Halfyear.First))).isTrue();
@@ -84,14 +86,14 @@ public class HalfyearRangeCollectionTest extends AbstractTimePeriodTest {
     final Halfyear startHalfyear = Halfyear.Second;
     final int halfyearCount = 3;
 
-    HalfyearRangeCollection halfyears = HalfyearRangeCollection.of(startYear, startHalfyear, halfyearCount);
+    HalfyearRangeCollection halfyears = new HalfyearRangeCollection(startYear, startHalfyear, halfyearCount);
 
     assertThat(halfyears.getHalfyearCount()).isEqualTo(halfyearCount);
     assertThat(halfyears.getHalfyearOfStart()).isEqualTo(startHalfyear);
     assertThat(halfyears.getEndYear()).isEqualTo(startYear + 1);
     assertThat(halfyears.getHalfyearOfEnd()).isEqualTo(Halfyear.Second);
 
-    List<HalfyearRange> halfyearList = halfyears.halfyearStream();
+    List<HalfyearRange> halfyearList = halfyears.halfyears();
 
     assertThat(halfyearList.size()).isEqualTo(halfyearCount);
     assertThat(halfyearList.get(0).isSamePeriod(new HalfyearRange(2004, Halfyear.Second))).isTrue();

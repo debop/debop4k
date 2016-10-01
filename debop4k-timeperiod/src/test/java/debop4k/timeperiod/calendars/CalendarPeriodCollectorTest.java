@@ -23,15 +23,16 @@ import debop4k.timeperiod.models.DayOfWeek;
 import debop4k.timeperiod.models.Month;
 import debop4k.timeperiod.models.Timepart;
 import debop4k.timeperiod.timeranges.*;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+import org.slf4j.Logger;
 
-import static debop4k.timeperiod.utils.Times.asDate;
-import static debop4k.timeperiod.utils.Times.asDateTime;
+import static debop4k.core.kodatimes.KodaTimes.asDate;
+import static debop4k.core.kodatimes.KodaTimes.asDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 public class CalendarPeriodCollectorTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(CalendarPeriodCollectorTest.class);
 
   @Test
   public void collectYearsTest() {
@@ -51,7 +52,7 @@ public class CalendarPeriodCollectorTest extends AbstractTimePeriodTest {
     for (int i = 0; i < collector.getPeriods().size(); i++) {
       ITimePeriod period = collector.getPeriods().get(i);
       log.trace("period=[{}]", period);
-      assertThat(period.isSamePeriod(YearRange.of((int) filter.getYears().get(i)))).isTrue();
+      assertThat(period.isSamePeriod(new YearRange(filter.getYears().get(i)))).isTrue();
     }
   }
 
@@ -59,7 +60,7 @@ public class CalendarPeriodCollectorTest extends AbstractTimePeriodTest {
   public void collectMonthsTest() {
     CalendarPeriodCollectorFilter filter = new CalendarPeriodCollectorFilter();
 
-    filter.getMonthOfYears().add(Month.January.getValue());
+    filter.getMonthOfYears().add(Month.JANUARY.getValue());
 
     ITimePeriod limits = CalendarTimeRange.of(asDate(2010, 1, 1), asDate(2011, 12, 31));
     CalendarPeriodCollector collector = CalendarPeriodCollector.of(filter, limits);
@@ -78,7 +79,7 @@ public class CalendarPeriodCollectorTest extends AbstractTimePeriodTest {
     CalendarPeriodCollectorFilter filter = new CalendarPeriodCollectorFilter();
 
     // 1월의 금요일만 추출
-    filter.getMonthOfYears().add(Month.January.getValue());
+    filter.getMonthOfYears().add(Month.JANUARY.getValue());
     filter.getWeekOfDays().add(DayOfWeek.FRIDAY);
 
     ITimePeriod limits = CalendarTimeRange.of(asDate(2010, 1, 1), asDate(2011, 12, 31));
@@ -110,9 +111,9 @@ public class CalendarPeriodCollectorTest extends AbstractTimePeriodTest {
     CalendarPeriodCollectorFilter filter = new CalendarPeriodCollectorFilter();
 
     // 1월의 금요일의 08:00~18:00 추출
-    filter.getMonthOfYears().add(Month.January.getValue());
+    filter.getMonthOfYears().add(Month.JANUARY.getValue());
     filter.getWeekOfDays().add(DayOfWeek.FRIDAY);
-    filter.getCollectingHours().add(HourRangeInDay.of(8, 18));
+    filter.getCollectingHours().add(new HourRangeInDay(8, 18));
 
     ITimePeriod limits = CalendarTimeRange.of(asDate(2010, 1, 1), asDate(2011, 12, 31));
     CalendarPeriodCollector collector = CalendarPeriodCollector.of(filter, limits);
@@ -142,7 +143,7 @@ public class CalendarPeriodCollectorTest extends AbstractTimePeriodTest {
     CalendarPeriodCollectorFilter filter = new CalendarPeriodCollectorFilter();
 
     // 1월의 금요일의 08:30~18:30 추출
-    filter.getMonthOfYears().add(Month.January.getValue());
+    filter.getMonthOfYears().add(Month.JANUARY.getValue());
     filter.getWeekOfDays().add(DayOfWeek.FRIDAY);
     filter.getCollectingHours().add(new HourRangeInDay(Timepart.of(8, 30), Timepart.of(18, 50)));
 
@@ -215,10 +216,10 @@ public class CalendarPeriodCollectorTest extends AbstractTimePeriodTest {
 
 
     // 2011 년 26주차 ~ 27주차 (여름휴가)
-    CalendarPeriodCollectorFilter filter3 = CalendarPeriodCollectorFilter.of();
+    CalendarPeriodCollectorFilter filter3 = new CalendarPeriodCollectorFilter();
     filter3.addWorkingWeekdays();
     filter3.getExcludePeriods().add(new MonthRange(2011, 3));
-    filter3.getExcludePeriods().add(WeekRangeCollection.of(2011, 26, 2));
+    filter3.getExcludePeriods().add(new WeekRangeCollection(2011, 26, 2));
 
     CalendarPeriodCollector collector3 = CalendarPeriodCollector.of(filter3, year2011);
     collector3.collectDays();

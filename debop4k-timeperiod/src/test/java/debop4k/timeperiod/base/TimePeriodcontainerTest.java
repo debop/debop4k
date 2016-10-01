@@ -19,14 +19,15 @@ package debop4k.timeperiod.base;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimePeriodContainer;
 import debop4k.timeperiod.TimeRange;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 import static debop4k.core.kodatimes.KodaTimes.asDate;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 public class TimePeriodcontainerTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(TimePeriodcontainerTest.class);
 
   @Test
   public void testConstructor() {

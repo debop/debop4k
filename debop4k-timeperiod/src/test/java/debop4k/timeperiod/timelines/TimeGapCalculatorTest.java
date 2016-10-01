@@ -24,22 +24,24 @@ import debop4k.timeperiod.timeranges.DayRangeCollection;
 import debop4k.timeperiod.timeranges.MonthRange;
 import debop4k.timeperiod.utils.Durations;
 import debop4k.timeperiod.utils.Times;
-import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.slf4j.Logger;
 
+import static debop4k.core.kodatimes.KodaTimes.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@Slf4j
 public class TimeGapCalculatorTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(TimeGapCalculatorTest.class);
 
   @Test
   public void noPeriods() {
     TimeRange limits = new TimeRange(asDate(2011, 3, 1), asDate(2011, 3, 5));
     TimeGapCalculator calculator = new TimeGapCalculator();
 
-    ITimePeriodCollection gaps = calculator.gaps(TimePeriodCollection.with(), limits);
+    ITimePeriodCollection gaps = calculator.gaps(TimePeriodCollection.of(), limits);
     assertThat(gaps.size()).isEqualTo(1);
     assertThat(gaps.get(0).isSamePeriod(limits)).isTrue();
   }
@@ -48,7 +50,7 @@ public class TimeGapCalculatorTest extends AbstractTimePeriodTest {
   public void periodEqualsLimits() {
     TimeRange limits = new TimeRange(asDate(2011, 3, 1), asDate(2011, 3, 5));
     TimeGapCalculator calculator = new TimeGapCalculator();
-    ITimePeriodCollection excludePeriods = TimePeriodCollection.with(limits);
+    ITimePeriodCollection excludePeriods = TimePeriodCollection.of(limits);
 
     ITimePeriodCollection gaps = calculator.gaps(excludePeriods, limits);
     assertThat(gaps.size()).isEqualTo(0);
@@ -58,7 +60,7 @@ public class TimeGapCalculatorTest extends AbstractTimePeriodTest {
   public void periodLargetThanLimits() {
     TimeRange limits = new TimeRange(asDate(2011, 3, 1), asDate(2011, 3, 5));
     TimeGapCalculator calculator = new TimeGapCalculator();
-    ITimePeriodCollection excludePeriods = TimePeriodCollection.with(new TimeRange(asDate(2011, 2, 1), asDate(2011, 4, 1)));
+    ITimePeriodCollection excludePeriods = TimePeriodCollection.of(new TimeRange(asDate(2011, 2, 1), asDate(2011, 4, 1)));
 
     ITimePeriodCollection gaps = calculator.gaps(excludePeriods, limits);
     assertThat(gaps.size()).isEqualTo(0);
@@ -70,8 +72,8 @@ public class TimeGapCalculatorTest extends AbstractTimePeriodTest {
     TimeGapCalculator calculator = new TimeGapCalculator();
 
     ITimePeriodCollection excludePeriods =
-        TimePeriodCollection.with(new TimeRange(asDate(2011, 2, 1), asDate(2011, 2, 5)),
-                                  new TimeRange(asDate(2011, 4, 1), asDate(2011, 4, 5)));
+        TimePeriodCollection.of(new TimeRange(asDate(2011, 2, 1), asDate(2011, 2, 5)),
+                                new TimeRange(asDate(2011, 4, 1), asDate(2011, 4, 5)));
 
     ITimePeriodCollection gaps = calculator.gaps(excludePeriods, limits);
     assertThat(gaps.size()).isEqualTo(1);
@@ -84,8 +86,8 @@ public class TimeGapCalculatorTest extends AbstractTimePeriodTest {
     TimeGapCalculator calculator = new TimeGapCalculator();
 
     ITimePeriodCollection excludePeriods =
-        TimePeriodCollection.with(new TimeRange(asDate(2011, 2, 1), asDate(2011, 3, 5)),
-                                  new TimeRange(asDate(2011, 3, 20), asDate(2011, 4, 15)));
+        TimePeriodCollection.of(new TimeRange(asDate(2011, 2, 1), asDate(2011, 3, 5)),
+                                new TimeRange(asDate(2011, 3, 20), asDate(2011, 4, 15)));
 
     ITimePeriodCollection gaps = calculator.gaps(excludePeriods, limits);
     assertThat(gaps.size()).isEqualTo(1);
@@ -98,7 +100,7 @@ public class TimeGapCalculatorTest extends AbstractTimePeriodTest {
     TimeGapCalculator calculator = new TimeGapCalculator();
 
     TimeRange excludeRange = new TimeRange(asDate(2011, 3, 10), asDate(2011, 3, 15));
-    ITimePeriodCollection excludePeriods = TimePeriodCollection.with(excludeRange);
+    ITimePeriodCollection excludePeriods = TimePeriodCollection.of(excludeRange);
 
     ITimePeriodCollection gaps = calculator.gaps(excludePeriods, limits);
     assertThat(gaps.size()).isEqualTo(2);
@@ -112,7 +114,7 @@ public class TimeGapCalculatorTest extends AbstractTimePeriodTest {
     TimeGapCalculator calculator = new TimeGapCalculator();
 
     ITimePeriodCollection excludePeriods =
-        TimePeriodCollection.with(new TimeRange(asDate(2011, 3, 1), asDate(2011, 3, 10)));
+        TimePeriodCollection.of(new TimeRange(asDate(2011, 3, 1), asDate(2011, 3, 10)));
 
 
     ITimePeriodCollection gaps = calculator.gaps(excludePeriods, limits);
@@ -126,7 +128,7 @@ public class TimeGapCalculatorTest extends AbstractTimePeriodTest {
     TimeGapCalculator calculator = new TimeGapCalculator();
 
     ITimePeriodCollection excludePeriods =
-        TimePeriodCollection.with(new TimeRange(asDate(2011, 3, 10), asDate(2011, 3, 20)));
+        TimePeriodCollection.of(new TimeRange(asDate(2011, 3, 10), asDate(2011, 3, 20)));
 
     ITimePeriodCollection gaps = calculator.gaps(excludePeriods, limits);
     assertThat(gaps.size()).isEqualTo(1);
@@ -139,7 +141,7 @@ public class TimeGapCalculatorTest extends AbstractTimePeriodTest {
     TimeGapCalculator calculator = new TimeGapCalculator();
 
     ITimePeriodCollection excludePeriods =
-        TimePeriodCollection.with(new TimeRange(asDate(2011, 3, 10), asDate(2011, 3, 10)));
+        TimePeriodCollection.of(new TimeRange(asDate(2011, 3, 10), asDate(2011, 3, 10)));
 
     // Gap 검사 시에 Moment는 제외된다!!!
 
@@ -154,9 +156,9 @@ public class TimeGapCalculatorTest extends AbstractTimePeriodTest {
     TimeGapCalculator calculator = new TimeGapCalculator();
 
     ITimePeriodCollection excludePeriods =
-        TimePeriodCollection.with(new TimeRange(asDateTime(2011, 3, 30, 0, 0), asDateTime(2011, 3, 30, 8, 30)),
-                                  new TimeRange(asDateTime(2011, 3, 30, 8, 30), asDateTime(2011, 3, 30, 12, 0)),
-                                  new TimeRange(asDateTime(2011, 3, 30, 10, 0), asDateTime(2011, 3, 31, 0, 0)));
+        TimePeriodCollection.of(new TimeRange(asDateTime(2011, 3, 30, 0, 0), asDateTime(2011, 3, 30, 8, 30)),
+                                new TimeRange(asDateTime(2011, 3, 30, 8, 30), asDateTime(2011, 3, 30, 12, 0)),
+                                new TimeRange(asDateTime(2011, 3, 30, 10, 0), asDateTime(2011, 3, 31, 0, 0)));
 
     ITimePeriodCollection gaps = calculator.gaps(excludePeriods, limits);
     assertThat(gaps.size()).isEqualTo(2);
@@ -170,9 +172,9 @@ public class TimeGapCalculatorTest extends AbstractTimePeriodTest {
     TimeGapCalculator calculator = new TimeGapCalculator();
 
     ITimePeriodCollection excludePeriods =
-        TimePeriodCollection.with(new TimeRange(asDateTime(2011, 3, 30, 0, 0), asDateTime(2011, 3, 31, 0, 0)),
-                                  new TimeRange(asDateTime(2011, 3, 30, 0, 0), asDateTime(2011, 3, 30, 12, 0)),
-                                  new TimeRange(asDateTime(2011, 3, 30, 12, 0), asDateTime(2011, 3, 31, 0, 0)));
+        TimePeriodCollection.of(new TimeRange(asDateTime(2011, 3, 30, 0, 0), asDateTime(2011, 3, 31, 0, 0)),
+                                new TimeRange(asDateTime(2011, 3, 30, 0, 0), asDateTime(2011, 3, 30, 12, 0)),
+                                new TimeRange(asDateTime(2011, 3, 30, 12, 0), asDateTime(2011, 3, 31, 0, 0)));
 
     ITimePeriodCollection gaps = calculator.gaps(excludePeriods, limits);
     assertThat(gaps.size()).isEqualTo(2);
@@ -186,10 +188,10 @@ public class TimeGapCalculatorTest extends AbstractTimePeriodTest {
     TimeGapCalculator calculator = new TimeGapCalculator();
 
     ITimePeriodCollection excludePeriods =
-        TimePeriodCollection.with(new TimeRange(asDateTime(2011, 3, 30, 0, 0), asDateTime(2011, 3, 31, 0, 0)),
-                                  new TimeRange(asDateTime(2011, 3, 30, 0, 0), asDateTime(2011, 3, 30, 6, 30)),
-                                  new TimeRange(asDateTime(2011, 3, 30, 8, 30), asDateTime(2011, 3, 30, 12, 0)),
-                                  new TimeRange(asDateTime(2011, 3, 30, 22, 30), asDateTime(2011, 3, 31, 0, 0)));
+        TimePeriodCollection.of(new TimeRange(asDateTime(2011, 3, 30, 0, 0), asDateTime(2011, 3, 31, 0, 0)),
+                                new TimeRange(asDateTime(2011, 3, 30, 0, 0), asDateTime(2011, 3, 30, 6, 30)),
+                                new TimeRange(asDateTime(2011, 3, 30, 8, 30), asDateTime(2011, 3, 30, 12, 0)),
+                                new TimeRange(asDateTime(2011, 3, 30, 22, 30), asDateTime(2011, 3, 31, 0, 0)));
 
     ITimePeriodCollection gaps = calculator.gaps(excludePeriods, limits);
     assertThat(gaps.size()).isEqualTo(2);
@@ -203,8 +205,8 @@ public class TimeGapCalculatorTest extends AbstractTimePeriodTest {
     TimeGapCalculator calculator = new TimeGapCalculator();
 
     ITimePeriodCollection excludePeriods =
-        TimePeriodCollection.with(new TimeRange(asDateTime(2011, 3, 30), asDateTime(2011, 3, 31)),
-                                  new TimeRange(asDateTime(2011, 3, 30), asDateTime(2011, 3, 31)));
+        TimePeriodCollection.of(new TimeRange(asDateTime(2011, 3, 30), asDateTime(2011, 3, 31)),
+                                new TimeRange(asDateTime(2011, 3, 30), asDateTime(2011, 3, 31)));
 
     ITimePeriodCollection gaps = calculator.gaps(excludePeriods, limits);
     assertThat(gaps.size()).isEqualTo(2);
@@ -271,20 +273,20 @@ public class TimeGapCalculatorTest extends AbstractTimePeriodTest {
 
   @Test
   public void calendarGetGap() {
-    ITimeCalendar[] timeCalendars = new TimeCalendar[]{TimeCalendar.of(), TimeCalendar.emptyOffset()};
+    ITimeCalendar[] timeCalendars = new TimeCalendar[]{TimeCalendar.of(), TimeCalendar.EMPTY_OFFSET};
 
     for (ITimeCalendar timeCalendar : timeCalendars) {
 
       // simulation of same reservations
       TimePeriodCollection excludePeriods =
-          TimePeriodCollection.with(DayRangeCollection.of(asDate(2011, 3, 7), 2, timeCalendar),
-                                    DayRangeCollection.of(asDate(2011, 3, 16), 2, timeCalendar));
+          TimePeriodCollection.of(new DayRangeCollection(asDate(2011, 3, 7), 2, timeCalendar),
+                                  new DayRangeCollection(asDate(2011, 3, 16), 2, timeCalendar));
 
       // the overall search range
       ITimePeriod limits = CalendarTimeRange.of(asDate(2011, 3, 4), asDate(2011, 3, 21), timeCalendar);
-      DayRangeCollection days = DayRangeCollection.of(limits.getStart(),
-                                                      (int) limits.getDuration().getStandardDays() + 1,
-                                                      timeCalendar);
+      DayRangeCollection days = new DayRangeCollection(limits.getStart(),
+                                                       (int) limits.getDuration().getStandardDays() + 1,
+                                                       timeCalendar);
 
       // limits 의 내부이고, 주말인 DayRange를 제외목록에 추가합니다.
       for (DayRange day : days.dayStream()) {
@@ -292,7 +294,7 @@ public class TimeGapCalculatorTest extends AbstractTimePeriodTest {
           excludePeriods.add(day);
       }
 
-      TimeGapCalculator calculator = TimeGapCalculator.of(timeCalendar);
+      TimeGapCalculator calculator = new TimeGapCalculator(timeCalendar);
       ITimePeriodCollection gaps = calculator.gaps(excludePeriods, limits);
 
       for (ITimePeriod gap : gaps)

@@ -16,6 +16,7 @@
 
 package debop4k.timeperiod.timeranges
 
+import debop4k.core.collections.fastListOf
 import debop4k.core.kodatimes.today
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
@@ -45,8 +46,16 @@ open class HalfyearTimeRange @JvmOverloads constructor(moment: DateTime = today(
     return quarterSequence(start, halfyearCount * QuartersPerHalfyear, calendar)
   }
 
+  fun quarters(): List<QuarterRange> {
+    return fastListOf(quarterSequence().iterator())
+  }
+
   fun monthSequence(): Sequence<MonthRange> {
     return monthSequence(start, halfyearCount * MonthsPerHalfyear, calendar)
+  }
+
+  fun months(): List<MonthRange> {
+    return fastListOf(monthSequence().iterator())
   }
 
 }

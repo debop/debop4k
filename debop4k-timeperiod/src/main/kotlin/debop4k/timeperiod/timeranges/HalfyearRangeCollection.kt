@@ -16,20 +16,20 @@
 
 package debop4k.timeperiod.timeranges
 
+import debop4k.core.collections.fastListOf
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
 import debop4k.timeperiod.models.Halfyear
 import debop4k.timeperiod.utils.halfyearSequence
-import debop4k.timeperiod.utils.relativeHalfyearPeriod
 import org.joda.time.DateTime
 
 /**
  * @author sunghyouk.bae@gmail.com
  */
 open class HalfyearRangeCollection @JvmOverloads constructor(moment: DateTime,
-                                                             val halfyearCount: Int = 1,
+                                                             halfyearCount: Int = 1,
                                                              calendar: ITimeCalendar = DefaultTimeCalendar)
-: CalendarTimeRange(moment.relativeHalfyearPeriod(halfyearCount), calendar) {
+: HalfyearTimeRange(moment, halfyearCount, calendar) {
 
   @JvmOverloads
   constructor(year: Int,
@@ -40,5 +40,9 @@ open class HalfyearRangeCollection @JvmOverloads constructor(moment: DateTime,
 
   fun halfyearSequence(): Sequence<HalfyearRange> {
     return halfyearSequence(start, halfyearCount, calendar)
+  }
+
+  fun halfyears(): List<HalfyearRange> {
+    return fastListOf(halfyearSequence().iterator())
   }
 }

@@ -19,18 +19,18 @@ package debop4k.timeperiod.utils;
 import debop4k.timeperiod.*;
 import debop4k.timeperiod.models.PeriodUnit;
 import debop4k.timeperiod.timeranges.*;
-import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 import static debop4k.timeperiod.utils.Times.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 public class TimesPeriodTest extends AbstractTimePeriodTest {
 
   public static final int PeriodCount = 24;
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(TimesPeriodTest.class);
 
   private DateTime startTime = new DateTime(2008, 4, 10, 5, 33, 24, 345);
   private DateTime endTime = new DateTime(2018, 10, 20, 13, 43, 12, 599);
@@ -76,7 +76,7 @@ public class TimesPeriodTest extends AbstractTimePeriodTest {
   @Test
   public void getPeriodOfTest() {
     for (PeriodUnit unit : PeriodUnit.values()) {
-      if (unit == PeriodUnit.All || unit == PeriodUnit.Millisecond)
+      if (unit == PeriodUnit.ALL || unit == PeriodUnit.MILLISECOND)
         continue;
 
       DateTime moment = startTime;
@@ -93,11 +93,11 @@ public class TimesPeriodTest extends AbstractTimePeriodTest {
   @Test
   public void getPeriodOfWithCalendar() {
     for (PeriodUnit unit : PeriodUnit.values()) {
-      if (unit == PeriodUnit.All || unit == PeriodUnit.Millisecond)
+      if (unit == PeriodUnit.ALL || unit == PeriodUnit.MILLISECOND)
         continue;
 
       DateTime moment = startTime;
-      ITimeCalendar calendar = TimeCalendar.emptyOffset();
+      ITimeCalendar calendar = TimeCalendar.EMPTY_OFFSET;
       ITimePeriod period = Periods.periodOf(moment, unit, calendar);
 
       assertThat(period.hasInside(moment)).isTrue();
@@ -111,12 +111,12 @@ public class TimesPeriodTest extends AbstractTimePeriodTest {
   @Test
   public void getPeriodsOfTest() {
     for (PeriodUnit unit : PeriodUnit.values()) {
-      if (unit == PeriodUnit.All || unit == PeriodUnit.Millisecond)
+      if (unit == PeriodUnit.ALL || unit == PeriodUnit.MILLISECOND)
         continue;
 
       for (int count = 1; count < 5; count++) {
         DateTime moment = startTime;
-        ITimeCalendar calendar = TimeCalendar.emptyOffset();
+        ITimeCalendar calendar = TimeCalendar.EMPTY_OFFSET;
         ITimePeriod period = Periods.periodOf(moment, unit, count, calendar);
 
         log.trace("unit={}, period={}, moment={}", unit, period, moment);
@@ -132,7 +132,7 @@ public class TimesPeriodTest extends AbstractTimePeriodTest {
 
   @Test
   public void getYearRangeTest() {
-    YearRange yearRange = YearRange.of(startTime, TimeCalendar.emptyOffset());
+    YearRange yearRange = new YearRange(startTime, TimeCalendar.EMPTY_OFFSET);
     DateTime start = startTimeOfYear(startTime);
 
     assertThat(yearRange.getStart()).isEqualTo(start);
@@ -144,7 +144,7 @@ public class TimesPeriodTest extends AbstractTimePeriodTest {
   @Test
   public void getYearRangesTest() {
     for (int i = 1; i < PeriodCount; i++) {
-      YearRangeCollection yearRanges = YearRangeCollection.of(startTime, i, TimeCalendar.emptyOffset());
+      YearRangeCollection yearRanges = new YearRangeCollection(startTime, i, TimeCalendar.EMPTY_OFFSET);
       DateTime start = startTimeOfYear(startTime);
 
       assertThat(yearRanges.getStart()).isEqualTo(start);
@@ -156,7 +156,7 @@ public class TimesPeriodTest extends AbstractTimePeriodTest {
 
   @Test
   public void getHalfyearRangeTest() {
-    HalfyearRange hy = new HalfyearRange(startTime, TimeCalendar.emptyOffset());
+    HalfyearRange hy = new HalfyearRange(startTime, TimeCalendar.EMPTY_OFFSET);
 
     DateTime start = startTimeOfHalfyear(startTime);
     assertThat(hy.getStart()).isEqualTo(start);
@@ -167,7 +167,7 @@ public class TimesPeriodTest extends AbstractTimePeriodTest {
   public void getHalfyearRangesTest() {
 
     for (int i = 1; i < PeriodCount; i++) {
-      HalfyearRangeCollection hys = HalfyearRangeCollection.of(startTime, i, TimeCalendar.emptyOffset());
+      HalfyearRangeCollection hys = new HalfyearRangeCollection(startTime, i, TimeCalendar.EMPTY_OFFSET);
 
       DateTime start = startTimeOfHalfyear(startTime);
       assertThat(hys.getStart()).isEqualTo(start);
@@ -178,7 +178,7 @@ public class TimesPeriodTest extends AbstractTimePeriodTest {
 
   @Test
   public void getQuarterRangeTest() {
-    QuarterRange qr = new QuarterRange(startTime, TimeCalendar.emptyOffset());
+    QuarterRange qr = new QuarterRange(startTime, TimeCalendar.EMPTY_OFFSET);
     DateTime start = startTimeOfQuarter(startTime);
 
     assertThat(qr.getStart()).isEqualTo(start);
@@ -188,7 +188,7 @@ public class TimesPeriodTest extends AbstractTimePeriodTest {
   @Test
   public void getQuarterRangesTest() {
     for (int i = 1; i < PeriodCount; i++) {
-      QuarterRangeCollection quarters = QuarterRangeCollection.of(startTime, i, TimeCalendar.emptyOffset());
+      QuarterRangeCollection quarters = new QuarterRangeCollection(startTime, i, TimeCalendar.EMPTY_OFFSET);
       DateTime start = startTimeOfQuarter(startTime);
 
       assertThat(quarters.getStart()).isEqualTo(start);
@@ -199,17 +199,17 @@ public class TimesPeriodTest extends AbstractTimePeriodTest {
 
   @Test
   public void getMonthRangeTest() {
-    MonthRange mr = new MonthRange(startTime, TimeCalendar.emptyOffset());
+    MonthRange mr = new MonthRange(startTime, TimeCalendar.EMPTY_OFFSET);
     DateTime start = startTimeOfMonth(startTime);
 
     assertThat(mr.getStart()).isEqualTo(start);
-    assertThat(mr.getEnd()).isEqualTo(mr.nextMonth().getStart());
+    assertThat(mr.getEnd()).isEqualTo(mr.getNextMonth().getStart());
   }
 
   @Test
   public void getMonthRangesTest() {
     for (int i = 1; i < PeriodCount; i++) {
-      MonthRangeCollection mrs = MonthRangeCollection.of(startTime, i, TimeCalendar.emptyOffset());
+      MonthRangeCollection mrs = new MonthRangeCollection(startTime, i, TimeCalendar.EMPTY_OFFSET);
       DateTime start = startTimeOfMonth(startTime);
 
       assertThat(mrs.getStart()).isEqualTo(start);
@@ -220,17 +220,17 @@ public class TimesPeriodTest extends AbstractTimePeriodTest {
 
   @Test
   public void getWeekRangeTest() {
-    WeekRange wr = new WeekRange(startTime, TimeCalendar.emptyOffset());
+    WeekRange wr = new WeekRange(startTime, TimeCalendar.EMPTY_OFFSET);
     DateTime start = startTimeOfWeek(startTime);
 
     assertThat(wr.getStart()).isEqualTo(start);
-    assertThat(wr.getEnd()).isEqualTo(wr.nextWeek().getStart());
+    assertThat(wr.getEnd()).isEqualTo(wr.getNextWeek().getStart());
   }
 
   @Test
   public void getWeekRangesTest() {
     for (int i = 1; i < PeriodCount; i++) {
-      WeekRangeCollection wks = WeekRangeCollection.of(startTime, i, TimeCalendar.emptyOffset());
+      WeekRangeCollection wks = new WeekRangeCollection(startTime, i, TimeCalendar.EMPTY_OFFSET);
       DateTime start = startTimeOfWeek(startTime);
 
       assertThat(wks.getStart()).isEqualTo(start);
@@ -241,7 +241,7 @@ public class TimesPeriodTest extends AbstractTimePeriodTest {
 
   @Test
   public void getDayRangeTest() {
-    DayRange dr = new DayRange(startTime, TimeCalendar.emptyOffset());
+    DayRange dr = new DayRange(startTime, TimeCalendar.EMPTY_OFFSET);
     DateTime start = startTimeOfDay(startTime);
 
     assertThat(dr.getStart()).isEqualTo(start);
@@ -251,7 +251,7 @@ public class TimesPeriodTest extends AbstractTimePeriodTest {
   @Test
   public void getDayRangesTest() {
     for (int i = 1; i < PeriodCount; i++) {
-      DayRangeCollection drs = DayRangeCollection.of(startTime, i, TimeCalendar.emptyOffset());
+      DayRangeCollection drs = new DayRangeCollection(startTime, i, TimeCalendar.EMPTY_OFFSET);
       DateTime start = startTimeOfDay(startTime);
 
       assertThat(drs.getStart()).isEqualTo(start);
@@ -262,7 +262,7 @@ public class TimesPeriodTest extends AbstractTimePeriodTest {
 
   @Test
   public void getHourRangeTest() {
-    HourRange hr = new HourRange(startTime, TimeCalendar.emptyOffset());
+    HourRange hr = new HourRange(startTime, TimeCalendar.EMPTY_OFFSET);
     DateTime start = startTimeOfHour(startTime);
 
     assertThat(hr.getStart()).isEqualTo(start);
@@ -272,7 +272,7 @@ public class TimesPeriodTest extends AbstractTimePeriodTest {
   @Test
   public void getHourRangesTest() {
     for (int i = 1; i < PeriodCount; i++) {
-      HourRangeCollection drs = HourRangeCollection.of(startTime, i, TimeCalendar.emptyOffset());
+      HourRangeCollection drs = new HourRangeCollection(startTime, i, TimeCalendar.EMPTY_OFFSET);
       DateTime start = startTimeOfHour(startTime);
 
       assertThat(drs.getStart()).isEqualTo(start);
@@ -283,17 +283,17 @@ public class TimesPeriodTest extends AbstractTimePeriodTest {
 
   @Test
   public void getMinuteRangeTest() {
-    MinuteRange hr = new MinuteRange(startTime, TimeCalendar.emptyOffset());
+    MinuteRange hr = new MinuteRange(startTime, TimeCalendar.EMPTY_OFFSET);
     DateTime start = startTimeOfMinute(startTime);
 
     assertThat(hr.getStart()).isEqualTo(start);
-    assertThat(hr.getEnd()).isEqualTo(hr.nextMinute().getStart());
+    assertThat(hr.getEnd()).isEqualTo(hr.getNextMinute().getStart());
   }
 
   @Test
   public void getMinuteRangesTest() {
     for (int i = 1; i < PeriodCount; i++) {
-      MinuteRangeCollection drs = MinuteRangeCollection.of(startTime, i, TimeCalendar.emptyOffset());
+      MinuteRangeCollection drs = new MinuteRangeCollection(startTime, i, TimeCalendar.EMPTY_OFFSET);
       DateTime start = startTimeOfMinute(startTime);
 
       assertThat(drs.getStart()).isEqualTo(start);

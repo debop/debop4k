@@ -19,25 +19,29 @@ package debop4k.timeperiod.timeranges
 import debop4k.core.AbstractValueObject
 import debop4k.core.ToStringHelper
 import debop4k.core.utils.hashOf
+import debop4k.timeperiod.models.Timepart
 
 /**
  * Created by debop
  */
-open class HourRangeInDay @JvmOverloads constructor(val startHourOfDay: Int = 0,
-                                                    val endHourOfDay: Int = 23) :
+open class HourRangeInDay @JvmOverloads constructor(val start: Timepart = Timepart(0),
+                                                    val endExclusive: Timepart = Timepart(24)) :
     AbstractValueObject(), Comparable<HourRangeInDay> {
 
+  @JvmOverloads constructor(startHour: Int, endHourExclusive: Int = startHour)
+  : this(Timepart(startHour), Timepart(endHourExclusive))
+
   override fun compareTo(other: HourRangeInDay): Int {
-    return startHourOfDay.compareTo(other.startHourOfDay)
+    return start.compareTo(other.start)
   }
 
   override fun hashCode(): Int {
-    return hashOf(startHourOfDay, endHourOfDay)
+    return hashOf(start, endExclusive)
   }
 
   override fun buildStringHelper(): ToStringHelper {
     return super.buildStringHelper()
-        .add("startHourOfDay", startHourOfDay)
-        .add("endHourOfDay", endHourOfDay)
+        .add("start", start)
+        .add("endExclusive", endExclusive)
   }
 }

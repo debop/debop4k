@@ -16,7 +16,6 @@
 
 package debop4k.timeperiod.timeranges
 
-import debop4k.core.kodatimes.now
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
 import org.joda.time.DateTime
@@ -39,8 +38,8 @@ open class YearRange @JvmOverloads constructor(year: Int = 0,
   companion object {
     @JvmOverloads
     @JvmStatic
-    fun of(calendar: ITimeCalendar = DefaultTimeCalendar): YearRange {
-      return YearRange(now(), calendar)
+    fun of(year: Int = 0, calendar: ITimeCalendar = DefaultTimeCalendar): YearRange {
+      return YearRange(year, calendar)
     }
   }
 }

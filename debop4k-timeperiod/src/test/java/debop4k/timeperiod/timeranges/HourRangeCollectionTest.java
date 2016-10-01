@@ -16,24 +16,26 @@
 
 package debop4k.timeperiod.timeranges;
 
+import debop4k.core.kodatimes.KodaTimes;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeCalendar;
 import debop4k.timeperiod.utils.Times;
-import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 public class HourRangeCollectionTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(HourRangeCollectionTest.class);
 
   @Test
   public void singleHour() {
     DateTime startTime = new DateTime(2004, 2, 22, 17, 0);
-    HourRangeCollection hours = new HourRangeCollection(startTime, 1, TimeCalendar.emptyOffset());
+    HourRangeCollection hours = new HourRangeCollection(startTime, 1, TimeCalendar.EMPTY_OFFSET);
 
     assertThat(hours.getHourCount()).isEqualTo(1);
     assertThat(hours.getStartYear()).isEqualTo(startTime.getYear());
@@ -46,16 +48,16 @@ public class HourRangeCollectionTest extends AbstractTimePeriodTest {
     assertThat(hours.getEndDayOfMonth()).isEqualTo(startTime.getDayOfMonth());
     assertThat(hours.getEndHourOfDay()).isEqualTo(startTime.getHourOfDay() + 1);
 
-    final List<HourRange> items = hours.hourStream();
+    final List<HourRange> items = hours.hours();
     assertThat(items.size()).isEqualTo(1);
-    assertThat(items.get(0).isSamePeriod(new HourRange(startTime, TimeCalendar.emptyOffset()))).isTrue();
+    assertThat(items.get(0).isSamePeriod(new HourRange(startTime, TimeCalendar.EMPTY_OFFSET))).isTrue();
   }
 
   @Test
   public void calendarHoursTeset() {
     final DateTime startTime = new DateTime(2004, 2, 11, 22, 0);
     final int hourCount = 4;
-    HourRangeCollection hours = new HourRangeCollection(startTime, hourCount, TimeCalendar.emptyOffset());
+    HourRangeCollection hours = new HourRangeCollection(startTime, hourCount, TimeCalendar.EMPTY_OFFSET);
 
     assertThat(hours.getHourCount()).isEqualTo(hourCount);
     assertThat(hours.getStartYear()).isEqualTo(startTime.getYear());
@@ -68,10 +70,10 @@ public class HourRangeCollectionTest extends AbstractTimePeriodTest {
     assertThat(hours.getEndDayOfMonth()).isEqualTo(startTime.getDayOfMonth() + 1);
     assertThat(hours.getEndHourOfDay()).isEqualTo((startTime.getHourOfDay() + hourCount) % 24);
 
-    final List<HourRange> items = hours.hourStream();
+    final List<HourRange> items = hours.hours();
     assertThat(items.size()).isEqualTo(hourCount);
     for (int h = 0; h < hourCount; h++) {
-      assertThat(items.get(h).isSamePeriod(new HourRange(startTime.plusHours(h), TimeCalendar.emptyOffset()))).isTrue();
+      assertThat(items.get(h).isSamePeriod(new HourRange(startTime.plusHours(h), TimeCalendar.EMPTY_OFFSET))).isTrue();
     }
   }
 
@@ -84,20 +86,20 @@ public class HourRangeCollectionTest extends AbstractTimePeriodTest {
     for (int hourCount : hourCounts) {
 
       final HourRangeCollection hours = HourRangeCollection.of(now, hourCount);
-      final DateTime startTime = Times.trimToMinute(now).plus(hours.getCalendar().getStartOffset());
+      final DateTime startTime = KodaTimes.trimToMinute(now).plus(hours.getCalendar().getStartOffset());
       final DateTime endTime = startTime.plusHours(hourCount).plus(hours.getCalendar().getEndOffset());
 
       assertThat(hours.getStart()).isEqualTo(startTime);
       assertThat(hours.getEnd()).isEqualTo(endTime);
       assertThat(hours.getHourCount()).isEqualTo(hourCount);
 
-      final List<HourRange> items = hours.hourStream();
+      final List<HourRange> items = hours.hours();
       assertThat(items.size()).isEqualTo(hourCount);
 
       for (int h = 0; h < hourCount; h++) {
         assertThat(items.get(h).getStart()).isEqualTo(startTime.plusHours(h));
         assertThat(items.get(h).getEnd()).isEqualTo(hours.getCalendar().mapEnd(startTime.plusHours(h + 1)));
-        assertThat(items.get(h).unmappedEnd()).isEqualTo(startTime.plusHours(h + 1));
+        assertThat(items.get(h).getUnmappedEnd()).isEqualTo(startTime.plusHours(h + 1));
       }
     }
   }

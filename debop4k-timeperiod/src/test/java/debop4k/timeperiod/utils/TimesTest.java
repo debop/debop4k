@@ -19,18 +19,21 @@ package debop4k.timeperiod.utils;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.ITimePeriod;
 import debop4k.timeperiod.TimeRange;
-import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
+import org.slf4j.Logger;
 
+import static debop4k.core.kodatimes.KodaTimes.*;
+import static debop4k.timeperiod.utils.Periods.asString;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@Slf4j
 public class TimesTest extends AbstractTimePeriodTest {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(TimesTest.class);
 
   @Test
   public void asStringTest() {
@@ -50,7 +53,7 @@ public class TimesTest extends AbstractTimePeriodTest {
 
     assertThat(parsedTime.isEqual(testDate)).isTrue();
 
-    parsedTime = toDateTime("", testNow);
+    parsedTime = tryToDateTime("", testNow);
     assertThat(parsedTime).isEqualTo(testNow);
   }
 

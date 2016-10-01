@@ -19,6 +19,7 @@ package debop4k.timeperiod.timeranges
 import debop4k.core.kodatimes.today
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
+import debop4k.timeperiod.models.YearWeek
 import debop4k.timeperiod.utils.startTimeOfWeek
 import org.joda.time.DateTime
 
@@ -29,8 +30,11 @@ open class WeekRange @JvmOverloads constructor(startTime: DateTime = today().sta
                                                calendar: ITimeCalendar = DefaultTimeCalendar) :
     WeekTimeRange(startTime, 1, calendar) {
 
-  constructor(weekyear: Int, weekOfWeekyear: Int, calendar: ITimeCalendar = DefaultTimeCalendar) :
-  this(startTimeOfWeek(weekyear, weekOfWeekyear), calendar)
+  @JvmOverloads constructor(weekyear: Int, weekOfWeekyear: Int, calendar: ITimeCalendar = DefaultTimeCalendar)
+  : this(startTimeOfWeek(weekyear, weekOfWeekyear), calendar)
+
+  @JvmOverloads constructor(yw: YearWeek, calendar: ITimeCalendar = DefaultTimeCalendar)
+  : this(startTimeOfWeek(yw.weekyear, yw.weekOfWeekyear), calendar)
 
   val firstDayOfWeek: DateTime get() = start
   val lastDayOfWeek: DateTime get() = end

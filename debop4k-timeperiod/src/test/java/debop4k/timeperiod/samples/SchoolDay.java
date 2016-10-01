@@ -17,20 +17,20 @@
 package debop4k.timeperiod.samples;
 
 
+import debop4k.core.kodatimes.KodaTimes;
 import debop4k.timeperiod.TimePeriodChain;
 import debop4k.timeperiod.utils.Durations;
-import debop4k.timeperiod.utils.Times;
-import lombok.Getter;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
+import java.util.Arrays;
 
-@Getter
+
 public class SchoolDay extends TimePeriodChain {
 
-  public static Duration LessonDuration = Durations.minutes(50);
-  public static Duration LargeBreakDuration = Durations.minutes(15);
-  public static Duration ShortBreakDuration = Durations.minutes(5);
+  public static Duration LessonDuration = Durations.minuteOf(50);
+  public static Duration LargeBreakDuration = Durations.minuteOf(15);
+  public static Duration ShortBreakDuration = Durations.minuteOf(5);
 
   private final DateTime moment;
   private final Lesson lesson1;
@@ -42,7 +42,7 @@ public class SchoolDay extends TimePeriodChain {
   private final Lesson lesson4;
 
   public SchoolDay() {
-    this(Times.today().plusHours(8));
+    this(KodaTimes.today().plusHours(8));
   }
 
   public SchoolDay(DateTime moment) {
@@ -69,8 +69,24 @@ public class SchoolDay extends TimePeriodChain {
     lesson4 = new Lesson(moment);
     moment = moment.plus(lesson4.getDuration());
 
-    super.addAll(lesson1, break1, lesson2, break2, lesson3, break3, lesson4);
+    super.addAll(Arrays.asList(lesson1, break1, lesson2, break2, lesson3, break3, lesson4));
   }
 
   private static final long serialVersionUID = -3027311601657222641L;
+
+  public DateTime getMoment() {return this.moment;}
+
+  public Lesson getLesson1() {return this.lesson1;}
+
+  public ShortBreak getBreak1() {return this.break1;}
+
+  public Lesson getLesson2() {return this.lesson2;}
+
+  public LargeBreak getBreak2() {return this.break2;}
+
+  public Lesson getLesson3() {return this.lesson3;}
+
+  public ShortBreak getBreak3() {return this.break3;}
+
+  public Lesson getLesson4() {return this.lesson4;}
 }

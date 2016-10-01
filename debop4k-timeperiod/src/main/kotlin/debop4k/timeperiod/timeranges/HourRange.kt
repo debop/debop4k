@@ -25,9 +25,9 @@ import org.joda.time.DateTime
 /**
  * Created by debop
  */
-open class HourRange @JvmOverloads constructor(startTime: DateTime = now().trimToMinute(),
+open class HourRange @JvmOverloads constructor(startTime: DateTime = now(),
                                                calendar: ITimeCalendar = DefaultTimeCalendar)
-: HourTimeRange(startTime, 1, calendar) {
+: HourTimeRange(startTime.trimToMinute(), 1, calendar) {
 
   val year: Int get() = startYear
   val monthOfYear: Int get() = startMonthOfYear

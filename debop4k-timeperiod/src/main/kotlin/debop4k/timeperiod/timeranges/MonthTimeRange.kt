@@ -16,6 +16,7 @@
 
 package debop4k.timeperiod.timeranges
 
+import debop4k.core.collections.fastListOf
 import debop4k.core.kodatimes.today
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
@@ -40,7 +41,10 @@ open class MonthTimeRange @JvmOverloads constructor(startTime: DateTime = today(
         DayRange(monthStart.plusDays(it), calendar)
       }
     }.asSequence()
+  }
 
+  fun days(): List<DayRange> {
+    return fastListOf(daySequence().iterator())
   }
 
 }
