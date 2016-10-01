@@ -42,12 +42,12 @@ public class EhCacheActorRepository {
   @Inject private SqlSessionTemplate sqlTemplate;
 
   /**
-   * Actor id 값으로 Actor를 조회
+   * KotlinActor id 값으로 Actor를 조회
    * `@Cacheable` 은 먼저 Cache 에서 해당 Actor가 있는지 조회하고, 없다면 DB에서 읽어와서 캐시에 저장한 후 반환한다.
-   * 캐시에 데이터가 존재한다면 캐시의 Actor 를 반환하고, DB를 읽지 않는다
+   * 캐시에 데이터가 존재한다면 캐시의 KotlinActor 를 반환하고, DB를 읽지 않는다
    *
    * @param id Actor의 identifier
-   * @return 조회된 Actor (없으면 NULL 반환)
+   * @return 조회된 KotlinActor (없으면 NULL 반환)
    */
   @Transactional(readOnly = true)
   @Cacheable(key = "#id")
@@ -73,10 +73,10 @@ public class EhCacheActorRepository {
   }
 
   /**
-   * DB에 새로운 Actor 를 추가하고, Cache에 미리 저장해둔다
+   * DB에 새로운 KotlinActor 를 추가하고, Cache에 미리 저장해둔다
    *
-   * @param actor DB에 추가할 Actor 정보
-   * @return 저장된 Actor 정보 (발급된 Id 값이 있다)
+   * @param actor DB에 추가할 KotlinActor 정보
+   * @return 저장된 KotlinActor 정보 (발급된 Id 값이 있다)
    */
   @CachePut(key = "#actor.id")
   public Actor insertActor(Actor actor) {
@@ -87,7 +87,7 @@ public class EhCacheActorRepository {
   /**
    * 캐시에서 해당 정보를 삭제하고, DB에서 데이터를 삭제한다.
    *
-   * @param id 삭제할 Actor 의 identifier
+   * @param id 삭제할 KotlinActor 의 identifier
    */
   @CacheEvict(key = "#id")
   public void deleteById(Integer id) {

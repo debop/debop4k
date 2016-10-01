@@ -17,7 +17,7 @@
 package debop4k.data.mybatis.kotlin.cache
 
 import debop4k.core.loggerOf
-import debop4k.data.mybatis.config.MyBatisConfiguration
+import debop4k.data.mybatis.kotlin.config.KotlinMyBatisConfiguration
 import debop4k.data.mybatis.kotlin.mappers.KotlinActorMapper
 import net.sf.ehcache.config.CacheConfiguration
 import net.sf.ehcache.config.Configuration
@@ -31,7 +31,7 @@ import org.springframework.context.annotation.ComponentScan
 @EnableCaching(proxyTargetClass = true)
 @ComponentScan(basePackageClasses = arrayOf(EhCacheActorRepository::class))
 @MapperScan(basePackageClasses = arrayOf(KotlinActorMapper::class))
-open class EhCacheConfiguration : MyBatisConfiguration() {
+open class EhCacheConfiguration : KotlinMyBatisConfiguration() {
 
   private val log = loggerOf(javaClass)
 
@@ -47,7 +47,7 @@ open class EhCacheConfiguration : MyBatisConfiguration() {
     //
     cfg.addCache(CacheConfiguration("kotlin-actors", 10000))
     cfg.addCache(CacheConfiguration("kotlin-company", 10000))
-    cfg.name = "mybatis-ehcache-manager-by-java-config"
+    cfg.name = "kotlin-mybatis-ehcache-manager-by-java-config"
     return cfg
   }
 

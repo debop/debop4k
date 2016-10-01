@@ -62,7 +62,7 @@ public class EhCacheActorRepositoryTest {
     Actor actor = actorRepo.findById(1);
     assertThat(actor).isNotNull();
 
-    // 캐시로부터 직접 Actor 정보를 얻는다. 위의 findById 에 의해 캐시에 저장된다는 뜻 !!!
+    // 캐시로부터 직접 KotlinActor 정보를 얻는다. 위의 findById 에 의해 캐시에 저장된다는 뜻 !!!
     Actor cached = getCache().get(1, Actor.class);
     assertThat(cached).isNotNull();
     assertThat(cached).isEqualTo(actor);

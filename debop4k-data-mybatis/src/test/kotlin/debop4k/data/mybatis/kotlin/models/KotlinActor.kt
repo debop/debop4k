@@ -21,12 +21,12 @@ import debop4k.core.ToStringHelper
 import debop4k.core.utils.hashOf
 
 /**
- * Actor
+ * KotlinActor
  * @author sunghyouk.bae@gmail.com
  */
-class Actor(var id: Int? = null,
-            var firstname: String = "",
-            var lastname: String = "") : AbstractValueObject() {
+class KotlinActor(var id: Int? = null,
+                  var firstname: String = "",
+                  var lastname: String = "") : AbstractValueObject() {
 
   override fun hashCode(): Int {
     return if (id != null) hashOf(id) else hashOf(firstname, lastname)
@@ -38,8 +38,8 @@ class Actor(var id: Int? = null,
 
   companion object {
     @JvmStatic
-    fun of(id: Int?, firstname: String, lastname: String): Actor {
-      return Actor(id, firstname, lastname)
+    fun of(id: Int?, firstname: String, lastname: String): KotlinActor {
+      return KotlinActor(id, firstname, lastname)
     }
   }
 }

@@ -14,7 +14,7 @@
  *
  */
 
-package debop4k.data.mybatis.kotlin.cache
+package debop4k.data.mybatis.kotlin.repository
 
 import debop4k.core.uninitialized
 import debop4k.data.mybatis.kotlin.mappers.KotlinActorMapper
@@ -30,26 +30,17 @@ import org.springframework.transaction.annotation.Transactional
 import javax.inject.Inject
 
 /**
- * EhCacheActorRepository
+ * KotlinActorRepository
  * @author sunghyouk.bae@gmail.com
  */
 @Repository
 @Transactional
-@CacheConfig(cacheNames = arrayOf("kotlin-actors"))
-open class EhCacheActorRepository {
+@CacheConfig(cacheNames = arrayOf("kotlin-actor"))
+open class KotlinActorRepository {
 
-  @Inject val actorMapper: KotlinActorMapper = uninitialized()
-  @Inject val sqlTemplate: SqlSessionTemplate = uninitialized()
+  @Inject private val actorMapper: KotlinActorMapper = uninitialized()
+  @Inject private val sqlTemplate: SqlSessionTemplate = uninitialized()
 
-  /**
-   * KotlinActor id 값으로 Actor를 조회
-   * `@Cacheable` 은 먼저 Cache 에서 해당 Actor가 있는지 조회하고, 없다면 DB에서 읽어와서 캐시에 저장한 후 반환한다.
-   * 캐시에 데이터가 존재한다면 캐시의 KotlinActor 를 반환하고, DB를 읽지 않는다
-
-   * @param id Actor의 identifier
-   * *
-   * @return 조회된 KotlinActor (없으면 NULL 반환)
-   */
   @Transactional(readOnly = true)
   @Cacheable(key = "#id")
   open fun findById(id: Int): KotlinActor {
@@ -73,24 +64,12 @@ open class EhCacheActorRepository {
     return actorMapper.findAll()
   }
 
-  /**
-   * DB에 새로운 KotlinActor 를 추가하고, Cache에 미리 저장해둔다
-
-   * @param actor DB에 추가할 KotlinActor 정보
-   * *
-   * @return 저장된 KotlinActor 정보 (발급된 Id 값이 있다)
-   */
   @CachePut(key = "#actor.id")
   open fun insertActor(actor: KotlinActor): KotlinActor {
     sqlTemplate.insert("insertActor", actor)
     return actor
   }
 
-  /**
-   * 캐시에서 해당 정보를 삭제하고, DB에서 데이터를 삭제한다.
-
-   * @param id 삭제할 KotlinActor 의 identifier
-   */
   @CacheEvict(key = "#id")
   open fun deleteById(id: Int?) {
     actorMapper.deleteById(id)

@@ -18,7 +18,7 @@ package debop4k.data.mybatis.kotlin.cache
 
 import debop4k.core.loggerOf
 import debop4k.core.uninitialized
-import debop4k.data.mybatis.kotlin.models.Actor
+import debop4k.data.mybatis.kotlin.models.KotlinActor
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -57,8 +57,8 @@ class EhCacheActorRepositoryTest {
     val actor = actorRepo.findById(1)
     assertThat(actor).isNotNull()
 
-    // 캐시로부터 직접 Actor 정보를 얻는다. 위의 findById 에 의해 캐시에 저장된다는 뜻 !!!
-    val cached = getCache().get(1, Actor::class.java)
+    // 캐시로부터 직접 KotlinActor 정보를 얻는다. 위의 findById 에 의해 캐시에 저장된다는 뜻 !!!
+    val cached = getCache().get(1, KotlinActor::class.java)
     assertThat(cached).isNotNull()
     assertThat(cached).isEqualTo(actor)
   }
@@ -68,18 +68,18 @@ class EhCacheActorRepositoryTest {
     val actor = actorRepo.findByFirstname("Sunghyouk")
     assertThat(actor).isNotNull()
 
-    val cached = getCache().get("firstname=Sunghyouk", Actor::class.java)
+    val cached = getCache().get("firstname=Sunghyouk", KotlinActor::class.java)
     assertThat(cached).isNotNull()
   }
 
   @Test
   fun testCachePut() {
     val firstname = "mybatis"
-    var actor = Actor.of(null, firstname, "debop4k")
+    var actor = KotlinActor.of(null, firstname, "debop4k")
     actor = actorRepo.insertActor(actor)
     log.debug("saved actor={}", actor)
 
-    val cached = getCache().get(actor.id, Actor::class.java)
+    val cached = getCache().get(actor.id, KotlinActor::class.java)
     assertThat(cached).isNotNull().isEqualTo(actor)
 
     // Cache 가 제대로 되는지 확인
@@ -92,7 +92,7 @@ class EhCacheActorRepositoryTest {
     //
     actorRepo.deleteById(actor.id)
 
-    val deleted = getCache().get(actor.id, Actor::class.java)
+    val deleted = getCache().get(actor.id, KotlinActor::class.java)
     assertThat(deleted).isNull()
   }
 }

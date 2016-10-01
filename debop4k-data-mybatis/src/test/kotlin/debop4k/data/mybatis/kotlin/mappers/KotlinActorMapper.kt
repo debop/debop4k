@@ -16,7 +16,7 @@
 
 package debop4k.data.mybatis.kotlin.mappers
 
-import debop4k.data.mybatis.kotlin.models.Actor
+import debop4k.data.mybatis.kotlin.models.KotlinActor
 import org.apache.ibatis.annotations.Delete
 import org.apache.ibatis.annotations.Param
 import org.apache.ibatis.annotations.Select
@@ -28,13 +28,13 @@ import org.apache.ibatis.annotations.Select
 interface KotlinActorMapper {
 
   @Select("SELECT * FROM Actors WHERE id = #{id}")
-  abstract fun findById(@Param("id") id: Int): Actor
+  abstract fun findById(@Param("id") id: Int): KotlinActor
 
   @Select("SELECT * FROM Actors WHERE firstname = #{firstname}")
-  abstract fun findByFirstname(@Param("firstname") firstname: String): Actor
+  abstract fun findByFirstname(@Param("firstname") firstname: String): KotlinActor
 
   @Select("SELECT * FROM Actors")
-  abstract fun findAll(): List<Actor>
+  abstract fun findAll(): List<KotlinActor>
 
   @Delete("DELETE FROM Actors where id = #{id}")
   abstract fun deleteById(id: Int?)
