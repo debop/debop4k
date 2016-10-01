@@ -27,7 +27,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>debop4k-measures</artifactId>
+  <artifactId>debop4k-units</artifactId>
   <packaging>jar</packaging>
 
   <dependencies>

@@ -44,7 +44,7 @@ fun adjustPeriod(start: DateTime, duration: Duration): Pair<DateTime, Duration> 
 
 fun assertValidPeriod(start: DateTime?, end: DateTime?) {
   if (start != null && end != null) {
-    assert(start >= end, { "시작시각이 완료시각보다 이전이어야 합니다. start=$start, end=$end" })
+    assert(start <= end, { "시작시각이 완료시각보다 이전이어야 합니다. start=$start, end=$end" })
   }
 }
 
