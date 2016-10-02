@@ -150,6 +150,10 @@
       <url>http://repo.spring.io/release</url>
     </repository>
     <repository>
+      <id>KESTI Nexus</id>
+      <url>http://nexus.kesti.co.kr/content/groups/public/</url>
+    </repository>
+    <repository>
       <id>osgeo</id>
       <url>http://download.osgeo.org/webdav/geotools</url>
     </repository>
