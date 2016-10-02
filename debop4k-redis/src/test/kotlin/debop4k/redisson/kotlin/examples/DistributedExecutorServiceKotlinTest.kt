@@ -39,7 +39,9 @@ class DistributedExecutorServiceKotlinTest : AbstractRedissonKotlinTest() {
     map.fastPut("b", 20)
 
     val executorService = redisson.getExecutorService(StringCodec(), "simpleTask")
-    val future = executorService.submit(CallableTask())
+    executorService.submit(CallableTask())
+
+//    val future = executorService.submit(CallableTask())
 
     Thread.sleep(1000)
 

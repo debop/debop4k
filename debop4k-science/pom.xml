@@ -54,7 +54,8 @@
     <dependency>
       <groupId>com.univocity</groupId>
       <artifactId>univocity-parsers</artifactId>
-      <version>2.2.0</version>
+      <version>2.2.2</version>
+      <optional>true</optional>
     </dependency>
 
     <dependency>
@@ -72,13 +73,6 @@
     <dependency>
       <groupId>edu.ucar</groupId>
       <artifactId>opendap</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.univocity</groupId>
-      <artifactId>univocity-parsers</artifactId>
-      <version>2.2.2</version>
-      <optional>true</optional>
     </dependency>
 
     <dependency>

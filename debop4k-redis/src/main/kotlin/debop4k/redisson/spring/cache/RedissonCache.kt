@@ -76,12 +76,12 @@ open class RedissonCache(val mapCache: RMapCache<Any?, Any?>,
   }
 
   override fun putIfAbsent(key: Any?, value: Any?): ValueWrapper? {
-    var oldValue: Any? = null
-    if (expiration > 0) {
-      oldValue = mapCache.putIfAbsent(key, value, expiration, TimeUnit.MILLISECONDS)
-    } else {
-      oldValue = mapCache.putIfAbsent(key, value)
-    }
+    var oldValue: Any? =
+        if (expiration > 0) {
+          mapCache.putIfAbsent(key, value, expiration, TimeUnit.MILLISECONDS)
+        } else {
+          mapCache.putIfAbsent(key, value)
+        }
     return toValueWrapper(oldValue)
   }
 

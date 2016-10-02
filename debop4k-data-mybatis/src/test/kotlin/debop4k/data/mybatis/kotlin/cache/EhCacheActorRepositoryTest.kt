@@ -41,7 +41,7 @@ class EhCacheActorRepositoryTest {
 
   fun getCache(): Cache {
     if (cache == null) {
-      cache = cm!!.getCache("kotlin-actors")
+      cache = cm.getCache("kotlin-actors")
     }
     return cache!!
   }
