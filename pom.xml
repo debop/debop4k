@@ -861,11 +861,11 @@
         <artifactId>postgresql</artifactId>
         <version>${postgresql.java7.version}</version>
       </dependency>
-      <dependency>
-        <groupId>com.oracle</groupId>
-        <artifactId>ojdbc7</artifactId>
-        <version>${ojdbc7.version}</version>
-      </dependency>
+      <!--<dependency>-->
+        <!--<groupId>com.oracle</groupId>-->
+        <!--<artifactId>ojdbc7</artifactId>-->
+        <!--<version>${ojdbc7.version}</version>-->
+      <!--</dependency>-->
 
 
       <!-- Test -->

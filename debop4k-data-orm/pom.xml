@@ -154,11 +154,11 @@
       <artifactId>mysql-connector-java</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.oracle</groupId>
-      <artifactId>ojdbc7</artifactId>
-      <scope>test</scope>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>com.oracle</groupId>-->
+      <!--<artifactId>ojdbc7</artifactId>-->
+      <!--<scope>test</scope>-->
+    <!--</dependency>-->
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
