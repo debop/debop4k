@@ -4,7 +4,7 @@
 //import com.mongodb.MongoClient;
 //import com.mongodb.MongoClientOptions;
 //import com.mongodb.ServerAddress;
-//import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Loggingx;
 //import org.springframework.boot.context.properties.EnableConfigurationProperties;
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
@@ -16,7 +16,7 @@
 // *
 // * @author sunghyouk.bae@gmail.com
 // */
-//@Slf4j
+//@Loggingx
 //@Configuration
 //@EnableConfigurationProperties({ MongodbProperties.class })
 //public abstract class MongodbAutoConfiguration extends AbstractMongoConfiguration {

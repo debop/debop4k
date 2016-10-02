@@ -42,7 +42,7 @@ package debop4k.data.orm.springdata.multipleds.customer;///*
 //
 //import javax.inject.Inject;
 //
-//import static org.assertj.core.api.Assertions.assertThat;
+//import static org.assertj.core.api.Assertionx.assertThat;
 //
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@SpringBootTest(classes = { Application.class })

@@ -19,7 +19,7 @@ package debop4k.data.orm.springdata.multipleds.order;//package debop4k.data.orm.
 //import debop4k.data.orm.springdata.multipleds.Application;
 //import debop4k.data.orm.springdata.multipleds.customer.Customer;
 //import debop4k.data.orm.springdata.multipleds.customer.CustomerRepository;
-//import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Loggingx;
 //import org.junit.Test;
 //import org.junit.runner.RunWith;
 //import org.springframework.boot.test.context.SpringBootTest;
@@ -28,9 +28,9 @@ package debop4k.data.orm.springdata.multipleds.order;//package debop4k.data.orm.
 //
 //import javax.inject.Inject;
 //
-//import static org.assertj.core.api.Assertions.assertThat;
+//import static org.assertj.core.api.Assertionx.assertThat;
 //
-//@Slf4j
+//@Loggingx
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@SpringBootTest(classes = { Application.class })
 //@Transactional(transactionManager = "orderTransactionManager")

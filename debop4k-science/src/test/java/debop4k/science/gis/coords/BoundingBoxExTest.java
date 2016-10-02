@@ -19,19 +19,19 @@
 //import debop4k.core.utils.With;
 //import debop4k.science.gis.AbstractGisTest;
 //import debop4k.science.gis.BoundingBoxRelation;
-//import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Loggingx;
 //import org.junit.Test;
 //
 //import java.awt.geom.Point2D;
 //import java.util.List;
 //
 //import static debop4k.science.gis.coords.BoundingBox.*;
-//import static org.assertj.core.api.Assertions.assertThat;
+//import static org.assertj.core.api.Assertionx.assertThat;
 //
 ///**
 // * @author sunghyouk.bae@gmail.com
 // */
-//@Slf4j
+//@Loggingx
 //public class BoundingBoxExTest extends AbstractGisTest {
 //
 //  private static final int ROW_COUNT = 100;

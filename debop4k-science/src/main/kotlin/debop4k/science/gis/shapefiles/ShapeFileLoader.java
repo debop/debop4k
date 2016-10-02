@@ -35,7 +35,7 @@ package debop4k.science.gis.shapefiles;///*
 //import debop4k.core.Charsets;
 //import lombok.NonNull;
 //import lombok.SneakyThrows;
-//import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Loggingx;
 //import org.eclipse.collections.api.list.MutableList;
 //import org.eclipse.collections.impl.list.mutable.FastList;
 //import org.geotools.data.shapefile.dbf.DbaseFileHeader;
@@ -54,7 +54,7 @@ package debop4k.science.gis.shapefiles;///*
 // *
 // * @author sunghyouk.bae@gmail.com
 // */
-//@Slf4j
+//@Loggingx
 //public final class ShapeFileLoader {
 //
 //  /**

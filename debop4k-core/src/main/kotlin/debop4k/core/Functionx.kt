@@ -13,16 +13,9 @@
  * limitations under the License.
  *
  */
-@file:JvmName("Slf4j")
+@file:JvmName("Functionx")
 
 package debop4k.core
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
-import kotlin.reflect.KClass
 
-fun loggerOf(name: String): Logger = LoggerFactory.getLogger(name)
-
-fun loggerOf(clazz: KClass<*>): Logger = LoggerFactory.getLogger(clazz.java)
-
-fun loggerOf(clazz: Class<*>): Logger = LoggerFactory.getLogger(clazz)
+fun <T> (() -> T).exec(): T = this.invoke()

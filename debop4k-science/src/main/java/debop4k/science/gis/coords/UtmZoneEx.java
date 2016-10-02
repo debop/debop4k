@@ -21,7 +21,7 @@
 //import debop4k.science.gis.coords.UtmZonex;
 //import lombok.Getter;
 //import lombok.NonNull;
-//import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Loggingx;
 //import org.eclipse.collections.api.list.MutableList;
 //import org.eclipse.collections.impl.factory.Lists;
 //
@@ -39,7 +39,7 @@
 // * @since 2015. 12. 11.
 // * @deprecated use {@link UtmZonex}
 // */
-//@Slf4j
+//@Loggingx
 //@Deprecated
 //public final class UtmZoneEx {
 //

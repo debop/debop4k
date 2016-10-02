@@ -16,18 +16,18 @@
 
 package debop4k.redisson.examples.reactive;//package debop4k.redisson.examples.reactive;
 //
-//import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Loggingx;
 //import org.junit.Test;
 //import org.redisson.api.RListReactive;
 //
-//import static org.assertj.core.api.Assertions.assertThat;
+//import static org.assertj.core.api.Assertionx.assertThat;
 //
 ///**
 // * RedissonListReactiveTest
 // *
 // * @author sunghyouk.bae@gmail.com
 // */
-//@Slf4j
+//@Loggingx
 //public class RedissonListReactiveTest extends AbstractReactiveTest {
 //
 //  @Test

@@ -16,7 +16,7 @@
 
 package debop4k.science.gis.coords;
 
-import debop4k.core.Guard;
+import debop4k.core.Guardx;
 import debop4k.core.collections.Collectionx;
 import debop4k.core.utils.Stringx;
 import lombok.NonNull;
@@ -143,7 +143,7 @@ public final class GeometryEx2 {
 
     try {
       String[] array = bboxStr.split(String.valueOf(Stringx.COMMA));
-      Guard.shouldBe(array.length == 4, "잘못된 bbox 문자열입니다. bboxStr=%s", bboxStr);
+      Guardx.shouldBe(array.length == 4, "잘못된 bbox 문자열입니다. bboxStr=%s", bboxStr);
 
       double x1 = asDouble(array[0], Double.MIN_VALUE);
       double y1 = asDouble(array[1], Double.MIN_VALUE);
@@ -470,7 +470,7 @@ public final class GeometryEx2 {
    * @return 선분을 N 등분한 Point 중보
    */
   public static Point2D.Double[] getLineNPoints(@NonNull Line2D.Double line, int n) {
-    Guard.shouldBePositiveNumber(n, "n");
+    Guardx.shouldBePositiveNumber(n, "n");
 
     if (n < 2) {
       return new Point2D.Double[]{(Point2D.Double) line.getP1(),

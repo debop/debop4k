@@ -19,7 +19,7 @@
 //import debop4k.mongodb.AbstractMongoTest;
 //import debop4k.mongodb.models.User;
 //import lombok.SneakyThrows;
-//import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Loggingx;
 //import org.eclipse.collections.impl.list.mutable.FastList;
 //import org.junit.After;
 //import org.junit.Before;
@@ -34,9 +34,9 @@
 //import java.util.List;
 //import java.util.UUID;
 //
-//import static org.assertj.core.api.Assertions.assertThat;
+//import static org.assertj.core.api.Assertionx.assertThat;
 //
-//@Slf4j
+//@Loggingx
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@SpringBootTest(classes = {MongoCacheConfiguration.class})
 //public class MongoCacheTest extends AbstractMongoTest {

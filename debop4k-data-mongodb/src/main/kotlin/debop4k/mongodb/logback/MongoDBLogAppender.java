@@ -27,7 +27,7 @@
 //import debop4k.core.utils.StringEx;
 //import lombok.Getter;
 //import lombok.Setter;
-//import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Loggingx;
 //import org.joda.time.DateTime;
 //import org.springframework.data.authentication.UserCredentials;
 //import org.springframework.data.mongodb.core.MongoTemplate;
@@ -41,7 +41,7 @@
 // *
 // * @author sunghyouk.bae@gmail.com
 // */
-//@Slf4j
+//@Loggingx
 //@Getter
 //@Setter
 //public class MongoDBLogAppender extends UnsynchronizedAppenderBase<LoggingEvent> {

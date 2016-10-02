@@ -13,8 +13,19 @@
  * limitations under the License.
  *
  */
+@file:JvmName("Loggingx")
 
 package debop4k.core
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import kotlin.reflect.KClass
 
-fun <T> (() -> T).exec(): T = this.invoke()
+/** Slf4j Logger 를 가져옵니다 */
+fun loggerOf(name: String): Logger = LoggerFactory.getLogger(name)
+
+/** Slf4j Logger 를 가져옵니다 */
+fun loggerOf(clazz: KClass<*>): Logger = LoggerFactory.getLogger(clazz.java)
+
+/** Slf4j Logger 를 가져옵니다 */
+fun loggerOf(clazz: Class<*>): Logger = LoggerFactory.getLogger(clazz)

@@ -1,12 +1,12 @@
 //package debop4k.mongodb.cache;
 //
 //import debop4k.mongodb.models.User;
-//import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Loggingx;
 //import org.springframework.cache.annotation.CacheEvict;
 //import org.springframework.cache.annotation.Cacheable;
 //import org.springframework.stereotype.Repository;
 //
-//@Slf4j
+//@Loggingx
 //@Repository
 //public class UserRepository {
 //

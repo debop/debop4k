@@ -14,7 +14,7 @@
  *
  */
 
-@file:JvmName("Assertions")
+@file:JvmName("Assertionx")
 
 package debop4k.core
 

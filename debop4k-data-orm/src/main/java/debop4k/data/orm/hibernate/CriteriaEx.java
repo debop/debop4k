@@ -16,7 +16,7 @@
 
 package debop4k.data.orm.hibernate;
 
-import debop4k.core.Guard;
+import debop4k.core.Guardx;
 import debop4k.core.io.serializers.Serializers;
 import debop4k.core.utils.Stringx;
 import lombok.extern.slf4j.Slf4j;
@@ -25,12 +25,13 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.*;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.*;
 
-import static debop4k.core.Guard.shouldNotBeEmpty;
+import static debop4k.core.Guardx.shouldNotBeEmpty;
 import static org.hibernate.criterion.Restrictions.*;
 
 /**
@@ -242,7 +243,7 @@ public final class CriteriaEx {
    */
   @Deprecated
   public static Criterion eqIncludeNull(String property, Object value) {
-    Guard.shouldNotBeEmpty(property, "property");
+    Guardx.shouldNotBeEmpty(property, "property");
     return (value == null)
            ? isNull(property)
            : eqOrIsNull(property, value);
@@ -747,6 +748,7 @@ public final class CriteriaEx {
     return map;
   }
 
+  @NotNull
   public static DetachedCriteria newDetachedCriteria(Class<?> clazz) {
     return DetachedCriteria.forClass(clazz);
   }

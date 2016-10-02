@@ -20,7 +20,7 @@
 //import debop4k.core.io.serializers.FstJava6Serializer;
 //import debop4k.core.io.serializers.Serializer;
 //import lombok.Getter;
-//import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Loggingx;
 //import nl.komponents.kovenant.Promise;
 //import org.springframework.cache.Cache;
 //import org.springframework.cache.support.SimpleValueWrapper;
@@ -36,7 +36,7 @@
 // *
 // * @author sunghyouk.bae@gmail.com
 // */
-//@Slf4j
+//@Loggingx
 //@Getter
 //@SuppressWarnings("unchecked")
 //public class MongoCache implements Cache {

@@ -19,11 +19,13 @@
 package debop4k.core
 
 import debop4k.core.collections.toList
+import java.io.Serializable
 
 
-interface Product {
+interface Product : Serializable {
 
   val productArity: Int
+
   operator fun get(index: Int): Any?
 
   fun toList(): List<*> = productIterator().toList()
@@ -35,40 +37,40 @@ interface Product {
   }
 
   fun productPrefix(): String = ""
-
 }
 
 interface Product1<T1> : Product {
-  override val productArity: Int
-    get() = 1
+
+  val first: T1
+  override val productArity: Int get() = 1
 
   override operator fun get(index: Int): T1 = when (index) {
     0 -> first
     else -> throw IndexOutOfBoundsException(index.toString())
   }
-
-  val first: T1
 }
 
 interface Product2<T1, T2> : Product {
 
-  override val productArity: Int
-    get() = 2
+  val first: T1
+  val second: T2
+
+  override val productArity: Int get() = 2
 
   override operator fun get(index: Int): Any? = when (index) {
     0 -> first
     1 -> second
     else -> throw IndexOutOfBoundsException(index.toString())
   }
-
-  val first: T1
-  val second: T2
 }
 
 interface Product3<T1, T2, T3> : Product {
 
-  override val productArity: Int
-    get() = 3
+  val first: T1
+  val second: T2
+  val third: T3
+
+  override val productArity: Int get() = 3
 
   override operator fun get(index: Int): Any? = when (index) {
     0 -> first
@@ -76,16 +78,16 @@ interface Product3<T1, T2, T3> : Product {
     2 -> third
     else -> throw IndexOutOfBoundsException(index.toString())
   }
-
-  val first: T1
-  val second: T2
-  val third: T3
 }
 
 interface Product4<T1, T2, T3, T4> : Product {
 
-  override val productArity: Int
-    get() = 4
+  val first: T1
+  val second: T2
+  val third: T3
+  val fourth: T4
+
+  override val productArity: Int get() = 4
 
   override operator fun get(index: Int): Any? = when (index) {
     0 -> first
@@ -94,17 +96,17 @@ interface Product4<T1, T2, T3, T4> : Product {
     3 -> fourth
     else -> throw IndexOutOfBoundsException(index.toString())
   }
+}
+
+interface Product5<T1, T2, T3, T4, T5> : Product {
 
   val first: T1
   val second: T2
   val third: T3
   val fourth: T4
-}
+  val fifth: T5
 
-interface Product5<T1, T2, T3, T4, T5> : Product {
-
-  override val productArity: Int
-    get() = 5
+  override val productArity: Int get() = 5
 
   override operator fun get(index: Int): Any? = when (index) {
     0 -> first
@@ -114,18 +116,18 @@ interface Product5<T1, T2, T3, T4, T5> : Product {
     4 -> fifth
     else -> throw IndexOutOfBoundsException(index.toString())
   }
+}
+
+interface Product6<T1, T2, T3, T4, T5, T6> : Product {
 
   val first: T1
   val second: T2
   val third: T3
   val fourth: T4
   val fifth: T5
-}
+  val sixth: T6
 
-interface Product6<T1, T2, T3, T4, T5, T6> : Product {
-
-  override val productArity: Int
-    get() = 6
+  override val productArity: Int get() = 6
 
   override operator fun get(index: Int): Any? = when (index) {
     0 -> first
@@ -136,6 +138,9 @@ interface Product6<T1, T2, T3, T4, T5, T6> : Product {
     5 -> sixth
     else -> throw IndexOutOfBoundsException(index.toString())
   }
+}
+
+interface Product7<T1, T2, T3, T4, T5, T6, T7> : Product {
 
   val first: T1
   val second: T2
@@ -143,12 +148,9 @@ interface Product6<T1, T2, T3, T4, T5, T6> : Product {
   val fourth: T4
   val fifth: T5
   val sixth: T6
-}
+  val seventh: T7
 
-interface Product7<T1, T2, T3, T4, T5, T6, T7> : Product {
-
-  override val productArity: Int
-    get() = 7
+  override val productArity: Int get() = 7
 
   override operator fun get(index: Int): Any? = when (index) {
     0 -> first
@@ -160,6 +162,9 @@ interface Product7<T1, T2, T3, T4, T5, T6, T7> : Product {
     6 -> seventh
     else -> throw IndexOutOfBoundsException(index.toString())
   }
+}
+
+interface Product8<T1, T2, T3, T4, T5, T6, T7, T8> : Product {
 
   val first: T1
   val second: T2
@@ -168,12 +173,9 @@ interface Product7<T1, T2, T3, T4, T5, T6, T7> : Product {
   val fifth: T5
   val sixth: T6
   val seventh: T7
-}
+  val eighth: T8
 
-interface Product8<T1, T2, T3, T4, T5, T6, T7, T8> : Product {
-
-  override val productArity: Int
-    get() = 8
+  override val productArity: Int get() = 8
 
   override operator fun get(index: Int): Any? = when (index) {
     0 -> first
@@ -186,6 +188,9 @@ interface Product8<T1, T2, T3, T4, T5, T6, T7, T8> : Product {
     7 -> eighth
     else -> throw IndexOutOfBoundsException(index.toString())
   }
+}
+
+interface Product9<T1, T2, T3, T4, T5, T6, T7, T8, T9> : Product {
 
   val first: T1
   val second: T2
@@ -195,12 +200,9 @@ interface Product8<T1, T2, T3, T4, T5, T6, T7, T8> : Product {
   val sixth: T6
   val seventh: T7
   val eighth: T8
-}
+  val ninth: T9
 
-interface Product9<T1, T2, T3, T4, T5, T6, T7, T8, T9> : Product {
-
-  override val productArity: Int
-    get() = 9
+  override val productArity: Int get() = 9
 
   override operator fun get(index: Int): Any? = when (index) {
     0 -> first
@@ -214,6 +216,10 @@ interface Product9<T1, T2, T3, T4, T5, T6, T7, T8, T9> : Product {
     8 -> ninth
     else -> throw IndexOutOfBoundsException(index.toString())
   }
+}
+
+
+interface Product10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : Product {
 
   val first: T1
   val second: T2
@@ -224,13 +230,9 @@ interface Product9<T1, T2, T3, T4, T5, T6, T7, T8, T9> : Product {
   val seventh: T7
   val eighth: T8
   val ninth: T9
-}
+  val ten: T10
 
-
-interface Product10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : Product {
-
-  override val productArity: Int
-    get() = 10
+  override val productArity: Int get() = 10
 
   override operator fun get(index: Int): Any? = when (index) {
     0 -> first
@@ -245,6 +247,9 @@ interface Product10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : Product {
     9 -> ten
     else -> throw IndexOutOfBoundsException(index.toString())
   }
+}
+
+interface Product11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> : Product {
 
   val first: T1
   val second: T2
@@ -256,12 +261,9 @@ interface Product10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : Product {
   val eighth: T8
   val ninth: T9
   val ten: T10
-}
+  val eleven: T11
 
-interface Product11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> : Product {
-
-  override val productArity: Int
-    get() = 11
+  override val productArity: Int get() = 11
 
   override operator fun get(index: Int): Any? = when (index) {
     0 -> first
@@ -277,6 +279,9 @@ interface Product11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> : Product {
     10 -> eleven
     else -> throw IndexOutOfBoundsException(index.toString())
   }
+}
+
+interface Product12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> : Product {
 
   val first: T1
   val second: T2
@@ -289,12 +294,9 @@ interface Product11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> : Product {
   val ninth: T9
   val ten: T10
   val eleven: T11
-}
+  val twelve: T12
 
-interface Product12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> : Product {
-
-  override val productArity: Int
-    get() = 12
+  override val productArity: Int get() = 12
 
   override operator fun get(index: Int): Any? = when (index) {
     0 -> first
@@ -311,6 +313,9 @@ interface Product12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> : Product
     11 -> twelve
     else -> throw IndexOutOfBoundsException(index.toString())
   }
+}
+
+interface Product13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> : Product {
 
   val first: T1
   val second: T2
@@ -324,12 +329,9 @@ interface Product12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> : Product
   val ten: T10
   val eleven: T11
   val twelve: T12
-}
+  val thirteen: T13
 
-interface Product13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> : Product {
-
-  override val productArity: Int
-    get() = 13
+  override val productArity: Int get() = 13
 
   override operator fun get(index: Int): Any? = when (index) {
     0 -> first
@@ -347,6 +349,9 @@ interface Product13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> : Pr
     12 -> thirteen
     else -> throw IndexOutOfBoundsException(index.toString())
   }
+}
+
+interface Product14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> : Product {
 
   val first: T1
   val second: T2
@@ -361,12 +366,9 @@ interface Product13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> : Pr
   val eleven: T11
   val twelve: T12
   val thirteen: T13
-}
+  val fourteen: T14
 
-interface Product14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> : Product {
-
-  override val productArity: Int
-    get() = 14
+  override val productArity: Int get() = 14
 
   override operator fun get(index: Int): Any? = when (index) {
     0 -> first
@@ -385,6 +387,9 @@ interface Product14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>
     13 -> fourteen
     else -> throw IndexOutOfBoundsException(index.toString())
   }
+}
+
+interface Product15<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> : Product {
 
   val first: T1
   val second: T2
@@ -400,12 +405,9 @@ interface Product14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>
   val twelve: T12
   val thirteen: T13
   val fourteen: T14
-}
+  val fifteen: T15
 
-interface Product15<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> : Product {
-
-  override val productArity: Int
-    get() = 15
+  override val productArity: Int get() = 15
 
   override operator fun get(index: Int): Any? = when (index) {
     0 -> first
@@ -425,20 +427,4 @@ interface Product15<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14,
     14 -> fifteen
     else -> throw IndexOutOfBoundsException(index.toString())
   }
-
-  val first: T1
-  val second: T2
-  val third: T3
-  val fourth: T4
-  val fifth: T5
-  val sixth: T6
-  val seventh: T7
-  val eighth: T8
-  val ninth: T9
-  val ten: T10
-  val eleven: T11
-  val twelve: T12
-  val thirteen: T13
-  val fourteen: T14
-  val fifteen: T15
 }

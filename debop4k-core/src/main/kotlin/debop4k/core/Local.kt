@@ -17,6 +17,7 @@
 package debop4k.core
 
 import org.slf4j.LoggerFactory
+import java.io.Serializable
 import java.util.*
 import java.util.concurrent.*
 
@@ -83,9 +84,9 @@ object Local {
   }
 }
 
-class LocalStorage<T> {
+class LocalStorage<T> : Serializable {
 
-  private val key: UUID by lazy { UUID.randomUUID() }
+  private val key: UUID = UUID.randomUUID()
 
   fun get(): T? = Local[key]
 
@@ -96,5 +97,4 @@ class LocalStorage<T> {
   fun update(value: T?): Unit = set(value)
 
   fun clear(): Any? = Local.storage.remove(key)
-
 }

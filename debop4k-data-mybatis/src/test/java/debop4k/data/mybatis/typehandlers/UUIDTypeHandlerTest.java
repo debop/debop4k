@@ -36,16 +36,16 @@ package debop4k.data.mybatis.typehandlers;/*
 //import debop4k.data.mybatis.AbstractMyBatisTest;
 //import debop4k.data.mybatis.typehandlers.mappers.UUIDBeanMapper;
 //import debop4k.data.mybatis.typehandlers.models.UUIDBean;
-//import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Loggingx;
 //import org.junit.Test;
 //import org.mybatis.spring.SqlSessionTemplate;
 //
 //import javax.inject.Inject;
 //import java.util.UUID;
 //
-//import static org.assertj.core.api.Assertions.assertThat;
+//import static org.assertj.core.api.Assertionx.assertThat;
 //
-//@Slf4j
+//@Loggingx
 //public class UUIDTypeHandlerTest extends AbstractMyBatisTest {
 //
 //  @Inject SqlSessionTemplate template;

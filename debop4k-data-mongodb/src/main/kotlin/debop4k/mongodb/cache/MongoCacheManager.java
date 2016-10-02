@@ -19,7 +19,7 @@
 //import debop4k.core.io.serializers.SnappyFstJava6Serializer;
 //import lombok.Getter;
 //import lombok.Setter;
-//import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Loggingx;
 //import org.eclipse.collections.api.block.function.Function;
 //import org.eclipse.collections.impl.map.mutable.ConcurrentHashMap;
 //import org.springframework.beans.factory.DisposableBean;
@@ -43,7 +43,7 @@
 // * @author sunghyouk.bae@gmail.com
 // */
 //@Getter
-//@Slf4j
+//@Loggingx
 //public class MongoCacheManager implements CacheManager, DisposableBean {
 //
 //  private final Serializer valueSerializer = SnappyFstJava6Serializer.of();

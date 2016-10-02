@@ -14,11 +14,11 @@
  *
  */
 
-@file:JvmName("Commons")
+@file:JvmName("Commonx")
 
 package debop4k.core
 
-private val log = loggerOf("Commons")
+private val log = loggerOf("Commonx")
 
 
 /**

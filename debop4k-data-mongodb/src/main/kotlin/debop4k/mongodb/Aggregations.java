@@ -1,6 +1,6 @@
 //package debop4k.mongodb;
 //
-//import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Loggingx;
 //import org.springframework.data.mongodb.core.aggregation.Aggregation;
 //import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 //import org.springframework.data.mongodb.core.query.Criteria;
@@ -12,7 +12,7 @@
 // *
 // * @author sunghyouk.bae@gmail.com
 // */
-//@Slf4j
+//@Loggingx
 //public final class Aggregations {
 //
 //  public static Aggregation of(List<AggregationOperation> operations) {

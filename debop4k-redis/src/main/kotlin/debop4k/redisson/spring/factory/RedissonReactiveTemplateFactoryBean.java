@@ -34,7 +34,7 @@ package debop4k.redisson.spring.factory;///*
 //import debop4k.redisson.spring.RedissonReactiveTemplate;
 //import lombok.Getter;
 //import lombok.Setter;
-//import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Loggingx;
 //import org.redisson.Redisson;
 //import org.redisson.api.RedissonReactiveClient;
 //import org.redisson.config.Config;
@@ -45,7 +45,7 @@ package debop4k.redisson.spring.factory;///*
 // *
 // * @author sunghyouk.bae@gmail.com
 // */
-//@Slf4j
+//@Loggingx
 //public class RedissonReactiveTemplateFactoryBean implements FactoryBean<RedissonReactiveTemplate> {
 //
 //  @Getter

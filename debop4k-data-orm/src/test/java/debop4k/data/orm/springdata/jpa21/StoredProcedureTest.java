@@ -16,7 +16,7 @@
 
 package debop4k.data.orm.springdata.jpa21;//package debop4k.data.orm.springdata.jpa21;
 //
-//import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Loggingx;
 //import org.junit.Ignore;
 //import org.junit.Test;
 //import org.junit.runner.RunWith;
@@ -30,9 +30,9 @@ package debop4k.data.orm.springdata.jpa21;//package debop4k.data.orm.springdata.
 //import javax.persistence.PersistenceContext;
 //import javax.persistence.StoredProcedureQuery;
 //
-//import static org.assertj.core.api.Assertions.assertThat;
+//import static org.assertj.core.api.Assertionx.assertThat;
 //
-//@Slf4j
+//@Loggingx
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@SpringBootTest(classes = { StoredProcedureConfiguration.class })
 //@Transactional
