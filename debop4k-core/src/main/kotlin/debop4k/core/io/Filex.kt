@@ -29,7 +29,7 @@ import java.io.*
 import java.nio.charset.Charset
 import kotlin.concurrent.thread
 
-private val log = loggerOf("IOFiles")
+private val log = loggerOf("Filex")
 
 const val EXTENSION_SEPARATOR = '.'
 

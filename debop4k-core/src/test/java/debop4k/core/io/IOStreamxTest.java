@@ -1,16 +1,17 @@
 /*
- * Copyright (c) 2016. KESTI co, ltd
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 package debop4k.core.io;
@@ -32,7 +33,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-public class StreamxTest extends AbstractCoreTest {
+public class IOStreamxTest extends AbstractCoreTest {
 
   @Test
   @SneakyThrows({IOException.class})
@@ -40,7 +41,7 @@ public class StreamxTest extends AbstractCoreTest {
     InputStream is = Resourcex.getClassPathResourceStream("logback-test.xml");
     try {
       assertThat(is).isNotNull();
-      String xml = Streamx.toString(is);
+      String xml = IOStreamx.toString(is);
       assertThat(xml).isNotEmpty();
       assertThat(xml).contains("logger");
     } finally {
@@ -52,9 +53,9 @@ public class StreamxTest extends AbstractCoreTest {
   @SneakyThrows({IOException.class})
   public void copyStreams() {
     String source = Stringx.replicate(sampleText, 1000);
-    InputStream input = Streamx.toInputStream(source);
+    InputStream input = IOStreamx.toInputStream(source);
     try {
-      String copied = Streamx.toString(input);
+      String copied = IOStreamx.toString(input);
       assertThat(copied).isEqualTo(source);
     } finally {
       input.close();
@@ -64,9 +65,9 @@ public class StreamxTest extends AbstractCoreTest {
   @Test
   public void inputStreamWithBytes() throws Exception {
     byte[] sourceBytes = Arrayx.getRandomBytes(64 * 1024);
-    InputStream input = Streamx.toInputStream(sourceBytes);
+    InputStream input = IOStreamx.toInputStream(sourceBytes);
     try {
-      byte[] copied = Streamx.toByteArray(input);
+      byte[] copied = IOStreamx.toByteArray(input);
       assertThat(copied).isEqualTo(sourceBytes);
     } finally {
       input.close();
@@ -76,9 +77,9 @@ public class StreamxTest extends AbstractCoreTest {
   @Test
   public void inputStreamWithString() throws Exception {
     String sourceText = Stringx.replicate(sampleText, 1000);
-    InputStream input = Streamx.toInputStream(sourceText);
+    InputStream input = IOStreamx.toInputStream(sourceText);
     try {
-      String copiedText = Streamx.toString(input);
+      String copiedText = IOStreamx.toString(input);
       assertThat(copiedText).isEqualTo(sourceText);
     } finally {
       input.close();
@@ -88,7 +89,7 @@ public class StreamxTest extends AbstractCoreTest {
   @Test
   public void outputStreamWithByte() throws Exception {
     byte[] sourceBytes = Arrayx.getRandomBytes(64 * 1024);
-    FastByteArrayOutputStream output = Streamx.toOutputStream(sourceBytes);
+    FastByteArrayOutputStream output = IOStreamx.toOutputStream(sourceBytes);
     try {
       byte[] copied = output.toByteArrayUnsafe();
       assertThat(copied).isEqualTo(sourceBytes);
@@ -100,7 +101,7 @@ public class StreamxTest extends AbstractCoreTest {
   @Test
   public void outputStreamWithString() throws Exception {
     String sourceText = Stringx.replicate(sampleText, 1000);
-    FastByteArrayOutputStream output = Streamx.toOutputStream(sourceText);
+    FastByteArrayOutputStream output = IOStreamx.toOutputStream(sourceText);
     try {
       String copiedText = Stringx.toUtf8String(output.toByteArrayUnsafe());
       assertThat(copiedText).isEqualTo(sourceText);
@@ -113,7 +114,7 @@ public class StreamxTest extends AbstractCoreTest {
   public void inputStreamToStringList() throws Exception {
     InputStream input = Resourcex.getClassPathResourceStream("logback-test.xml");
     try {
-      List<String> lines = Streamx.toStringList(input);
+      List<String> lines = IOStreamx.toStringList(input);
       assertThat(lines).isNotNull();
       assertThat(lines.size()).isGreaterThan(0);
     } finally {
@@ -125,7 +126,7 @@ public class StreamxTest extends AbstractCoreTest {
   @Test
   public void bytesToStringList() {
     byte[] bytes = Resourcex.getBytes("logback-test.xml");
-    List<String> lines = Streamx.toStringList(bytes, Charsets.UTF_8);
+    List<String> lines = IOStreamx.toStringList(bytes, Charsets.UTF_8);
 
     assertThat(lines).isNotNull();
     assertThat(lines.size()).isGreaterThan(0);

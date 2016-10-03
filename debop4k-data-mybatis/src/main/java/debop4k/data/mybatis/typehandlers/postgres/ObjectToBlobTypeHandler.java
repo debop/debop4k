@@ -16,7 +16,7 @@
 
 package debop4k.data.mybatis.typehandlers.postgres;
 
-import debop4k.core.io.Streamx;
+import debop4k.core.io.IOStreamx;
 import debop4k.core.io.serializers.Serializer;
 import debop4k.core.io.serializers.Serializers;
 import org.apache.ibatis.type.BaseTypeHandler;
@@ -64,7 +64,7 @@ public class ObjectToBlobTypeHandler extends BaseTypeHandler<Object> {
     if (blob == null)
       return null;
 
-    byte[] bytes = Streamx.toByteArray(blob.getBinaryStream());
+    byte[] bytes = IOStreamx.toByteArray(blob.getBinaryStream());
     return serializer.deserialize(bytes);
   }
 }

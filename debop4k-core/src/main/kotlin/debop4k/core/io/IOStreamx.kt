@@ -13,7 +13,7 @@
  * limitations under the License.
  *
  */
-@file:JvmName("Streamx")
+@file:JvmName("IOStreamx")
 
 package debop4k.core.io
 
@@ -26,7 +26,7 @@ import java.io.*
 import java.nio.ByteBuffer
 import java.nio.charset.Charset
 
-private val log = loggerOf("Streamx")
+private val log = loggerOf("IOStreamx")
 
 @JvmField val DEFAULT_BLOCK_SIZE = 4096
 
@@ -59,6 +59,34 @@ fun InputStream.copy(output: OutputStream): Long {
 
 //  output.flush()
   return readBytes
+}
+
+fun InputStream.copy(writer: Writer, cs: Charset = Charsets.UTF_8): Long {
+  return this.reader(cs).copy(writer)
+}
+
+/**
+ * Copy [Reader] data to [Writer]
+ */
+fun Reader.copy(writer: Writer): Long {
+  val buffer = CharArray(DEFAULT_BUFFER_SIZE)
+  var readChars = 0L
+
+  do {
+    val chars = this.read(buffer, 0, DEFAULT_BUFFER_SIZE)
+    writer.write(buffer, 0, chars)
+    readChars += chars
+  } while (chars > 0)
+
+  return readChars
+}
+
+@JvmOverloads
+fun Reader.copy(output: OutputStream, cs: Charset = Charsets.UTF_8): Long {
+  val writer = OutputStreamWriter(output, cs)
+  val count = copy(writer)
+  output.flush()
+  return count
 }
 
 
@@ -104,6 +132,15 @@ fun String?.toOutputStream(blockSize: Int = DEFAULT_BLOCK_SIZE,
     return emptyOutputStream
 
   return this!!.toByteArray(cs).toOutputStream(blockSize)
+}
+
+fun InputStream?.availableBytes(): ByteArray {
+  if (this == null)
+    return emptyByteArray
+
+  val result = ByteArray(available())
+  read(result)
+  return result
 }
 
 /** [InputStream]을 읽어 바이트배열을 만듭니다 */
