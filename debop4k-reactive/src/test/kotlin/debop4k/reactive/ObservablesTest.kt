@@ -4,13 +4,14 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 package debop4k.reactive
@@ -35,9 +36,7 @@ class ObservablesTest : AbstractReactiveTest() {
       s.onNext(1)
       s.onNext(777)
       s.onCompleted()
-    }
-        .toList()
-        .forEach { assertThat(it).isEqualTo(listOf(1, 777)) }
+    }.toList().forEach { assertThat(it).isEqualTo(listOf(1, 777)) }
 
     val o1: Observable<Int> = listOf(1, 2, 3).toObservable()
     val o2: Observable<List<Int>> = listOf(1, 2, 3).toSingletonObservable()
@@ -56,7 +55,6 @@ class ObservablesTest : AbstractReactiveTest() {
 
   @Test
   fun testFoldAndMap() {
-
     val result = observable<String> { subscriber ->
       subscriber.onNext("H")
       subscriber.onNext("e")
@@ -64,7 +62,8 @@ class ObservablesTest : AbstractReactiveTest() {
       subscriber.onNext("l")
       subscriber.onNext("o")
       subscriber.onCompleted()
-    }.filter { it.isNotBlank() }
+    }
+        .filter { it.isNotBlank() }
         .fold(StringBuilder()) { sb, s -> sb.append(s) }
         .map { it.toString() }
         .toBlocking()
@@ -81,14 +80,14 @@ class ObservablesTest : AbstractReactiveTest() {
 
   @Test
   fun intProgressionStep1Empty() {
-    val range = (1 .. 1).toObservable().toList().toBlocking().first()
+    val range = (1..1).toObservable().toList().toBlocking().first()
     assertThat(range).isEqualTo(listOf(1))
   }
 
   @Test
   fun intProgressionStep1() {
-    val range = (1 .. 10).toObservable().toList().toBlocking().first()
-    assertThat(range).isEqualTo((1 .. 10).toList())
+    val range = (1..10).toObservable().toList().toBlocking().first()
+    assertThat(range).isEqualTo((1..10).toList())
   }
 
   @Test
@@ -99,19 +98,21 @@ class ObservablesTest : AbstractReactiveTest() {
 
   @Test
   fun intProgressionOverflow() {
-    val range = (-10 .. Int.MAX_VALUE)
+    val range = (-10..Int.MAX_VALUE)
         .toObservable()
         .skip(Int.MAX_VALUE)
         .map { Int.MAX_VALUE - it }
         .toList()
         .toBlocking()
         .first()
+
     assertThat(range).isEqualTo((10 downTo 0).toList())
   }
 
   @Test
   fun filterNotNull() {
     val o = listOf(1, null).toObservable().filterNotNull()
+
     o.toList().forEach {
       assertThat(it).isEqualTo(listOf(1))
     }
@@ -119,12 +120,12 @@ class ObservablesTest : AbstractReactiveTest() {
 
   @Test
   fun requireNoNullsWithoutNulls() {
-    (listOf(1, 2) as List<Int?>).toObservable().requireNoNulls().subscribe()
+    listOf<Int?>(1, 2).toObservable().requireNoNulls().subscribe()
   }
 
   @Test(expected = OnErrorNotImplementedException::class)
   fun requireNoNullsWithNulls() {
-    listOf(1, null).toObservable().requireNoNulls().subscribe()
+    listOf<Int?>(1, null).toObservable().requireNoNulls().subscribe()
   }
 
   @Test
@@ -133,13 +134,11 @@ class ObservablesTest : AbstractReactiveTest() {
                           IndexedValue(1, "b"),
                           IndexedValue(2, "c"))
 
-    listOf("a", "b", "c")
+    listOf<String>("a", "b", "c")
         .toObservable()
         .withIndex()
         .toList()
-        .forEach {
-          assertThat(it).isEqualTo(expected)
-        }
+        .forEach { assertThat(it).isEqualTo(expected) }
   }
 
   @Test fun `withIndex() 는 복수의 subscriber에서 공유되면 안됩니다`() {
@@ -160,16 +159,24 @@ class ObservablesTest : AbstractReactiveTest() {
 
   @Test
   fun testFold() {
-    listOf(1, 2, 3).toObservable().fold(0) { acc, n -> acc + n }.single().forEach {
-      assertThat(it).isEqualTo(6)
-    }
+    listOf<Int>(1, 2, 3)
+        .toObservable()
+        .fold(0) { acc, n -> acc + n }
+        .single()
+        .forEach {
+          assertThat(it).isEqualTo(6)
+        }
   }
 
   @Test
   fun kotlinSequence() {
-    generateSequence(0) { it + 1 }.toObservable().take(10).toList().forEach {
-      assertThat(it).isEqualTo((0 .. 9).toList())
-    }
+    generateSequence(0) { it + 1 }
+        .toObservable()
+        .take(10)
+        .toList()
+        .forEach {
+          assertThat(it).isEqualTo((0..9).toList())
+        }
   }
 
   @Test
@@ -202,16 +209,22 @@ class ObservablesTest : AbstractReactiveTest() {
   fun testCombineLatest() {
     val list = listOf(1, 2, 3, 2, 3, 4, 3, 4, 5)
 
-    val actual = list.map { it.toSingletonObservable() }.combineLatest { it }.toBlocking().first()
+    val actual = list.map { it.toSingletonObservable() }
+        .combineLatest { it }
+        .toBlocking()
+        .first()
 
     assertThat(actual).isEqualTo(list)
   }
 
   @Test
   fun testZip() {
-    val list = listOf(1, 2, 3, 2, 3, 4, 3, 4, 5)
-    val actual = list.map { it.toSingletonObservable() }.zip { it }.toBlocking().first()
-    assertThat(actual).isEqualTo(list)
+    val expected = listOf(1, 2, 3, 2, 3, 4, 3, 4, 5)
+    val actual = expected.map { it.toSingletonObservable() }
+        .zip { it }
+        .toBlocking()
+        .first()
+    assertThat(actual).isEqualTo(expected)
   }
 
   @Test

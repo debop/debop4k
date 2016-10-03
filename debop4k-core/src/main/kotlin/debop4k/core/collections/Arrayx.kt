@@ -49,6 +49,13 @@ val FloatArray?.nonEmpty: Boolean get() = this != null && this.isNotEmpty()
 val DoubleArray?.nonEmpty: Boolean get() = this != null && this.isNotEmpty()
 val Array<*>?.nonEmpty: Boolean get() = this != null && this.isNotEmpty()
 
+fun Sequence<Boolean>.toBooleanArrayList(): BooleanArrayList = BooleanArrayList.newListWith(*this.toList().toBooleanArray())
+fun Iterable<Boolean>.toBooleanArrayList(): BooleanArrayList = asSequence().toBooleanArrayList()
+fun BooleanArray.toBooleanArrayList(): BooleanArrayList = BooleanArrayList.newListWith(*this)
+fun BooleanArrayList.asSequence(): Sequence<Boolean> = toArray().asSequence()
+fun BooleanArrayList.asList(): List<Boolean> = toArray().asList()
+fun booleanArrayListOf(vararg values: Boolean): BooleanArrayList = BooleanArrayList.newListWith(*values)
+fun booleanArrayListOf(iterable: Iterable<Boolean>): BooleanArrayList = iterable.toBooleanArrayList()
 
 fun Sequence<Char>.toCharArrayList(): CharArrayList = CharArrayList.newListWith(*this.toList().toCharArray())
 fun Iterable<Char>.toCharArrayList(): CharArrayList = this.asSequence().toCharArrayList()

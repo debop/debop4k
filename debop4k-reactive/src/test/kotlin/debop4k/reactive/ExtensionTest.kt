@@ -16,9 +16,7 @@
 
 package debop4k.reactive
 
-import debop4k.core.collections.asList
-import debop4k.core.collections.fastListOf
-import debop4k.core.collections.intArrayListOf
+import debop4k.core.collections.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.mockito.Mockito
@@ -43,7 +41,11 @@ class ExtensionTest : AbstractReactiveTest() {
 
   @Test
   fun testFilter() {
-    listOf(1, 2, 3).toObservable().filter { it >= 2 }.subscribe(received())
+    listOf(1, 2, 3)
+        .toObservable()
+        .filter { it >= 2 }
+        .subscribe(received())
+
     verify(a, times(0)).received(1)
     verify(a, times(1)).received(2)
     verify(a, times(1)).received(3)
@@ -56,7 +58,11 @@ class ExtensionTest : AbstractReactiveTest() {
 
   @Test
   fun testLastWithPredicate() {
-    assertThat(listOf("one", "two", "three").toObservable().toBlocking().last { x -> x.length == 3 }).isEqualTo("two")
+    assertThat(listOf("one", "two", "three")
+                   .toObservable()
+                   .toBlocking()
+                   .last { x -> x.length == 3 })
+        .isEqualTo("two")
   }
 
   @Test
@@ -114,11 +120,11 @@ class ExtensionTest : AbstractReactiveTest() {
 
   @Test
   fun testStartWith() {
-    val list = intArrayListOf(10, 11, 12, 13, 14)
-    val startList = intArrayListOf(1, 2, 3, 4, 5)
+    val list = listOf(10, 11, 12, 13, 14)
+    val startList = listOf(1, 2, 3, 4, 5)
 
-    assertThat(list.asList().toObservable().startWith(0).count().toBlocking().single()).isEqualTo(6)
-    assertThat(list.asList().toObservable().startWith(startList.asList()).count().toBlocking().single()).isEqualTo(10)
+    assertThat(list.toObservable().startWith(0).count().toBlocking().single()).isEqualTo(6)
+    assertThat(list.toObservable().startWith(startList).count().toBlocking().single()).isEqualTo(10)
   }
 
   @Test
@@ -129,7 +135,7 @@ class ExtensionTest : AbstractReactiveTest() {
 
   @Test
   fun testSkipTake() {
-    intArrayListOf(1, 2, 3).asList().toObservable().skip(1).take(1).subscribe(received())
+    listOf(1, 2, 3).toObservable().skip(1).take(1).subscribe(received())
     verify(a, times(0)).received(1)
     verify(a, times(1)).received(2)
     verify(a, times(0)).received(3)
@@ -137,7 +143,7 @@ class ExtensionTest : AbstractReactiveTest() {
 
   @Test
   fun testSkip() {
-    intArrayListOf(1, 2, 3).asList().toObservable().skip(2).subscribe(received())
+    listOf(1, 2, 3).toObservable().skip(2).subscribe(received())
     verify(a, times(0)).received(1)
     verify(a, times(0)).received(2)
     verify(a, times(1)).received(3)
@@ -145,7 +151,7 @@ class ExtensionTest : AbstractReactiveTest() {
 
   @Test
   fun testTake() {
-    intArrayListOf(1, 2, 3).asList().toObservable().take(2).subscribe(received())
+    listOf(1, 2, 3).toObservable().take(2).subscribe(received())
     verify(a, times(1)).received(1)
     verify(a, times(1)).received(2)
     verify(a, times(0)).received(3)
@@ -156,7 +162,7 @@ class ExtensionTest : AbstractReactiveTest() {
     TestFactory().observable.takeLast(1).subscribe(received())
     verify(a, times(1)).received("hello_1")
 
-    intArrayListOf(1, 2, 3).asList().toObservable().takeLast(1).subscribe(received())
+    listOf(1, 2, 3).toObservable().takeLast(1).subscribe(received())
     verify(a, times(0)).received(1)
     verify(a, times(0)).received(2)
     verify(a, times(1)).received(3)
@@ -164,7 +170,7 @@ class ExtensionTest : AbstractReactiveTest() {
 
   @Test
   fun testTakeWhile() {
-    fastListOf(1, 2, 3).toObservable().takeWhile { x -> x < 3 }.subscribe(received())
+    intArrayListOf(1, 2, 3).toObservable().takeWhile { x -> x < 3 }.subscribe(received())
     verify(a, times(1)).received(1)
     verify(a, times(1)).received(2)
     verify(a, times(0)).received(3)
@@ -172,9 +178,9 @@ class ExtensionTest : AbstractReactiveTest() {
 
   @Test
   fun testTakeWhileWithIndex() {
-    fastListOf(1, 2, 3).toObservable()
+    intArrayListOf(1, 2, 3).toObservable()
         .takeWhile { x -> x < 3 }
-        .zipWith((0 .. Int.MAX_VALUE).toObservable()) { x, i -> x }
+        .zipWith((0..Int.MAX_VALUE).toObservable()) { x, i -> x }
         .subscribe(received())
 
     verify(a, times(1)).received(1)

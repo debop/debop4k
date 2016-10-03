@@ -18,10 +18,10 @@
 
 package debop4k.reactive
 
-import rx.Observable
+import debop4k.core.collections.asList
+import org.eclipse.collections.impl.list.mutable.primitive.*
+import rx.*
 import rx.Observable.OnSubscribe
-import rx.Subscriber
-import rx.Subscription
 import rx.functions.Func0
 import rx.observables.BlockingObservable
 
@@ -45,14 +45,22 @@ fun <T> Sequence<T>.toObservable(): Observable<T> = Observable.from(object : Ite
   override fun iterator(): Iterator<T> = this@toObservable.iterator()
 })
 
-fun BooleanArray.toObservable(): Observable<Boolean> = this.toList().toObservable()
-fun ByteArray.toObservable(): Observable<Byte> = this.toList().toObservable()
-fun ShortArray.toObservable(): Observable<Short> = this.toList().toObservable()
-fun IntArray.toObservable(): Observable<Int> = this.toList().toObservable()
-fun LongArray.toObservable(): Observable<Long> = this.toList().toObservable()
-fun FloatArray.toObservable(): Observable<Float> = this.toList().toObservable()
-fun DoubleArray.toObservable(): Observable<Double> = this.toList().toObservable()
+fun BooleanArray.toObservable(): Observable<Boolean> = this.asList().toObservable()
+fun ByteArray.toObservable(): Observable<Byte> = this.asList().toObservable()
+fun ShortArray.toObservable(): Observable<Short> = this.asList().toObservable()
+fun IntArray.toObservable(): Observable<Int> = this.asList().toObservable()
+fun LongArray.toObservable(): Observable<Long> = this.asList().toObservable()
+fun FloatArray.toObservable(): Observable<Float> = this.asList().toObservable()
+fun DoubleArray.toObservable(): Observable<Double> = this.asList().toObservable()
 fun <T> Array<out T>.toObservable(): Observable<T> = Observable.from(this)
+
+fun BooleanArrayList.toObservable(): Observable<Boolean> = this.asList().toObservable()
+fun ByteArrayList.toObservable(): Observable<Byte> = this.asList().toObservable()
+fun ShortArrayList.toObservable(): Observable<Short> = this.asList().toObservable()
+fun IntArrayList.toObservable(): Observable<Int> = this.asList().toObservable()
+fun LongArrayList.toObservable(): Observable<Long> = this.asList().toObservable()
+fun FloatArrayList.toObservable(): Observable<Float> = this.asList().toObservable()
+fun DoubleArrayList.toObservable(): Observable<Double> = this.asList().toObservable()
 
 fun IntProgression.toObservable(): Observable<Int> {
   if (step == 1 && last.toLong() - first < Integer.MAX_VALUE)
