@@ -46,7 +46,7 @@ fun createDirectory(dir: String): File? {
   log.trace("create directory. dir={}", dir)
   try {
     val file = File(dir)
-    val created = file.mkdir()
+    val created = file.mkdirs()
 
     return if (created) file else null
 
