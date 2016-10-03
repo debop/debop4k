@@ -17,15 +17,13 @@
 package debop4k.http
 
 import debop4k.core.collections.fastListOf
-import org.apache.http.Header
-import org.apache.http.HttpEntityEnclosingRequest
-import org.apache.http.NameValuePair
+import org.apache.http.*
 import org.apache.http.client.methods.HttpUriRequest
 import java.net.URI
 import java.nio.charset.Charset
 
 /**
- * HttpRequestBuilder
+ * HttpRequest Builder (Kotlin 에서는 필요없다)
  * @author debop sunghyouk.bae@gmail.com
  */
 class HttpRequestBuilder {

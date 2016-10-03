@@ -17,9 +17,7 @@
 package debop4k.http
 
 import debop4k.core.json.JacksonSerializer
-import org.apache.http.Header
-import org.apache.http.HttpHost
-import org.apache.http.NameValuePair
+import org.apache.http.*
 import org.apache.http.client.methods.*
 import org.apache.http.impl.client.CloseableHttpClient
 import org.apache.http.impl.client.HttpClients
@@ -30,7 +28,7 @@ import java.net.URI
 import java.nio.charset.Charset
 
 /**
- * HttpClient
+ * Http Client
  * @author debop sunghyouk.bae@gmail.com
  */
 open class HttpClient : AutoCloseable {

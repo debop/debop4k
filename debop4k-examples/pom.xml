@@ -54,6 +54,11 @@
       <artifactId>debop4k-science</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
+    <dependency>
+      <groupId>debop4k</groupId>
+      <artifactId>debop4k-units</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>org.jetbrains.exposed</groupId>

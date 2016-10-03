@@ -29,8 +29,8 @@ import java.util.concurrent.*
 
 private val log = LoggerFactory.getLogger("ConfigReader")
 
-private fun assertPath(path: String): Unit {
-  assert(path.isNotBlank()) { "경로가 지정되지 않았습니다 (null 이거나 blank 입니다)" }
+private fun assertPath(path: String?): Unit {
+  assert(path != null && path.isNotBlank()) { "경로가 지정되지 않았습니다 (null 이거나 blank 입니다)" }
 }
 
 /**
@@ -41,7 +41,7 @@ private fun assertPath(path: String): Unit {
  * @param defaultValue  읽기 실패 시의 기본 값
  * @return Config 값
  */
-private inline fun <T> loadConfigValue(path: String, getter: () -> T, defaultValue: T): T {
+private inline fun <T> loadConfigValue(path: String, defaultValue: T, getter: () -> T): T {
   log.trace("환경설정 정보를 읽습니다... path={}", path)
   assertPath(path)
   try {
@@ -61,9 +61,7 @@ private inline fun <T> loadConfigValue(path: String, getter: () -> T, defaultVal
  */
 @JvmOverloads
 fun Config.loadString(path: String, defaultValue: String? = null): String? {
-  return loadConfigValue(path,
-                         { this.getString(path) },
-                         defaultValue)
+  return loadConfigValue(path, defaultValue) { this.getString(path) }
 }
 
 /**
@@ -74,9 +72,7 @@ fun Config.loadString(path: String, defaultValue: String? = null): String? {
  */
 @JvmOverloads
 fun Config.loadStringList(path: String, defaultValue: List<String> = emptyList<String>()): List<String> {
-  return loadConfigValue(path,
-                         { this.getStringList(path) },
-                         defaultValue)
+  return loadConfigValue(path, defaultValue) { this.getStringList(path) }
 }
 
 
@@ -88,9 +84,7 @@ fun Config.loadStringList(path: String, defaultValue: List<String> = emptyList<S
  */
 @JvmOverloads
 fun Config.loadBool(path: String, defaultValue: Boolean = false): Boolean {
-  return loadConfigValue(path,
-                         { this.getBoolean(path) },
-                         defaultValue)
+  return loadConfigValue(path, defaultValue) { this.getBoolean(path) }
 }
 
 /**
@@ -101,9 +95,7 @@ fun Config.loadBool(path: String, defaultValue: Boolean = false): Boolean {
  */
 @JvmOverloads
 fun Config.loadBoolList(path: String, defaultValue: List<Boolean> = emptyList()): List<Boolean> {
-  return loadConfigValue(path,
-                         { this.getBooleanList(path) },
-                         defaultValue)
+  return loadConfigValue(path, defaultValue) { this.getBooleanList(path) }
 }
 
 /**
@@ -114,9 +106,7 @@ fun Config.loadBoolList(path: String, defaultValue: List<Boolean> = emptyList())
  */
 @JvmOverloads
 fun Config.loadInt(path: String, defaultValue: Int = 0): Int {
-  return loadConfigValue(path,
-                         { this.getInt(path) },
-                         defaultValue)
+  return loadConfigValue(path, defaultValue) { this.getInt(path) }
 }
 
 /**
@@ -127,9 +117,7 @@ fun Config.loadInt(path: String, defaultValue: Int = 0): Int {
  */
 @JvmOverloads
 fun Config.loadIntList(path: String, defaultValue: List<Int> = emptyList()): List<Int> {
-  return loadConfigValue(path,
-                         { this.getIntList(path) },
-                         defaultValue)
+  return loadConfigValue(path, defaultValue) { this.getIntList(path) }
 }
 
 /**
@@ -140,9 +128,7 @@ fun Config.loadIntList(path: String, defaultValue: List<Int> = emptyList()): Lis
  */
 @JvmOverloads
 fun Config.loadLong(path: String, defaultValue: Long = 0L): Long {
-  return loadConfigValue(path,
-                         { this.getLong(path) },
-                         defaultValue)
+  return loadConfigValue(path, defaultValue) { this.getLong(path) }
 }
 
 /**
@@ -153,9 +139,7 @@ fun Config.loadLong(path: String, defaultValue: Long = 0L): Long {
  */
 @JvmOverloads
 fun Config.loadLongList(path: String, defaultValue: List<Long> = emptyList()): List<Long> {
-  return loadConfigValue(path,
-                         { this.getLongList(path) },
-                         defaultValue)
+  return loadConfigValue(path, defaultValue) { this.getLongList(path) }
 }
 
 /**
@@ -166,9 +150,7 @@ fun Config.loadLongList(path: String, defaultValue: List<Long> = emptyList()): L
  */
 @JvmOverloads
 fun Config.loadDouble(path: String, defaultValue: Double = 0.0): Double {
-  return loadConfigValue(path,
-                         { this.getDouble(path) },
-                         defaultValue)
+  return loadConfigValue(path, defaultValue) { this.getDouble(path) }
 }
 
 /**
@@ -179,9 +161,7 @@ fun Config.loadDouble(path: String, defaultValue: Double = 0.0): Double {
  */
 @JvmOverloads
 fun Config.loadDoubleList(path: String, defaultValue: List<Double> = emptyList()): List<Double> {
-  return loadConfigValue(path,
-                         { this.getDoubleList(path) },
-                         defaultValue)
+  return loadConfigValue(path, defaultValue) { this.getDoubleList(path) }
 }
 
 /**
@@ -192,9 +172,7 @@ fun Config.loadDoubleList(path: String, defaultValue: List<Double> = emptyList()
  */
 @JvmOverloads
 fun Config.loadNumber(path: String, defaultValue: Number = 0): Number {
-  return loadConfigValue(path,
-                         { this.getNumber(path) },
-                         defaultValue)
+  return loadConfigValue(path, defaultValue) { this.getNumber(path) }
 }
 
 /**
@@ -205,9 +183,7 @@ fun Config.loadNumber(path: String, defaultValue: Number = 0): Number {
  */
 @JvmOverloads
 fun Config.loadNumberList(path: String, defaultValue: List<Number> = emptyList()): List<Number> {
-  return loadConfigValue(path,
-                         { this.getNumberList(path) },
-                         defaultValue)
+  return loadConfigValue(path, defaultValue) { this.getNumberList(path) }
 }
 
 /**
@@ -218,9 +194,7 @@ fun Config.loadNumberList(path: String, defaultValue: List<Number> = emptyList()
  */
 @JvmOverloads
 fun Config.loadObject(path: String, defaultValue: Any? = null): Any? {
-  return loadConfigValue(path,
-                         { this.getAnyRef(path) },
-                         defaultValue)
+  return loadConfigValue(path, defaultValue) { this.getAnyRef(path) }
 }
 
 /**
@@ -232,9 +206,7 @@ fun Config.loadObject(path: String, defaultValue: Any? = null): Any? {
 @SuppressWarnings("unchecked")
 @JvmOverloads
 fun Config.loadAnyRefList(path: String, defaultValue: List<Any?> = emptyList()): List<Any?> {
-  return loadConfigValue(path,
-                         { this.getAnyRefList(path) },
-                         defaultValue)
+  return loadConfigValue(path, defaultValue) { this.getAnyRefList(path) }
 }
 
 /**
@@ -245,9 +217,7 @@ fun Config.loadAnyRefList(path: String, defaultValue: List<Any?> = emptyList()):
  */
 @JvmOverloads
 fun Config.loadBytes(path: String, defaultValue: Long = 0L): Long {
-  return loadConfigValue(path,
-                         { this.getBytes(path) },
-                         defaultValue)
+  return loadConfigValue(path, defaultValue) { this.getBytes(path) }
 }
 
 /**
@@ -258,9 +228,7 @@ fun Config.loadBytes(path: String, defaultValue: Long = 0L): Long {
  */
 @JvmOverloads
 fun Config.loadBytesList(path: String, defaultValue: List<Long> = emptyList()): List<Long> {
-  return loadConfigValue(path,
-                         { this.getBytesList(path) },
-                         defaultValue)
+  return loadConfigValue(path, defaultValue) { this.getBytesList(path) }
 }
 
 /**
@@ -271,9 +239,7 @@ fun Config.loadBytesList(path: String, defaultValue: List<Long> = emptyList()): 
  */
 @JvmOverloads
 fun Config.loadDuration(path: String, unit: TimeUnit, defaultValue: Long = 0L): Long {
-  return loadConfigValue(path,
-                         { this.getDuration(path, unit) },
-                         defaultValue)
+  return loadConfigValue(path, defaultValue) { this.getDuration(path, unit) }
 }
 
 /**
@@ -285,9 +251,7 @@ fun Config.loadDuration(path: String, unit: TimeUnit, defaultValue: Long = 0L): 
  */
 @JvmOverloads
 fun Config.loadDurationList(path: String, unit: TimeUnit, defaultValue: List<Long> = emptyList()): List<Long> {
-  return loadConfigValue(path,
-                         { this.getDurationList(path, unit) },
-                         defaultValue)
+  return loadConfigValue(path, defaultValue) { this.getDurationList(path, unit) }
 }
 
 /**
@@ -298,9 +262,7 @@ fun Config.loadDurationList(path: String, unit: TimeUnit, defaultValue: List<Lon
  */
 @JvmOverloads
 fun Config.loadConfigValue(path: String, defaultValue: ConfigValue? = null): ConfigValue? {
-  return loadConfigValue(path,
-                         { this.getValue(path) },
-                         defaultValue)
+  return loadConfigValue(path, defaultValue) { this.getValue(path) }
 }
 
 /**
@@ -311,7 +273,7 @@ fun Config.loadConfigValue(path: String, defaultValue: ConfigValue? = null): Con
 fun Config.asProperties(): Properties {
   val props = Properties()
   try {
-    props.putAll(this.asMap())
+    props.putAll(asMap())
   } catch (ignored: Throwable) {
     log.warn("환경설정을 읽는데 실패했습니다.", ignored)
   }

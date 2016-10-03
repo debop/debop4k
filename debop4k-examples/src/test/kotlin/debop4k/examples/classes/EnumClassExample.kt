@@ -4,23 +4,22 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 package debop4k.examples.classes
 
 import debop4k.examples.AbstractExampleTest
+import debop4k.units.MassUnit
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-
-/**
- * @author sunghyouk.bae@gmail.com
- */
 
 enum class BitCount(val value: Int) {
   x16(16),
@@ -37,12 +36,17 @@ class EnumClassExample : AbstractExampleTest() {
 
   @Test
   fun `enum class 생성하기`() {
-      val bit = BitCount.x32
-      println(bit)
-    }
+    val bit = BitCount.x32
+    println(bit)
+
+    assertThat(BitCount.from(64)).isEqualTo(BitCount.x64)
+  }
 
   @Test fun `MassUnit enum class 생성하기`() {
-      val mg = MassUnit.MILLIGRAM
-      println(mg)
-    }
+    val mg = MassUnit.MILLIGRAM
+    println(mg)
+    assertThat(MassUnit.valueOf("KILOGRAM")).isEqualTo(MassUnit.KILOGRAM)
+    assertThat(MassUnit.parse("kg")).isEqualTo(MassUnit.KILOGRAM)
+    assertThat(MassUnit.parse("KG")).isEqualTo(MassUnit.KILOGRAM)
+  }
 }

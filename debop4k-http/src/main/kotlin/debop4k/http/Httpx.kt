@@ -39,16 +39,16 @@ fun httpUriRequestOf(method: String, uri: String): HttpUriRequest
 
 fun httpUriRequestOf(method: String, uri: URI): HttpUriRequest = when (method.toUpperCase()) {
 
-  HttpHead.METHOD_NAME -> HttpHead(uri)
-  HttpGet.METHOD_NAME -> HttpGet(uri)
-  HttpPost.METHOD_NAME -> HttpPost(uri)
-  HttpPut.METHOD_NAME -> HttpPut(uri)
-  HttpPatch.METHOD_NAME -> HttpPut(uri)
+  HttpHead.METHOD_NAME    -> HttpHead(uri)
+  HttpGet.METHOD_NAME     -> HttpGet(uri)
+  HttpPost.METHOD_NAME    -> HttpPost(uri)
+  HttpPut.METHOD_NAME     -> HttpPut(uri)
+  HttpPatch.METHOD_NAME   -> HttpPut(uri)
   HttpOptions.METHOD_NAME -> HttpOptions(uri)
-  HttpDelete.METHOD_NAME -> HttpDelete(uri)
-  HttpTrace.METHOD_NAME -> HttpTrace(uri)
+  HttpDelete.METHOD_NAME  -> HttpDelete(uri)
+  HttpTrace.METHOD_NAME   -> HttpTrace(uri)
 
-  else -> throw NotSupportedException("지원하지 않는 메소드입니다. method=$method")
+  else                    -> throw NotSupportedException("지원하지 않는 메소드입니다. method=$method")
 
 }
 
@@ -84,7 +84,7 @@ fun HttpResponse.toString(cs: Charset = Charsets.UTF_8): String {
 @Throws(HttpResponseException::class)
 fun HttpResponse.assertStatus(): Unit {
   val status = this.statusLine.statusCode
-  if (status != HttpStatus.SC_OK) {
-    throw HttpResponseException(status, "HttpStatus 상태가 200 이 아닙니다.")
+  if (status >= 300) {
+    throw HttpResponseException(status, "HttpStatus 상태가 20x 가 아닙니다.")
   }
 }

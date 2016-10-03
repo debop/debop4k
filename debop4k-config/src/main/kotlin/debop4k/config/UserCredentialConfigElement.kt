@@ -17,14 +17,17 @@
 package debop4k.config
 
 /**
- * UserCredentialConfigElement
+ * 사용자 계정 정보
+ *
  * @author sunghyouk.bae@gmail.com
  */
 interface UserCredentialConfigElement : ConfigSupport {
 
+  /** User name */
   val username: String?
     get() = config.loadString("username", null)
 
+  /** User password */
   val password: String?
     get() = config.loadString("password", null)
 }

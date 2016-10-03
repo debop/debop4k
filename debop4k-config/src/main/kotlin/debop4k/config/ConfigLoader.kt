@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory
 
 /**
  * Typesafe Config 라이브러리를 이용하여, 환경설정 정보를 로드합니다.
+ *
  * @author sunghyouk.bae@gmail.com
  */
 object ConfigLoader {
@@ -43,10 +44,6 @@ object ConfigLoader {
     val config = ConfigFactory.load(resourceBasename)
 
     return rootPath?.let { path -> config.getConfig(path) } ?: config
-//    if (rootPath.isNullOrBlank()) {
-//      return config
-//    }
-//    return config.getConfig(rootPath)
   }
 
   /**
@@ -66,9 +63,5 @@ object ConfigLoader {
     val config = ConfigFactory.load(loader, resourceBasename)
 
     return rootPath?.let { path -> config.getConfig(path) } ?: config
-//    if (rootPath.isNullOrBlank()) {
-//      return config
-//    }
-//    return config.getConfig(rootPath)
   }
 }

@@ -4,22 +4,21 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 package debop4k.examples.operators
 
 import debop4k.examples.AbstractExampleTest
 import org.assertj.core.api.Assertions.assertThat
-import org.jetbrains.exposed.dao.Entity
-import org.jetbrains.exposed.dao.EntityID
-import org.jetbrains.exposed.dao.IdTable
+import org.jetbrains.exposed.dao.*
 import org.jetbrains.exposed.sql.Column
 import org.junit.Test
 import java.beans.PropertyChangeListener
@@ -103,7 +102,7 @@ class DelegateExample : AbstractExampleTest() {
 
 data class Email(val address: String)
 
-class Person(val name: String) {
+open class Person(val name: String) {
 
   @Volatile private var _emails: List<Email>? = null
 
@@ -122,6 +121,7 @@ fun loadEmails(person: Person): List<Email> {
 }
 
 class Person2(val name: String) {
+  // lazy delegate
   val emails: List<Email> by lazy { loadEmails2(this) }
 }
 
@@ -160,7 +160,9 @@ class Person3(val name: String, age: Int, salary: Int) : PropertyChangeAware() {
     }
 }
 
-class ObservableProperty(val propName: String, var propValue: Int, val changeSupport: PropertyChangeSupport) {
+class ObservableProperty(val propName: String,
+                         var propValue: Int,
+                         val changeSupport: PropertyChangeSupport) {
   fun getValue(): Int = propValue
   fun setValue(newValue: Int) {
     val oldValue = propValue

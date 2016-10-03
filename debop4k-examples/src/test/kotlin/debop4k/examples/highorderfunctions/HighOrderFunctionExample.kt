@@ -4,13 +4,14 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 package debop4k.examples.highorderfunctions
@@ -18,74 +19,77 @@ package debop4k.examples.highorderfunctions
 import debop4k.examples.AbstractExampleTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import java.io.BufferedReader
-import java.io.FileReader
+import java.io.*
 import java.util.concurrent.locks.*
 
-/**
- * @author sunghyouk.bae@gmail.com
- */
+typealias Func3<T> = (T, T) -> T
+typealias VoidProcedure = () -> Unit
+
 class HighOrderFunctionExample : AbstractExampleTest() {
 
-  val sum: (Int, Int) -> Int = { x: Int, y: Int -> x + y }
-  val action: () -> Unit = { println(42) }
-
+  val sum: Func3<Int> = { x, y -> x + y }
+  val action: VoidProcedure = { println(42) }
 
   @Test fun `Calling Functions passed as argument`() {
 
-      fun <T> Iterable<T>.filter(predicate: (T) -> Boolean): MutableList<T> {
-        val items = mutableListOf<T>()
+    fun <T> Iterable<T>.filter(predicate: (T) -> Boolean): MutableList<T> {
+      val items = mutableListOf<T>()
 
-        this.forEach { item ->
-          log.debug("item={}", item)
-          if (predicate(item)) {
-            items.add(item)
-          }
+      this.forEach { item ->
+        log.debug("item={}", item)
+        if (predicate(item)) {
+          items.add(item)
         }
-        return items
       }
+      return items
+    }
 
-      val list = listOf<Int>(1, 2, 3, 4).filter { i -> i > 3 }
+    val list = listOf(1, 2, 3, 4).filter { i -> i > 3 }
     log.debug("list={}", list)
 
     assertThat(list).isEqualTo(listOf<Int>(4))
-    }
+  }
 
   @Test fun `Returning Function`() {
-      val contacts = listOf(Person("Sunghyouk", "Bae", "123-4567"),
-                            Person("Misook", "Kwon", null))
+    val contacts = listOf(Person("Sunghyouk", "Bae", "123-4567"),
+                          Person("Misook", "Kwon", null))
 
-      with(ContactListFilters) {
-        prefix = "B"
-        onlyWithPhoneNumber = true
-      }
+    with(ContactListFilters) {
+      prefix = "B"
+      onlyWithPhoneNumber = true
+    }
     val filtered = contacts.filter(ContactListFilters.getPredicate())
     assertThat(filtered).isEqualTo(listOf(Person("Sunghyouk", "Bae", "123-4567")))
-    }
+  }
 
   @Test fun `inline functions - removing the overhead of lambda`() {
-      val lock = ReentrantLock()
-      synchronized(lock) {
-        println("synchronized")
-      }
+    val lock = ReentrantLock()
+    synchronized(lock) {
+      println("synchronized")
     }
+  }
 
   @Test fun `Lambda - Design Pattern for Resources`() {
-      val lines = BufferedReader(FileReader("../README.md")).use { it.readLines() }
+    val lines: List<String> = BufferedReader(FileReader("../README.md")).use { it.readLines() }
     assertThat(lines).isNotNull()
     assertThat(lines.size).isGreaterThan(0)
-    log.debug("lines={}", lines)
-    }
+
+    lines.forEach { println(it) }
+//    log.debug("lines={}", lines)
+  }
 }
 
-data class Person(val firstName: String, val lastName: String, val phoneNumber: String?)
+data class Person(val firstName: String,
+                  val lastName: String,
+                  val phoneNumber: String?) : Serializable
 
 object ContactListFilters {
-  var prefix: String = ""
-  var onlyWithPhoneNumber: Boolean = false
+  @JvmField var prefix: String = ""
+  @JvmField var onlyWithPhoneNumber: Boolean = false
 
+  @JvmStatic
   fun getPredicate(): (Person) -> Boolean {
-    val startsWithPrefix = { p: Person ->
+    val startsWithPrefix: (Person) -> Boolean = { p: Person ->
       p.firstName.startsWith(prefix) || p.lastName.startsWith(prefix)
     }
     if (!onlyWithPhoneNumber) {
