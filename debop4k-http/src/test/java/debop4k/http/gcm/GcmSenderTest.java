@@ -16,9 +16,6 @@
 
 package debop4k.http.gcm;
 
-
-import debop4k.gcm.GcmMessage;
-import debop4k.gcm.GcmSender;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.junit.Test;

@@ -1,16 +1,17 @@
 /*
- *  Copyright (c) 2016. KESTI co, ltd
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 @file:JvmName("Networkx")
@@ -18,9 +19,7 @@
 package debop4k.core.utils
 
 import debop4k.core.collections.padTo
-import java.net.Inet4Address
-import java.net.InetAddress
-import java.net.UnknownHostException
+import java.net.*
 
 /**
  * 네트웍 관련 Object
@@ -33,15 +32,12 @@ object Networkx {
   @JvmField val DEFAULT_MASK: String = "255.255.255.0"
   @JvmField val INT_VALUE_127_0_0_1: Int = 0x7F000001
 
-  val localhost: InetAddress get() = InetAddress.getLocalHost()
+  @JvmField val LocalHost: InetAddress = InetAddress.getLocalHost()
 
-  @JvmStatic
-  fun getLocalHostName(): String {
-    try {
-      return localhost.getHostName()
-    } catch(uhe: UnknownHostException) {
-      return uhe.message!!
-    }
+  @JvmStatic val LocalHostName: String get() = try {
+    LocalHost.hostName
+  } catch(uhe: UnknownHostException) {
+    uhe.message!!
   }
 
   @JvmStatic
@@ -61,7 +57,7 @@ object Networkx {
         else if (addr[0] == 192.toByte() && addr[1] == 168.toByte()) true // 192.168/16
         else false
       }
-      else -> false
+      else            -> false
     }
   }
 
@@ -127,7 +123,7 @@ object Networkx {
             ((addr[2].toInt() and 0xFF) shl 8) or
             ((addr[3].toInt() and 0xFF))
       }
-      else -> throw IllegalArgumentException("non-Inet4Address cannot be converted to an Int")
+      else            -> throw IllegalArgumentException("non-Inet4Address cannot be converted to an Int")
     }
   }
 
@@ -156,8 +152,8 @@ object Networkx {
     val arr = cidr.split('/')
 
     return when (arr.size) {
-      1 -> ipToIpBlock(arr[0], null)
-      2 -> ipToIpBlock(arr[0], arr[1].toInt())
+      1    -> ipToIpBlock(arr[0], null)
+      2    -> ipToIpBlock(arr[0], arr[1].toInt())
       else -> throw IllegalArgumentException("Invalid cidr. cidr=$cidr")
     }
   }
@@ -166,7 +162,7 @@ object Networkx {
   fun isIpInBlock(ip: Int, ipBlock: Pair<Int, Int>): Boolean {
     return when (ipBlock) {
       is Pair<Int, Int> -> (ipBlock.second and ip) == ipBlock.first
-      else -> false
+      else              -> false
     }
   }
 
@@ -181,5 +177,4 @@ object Networkx {
   @JvmStatic
   fun isInetAddressInBlocks(inetAddress: InetAddress, ipBlocks: Iterable<Pair<Int, Int>>): Boolean
       = isIpInBlocks(inetAddressToInt(inetAddress), ipBlocks)
-
 }

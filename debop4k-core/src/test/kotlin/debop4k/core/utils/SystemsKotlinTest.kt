@@ -1,16 +1,17 @@
 /*
- * Copyright (c) 2016. KESTI co, ltd
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 package debop4k.core.utils
@@ -20,18 +21,18 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 /**
- * SystemExKotlinTest
+ * SystemsKotlinTest
  * @author debop sunghyouk.bae@gmail.com
  */
-class SystemExKotlinTest : AbstractCoreKotlinTest() {
+class SystemsKotlinTest : AbstractCoreKotlinTest() {
 
   @Test fun retrieveJavaSpecificationVersion() {
-    log.debug("java version={}, implementation={}", SystemEx.javaVersion, SystemEx.javaImplementationVersion)
-    log.debug("java vendor={}, implementation={}", SystemEx.javaVendor, SystemEx.javaImplementationVendor)
+    log.debug("java version={}, implementation={}", Systems.javaVersion, Systems.javaImplementationVersion)
+    log.debug("java vendor={}, implementation={}", Systems.javaVendor, Systems.javaImplementationVendor)
 
-    log.debug("Java6={}", SystemEx.isJava6)
-    log.debug("Java7={}", SystemEx.isJava7)
-    log.debug("Java8={}", SystemEx.isJava8)
+    log.debug("Java6={}", Systems.isJava6)
+    log.debug("Java7={}", Systems.isJava7)
+    log.debug("Java8={}", Systems.isJava8)
   }
 
   @Test
@@ -44,7 +45,7 @@ class SystemExKotlinTest : AbstractCoreKotlinTest() {
 
   @Test
   fun loadSystemProperties() {
-    val props = SystemEx.systemProps
+    val props = Systems.systemProps
     assertThat(props).isNotNull()
     assertThat(props.size).isGreaterThan(0)
 
@@ -55,17 +56,17 @@ class SystemExKotlinTest : AbstractCoreKotlinTest() {
 
   @Test
   fun loadPropertiesByName() {
-    log.debug("java home={}", SystemEx.javaHome)
-    assertThat(SystemEx.javaHome).isNotEmpty().containsIgnoringCase("Java")
-    log.debug("temp dir={}", SystemEx.tempDir)
+    log.debug("java home={}", Systems.javaHome)
+    assertThat(Systems.javaHome).isNotEmpty().containsIgnoringCase("Java")
+    log.debug("temp dir={}", Systems.tempDir)
 
-    log.debug("file separator={}", SystemEx.fileSeparator)
-    assertThat(SystemEx.fileSeparator).isNotEmpty()
-    assertThat(SystemEx.pathSeparator).isNotEmpty()
-    assertThat(SystemEx.lineSeparator).isNotEmpty()
+    log.debug("file separator={}", Systems.fileSeparator)
+    assertThat(Systems.fileSeparator).isNotEmpty()
+    assertThat(Systems.pathSeparator).isNotEmpty()
+    assertThat(Systems.lineSeparator).isNotEmpty()
 
-    log.debug("java class version={}", SystemEx.javaClassVersion)
-    assertThat(SystemEx.javaClassVersion).isNotEmpty().contains("5")
+    log.debug("java class version={}", Systems.javaClassVersion)
+    assertThat(Systems.javaClassVersion).isNotEmpty().contains("5")
   }
 
 }

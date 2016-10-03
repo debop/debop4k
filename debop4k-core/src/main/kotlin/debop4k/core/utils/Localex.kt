@@ -81,7 +81,7 @@ fun calculateFilenamesForLocale(basename: String, locale: Locale): List<String> 
   val country = locale.country
   val variant = locale.variant
 
-  log.trace("language=$language, country=$country, variant=$variant")
+  log.trace("language={}, country={}, variant={}", language, country, variant)
 
   val temp = StringBuilder(basename)
   temp.append("_")

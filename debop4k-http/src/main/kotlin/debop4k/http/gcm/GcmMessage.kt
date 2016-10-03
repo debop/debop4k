@@ -14,7 +14,7 @@
  *
  */
 
-package debop4k.gcm
+package debop4k.http.gcm
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import debop4k.core.AbstractValueObject

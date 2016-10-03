@@ -1,16 +1,17 @@
 /*
- * Copyright (c) 2016. KESTI co, ltd
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 @file:JvmName("Stringx")
@@ -21,13 +22,8 @@ import debop4k.core.BinaryStringFormat
 import debop4k.core.BinaryStringFormat.Base64
 import debop4k.core.BinaryStringFormat.HexDecimal
 import debop4k.core.areEquals
-import debop4k.core.collections.emptyByteArray
-import debop4k.core.collections.emptyCharArray
-import debop4k.core.collections.isNullOrEmpty
-import debop4k.core.utils.codecs.decodeBase64
-import debop4k.core.utils.codecs.decodeHex
-import debop4k.core.utils.codecs.encodeBase64AsString
-import debop4k.core.utils.codecs.encodeHexAsString
+import debop4k.core.collections.*
+import debop4k.core.utils.codecs.*
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.eclipse.collections.impl.list.mutable.primitive.CharArrayList
 import java.nio.charset.Charset
@@ -37,7 +33,7 @@ const val EMPTY_STRING = ""
 const val TRIMMING = "..."
 const val NULL_STRING = "<null>"
 const val COMMA: String = ","
-val LINE_SEPARATOR: String get() = SystemEx.lineSeparator
+val LINE_SEPARATOR: String get() = Systems.lineSeparator
 const val TAB: String = "\t"
 val WHITESPACE_BLOCK: Pattern by lazy { Pattern.compile("\\s+") }
 val UTF_8: Charset = Charsets.UTF_8
@@ -406,7 +402,7 @@ fun CharSequence?.between(start: String, end: String): String {
 
 
 val CharSequence.lastChar: Char
-  get() = if (this.isEmpty()) 0.toChar() else this.get(length - 1)
+  get() = if (this.isEmpty()) 0.toChar() else this[length - 1]
 
 fun CharSequence?.words(): List<String> = this?.split(' ') ?: listOf<String>()
 

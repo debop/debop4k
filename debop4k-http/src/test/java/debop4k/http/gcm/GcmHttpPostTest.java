@@ -19,8 +19,6 @@ package debop4k.http.gcm;
 import debop4k.core.asyncs.Asyncs;
 import debop4k.core.json.JacksonSerializer;
 import debop4k.core.json.JsonSerializer;
-import debop4k.gcm.GcmMessage;
-import debop4k.gcm.GcmSender;
 import debop4k.http.AsyncHttpx;
 import kotlin.text.Charsets;
 import lombok.extern.slf4j.Slf4j;

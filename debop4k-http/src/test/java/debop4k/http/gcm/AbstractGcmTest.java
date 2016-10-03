@@ -16,7 +16,6 @@
 
 package debop4k.http.gcm;
 
-import debop4k.gcm.GcmMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.collections.impl.list.mutable.FastList;
 
@@ -28,9 +27,7 @@ import java.util.List;
 public abstract class AbstractGcmTest {
 
   public static final String SERVICE_ID = "healthon";
-
   public static final String PROJECT_ID = "1028834060650";
-
   public static final String SERVER_API_KEY = "AIzaSyCVQy7ncg8UXg7S7V2tviEel0mIaAN-dlc";
 
   public static final String DEVICE_ID_PANTEC = "APA91bEZtlVWrxUadbKuQLBMjndJPxiHiEq1P0kpaA70_3puVt_0DeD_V64pliM4eyPxsoAWqCv4lPTqpt6VSGXNc26-sQr9QSo3_SgMIZpDxkBydtL26FJ4PVcaISpXetyCbHlpnIQqxsT-hQ9KDp3mTI-1nZI4R15fJg_esysTs5QTZlnD87o";
