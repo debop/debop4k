@@ -1,16 +1,17 @@
 /*
- * Copyright (c) 2016. KESTI co, ltd
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 @file:JvmName("Pathx")
@@ -21,10 +22,7 @@ import debop4k.core.loggerOf
 import org.slf4j.Logger
 import java.io.File
 import java.io.IOException
-import java.nio.file.Files
-import java.nio.file.LinkOption
-import java.nio.file.Path
-import java.nio.file.Paths
+import java.nio.file.*
 
 private val log: Logger = loggerOf("Pathx")
 
@@ -38,7 +36,7 @@ fun Path.nonExists(vararg options: LinkOption): Boolean
 
 /** 경로들을 결합합니다 */
 fun Path.combine(vararg subpaths: String): Path
-    = this.toString().combinePath()
+    = this.toString().combinePath(*subpaths)
 
 /** 경로들을 결합합니다 */
 fun String.combinePath(vararg subpaths: String): Path

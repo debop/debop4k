@@ -16,9 +16,7 @@
 
 package debop4k.redisson.kotlin.config
 
-import debop4k.redisson.DEFAULT_ADDRESS
-import debop4k.redisson.DEFAULT_HOST
-import debop4k.redisson.DEFAULT_PORT
+import debop4k.redisson.*
 import org.redisson.Redisson
 import org.redisson.api.RedissonClient
 import org.redisson.api.RedissonReactiveClient
@@ -35,18 +33,16 @@ open class RedissonKotlinConfigration {
   open fun redissonConfig(): Config {
     val config = Config()
 
-    config.useSingleServer().setAddress(DEFAULT_ADDRESS)
-    //        .setRetryAttempts(3)
-    //        .setRetryInterval(1000);
+    config.useSingleServer()
+        .setAddress(DEFAULT_ADDRESS)
+        .setRetryAttempts(3)
+        .setRetryInterval(1000);
 
-    if (config.codec == null) {
-      config.codec = SnappyCodec()
-    }
-
+    config.codec = config.codec ?: SnappyCodec()
     return config
   }
 
-  @Bean
+  @Bean(destroyMethod = "")
   open fun redisClient(): RedisClient {
     return RedisClient(DEFAULT_HOST, DEFAULT_PORT)
   }
