@@ -17,6 +17,7 @@
 package debop4k.timeperiod.calendars
 
 import debop4k.core.kodatimes.now
+import debop4k.core.loggerOf
 import debop4k.timeperiod.*
 import debop4k.timeperiod.models.DayOfWeek
 import debop4k.timeperiod.timelines.TimeGapCalculator
@@ -27,7 +28,6 @@ import org.eclipse.collections.api.set.MutableSet
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.joda.time.DateTime
 import org.joda.time.Duration
-import org.slf4j.LoggerFactory
 
 /**
  * 특정 기간의 [Duration] 을 Calendar의 예외 일자를 고려하여 계산합니다.
@@ -41,7 +41,7 @@ open class CalendarDateDiff(val calendar: ITimeCalendar = TimeCalendar.EMPTY_OFF
     require(calendar.endOffset.millis == 0L)
   }
 
-  private val log = LoggerFactory.getLogger(javaClass)
+  private val log = loggerOf(javaClass)
 
   val collectorFilter = CalendarPeriodCollectorFilter()
 

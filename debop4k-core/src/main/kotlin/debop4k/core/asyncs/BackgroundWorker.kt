@@ -16,7 +16,7 @@
 
 package debop4k.core.asyncs
 
-import org.slf4j.LoggerFactory
+import debop4k.core.loggerOf
 import java.util.concurrent.atomic.*
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
@@ -52,7 +52,7 @@ interface BackgroundWorker {
  */
 abstract class AbstractBackgroundWorker(override val name: String) : BackgroundWorker {
 
-  private val log = LoggerFactory.getLogger(javaClass)
+  private val log = loggerOf(javaClass)
 
   protected val running = AtomicBoolean(false)
   @Volatile protected var workerThread: Thread? = null

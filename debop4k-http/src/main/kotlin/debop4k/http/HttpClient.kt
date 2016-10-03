@@ -17,13 +17,13 @@
 package debop4k.http
 
 import debop4k.core.json.JacksonSerializer
+import debop4k.core.loggerOf
 import org.apache.http.*
 import org.apache.http.client.methods.*
 import org.apache.http.impl.client.CloseableHttpClient
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager
-import org.slf4j.LoggerFactory
 import java.net.URI
 import java.nio.charset.Charset
 
@@ -33,7 +33,8 @@ import java.nio.charset.Charset
  */
 open class HttpClient : AutoCloseable {
 
-  private val log = LoggerFactory.getLogger(javaClass)
+  private val log = loggerOf(javaClass)
+
   private val serializer by lazy { JacksonSerializer() }
   private val connectionManager by lazy { PoolingHttpClientConnectionManager() }
 

@@ -16,11 +16,11 @@
 
 package debop4k.timeperiod.calendars
 
+import debop4k.core.loggerOf
 import debop4k.timeperiod.*
 import debop4k.timeperiod.models.DayOfWeek
 import debop4k.timeperiod.timeranges.*
 import debop4k.timeperiod.utils.hasPureInsideWith
-import org.slf4j.LoggerFactory
 
 /**
  * 특정 기간에 대한 필터링 정보를 기반으로 기간들을 필터링 할 수 있도록 특정 기간을 탐색하는 Visitor입니다.
@@ -32,7 +32,7 @@ abstract class CalendarVisitor<out F : ICalendarVisitorFilter, in C : ICalendarV
     val seekDirection: SeekDirection = SeekDirection.Forward,
     val calendar: ITimeCalendar = DefaultTimeCalendar) {
 
-  private val log = LoggerFactory.getLogger(javaClass)
+  private val log = loggerOf(javaClass)
 
   companion object {
     val MAX_PERIOD = TimeRange(MinPeriodTime, MaxPeriodTime.minusYears(1))

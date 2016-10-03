@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.DeserializationFeature.*
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.joda.JodaModule
-import org.slf4j.LoggerFactory
+import debop4k.core.loggerOf
 
 /**
  * ObjectMapperFactory
@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory
  */
 object ObjectMapperFactory {
 
-  private val log = LoggerFactory.getLogger(javaClass)
+  private val log = loggerOf(javaClass)
 
   @JvmStatic
   fun newMapper(): ObjectMapper {

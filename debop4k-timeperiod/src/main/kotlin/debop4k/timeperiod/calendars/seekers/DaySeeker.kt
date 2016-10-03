@@ -16,17 +16,12 @@
 
 package debop4k.timeperiod.calendars.seekers
 
-import debop4k.timeperiod.DefaultTimeCalendar
-import debop4k.timeperiod.ITimeCalendar
-import debop4k.timeperiod.TimeRange
-import debop4k.timeperiod.calendars.CalendarVisitor
-import debop4k.timeperiod.calendars.CalendarVisitorFilter
-import debop4k.timeperiod.calendars.ICalendarVisitorFilter
-import debop4k.timeperiod.calendars.SeekDirection
+import debop4k.core.loggerOf
+import debop4k.timeperiod.*
+import debop4k.timeperiod.calendars.*
 import debop4k.timeperiod.calendars.SeekDirection.Backward
 import debop4k.timeperiod.calendars.SeekDirection.Forward
 import debop4k.timeperiod.timeranges.*
-import org.slf4j.LoggerFactory
 
 open class DaySeeker @JvmOverloads constructor(filter: ICalendarVisitorFilter = CalendarVisitorFilter(),
                                                seekDir: SeekDirection = Forward,
@@ -36,7 +31,7 @@ open class DaySeeker @JvmOverloads constructor(filter: ICalendarVisitorFilter = 
                                                             seekDir,
                                                             calendar) {
 
-  private val log = LoggerFactory.getLogger(javaClass)
+  private val log = loggerOf(javaClass)
 
   open fun findDay(startDay: DayRange, dayCount: Int): DayRange? {
 

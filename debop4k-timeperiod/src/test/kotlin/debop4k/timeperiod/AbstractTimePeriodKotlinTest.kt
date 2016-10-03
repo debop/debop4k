@@ -16,13 +16,13 @@
 
 package debop4k.timeperiod
 
-import org.slf4j.LoggerFactory
+import debop4k.core.loggerOf
 
 /**
  * Created by debop
  */
 abstract class AbstractTimePeriodKotlinTest {
 
-  protected val log = LoggerFactory.getLogger(javaClass)
+  protected val log = loggerOf(javaClass)
 
 }

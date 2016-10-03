@@ -18,8 +18,6 @@
 
 package debop4k.core
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.util.concurrent.atomic.*
 
 val DUMMY_CLOSE_ACTION: Runnable = Runnable { }
@@ -29,7 +27,7 @@ val DUMMY_CLOSE_ACTION: Runnable = Runnable { }
  */
 open class AutoCloseableHandler(val closeHandler: Runnable = DUMMY_CLOSE_ACTION) : AutoCloseable {
 
-  private val log: Logger by lazy { LoggerFactory.getLogger(javaClass) }
+  private val log = loggerOf(javaClass)
 
   private val closed = AtomicBoolean(false)
 

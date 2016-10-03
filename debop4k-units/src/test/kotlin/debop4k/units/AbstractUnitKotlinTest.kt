@@ -17,17 +17,16 @@
 package debop4k.units
 
 
+import debop4k.core.loggerOf
 import org.assertj.core.api.Assertions
 import org.assertj.core.data.Offset
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 /**
  * @author sunghyouk.bae@gmail.com
  */
 abstract class AbstractUnitKotlinTest {
 
-  protected val log: Logger = LoggerFactory.getLogger(javaClass)
+  protected val log = loggerOf(javaClass)
 
   val TOLERANCE: Offset<Double> = Assertions.offset(1.0e-8)
 

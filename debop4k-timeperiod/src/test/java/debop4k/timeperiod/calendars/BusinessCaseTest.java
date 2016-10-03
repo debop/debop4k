@@ -16,6 +16,7 @@
 
 package debop4k.timeperiod.calendars;
 
+import debop4k.core.Loggingx;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeRange;
 import debop4k.timeperiod.timeranges.*;
@@ -29,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class BusinessCaseTest extends AbstractTimePeriodTest {
 
-  private static final Logger log = org.slf4j.LoggerFactory.getLogger(BusinessCaseTest.class);
+  private static final Logger log = Loggingx.loggerOf(BusinessCaseTest.class);
 
   @Test
   public void timeRangeCalendarTimeRange() {

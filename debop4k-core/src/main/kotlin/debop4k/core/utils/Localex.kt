@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. KESTI co, ltd
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -11,18 +11,19 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
-@file:JvmName("LocaleEx")
+@file:JvmName("Localex")
 
 package debop4k.core.utils
 
 import debop4k.core.collections.fastListOf
+import debop4k.core.loggerOf
 import debop4k.core.shouldNotBeEmpty
-import org.slf4j.LoggerFactory
 import java.util.*
 
-private val log = LoggerFactory.getLogger("LocaleEx")
+private val log = loggerOf("Localex")
 
 /** 현 Locale 이 기본 Locale 인가 */
 fun Locale?.isDefault(): Boolean = Locale.getDefault() == this

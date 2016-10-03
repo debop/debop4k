@@ -18,10 +18,10 @@
 
 package debop4k.units
 
-import org.slf4j.LoggerFactory
+import debop4k.core.loggerOf
 import java.io.Serializable
 
-private val log = lazy { LoggerFactory.getLogger("masses") }
+private val log = loggerOf("Masses")
 
 const val MILLIGRAM_IN_GRAM: Double = 1.0 / 1000.0
 const val GRAM_IN_GRAM: Double = 1.0
@@ -80,10 +80,10 @@ data class Mass(val gram: Double = 0.0) : Comparable<Mass>, Serializable {
 
   fun inUnit(unit: MassUnit = MassUnit.GRAM): Double = when (unit) {
     MassUnit.MILLIGRAM -> inMilligram()
-    MassUnit.GRAM -> inGram()
-    MassUnit.KILOGRAM -> inKilogram()
-    MassUnit.TON -> inTon()
-    else -> throw UnsupportedOperationException("Unknown Mass unit. unit=$unit")
+    MassUnit.GRAM      -> inGram()
+    MassUnit.KILOGRAM  -> inKilogram()
+    MassUnit.TON       -> inTon()
+    else               -> throw UnsupportedOperationException("Unknown Mass unit. unit=$unit")
   }
 
   operator fun plus(other: Mass): Mass = Mass(gram + other.gram)

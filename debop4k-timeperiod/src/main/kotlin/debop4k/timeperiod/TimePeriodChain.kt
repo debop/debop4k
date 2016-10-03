@@ -16,17 +16,16 @@
 
 package debop4k.timeperiod
 
+import debop4k.core.loggerOf
 import org.joda.time.DateTime
 import org.joda.time.Duration
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 /**
  * @author sunghyouk.bae@gmail.com
  */
 open class TimePeriodChain : TimePeriodContainer(), ITimePeriodChain {
 
-  private val log: Logger by lazy { LoggerFactory.getLogger(javaClass) }
+  private val log = loggerOf(javaClass)
 
   override var start: DateTime
     get() = head?.start ?: MinPeriodTime

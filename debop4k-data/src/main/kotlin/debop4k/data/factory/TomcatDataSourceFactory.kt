@@ -17,10 +17,10 @@
 package debop4k.data.factory
 
 import debop4k.config.database.DatabaseSetting
+import debop4k.core.loggerOf
 import debop4k.data.DataSources
 import org.apache.tomcat.jdbc.pool.PoolProperties
 import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import javax.sql.DataSource
 
 /**
@@ -30,7 +30,7 @@ import javax.sql.DataSource
  */
 class TomcatDataSourceFactory : DataSourceFactory {
 
-  private val log: Logger = LoggerFactory.getLogger(javaClass)
+  private val log: Logger = loggerOf(javaClass)
 
   /**
    * [DataSource] 를 생성합니다.

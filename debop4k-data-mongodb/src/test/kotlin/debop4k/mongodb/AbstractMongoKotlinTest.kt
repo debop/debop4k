@@ -16,7 +16,7 @@
 
 package debop4k.mongodb
 
-import org.slf4j.LoggerFactory
+import debop4k.core.loggerOf
 
 
 const val DATABASE_NAME = "kesti4j_mongo"
@@ -26,6 +26,6 @@ const val DATABASE_NAME = "kesti4j_mongo"
  */
 abstract class AbstractMongoKotlinTest {
 
-  protected val log = LoggerFactory.getLogger(javaClass)
+  protected val log = loggerOf(javaClass)
 
 }

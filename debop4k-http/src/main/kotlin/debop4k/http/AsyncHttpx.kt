@@ -19,14 +19,14 @@ package debop4k.http
 
 import debop4k.core.asyncs.result
 import debop4k.core.collections.parMap
+import debop4k.core.loggerOf
 import nl.komponents.kovenant.Promise
 import org.apache.http.HttpResponse
 import org.apache.http.client.methods.HttpUriRequest
 import org.apache.http.util.EntityUtils
-import org.slf4j.LoggerFactory
 import java.nio.charset.Charset
 
-private val log = LoggerFactory.getLogger("AsyncHttpEx")
+private val log = loggerOf("AsyncHttpx")
 
 internal val asyncClient: AsyncHttpClient by lazy { AsyncHttpClient() }
 internal val asyncSslClient: AsyncHttpSslClient by lazy { AsyncHttpSslClient() }

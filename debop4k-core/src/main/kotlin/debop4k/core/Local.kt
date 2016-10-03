@@ -16,7 +16,6 @@
 
 package debop4k.core
 
-import org.slf4j.LoggerFactory
 import java.io.Serializable
 import java.util.*
 import java.util.concurrent.*
@@ -28,7 +27,7 @@ import java.util.concurrent.*
 @Suppress("UNCHECKED_CAST")
 object Local {
 
-  private val log by lazy { LoggerFactory.getLogger(Local::class.java) }
+  private val log = loggerOf(javaClass)
 
   private val threadLocal by lazy {
     object : ThreadLocal<HashMap<Any, Any?>>() {

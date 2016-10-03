@@ -16,12 +16,11 @@
 
 package debop4k.redisson.kotlin
 
+import debop4k.core.loggerOf
 import debop4k.core.uninitialized
 import debop4k.redisson.kotlin.config.RedissonKotlinConfigration
 import org.junit.runner.RunWith
 import org.redisson.api.RedissonClient
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import javax.inject.Inject
@@ -30,7 +29,7 @@ import javax.inject.Inject
 @SpringBootTest(classes = arrayOf(RedissonKotlinConfigration::class))
 abstract class AbstractRedissonKotlinTest {
 
-  protected val log: Logger = LoggerFactory.getLogger(javaClass)
+  protected val log = loggerOf(javaClass)
 
   @Inject val redisson: RedissonClient = uninitialized()
 }

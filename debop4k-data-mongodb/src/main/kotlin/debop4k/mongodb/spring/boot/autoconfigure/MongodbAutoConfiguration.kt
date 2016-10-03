@@ -16,13 +16,10 @@
 
 package debop4k.mongodb.spring.boot.autoconfigure
 
-import com.mongodb.Mongo
-import com.mongodb.MongoClient
-import com.mongodb.MongoClientOptions
-import com.mongodb.ServerAddress
+import com.mongodb.*
+import debop4k.core.loggerOf
 import debop4k.core.uninitialized
 import debop4k.mongodb.spring.boot.autoconfigure.MongodbProperties.Options
-import org.slf4j.LoggerFactory
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration
@@ -37,7 +34,7 @@ import javax.inject.Inject
 @EnableConfigurationProperties(MongodbProperties::class)
 abstract class MongodbAutoConfiguration : AbstractMongoConfiguration() {
 
-  private val log = LoggerFactory.getLogger(javaClass)
+  private val log = loggerOf(javaClass)
 
   @Inject val mongoProps: MongodbProperties = uninitialized()
 

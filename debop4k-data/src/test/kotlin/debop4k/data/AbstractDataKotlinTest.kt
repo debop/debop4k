@@ -16,9 +16,9 @@
 
 package debop4k.data
 
-import org.slf4j.LoggerFactory
+import debop4k.core.loggerOf
 
 abstract class AbstractDataKotlinTest {
 
-  protected val log = lazy { LoggerFactory.getLogger(javaClass) }
+  protected val log = loggerOf(javaClass)
 }

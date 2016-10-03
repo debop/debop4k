@@ -16,8 +16,8 @@
 
 package debop4k.redisson.spring.cache
 
+import debop4k.core.loggerOf
 import org.redisson.api.RMapCache
-import org.slf4j.LoggerFactory
 import org.springframework.cache.Cache
 import org.springframework.cache.Cache.ValueWrapper
 import org.springframework.cache.support.SimpleValueWrapper
@@ -31,7 +31,7 @@ import java.util.concurrent.*
 open class RedissonCache(val mapCache: RMapCache<Any?, Any?>,
                          val expiration: Long) : Cache {
 
-  private val log = LoggerFactory.getLogger(javaClass)
+  private val log = loggerOf(javaClass)
 
   override fun getName(): String = mapCache.name
   override fun getNativeCache(): Any = mapCache

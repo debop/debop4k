@@ -16,6 +16,7 @@
 
 package debop4k.redisson.spring.boot.autoconfigure
 
+import debop4k.core.loggerOf
 import debop4k.core.uninitialized
 import debop4k.redisson.configFromYaml
 import debop4k.redisson.configWithSingleServer
@@ -25,7 +26,6 @@ import org.redisson.Redisson
 import org.redisson.api.RedissonClient
 import org.redisson.api.RedissonReactiveClient
 import org.redisson.config.Config
-import org.slf4j.LoggerFactory
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -39,7 +39,7 @@ import javax.inject.Inject
 @EnableConfigurationProperties(RedissonProperties::class, RedissonProperties::class)
 open class RedissonAutoConfiguration {
 
-  private val log = LoggerFactory.getLogger(javaClass)
+  private val log = loggerOf(javaClass)
 
   @Inject val redissonProps: RedissonProperties = uninitialized()
   @Inject val redissonConfig: Config = uninitialized()

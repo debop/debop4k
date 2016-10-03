@@ -18,11 +18,11 @@
 
 package debop4k.science.gis.coords
 
+import debop4k.core.loggerOf
 import org.eclipse.collections.impl.factory.Lists
-import org.slf4j.LoggerFactory
 import java.util.concurrent.*
 
-private val log = LoggerFactory.getLogger("UtmZonex")
+private val log = loggerOf("UtmZonex")
 
 /** UTM Zone의 경도 크기 (6 degree) */
 const val UTM_LONGITUDE_SIZE = 6

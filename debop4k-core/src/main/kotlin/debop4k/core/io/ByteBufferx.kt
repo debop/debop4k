@@ -19,10 +19,10 @@ package debop4k.core.io
 
 import debop4k.core.collections.emptyByteArray
 import debop4k.core.collections.isNullOrEmpty
-import org.slf4j.LoggerFactory
+import debop4k.core.loggerOf
 import java.nio.ByteBuffer
 
-private val log = LoggerFactory.getLogger("ByteBufferEx")
+private val log = loggerOf("ByteBufferx")
 
 /** [ByteBuffer] 가 null 이거나 일을 수 있는 바이트가 없다면 true 를 반환한다 */
 val ByteBuffer?.isNullOrEmpty: Boolean get() = (this == null || this.remaining() == 0)

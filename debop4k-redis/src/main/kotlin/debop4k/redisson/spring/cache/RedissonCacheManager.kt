@@ -16,12 +16,12 @@
 
 package debop4k.redisson.spring.cache
 
+import debop4k.core.loggerOf
 import debop4k.core.utils.asLong
 import debop4k.redisson.DEFAULT_DELIMETER
 import org.eclipse.collections.impl.map.mutable.ConcurrentHashMap
 import org.redisson.api.RMapCache
 import org.redisson.api.RedissonClient
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.DisposableBean
 import org.springframework.cache.Cache
 import org.springframework.cache.CacheManager
@@ -48,7 +48,7 @@ import org.springframework.cache.CacheManager
  */
 open class RedissonCacheManager(val redisson: RedissonClient) : CacheManager, DisposableBean {
 
-  private val log = LoggerFactory.getLogger(javaClass)
+  private val log = loggerOf(javaClass)
 
   private val caches = ConcurrentHashMap<String, RedissonCache>()
   private val expires = ConcurrentHashMap<String, Long>()

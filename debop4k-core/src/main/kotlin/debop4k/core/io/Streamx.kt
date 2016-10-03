@@ -17,22 +17,16 @@
 
 package debop4k.core.io
 
-import debop4k.core.collections.emptyByteArray
-import debop4k.core.collections.fastListOf
-import debop4k.core.collections.isNullOrEmpty
-import debop4k.core.collections.toFastList
+import debop4k.core.collections.*
+import debop4k.core.loggerOf
 import debop4k.core.utils.EMPTY_STRING
 import org.eclipse.collections.impl.list.mutable.FastList
-import org.slf4j.LoggerFactory
 import org.springframework.util.FastByteArrayOutputStream
-import java.io.BufferedInputStream
-import java.io.ByteArrayInputStream
-import java.io.InputStream
-import java.io.OutputStream
+import java.io.*
 import java.nio.ByteBuffer
 import java.nio.charset.Charset
 
-private val log = LoggerFactory.getLogger("IOStreams")
+private val log = loggerOf("Streamx")
 
 @JvmField val DEFAULT_BLOCK_SIZE = 4096
 

@@ -17,6 +17,7 @@
 package debop4k.http
 
 import debop4k.core.collections.parMap
+import debop4k.core.loggerOf
 import nl.komponents.kovenant.Promise
 import nl.komponents.kovenant.task
 import org.apache.http.HttpResponse
@@ -25,7 +26,6 @@ import org.apache.http.client.methods.HttpUriRequest
 import org.apache.http.concurrent.FutureCallback
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient
 import org.apache.http.impl.nio.client.HttpAsyncClients
-import org.slf4j.LoggerFactory
 import java.util.concurrent.*
 
 /**
@@ -35,7 +35,7 @@ import java.util.concurrent.*
  */
 open class AsyncHttpClient {
 
-  private val log = LoggerFactory.getLogger(javaClass)
+  private val log = loggerOf(javaClass)
 
   val requestConfig: RequestConfig by lazy {
     RequestConfig.custom()

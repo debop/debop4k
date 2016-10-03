@@ -19,12 +19,13 @@ package debop4k.timeperiod;
 import debop4k.timeperiod.utils.Times;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractTimePeriodTest {
 //    @Rule
 //    public TestRule benchmarkRun = new BenchmarkRule();
 
-  protected final Logger log = org.slf4j.LoggerFactory.getLogger(getClass());
+  protected final Logger log = LoggerFactory.getLogger(getClass());
 
   public static final DateTime testDate = new DateTime(2000, 10, 2, 13, 45, 53, 673);
   public static final DateTime testDiffDate = new DateTime(2002, 9, 3, 7, 14, 22, 234);

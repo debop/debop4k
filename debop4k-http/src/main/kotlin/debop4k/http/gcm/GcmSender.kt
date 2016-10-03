@@ -19,15 +19,13 @@ package debop4k.gcm
 import debop4k.core.Systems
 import debop4k.core.asyncs.result
 import debop4k.core.json.JacksonSerializer
+import debop4k.core.loggerOf
 import debop4k.core.retry.AsyncRetryExecutor
 import debop4k.http.executeAsync
-import org.apache.http.Header
-import org.apache.http.HttpException
-import org.apache.http.HttpStatus
+import org.apache.http.*
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.StringEntity
 import org.apache.http.message.BasicHeader
-import org.slf4j.LoggerFactory
 import java.net.URI
 import java.util.concurrent.*
 
@@ -37,7 +35,7 @@ import java.util.concurrent.*
  */
 class GcmSender {
 
-  private val log = LoggerFactory.getLogger(javaClass)
+  private val log = loggerOf(javaClass)
 
   companion object {
     @JvmField val GCM_SERVER_URL = "https://android.googleapis.com/gcm/send"

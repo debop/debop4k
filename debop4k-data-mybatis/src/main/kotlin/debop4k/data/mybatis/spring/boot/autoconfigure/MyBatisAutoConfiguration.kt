@@ -26,7 +26,6 @@ import org.mybatis.spring.SqlSessionFactoryBean
 import org.mybatis.spring.SqlSessionTemplate
 import org.mybatis.spring.mapper.ClassPathMapperScanner
 import org.mybatis.spring.mapper.MapperFactoryBean
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.BeanFactory
 import org.springframework.beans.factory.BeanFactoryAware
 import org.springframework.beans.factory.annotation.Autowired
@@ -136,7 +135,7 @@ open class MyBatisAutoConfiguration {
    */
   open class AutoConfiguredMapperScannerRegistrar : BeanFactoryAware, ImportBeanDefinitionRegistrar, ResourceLoaderAware {
 
-    private val log = LoggerFactory.getLogger(javaClass)
+    private val log = loggerOf(javaClass)
 
     private var beanFactory: BeanFactory? = uninitialized()
     private var resourceLoader: ResourceLoader? = uninitialized()
@@ -192,7 +191,7 @@ open class MyBatisAutoConfiguration {
   @Import(AutoConfiguredMapperScannerRegistrar::class)
   open class MapperScannerRegistrarNotFoundConfiguration {
 
-    private val log = LoggerFactory.getLogger(javaClass)
+    private val log = loggerOf(javaClass)
 
     @PostConstruct
     open fun afterPropertiesSet() {
