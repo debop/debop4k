@@ -16,11 +16,10 @@
 
 package debop4k.timeperiod.timeranges
 
-import debop4k.core.collections.fastListOf
 import debop4k.core.kodatimes.now
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
-import debop4k.timeperiod.utils.minuteSequence
+import debop4k.timeperiod.utils.minuteRangeSequence
 import org.joda.time.DateTime
 
 /**
@@ -32,10 +31,10 @@ open class MinuteRangeCollection @JvmOverloads constructor(startTime: DateTime =
 : MinuteTimeRange(startTime, minuteCount, calendar) {
 
   fun minuteSequence(): Sequence<MinuteRange> {
-    return minuteSequence(startMinuteOfStart, minuteCount, calendar)
+    return minuteRangeSequence(startMinuteOfStart, minuteCount, calendar)
   }
 
   fun minutes(): List<MinuteRange> {
-    return fastListOf(minuteSequence().iterator())
+    return minuteSequence().toList()
   }
 }

@@ -202,7 +202,7 @@ public class TimesCalendarTest extends AbstractTimePeriodTest {
 
     ITimePeriod period = new TimeRange(asDate(2007, 12, 31), asDate(2009, 12, 31));
 
-    Periods.daySequence(period)
+    Periods.dayRangeSequence(period)
            .forEach(new Procedure<ITimePeriod>() {
              @Override
              public void value(ITimePeriod p) {

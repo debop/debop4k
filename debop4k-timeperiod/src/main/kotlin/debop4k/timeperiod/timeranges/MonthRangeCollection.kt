@@ -16,11 +16,10 @@
 
 package debop4k.timeperiod.timeranges
 
-import debop4k.core.collections.fastListOf
 import debop4k.core.kodatimes.today
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
-import debop4k.timeperiod.utils.monthSequence
+import debop4k.timeperiod.utils.monthRangeSequence
 import debop4k.timeperiod.utils.startTimeOfMonth
 import org.joda.time.DateTime
 
@@ -41,10 +40,10 @@ open class MonthRangeCollection @JvmOverloads constructor(startTime: DateTime = 
 
 
   fun monthSequence(): Sequence<MonthRange> {
-    return monthSequence(start, monthCount, calendar)
+    return monthRangeSequence(start, monthCount, calendar)
   }
 
   fun months(): List<MonthRange> {
-    return fastListOf(monthSequence().iterator())
+    return monthSequence().toList()
   }
 }

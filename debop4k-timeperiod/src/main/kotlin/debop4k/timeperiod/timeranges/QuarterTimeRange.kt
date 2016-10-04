@@ -16,15 +16,9 @@
 
 package debop4k.timeperiod.timeranges
 
-import debop4k.core.collections.fastListOf
-import debop4k.timeperiod.DefaultTimeCalendar
-import debop4k.timeperiod.ITimeCalendar
-import debop4k.timeperiod.MonthsPerQuarter
+import debop4k.timeperiod.*
 import debop4k.timeperiod.models.Quarter
-import debop4k.timeperiod.utils.monthSequence
-import debop4k.timeperiod.utils.quarterOf
-import debop4k.timeperiod.utils.relativeQuarterPeriod
-import debop4k.timeperiod.utils.startTimeOfQuarter
+import debop4k.timeperiod.utils.*
 import org.joda.time.DateTime
 
 open class QuarterTimeRange @JvmOverloads constructor(moment: DateTime,
@@ -48,11 +42,11 @@ open class QuarterTimeRange @JvmOverloads constructor(moment: DateTime,
 
 
   fun monthSequence(): Sequence<MonthRange> {
-    return monthSequence(start, quarterCount * MonthsPerQuarter, calendar)
+    return monthRangeSequence(start, quarterCount * MonthsPerQuarter, calendar)
   }
 
   fun months(): List<MonthRange> {
-    return fastListOf(monthSequence().iterator())
+    return monthSequence().toList()
   }
 
 }

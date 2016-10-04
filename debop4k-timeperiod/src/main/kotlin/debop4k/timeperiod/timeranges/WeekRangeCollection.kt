@@ -16,12 +16,11 @@
 
 package debop4k.timeperiod.timeranges
 
-import debop4k.core.collections.fastListOf
 import debop4k.core.kodatimes.today
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
 import debop4k.timeperiod.utils.startTimeOfWeek
-import debop4k.timeperiod.utils.weekSequence
+import debop4k.timeperiod.utils.weekRangeSequence
 import org.joda.time.DateTime
 
 /**
@@ -40,11 +39,11 @@ open class WeekRangeCollection @JvmOverloads constructor(startTime: DateTime = t
   : this(startTimeOfWeek(weekyear, weekOfWeekyear), weekCount, calendar)
 
   fun weekSequence(): Sequence<WeekRange> {
-    return weekSequence(start, weekCount, calendar)
+    return weekRangeSequence(start, weekCount, calendar)
   }
 
   fun weeks(): List<WeekRange> {
-    return fastListOf(weekSequence().iterator())
+    return weekSequence().toList()
   }
 
 }

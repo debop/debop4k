@@ -21,10 +21,7 @@ package debop4k.timeperiod.utils
 import debop4k.core.NotSupportedException
 import debop4k.core.collections.fastListOf
 import debop4k.core.collections.parMap
-import debop4k.core.collections.permutations.Permutation
-import debop4k.core.collections.permutations.cons
-import debop4k.core.collections.permutations.emptyPermutation
-import debop4k.core.collections.permutations.permutationOf
+import debop4k.core.collections.permutations.*
 import debop4k.core.kodatimes.*
 import debop4k.core.loggerOf
 import debop4k.core.utils.NULL_STRING
@@ -123,17 +120,17 @@ fun DateTime.relativeSecondPeriod(secondCount: Int): TimeRange {
 @JvmOverloads
 fun DateTime.periodOf(unit: PeriodUnit, calendar: ITimeCalendar = DefaultTimeCalendar): ITimePeriod {
   return when (unit) {
-    PeriodUnit.ALL -> TimeRange.AnyTime
-    PeriodUnit.YEAR -> YearRange(this, calendar)
+    PeriodUnit.ALL      -> TimeRange.AnyTime
+    PeriodUnit.YEAR     -> YearRange(this, calendar)
     PeriodUnit.HALFYEAR -> HalfyearRange(this, calendar)
-    PeriodUnit.QUARTER -> QuarterRange(this, calendar)
-    PeriodUnit.MONTH -> MonthRange(this, calendar)
-    PeriodUnit.WEEK -> WeekRange(this, calendar)
-    PeriodUnit.DAY -> DayRange(this, calendar)
-    PeriodUnit.HOUR -> HourRange(this, calendar)
-    PeriodUnit.MINUTE -> MinuteRange(this, calendar)
-    PeriodUnit.SECOND -> TimeRange(this.startTimeOfSecond(), 1.seconds().duration)
-    else ->
+    PeriodUnit.QUARTER  -> QuarterRange(this, calendar)
+    PeriodUnit.MONTH    -> MonthRange(this, calendar)
+    PeriodUnit.WEEK     -> WeekRange(this, calendar)
+    PeriodUnit.DAY      -> DayRange(this, calendar)
+    PeriodUnit.HOUR     -> HourRange(this, calendar)
+    PeriodUnit.MINUTE   -> MinuteRange(this, calendar)
+    PeriodUnit.SECOND   -> TimeRange(this.startTimeOfSecond(), 1.seconds().duration)
+    else                ->
       throw UnsupportedOperationException("지원하지 않는 Period Unit 입니다. unit=$unit")
   }
 }
@@ -143,20 +140,20 @@ fun DateTime.periodOf(unit: PeriodUnit,
                       periodCount: Int,
                       calendar: ITimeCalendar = DefaultTimeCalendar): CalendarTimeRange {
   when (unit) {
-    PeriodUnit.YEAR -> return YearTimeRange(this, periodCount, calendar)
+    PeriodUnit.YEAR     -> return YearTimeRange(this, periodCount, calendar)
     PeriodUnit.HALFYEAR -> return HalfyearTimeRange(this, periodCount, calendar)
-    PeriodUnit.QUARTER -> return QuarterTimeRange(this, periodCount, calendar)
-    PeriodUnit.MONTH -> return MonthTimeRange(this, periodCount, calendar)
-    PeriodUnit.WEEK -> return WeekTimeRange(this, periodCount, calendar)
-    PeriodUnit.DAY -> return DayTimeRange(this, periodCount, calendar)
-    PeriodUnit.HOUR -> return HourTimeRange(this, periodCount, calendar)
-    PeriodUnit.MINUTE -> return MinuteTimeRange(this, periodCount, calendar)
-    PeriodUnit.SECOND -> {
+    PeriodUnit.QUARTER  -> return QuarterTimeRange(this, periodCount, calendar)
+    PeriodUnit.MONTH    -> return MonthTimeRange(this, periodCount, calendar)
+    PeriodUnit.WEEK     -> return WeekTimeRange(this, periodCount, calendar)
+    PeriodUnit.DAY      -> return DayTimeRange(this, periodCount, calendar)
+    PeriodUnit.HOUR     -> return HourTimeRange(this, periodCount, calendar)
+    PeriodUnit.MINUTE   -> return MinuteTimeRange(this, periodCount, calendar)
+    PeriodUnit.SECOND   -> {
       val start = this.trimToMillis()
       return CalendarTimeRange.of(start, start.plusSeconds(periodCount), calendar)
     }
 
-    else -> throw NotSupportedException("지원하지 않는 PeriodUnit 입니다. unit=" + unit)
+    else                -> throw NotSupportedException("지원하지 않는 PeriodUnit 입니다. unit=" + unit)
   }
 }
 
@@ -272,20 +269,20 @@ fun ITimePeriod.assertMutable(): Unit {
   assert(!this.readonly, { "ITimePeriod 가 읽기전용입니다." })
 }
 
-fun ITimePeriod.periodSequence(unit: PeriodUnit): FastList<ITimePeriod> = when (unit) {
-  PeriodUnit.YEAR -> this.yearSequence()
-  PeriodUnit.HALFYEAR -> this.halfyearSequence()
-  PeriodUnit.QUARTER -> this.quarterSequence()
-  PeriodUnit.MONTH -> this.monthSequence()
-  PeriodUnit.WEEK -> this.weekSequence()
-  PeriodUnit.DAY -> this.daySequence()
-  PeriodUnit.HOUR -> this.hourSequence()
-  PeriodUnit.MINUTE -> this.minuteSequence()
-  else -> throw UnsupportedOperationException("지원하지 않는 PeriodUnit 입니다. unit=$unit")
+fun ITimePeriod.periodList(unit: PeriodUnit): FastList<ITimePeriod> = when (unit) {
+  PeriodUnit.YEAR     -> this.yearRangeSequence()
+  PeriodUnit.HALFYEAR -> this.halfyearRangeSequence()
+  PeriodUnit.QUARTER  -> this.quarterRangeSequence()
+  PeriodUnit.MONTH    -> this.monthRangeSequence()
+  PeriodUnit.WEEK     -> this.weekRangeSequence()
+  PeriodUnit.DAY      -> this.dayRangeSequence()
+  PeriodUnit.HOUR     -> this.hourRangeSequence()
+  PeriodUnit.MINUTE   -> this.minuteRangeSequence()
+  else                -> throw UnsupportedOperationException("지원하지 않는 PeriodUnit 입니다. unit=$unit")
 }
 
-// TODO: 실제로 Iterator 를 만들던가 Sequence 를 이용하여 만들던가 해야 한다
-fun ITimePeriod.yearSequence(): FastList<ITimePeriod> {
+
+fun ITimePeriod.yearRangeSequence(): FastList<ITimePeriod> {
   val years = fastListOf<ITimePeriod>()
 
   if (this.isAnyTime())
@@ -315,7 +312,7 @@ fun ITimePeriod.yearSequence(): FastList<ITimePeriod> {
 }
 
 
-fun ITimePeriod.halfyearSequence(): FastList<ITimePeriod> {
+fun ITimePeriod.halfyearRangeSequence(): FastList<ITimePeriod> {
   val halfyears = fastListOf<ITimePeriod>()
 
   if (this.isAnyTime())
@@ -351,7 +348,7 @@ fun ITimePeriod.halfyearSequence(): FastList<ITimePeriod> {
   return halfyears
 }
 
-fun ITimePeriod.quarterSequence(): FastList<ITimePeriod> {
+fun ITimePeriod.quarterRangeSequence(): FastList<ITimePeriod> {
   val quarters = fastListOf<ITimePeriod>()
 
   if (this.isAnyTime()) {
@@ -387,7 +384,7 @@ fun ITimePeriod.quarterSequence(): FastList<ITimePeriod> {
   return quarters
 }
 
-fun ITimePeriod.monthSequence(): FastList<ITimePeriod> {
+fun ITimePeriod.monthRangeSequence(): FastList<ITimePeriod> {
   val months = fastListOf<ITimePeriod>()
 
   if (isAnyTime()) {
@@ -420,7 +417,7 @@ fun ITimePeriod.monthSequence(): FastList<ITimePeriod> {
   return months
 }
 
-fun ITimePeriod.weekSequence(): FastList<ITimePeriod> {
+fun ITimePeriod.weekRangeSequence(): FastList<ITimePeriod> {
   val weeks = fastListOf<ITimePeriod>()
   if (isAnyTime()) {
     return weeks
@@ -457,7 +454,7 @@ fun ITimePeriod.weekSequence(): FastList<ITimePeriod> {
   return weeks
 }
 
-fun ITimePeriod.daySequence(): FastList<ITimePeriod> {
+fun ITimePeriod.dayRangeSequence(): FastList<ITimePeriod> {
   val days = fastListOf<ITimePeriod>()
 
   if (isAnyTime()) {
@@ -489,7 +486,7 @@ fun ITimePeriod.daySequence(): FastList<ITimePeriod> {
 
 }
 
-fun ITimePeriod.hourSequence(): FastList<ITimePeriod> {
+fun ITimePeriod.hourRangeSequence(): FastList<ITimePeriod> {
   val hours = fastListOf<ITimePeriod>()
 
   if (isAnyTime()) {
@@ -520,7 +517,7 @@ fun ITimePeriod.hourSequence(): FastList<ITimePeriod> {
   return hours
 }
 
-fun ITimePeriod.minuteSequence(): FastList<ITimePeriod> {
+fun ITimePeriod.minuteRangeSequence(): FastList<ITimePeriod> {
   val minutes = fastListOf<ITimePeriod>()
 
   if (isAnyTime()) {
@@ -552,15 +549,15 @@ fun ITimePeriod.minuteSequence(): FastList<ITimePeriod> {
 
 fun ITimePeriod.permutations(unit: PeriodUnit): Permutation<ITimePeriod> {
   return when (unit) {
-    PeriodUnit.YEAR -> yearPermutation()
+    PeriodUnit.YEAR     -> yearPermutation()
     PeriodUnit.HALFYEAR -> halfyearPermutation()
-    PeriodUnit.QUARTER -> quarterPermutation()
-    PeriodUnit.MONTH -> monthPermutation()
-    PeriodUnit.WEEK -> weekPermutation()
-    PeriodUnit.DAY -> dayPermutation()
-    PeriodUnit.HOUR -> hourPermutation()
-    PeriodUnit.MINUTE -> minutePermutation()
-    else -> throw NotSupportedException("지원하지 않는 PeriodUnit 입니다. unit=[$unit]")
+    PeriodUnit.QUARTER  -> quarterPermutation()
+    PeriodUnit.MONTH    -> monthPermutation()
+    PeriodUnit.WEEK     -> weekPermutation()
+    PeriodUnit.DAY      -> dayPermutation()
+    PeriodUnit.HOUR     -> hourPermutation()
+    PeriodUnit.MINUTE   -> minutePermutation()
+    else                -> throw NotSupportedException("지원하지 않는 PeriodUnit 입니다. unit=[$unit]")
   }
 }
 
@@ -574,7 +571,7 @@ fun ITimePeriod.yearPermutation(): Permutation<ITimePeriod> {
   }
 
   val head = TimeRange(start, start.endTimeOfYear())
-  val current = start.startTimeOfYear() + 1.years()
+  val current = start.startTimeOfYear().plusYears(1)
   val endYear = end.year
   val calendar = DefaultTimeCalendar
 
@@ -617,7 +614,7 @@ fun ITimePeriod.halfyearPermutation(): Permutation<ITimePeriod> {
     }
   }
 
-  return cons(head) { nextHalfyears(current.withTimeAtStartOfDay() + 1.days()) }
+  return cons(head) { nextHalfyears(current.startTimeOfDay().plusDays(1)) }
 }
 
 fun ITimePeriod.quarterPermutation(): Permutation<ITimePeriod> {
@@ -692,11 +689,13 @@ fun ITimePeriod.weekPermutation(): Permutation<ITimePeriod> {
   }
 
   val head = TimeRange(start, current)
+  val endWeek = end.startTimeOfWeek()
   val calendar = DefaultTimeCalendar
 
   fun nextWeeks(current: DateTime): Permutation<ITimePeriod> {
-    return if (current < end) {
-      permutationOf<ITimePeriod>(WeekRange(current, calendar)) { nextWeeks(current.plusWeeks(1)) }
+    return if (current < endWeek) {
+      permutationOf<ITimePeriod>(
+          WeekRange(current, calendar)) { nextWeeks(current.plusWeeks(1)) }
     } else if (current < end) {
       permutationOf<ITimePeriod>(TimeRange(current, end))
     } else {
@@ -717,14 +716,15 @@ fun ITimePeriod.dayPermutation(): Permutation<ITimePeriod> {
     return permutationOf(TimeRange(this))
   }
 
-  val endDay = end.startTimeOfDay()
+  var endDay = end.startTimeOfDay()
   val current = start.startTimeOfDay()
   val head = TimeRange(start, start.endTimeOfDay())
 
   fun nextDays(current: DateTime): Permutation<ITimePeriod> {
     return if (current < endDay) {
       permutationOf<ITimePeriod>(DayRange(current, DefaultTimeCalendar)) { nextDays(current.plusDays(1)) }
-    } else if (end.millisOfDay > 0) {
+    } else if (end > endDay) {
+      endDay = end
       permutationOf<ITimePeriod>(TimeRange(endDay, end))
     } else {
       emptyPermutation()
@@ -744,14 +744,15 @@ fun ITimePeriod.hourPermutation(): Permutation<ITimePeriod> {
     return permutationOf(TimeRange(this))
   }
 
-  val endHour = end.startTimeOfHour()
+  var endHour = end.startTimeOfHour()
   val current = start.startTimeOfHour()
   val head = TimeRange(start, start.endTimeOfHour())
 
   fun nextHours(current: DateTime): Permutation<ITimePeriod> {
     return if (current < endHour) {
       permutationOf<ITimePeriod>(HourRange(current, DefaultTimeCalendar)) { nextHours(current.plusHours(1)) }
-    } else if (end.minusHours(endHour.hourOfDay).millisOfDay > 0) {
+    } else if (end > endHour) {
+      endHour = end
       permutationOf<ITimePeriod>(TimeRange(current, end))
     } else {
       emptyPermutation()
@@ -770,14 +771,15 @@ fun ITimePeriod.minutePermutation(): Permutation<ITimePeriod> {
   if (start.isSameMinute(end))
     return permutationOf(TimeRange(this))
 
-  val endMin = end.startTimeOfMinute()
-  val current = start.startTimeOfHour()
+  var endMin = end.startTimeOfMinute()
+  val current = start.startTimeOfMinute()
   val head = TimeRange(start, start.endTimeOfMinute())
 
   fun nextMinutes(current: DateTime): Permutation<ITimePeriod> {
     return if (current < endMin) {
       permutationOf<ITimePeriod>(MinuteRange(current, DefaultTimeCalendar)) { nextMinutes(current.plusMinutes(1)) }
-    } else if (end.minusMinutes(endMin.minuteOfHour).millisOfDay > 0) {
+    } else if (end > endMin) {
+      endMin = end
       permutationOf<ITimePeriod>(TimeRange(current, end))
     } else {
       emptyPermutation()
@@ -787,16 +789,241 @@ fun ITimePeriod.minutePermutation(): Permutation<ITimePeriod> {
   return cons(head) { nextMinutes(current.plusMinutes(1)) }
 }
 
+
+fun ITimePeriod.sequences(unit: PeriodUnit): Sequence<ITimePeriod> {
+  return when (unit) {
+    PeriodUnit.YEAR     -> yearSequences()
+    PeriodUnit.HALFYEAR -> halfyearSequences()
+    PeriodUnit.QUARTER  -> quarterSequences()
+    PeriodUnit.MONTH    -> monthSequences()
+    PeriodUnit.WEEK     -> weekSequences()
+    PeriodUnit.DAY      -> daySequences()
+    PeriodUnit.HOUR     -> hourSequences()
+    PeriodUnit.MINUTE   -> minuteSequences()
+    else                -> throw NotSupportedException("지원하지 않는 PeriodUnit 입니다. unit=[$unit]")
+  }
+}
+
+fun ITimePeriod.yearSequences(): Sequence<ITimePeriod> {
+  if (isAnyTime())
+    return sequenceOf()
+
+  assertHasPeriod()
+
+  if (start.isSameYear(end))
+    return sequenceOf<ITimePeriod>(TimeRange(this))
+
+  val head = TimeRange(start, start.endTimeOfYear())
+  var endYear = end.startTimeOfYear()
+  var current = start.startTimeOfYear()
+
+  return generateSequence<ITimePeriod>(head) {
+    current = current.plusYears(1)
+    if (current < endYear) {
+      YearRange(current, DefaultTimeCalendar)
+    } else if (end > endYear) {
+      endYear = end
+      TimeRange(current, end)
+    } else {
+      TimePeriod.AnyTime
+    }
+  }.takeWhile { it != TimePeriod.AnyTime }
+}
+
+fun ITimePeriod.halfyearSequences(): Sequence<ITimePeriod> {
+  if (isAnyTime())
+    return sequenceOf()
+
+  assertHasPeriod()
+
+  if (start.isSameHalfyear(end))
+    return sequenceOf<ITimePeriod>(TimeRange(this))
+
+  val head = TimeRange(start, start.endTimeOfHalfyear())
+  var endHalfyear = end.startTimeOfHalfyear()
+  var current = start.startTimeOfHalfyear()
+
+  return generateSequence<ITimePeriod>(head) {
+    current = current.plusMonths(MonthsPerHalfyear)
+    if (current < endHalfyear) {
+      HalfyearRange(current, DefaultTimeCalendar)
+    } else if (end > endHalfyear) {
+      endHalfyear = end
+      TimeRange(current, end)
+    } else {
+      TimePeriod.AnyTime
+    }
+  }.takeWhile { it != TimePeriod.AnyTime }
+}
+
+fun ITimePeriod.quarterSequences(): Sequence<ITimePeriod> {
+  if (isAnyTime())
+    return sequenceOf()
+
+  assertHasPeriod()
+
+  if (start.isSameQuarter(end))
+    return sequenceOf<ITimePeriod>(TimeRange(this))
+
+  val head = TimeRange(start, start.endTimeOfQuarter())
+  var endQuarter = end.startTimeOfQuarter()
+  var current = start.startTimeOfQuarter()
+
+  return generateSequence<ITimePeriod>(head) {
+    current = current.plusMonths(MonthsPerQuarter)
+    if (current < endQuarter) {
+      QuarterRange(current, DefaultTimeCalendar)
+    } else if (end > endQuarter) {
+      endQuarter = end
+      TimeRange(current, end)
+    } else {
+      TimePeriod.AnyTime
+    }
+  }.takeWhile { it != TimePeriod.AnyTime }
+}
+
+fun ITimePeriod.monthSequences(): Sequence<ITimePeriod> {
+  if (isAnyTime())
+    return sequenceOf()
+
+  assertHasPeriod()
+
+  if (start.isSameMonth(end))
+    return sequenceOf<ITimePeriod>(TimeRange(this))
+
+  val head = TimeRange(start, start.endTimeOfMonth())
+  var endMonth = end.startTimeOfMonth()
+  var current = start.startTimeOfMonth()
+
+  return generateSequence<ITimePeriod>(head) {
+    current = current.plusMonths(1)
+    if (current < endMonth) {
+      MonthRange(current, DefaultTimeCalendar)
+    } else if (end > endMonth) {
+      endMonth = end
+      TimeRange(current, end)
+    } else {
+      TimePeriod.AnyTime
+    }
+  }.takeWhile { it != TimePeriod.AnyTime }
+}
+
+fun ITimePeriod.weekSequences(): Sequence<ITimePeriod> {
+  if (isAnyTime())
+    return sequenceOf()
+
+  assertHasPeriod()
+
+  if (start.isSameWeek(end))
+    return sequenceOf<ITimePeriod>(TimeRange(this))
+
+  val head = TimeRange(start, start.endTimeOfWeek())
+  var endWeek = end.startTimeOfWeek()
+  var current = start.startTimeOfWeek()
+
+  return generateSequence<ITimePeriod>(head) {
+    current = current.plusWeeks(1)
+    if (current < endWeek) {
+      WeekRange(current, DefaultTimeCalendar)
+    } else if (end > endWeek) {
+      endWeek = end
+      TimeRange(current, end)
+    } else {
+      TimePeriod.AnyTime
+    }
+  }.takeWhile { it != TimePeriod.AnyTime }
+}
+
+fun ITimePeriod.daySequences(): Sequence<ITimePeriod> {
+  if (isAnyTime())
+    return sequenceOf()
+
+  assertHasPeriod()
+
+  if (start.isSameDay(end))
+    return sequenceOf<ITimePeriod>(TimeRange(this))
+
+  val head = TimeRange(start, start.endTimeOfDay())
+  var endDay = end.startTimeOfDay()
+  var current = start.startTimeOfDay()
+
+  return generateSequence<ITimePeriod>(head) {
+    current = current.plusDays(1)
+    if (current < endDay) {
+      DayRange(current, DefaultTimeCalendar)
+    } else if (end > endDay) {
+      endDay = end
+      TimeRange(current, end)
+    } else {
+      TimePeriod.AnyTime
+    }
+  }.takeWhile { it != TimePeriod.AnyTime }
+}
+
+fun ITimePeriod.hourSequences(): Sequence<ITimePeriod> {
+  if (isAnyTime())
+    return sequenceOf()
+
+  assertHasPeriod()
+
+  if (start.isSameHour(end))
+    return sequenceOf<ITimePeriod>(TimeRange(this))
+
+  val head = TimeRange(start, start.endTimeOfMinute())
+  var endHour = end.startTimeOfHour()
+  var current = start.startTimeOfHour()
+
+  return generateSequence<ITimePeriod>(head) {
+    current = current.plusHours(1)
+    if (current < endHour) {
+      HourRange(current, DefaultTimeCalendar)
+    } else if (end > endHour) {
+      endHour = end
+      TimeRange(current, end)
+    } else {
+      TimePeriod.AnyTime
+    }
+  }.takeWhile { it != TimePeriod.AnyTime }
+}
+
+fun ITimePeriod.minuteSequences(): Sequence<ITimePeriod> {
+  if (isAnyTime())
+    return sequenceOf()
+
+  assertHasPeriod()
+
+  if (start.isSameMinute(end))
+    return sequenceOf<ITimePeriod>(TimeRange(this))
+
+  var endMin = end.startTimeOfMinute()
+  val head = TimeRange(start, start.endTimeOfMinute())
+  var current = start.startTimeOfMinute()
+
+  return generateSequence<ITimePeriod>(head) {
+    current = current.plusMinutes(1)
+    if (current < endMin) {
+      MinuteRange(current, DefaultTimeCalendar)
+    } else {
+      if (end > endMin) {
+        endMin = end
+        TimeRange(current, end)
+      } else {
+        TimePeriod.AnyTime
+      }
+    }
+  }.takeWhile { it != TimePeriod.AnyTime }
+}
+
 fun ITimePeriod?.assertHasPeriod(): Unit {
   assert(this != null && this.hasPeriod()) { "기간이 설정되지 않았습니다. period=$this" }
 }
 
 fun <R> ITimePeriod.mapPeriod(unit: PeriodUnit, func: (ITimePeriod) -> R): FastList<R> {
-  return this.periodSequence(unit).collect(func)
+  return this.periodList(unit).collect(func)
 }
 
 fun <R> ITimePeriod.parMapPeriod(unit: PeriodUnit, func: (ITimePeriod) -> R): List<R> {
-  return this.periodSequence(unit).parMap(mapper = func).toList()
+  return this.periodList(unit).parMap(mapper = func).toList()
 }
 
 fun ITimePeriod?.asString(): String = this?.toString() ?: NULL_STRING

@@ -139,15 +139,6 @@ abstract class Permutation<E> : AbstractList<E>(), Sequence<E> {
       curr = curr.tail
     }
     return result
-
-//    var acc = head as R
-//    val iter = tail.iterator()
-//
-//    while (iter.hasNext()) {
-//      acc = operation(acc, iter.next())
-//    }
-//
-//    return acc
   }
 
   fun <R> reduce(identity: R, operation: (R, E) -> R): R {

@@ -16,11 +16,10 @@
 
 package debop4k.timeperiod.timeranges
 
-import debop4k.core.collections.fastListOf
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
 import debop4k.timeperiod.models.Quarter
-import debop4k.timeperiod.utils.quarterSequence
+import debop4k.timeperiod.utils.quarterRangeSequence
 import debop4k.timeperiod.utils.startTimeOfQuarter
 import org.joda.time.DateTime
 
@@ -41,10 +40,10 @@ open class QuarterRangeCollection @JvmOverloads constructor(moment: DateTime,
                                                                     calendar)
 
   fun quarterSequence(): Sequence<QuarterRange> {
-    return quarterSequence(start, quarterCount, calendar)
+    return quarterRangeSequence(start, quarterCount, calendar)
   }
 
   fun quarters(): List<QuarterRange> {
-    return fastListOf(quarterSequence().iterator())
+    return quarterSequence().toList()
   }
 }

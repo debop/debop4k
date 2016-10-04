@@ -16,11 +16,8 @@
 
 package debop4k.timeperiod.timeranges
 
-import debop4k.core.collections.fastListOf
-import debop4k.timeperiod.DefaultTimeCalendar
-import debop4k.timeperiod.ITimeCalendar
-import debop4k.timeperiod.TimeCalendar
-import debop4k.timeperiod.utils.yearSequence
+import debop4k.timeperiod.*
+import debop4k.timeperiod.utils.yearRangeSequence
 import org.joda.time.DateTime
 
 /**
@@ -37,11 +34,11 @@ open class YearRangeCollection @JvmOverloads constructor(year: Int,
               calendar: ITimeCalendar = TimeCalendar.DEFAULT) : this(m.year, yearCount, calendar)
 
   fun yearSequence(): Sequence<YearRange> {
-    return yearSequence(year, yearCount, calendar)
+    return yearRangeSequence(year, yearCount, calendar)
   }
 
   fun years(): List<YearRange> {
-    return fastListOf(yearSequence().iterator())
+    return yearSequence().toList()
   }
 
 }

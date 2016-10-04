@@ -16,14 +16,9 @@
 
 package debop4k.timeperiod.timeranges
 
-import debop4k.core.collections.fastListOf
 import debop4k.core.kodatimes.now
-import debop4k.timeperiod.DefaultTimeCalendar
-import debop4k.timeperiod.ITimeCalendar
-import debop4k.timeperiod.MinutesPerHour
-import debop4k.timeperiod.utils.minuteSequence
-import debop4k.timeperiod.utils.relativeHourPeriod
-import debop4k.timeperiod.utils.startTimeOfHour
+import debop4k.timeperiod.*
+import debop4k.timeperiod.utils.*
 import org.joda.time.DateTime
 
 /**
@@ -37,10 +32,10 @@ open class HourTimeRange @JvmOverloads constructor(startTime: DateTime = now().s
   val hourOfDayOfEnd: Int get() = end.hourOfDay
 
   fun minuteSequence(): Sequence<MinuteRange> {
-    return minuteSequence(startMinuteOfStart, hourCount * MinutesPerHour, calendar)
+    return minuteRangeSequence(startMinuteOfStart, hourCount * MinutesPerHour, calendar)
   }
 
   fun minutes(): List<MinuteRange> {
-    return fastListOf(minuteSequence().iterator())
+    return minuteSequence().toList()
   }
 }

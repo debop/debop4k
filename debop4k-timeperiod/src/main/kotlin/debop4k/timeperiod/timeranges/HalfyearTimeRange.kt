@@ -16,17 +16,10 @@
 
 package debop4k.timeperiod.timeranges
 
-import debop4k.core.collections.fastListOf
 import debop4k.core.kodatimes.today
-import debop4k.timeperiod.DefaultTimeCalendar
-import debop4k.timeperiod.ITimeCalendar
-import debop4k.timeperiod.MonthsPerHalfyear
-import debop4k.timeperiod.QuartersPerHalfyear
+import debop4k.timeperiod.*
 import debop4k.timeperiod.models.Halfyear
-import debop4k.timeperiod.utils.halfyearOf
-import debop4k.timeperiod.utils.monthSequence
-import debop4k.timeperiod.utils.quarterSequence
-import debop4k.timeperiod.utils.relativeHalfyearPeriod
+import debop4k.timeperiod.utils.*
 import org.joda.time.DateTime
 
 open class HalfyearTimeRange @JvmOverloads constructor(moment: DateTime = today(),
@@ -43,19 +36,19 @@ open class HalfyearTimeRange @JvmOverloads constructor(moment: DateTime = today(
     get() = startYear != endYear
 
   fun quarterSequence(): Sequence<QuarterRange> {
-    return quarterSequence(start, halfyearCount * QuartersPerHalfyear, calendar)
+    return quarterRangeSequence(start, halfyearCount * QuartersPerHalfyear, calendar)
   }
 
   fun quarters(): List<QuarterRange> {
-    return fastListOf(quarterSequence().iterator())
+    return quarterSequence().toList()
   }
 
   fun monthSequence(): Sequence<MonthRange> {
-    return monthSequence(start, halfyearCount * MonthsPerHalfyear, calendar)
+    return monthRangeSequence(start, halfyearCount * MonthsPerHalfyear, calendar)
   }
 
   fun months(): List<MonthRange> {
-    return fastListOf(monthSequence().iterator())
+    return monthSequence().toList()
   }
 
 }

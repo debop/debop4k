@@ -16,12 +16,11 @@
 
 package debop4k.timeperiod.timeranges
 
-import debop4k.core.collections.fastListOf
 import debop4k.core.kodatimes.asDateTime
 import debop4k.core.kodatimes.now
 import debop4k.timeperiod.DefaultTimeCalendar
 import debop4k.timeperiod.ITimeCalendar
-import debop4k.timeperiod.utils.hourSequence
+import debop4k.timeperiod.utils.hourRangeSequence
 import org.joda.time.DateTime
 
 /**
@@ -41,11 +40,11 @@ open class HourRangeCollection @JvmOverloads constructor(startTime: DateTime = n
   : this(asDateTime(year, monthOfYear, dayOfMonth, hour), hourCount, calendar)
 
   fun hourSequence(): Sequence<HourRange> {
-    return hourSequence(startHourOfStart, hourCount, calendar)
+    return hourRangeSequence(startHourOfStart, hourCount, calendar)
   }
 
   fun hours(): List<HourRange> {
-    return fastListOf(hourSequence().iterator())
+    return hourSequence().toList()
   }
 
 

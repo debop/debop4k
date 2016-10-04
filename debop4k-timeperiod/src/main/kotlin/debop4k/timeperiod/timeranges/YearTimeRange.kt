@@ -16,13 +16,9 @@
 
 package debop4k.timeperiod.timeranges
 
-import debop4k.core.collections.fastListOf
 import debop4k.core.kodatimes.now
 import debop4k.timeperiod.*
-import debop4k.timeperiod.utils.halfyearSequence
-import debop4k.timeperiod.utils.monthSequence
-import debop4k.timeperiod.utils.quarterSequence
-import debop4k.timeperiod.utils.relativeYearPeriod
+import debop4k.timeperiod.utils.*
 import org.joda.time.DateTime
 
 /**
@@ -44,25 +40,25 @@ open class YearTimeRange @JvmOverloads constructor(val year: Int,
 
 
   fun halfyearSequence(): Sequence<HalfyearRange>
-      = halfyearSequence(start, yearCount * HalfyearsPerYear, calendar)
+      = halfyearRangeSequence(start, yearCount * HalfyearsPerYear, calendar)
 
-  fun halfyears(): List<HalfyearRange> = fastListOf(halfyearSequence().iterator())
+  fun halfyears(): List<HalfyearRange> = halfyearSequence().toList()
 
   fun quarterSequence(): Sequence<QuarterRange>
-      = quarterSequence(start, yearCount * QuartersPerYear, calendar)
+      = quarterRangeSequence(start, yearCount * QuartersPerYear, calendar)
 
-  fun quarters(): List<QuarterRange> = fastListOf(quarterSequence().iterator())
+  fun quarters(): List<QuarterRange> = quarterSequence().toList()
 
   fun monthSequence(): Sequence<MonthRange>
-      = monthSequence(start, yearCount * MonthsPerYear, calendar)
+      = monthRangeSequence(start, yearCount * MonthsPerYear, calendar)
 
-  fun months(): List<MonthRange> = fastListOf(monthSequence().iterator())
+  fun months(): List<MonthRange> = monthSequence().toList()
 
   fun daySequence(): Sequence<DayRange> {
     return monthSequence().flatMap(MonthRange::daySequence).asSequence()
   }
 
-  fun days(): List<DayRange> = fastListOf(daySequence().iterator())
+  fun days(): List<DayRange> = daySequence().toList()
 
   fun hourSequence(): Sequence<HourRange> {
     return daySequence().flatMap(DayRange::hourSequence).asSequence()
