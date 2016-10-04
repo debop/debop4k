@@ -19,7 +19,12 @@
 package debop4k.timeperiod.utils
 
 import debop4k.core.NotSupportedException
+import debop4k.core.collections.fastListOf
 import debop4k.core.collections.parMap
+import debop4k.core.collections.permutations.Permutation
+import debop4k.core.collections.permutations.cons
+import debop4k.core.collections.permutations.emptyPermutation
+import debop4k.core.collections.permutations.permutationOf
 import debop4k.core.kodatimes.*
 import debop4k.core.loggerOf
 import debop4k.core.utils.NULL_STRING
@@ -281,7 +286,7 @@ fun ITimePeriod.periodSequence(unit: PeriodUnit): FastList<ITimePeriod> = when (
 
 // TODO: 실제로 Iterator 를 만들던가 Sequence 를 이용하여 만들던가 해야 한다
 fun ITimePeriod.yearSequence(): FastList<ITimePeriod> {
-  val years = FastList.newList<ITimePeriod>()
+  val years = fastListOf<ITimePeriod>()
 
   if (this.isAnyTime())
     return years
@@ -311,7 +316,7 @@ fun ITimePeriod.yearSequence(): FastList<ITimePeriod> {
 
 
 fun ITimePeriod.halfyearSequence(): FastList<ITimePeriod> {
-  val halfyears = FastList.newList<ITimePeriod>()
+  val halfyears = fastListOf<ITimePeriod>()
 
   if (this.isAnyTime())
     return halfyears
@@ -347,7 +352,7 @@ fun ITimePeriod.halfyearSequence(): FastList<ITimePeriod> {
 }
 
 fun ITimePeriod.quarterSequence(): FastList<ITimePeriod> {
-  val quarters = FastList.newList<ITimePeriod>()
+  val quarters = fastListOf<ITimePeriod>()
 
   if (this.isAnyTime()) {
     return quarters
@@ -383,7 +388,7 @@ fun ITimePeriod.quarterSequence(): FastList<ITimePeriod> {
 }
 
 fun ITimePeriod.monthSequence(): FastList<ITimePeriod> {
-  val months = FastList.newList<ITimePeriod>()
+  val months = fastListOf<ITimePeriod>()
 
   if (isAnyTime()) {
     return months
@@ -416,7 +421,7 @@ fun ITimePeriod.monthSequence(): FastList<ITimePeriod> {
 }
 
 fun ITimePeriod.weekSequence(): FastList<ITimePeriod> {
-  val weeks = FastList.newList<ITimePeriod>()
+  val weeks = fastListOf<ITimePeriod>()
   if (isAnyTime()) {
     return weeks
   }
@@ -453,7 +458,7 @@ fun ITimePeriod.weekSequence(): FastList<ITimePeriod> {
 }
 
 fun ITimePeriod.daySequence(): FastList<ITimePeriod> {
-  val days = FastList.newList<ITimePeriod>()
+  val days = fastListOf<ITimePeriod>()
 
   if (isAnyTime()) {
     return days
@@ -485,7 +490,7 @@ fun ITimePeriod.daySequence(): FastList<ITimePeriod> {
 }
 
 fun ITimePeriod.hourSequence(): FastList<ITimePeriod> {
-  val hours = FastList.newList<ITimePeriod>()
+  val hours = fastListOf<ITimePeriod>()
 
   if (isAnyTime()) {
     return hours
@@ -516,7 +521,7 @@ fun ITimePeriod.hourSequence(): FastList<ITimePeriod> {
 }
 
 fun ITimePeriod.minuteSequence(): FastList<ITimePeriod> {
-  val minutes = FastList.newList<ITimePeriod>()
+  val minutes = fastListOf<ITimePeriod>()
 
   if (isAnyTime()) {
     return minutes
@@ -543,6 +548,243 @@ fun ITimePeriod.minuteSequence(): FastList<ITimePeriod> {
   }
 
   return minutes
+}
+
+fun ITimePeriod.permutations(unit: PeriodUnit): Permutation<ITimePeriod> {
+  return when (unit) {
+    PeriodUnit.YEAR -> yearPermutation()
+    PeriodUnit.HALFYEAR -> halfyearPermutation()
+    PeriodUnit.QUARTER -> quarterPermutation()
+    PeriodUnit.MONTH -> monthPermutation()
+    PeriodUnit.WEEK -> weekPermutation()
+    PeriodUnit.DAY -> dayPermutation()
+    PeriodUnit.HOUR -> hourPermutation()
+    PeriodUnit.MINUTE -> minutePermutation()
+    else -> throw NotSupportedException("지원하지 않는 PeriodUnit 입니다. unit=[$unit]")
+  }
+}
+
+fun ITimePeriod.yearPermutation(): Permutation<ITimePeriod> {
+  if (isAnyTime()) {
+    return emptyPermutation()
+  }
+
+  if (start.isSameYear(end)) {
+    return permutationOf(TimeRange(this))
+  }
+
+  val head = TimeRange(start, start.endTimeOfYear())
+  val current = start.startTimeOfYear() + 1.years()
+  val endYear = end.year
+  val calendar = DefaultTimeCalendar
+
+  fun nextYears(current: DateTime): Permutation<ITimePeriod> {
+    return if (current.year < endYear) {
+      permutationOf<ITimePeriod>(YearRange(current, calendar)) { nextYears(current.plusYears(1)) }
+    } else if (current < end) {
+      permutationOf<ITimePeriod>(TimeRange(current.startTimeOfYear(), end))
+    } else {
+      emptyPermutation()
+    }
+  }
+
+  return cons(head) { nextYears(current) }
+}
+
+fun ITimePeriod.halfyearPermutation(): Permutation<ITimePeriod> {
+  if (isAnyTime()) {
+    return emptyPermutation()
+  }
+
+  assertHasPeriod()
+
+  if (start.isSameHalfyear(end)) {
+    return permutationOf(TimeRange(this))
+  }
+
+  val current = start.endTimeOfHalfyear()
+  val head = TimeRange(start, current)
+  val endHashcode = end.year * 10 + end.halfyearOf().value
+  val calendar = DefaultTimeCalendar
+
+  fun nextHalfyears(current: DateTime): Permutation<ITimePeriod> {
+    return if (current.year * 10 + current.halfyearOf().value < endHashcode) {
+      permutationOf<ITimePeriod>(HalfyearRange(current, calendar)) { nextHalfyears(current.plusMonths(MonthsPerHalfyear)) }
+    } else if (current < end) {
+      permutationOf<ITimePeriod>(TimeRange(current.startTimeOfHalfyear(), end))
+    } else {
+      emptyPermutation()
+    }
+  }
+
+  return cons(head) { nextHalfyears(current.withTimeAtStartOfDay() + 1.days()) }
+}
+
+fun ITimePeriod.quarterPermutation(): Permutation<ITimePeriod> {
+  if (isAnyTime())
+    return emptyPermutation()
+
+  assertHasPeriod()
+
+  if (start.isSameQuarter(end)) {
+    return permutationOf(TimeRange(this))
+  }
+
+  val current = start.endTimeOfQuarter()
+  val head = TimeRange(start, current)
+  val endHashcode = end.year * 10 + end.quarterOf().value
+  val calendar = DefaultTimeCalendar
+
+  fun nextQuarters(current: DateTime): Permutation<ITimePeriod> {
+    return if (current.year * 10 + current.quarterOf().value < endHashcode) {
+      permutationOf<ITimePeriod>(QuarterRange(current, calendar)) { nextQuarters(current.plusMonths(MonthsPerQuarter)) }
+    } else if (current < end) {
+      permutationOf<ITimePeriod>(TimeRange(current.startTimeOfQuarter(), end))
+    } else {
+      emptyPermutation()
+    }
+  }
+
+  return cons(head) { nextQuarters(current.withTimeAtStartOfDay() + 1.days()) }
+}
+
+fun ITimePeriod.monthPermutation(): Permutation<ITimePeriod> {
+  if (isAnyTime())
+    return emptyPermutation()
+
+  assertHasPeriod()
+
+  if (start.isSameMonth(end)) {
+    return permutationOf(TimeRange(this))
+  }
+
+  val current = start.endTimeOfMonth()
+  val head = TimeRange(start, current)
+  val monthEnd = end.startTimeOfMonth()
+  val calendar = DefaultTimeCalendar
+
+  fun nextMonths(current: DateTime): Permutation<ITimePeriod> {
+    return if (current < monthEnd) {
+      permutationOf<ITimePeriod>(MonthRange(current, calendar)) { nextMonths(current.plusMonths(1)) }
+    } else if (current < end) {
+      permutationOf<ITimePeriod>(TimeRange(current, end))
+    } else {
+      emptyPermutation()
+    }
+  }
+
+  return cons(head) { nextMonths(current.withTimeAtStartOfDay() + 1.days()) }
+}
+
+fun ITimePeriod.weekPermutation(): Permutation<ITimePeriod> {
+  if (isAnyTime())
+    return emptyPermutation()
+
+  assertHasPeriod()
+
+  if (start.isSameWeek(end)) {
+    return permutationOf(TimeRange(this))
+  }
+
+  val current = start.endTimeOfWeek()
+  if (current >= end) {
+    return permutationOf(TimeRange(this))
+  }
+
+  val head = TimeRange(start, current)
+  val calendar = DefaultTimeCalendar
+
+  fun nextWeeks(current: DateTime): Permutation<ITimePeriod> {
+    return if (current < end) {
+      permutationOf<ITimePeriod>(WeekRange(current, calendar)) { nextWeeks(current.plusWeeks(1)) }
+    } else if (current < end) {
+      permutationOf<ITimePeriod>(TimeRange(current, end))
+    } else {
+      emptyPermutation()
+    }
+  }
+
+  return cons(head) { nextWeeks(current.withTimeAtStartOfDay() + 1.days()) }
+}
+
+fun ITimePeriod.dayPermutation(): Permutation<ITimePeriod> {
+  if (isAnyTime())
+    return emptyPermutation()
+
+  assertHasPeriod()
+
+  if (start.isSameDay(end)) {
+    return permutationOf(TimeRange(this))
+  }
+
+  val endDay = end.startTimeOfDay()
+  val current = start.startTimeOfDay()
+  val head = TimeRange(start, start.endTimeOfDay())
+
+  fun nextDays(current: DateTime): Permutation<ITimePeriod> {
+    return if (current < endDay) {
+      permutationOf<ITimePeriod>(DayRange(current, DefaultTimeCalendar)) { nextDays(current.plusDays(1)) }
+    } else if (end.millisOfDay > 0) {
+      permutationOf<ITimePeriod>(TimeRange(endDay, end))
+    } else {
+      emptyPermutation()
+    }
+  }
+
+  return cons(head) { nextDays(current.plusDays(1)) }
+}
+
+fun ITimePeriod.hourPermutation(): Permutation<ITimePeriod> {
+  if (isAnyTime())
+    return emptyPermutation()
+
+  assertHasPeriod()
+
+  if (start.isSameHour(end)) {
+    return permutationOf(TimeRange(this))
+  }
+
+  val endHour = end.startTimeOfHour()
+  val current = start.startTimeOfHour()
+  val head = TimeRange(start, start.endTimeOfHour())
+
+  fun nextHours(current: DateTime): Permutation<ITimePeriod> {
+    return if (current < endHour) {
+      permutationOf<ITimePeriod>(HourRange(current, DefaultTimeCalendar)) { nextHours(current.plusHours(1)) }
+    } else if (end.minusHours(endHour.hourOfDay).millisOfDay > 0) {
+      permutationOf<ITimePeriod>(TimeRange(current, end))
+    } else {
+      emptyPermutation()
+    }
+  }
+
+  return cons(head) { nextHours(current.plusHours(1)) }
+}
+
+fun ITimePeriod.minutePermutation(): Permutation<ITimePeriod> {
+  if (isAnyTime())
+    return emptyPermutation()
+
+  assertHasPeriod()
+
+  if (start.isSameMinute(end))
+    return permutationOf(TimeRange(this))
+
+  val endMin = end.startTimeOfMinute()
+  val current = start.startTimeOfHour()
+  val head = TimeRange(start, start.endTimeOfMinute())
+
+  fun nextMinutes(current: DateTime): Permutation<ITimePeriod> {
+    return if (current < endMin) {
+      permutationOf<ITimePeriod>(MinuteRange(current, DefaultTimeCalendar)) { nextMinutes(current.plusMinutes(1)) }
+    } else if (end.minusMinutes(endMin.minuteOfHour).millisOfDay > 0) {
+      permutationOf<ITimePeriod>(TimeRange(current, end))
+    } else {
+      emptyPermutation()
+    }
+  }
+
+  return cons(head) { nextMinutes(current.plusMinutes(1)) }
 }
 
 fun ITimePeriod?.assertHasPeriod(): Unit {
