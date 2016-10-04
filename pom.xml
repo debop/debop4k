@@ -31,7 +31,7 @@
   <url>https://github.com/debop/debop4k</url>
 
   <prerequisites>
-    <maven>3.3.9</maven>
+    <maven>3.0.5</maven>
   </prerequisites>
 
   <modules>
@@ -62,6 +62,8 @@
     <module>debop4k-timeperiod</module>
     <module>debop4k-units</module>
     <module>debop4k-web</module>
+    <module>debop4k-batch</module>
+    <module>debop4k-benchmark</module>
 
 
   </modules>
@@ -158,6 +160,7 @@
       <id>KESTI Nexus</id>
       <url>http://nexus.kesti.co.kr/content/groups/public/</url>
     </repository>
+
     <repository>
       <id>osgeo</id>
       <url>http://download.osgeo.org/webdav/geotools</url>
@@ -168,7 +171,7 @@
     </repository>
     <repository>
       <id>unidata-releases</id>
-      <url>https://artifacts.unidata.ucar.edu/content/repositories/unidata-releases</url>
+      <url>https://artifacts.unidata.ucar.edu/content/repositories/unidata-releases/</url>
     </repository>
     <repository>
       <id>open-web</id>
@@ -814,6 +817,11 @@
         <version>4.3.1</version>
       </dependency>
 
+      <dependency>
+        <groupId>edu.ucar</groupId>
+        <artifactId>netcdfAll</artifactId>
+        <version>${ucar.java7.version}</version>
+      </dependency>
       <dependency>
         <groupId>edu.ucar</groupId>
         <artifactId>cdm</artifactId>
