@@ -16,6 +16,8 @@
 
 package debop4k.timeperiod.calendars
 
+import debop4k.core.kodatimes.asDate
+import debop4k.core.loggerOf
 import debop4k.timeperiod.*
 import debop4k.timeperiod.timeranges.*
 
@@ -29,6 +31,8 @@ open class CalendarPeriodCollector @JvmOverloads constructor(
     calendar: ITimeCalendar = DefaultTimeCalendar)
 : CalendarVisitor<CalendarPeriodCollectorFilter, CalendarPeriodCollectorContext>(
     filter, limits, seekDir, calendar) {
+
+  private val log = loggerOf(javaClass)
 
   companion object {
     @JvmStatic
@@ -75,18 +79,107 @@ open class CalendarPeriodCollector @JvmOverloads constructor(
   }
 
   override fun onVisitYears(years: YearRangeCollection, context: CalendarPeriodCollectorContext): Boolean {
-    TODO()
+    log.trace("visit years ... years={}, context={}", years, context)
+
+    if (context.scope != CollectKind.Year) {
+      return true
+    }
+
+    years.years()
+        .filter { isMatchingYear(it, context) && checkLimits(it) }
+        .forEach { periods.add(it) }
+
+    return false
   }
 
   override fun onVisitYear(year: YearRange, context: CalendarPeriodCollectorContext): Boolean {
-    TODO()
+    log.trace("visit year ... year={}, context={}", year, context)
+
+    if (context.scope != CollectKind.Month) {
+      return true
+    }
+
+    val monthFilter: (MonthRange) -> Boolean = { isMatchingMonth(it, context) && checkLimits(it) }
+
+    if (filter.collectingMonths.isEmpty) {
+      year.months().filter(monthFilter).forEach { periods.add(it) }
+    } else {
+      filter.collectingMonths.forEach { m ->
+        if (m.isSingleMonth) {
+          val mr = MonthRange(asDate(year.year, m.startMonthOfYear), year.calendar)
+          if (monthFilter(mr)) {
+            periods.add(mr)
+          }
+        } else {
+          val mc = MonthRangeCollection(year.year,
+                                        m.startMonthOfYear,
+                                        m.endMonthOfYear - m.startMonthOfYear,
+                                        year.calendar)
+          val months = mc.months()
+          val isMatch = months.all { isMatchingMonth(it, context) }
+          if (isMatch && checkLimits(mc)) {
+            periods.addAll(months)
+          }
+        }
+      }
+    }
+    return false
   }
 
   override fun onVisitMonth(month: MonthRange, context: CalendarPeriodCollectorContext): Boolean {
-    TODO()
+    log.trace("visit month... month={}, context={}", month, context)
+
+    if (context.scope != CollectKind.Day) {
+      return true
+    }
+
+    val dayFilter: (DayRange) -> Boolean = { isMatchingDay(it, context) && checkLimits(it) }
+
+    if (filter.collectingDays.isEmpty) {
+      month.days().filter(dayFilter).forEach { periods.add(it) }
+    } else {
+      filter.collectingDays.forEach { day ->
+        val startTime = asDate(month.year, month.monthOfYear, day.startDayOfMonth)
+
+        if (day.isSingleDay) {
+          val dayRange = DayRange(startTime, month.calendar)
+          if (dayFilter(dayRange)) {
+            periods.add(dayRange)
+          }
+        } else {
+          val dc = DayRangeCollection(startTime,
+                                      day.endDayOfMonth - day.startDayOfMonth,
+                                      month.calendar)
+          val days = dc.days()
+          val isMatch = days.all { isMatchingDay(it, context) }
+          if (isMatch && checkLimits(dc)) {
+            periods.addAll(days)
+          }
+        }
+      }
+    }
+    return false
   }
 
   override fun onVisitDay(day: DayRange, context: CalendarPeriodCollectorContext): Boolean {
-    TODO()
+    log.trace("visit day... day={}, context={}", day, context)
+
+    if (filter.collectingHours.isEmpty) {
+      day.hours()
+          .filter { isMatchingHour(it, context) && checkLimits(it) }
+          .forEach { periods.add(it) }
+    } else if (isMatchingDay(day, context)) {
+      filter.collectingHours.forEach { h ->
+        val start = h.start.toDateTime(day.start)
+        val end = h.endExclusive.toDateTime(day.start)
+        val hc = CalendarTimeRange(start, end, day.calendar)
+
+        if (checkExcludePeriods(hc) && checkLimits(hc)) {
+          periods.add(hc)
+        }
+      }
+    }
+
+    return false
   }
 }

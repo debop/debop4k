@@ -27,7 +27,6 @@ import org.eclipse.collections.impl.list.mutable.FastList;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 
@@ -69,14 +68,14 @@ public class TimesForEachTest extends AbstractTimePeriodTest {
   }
 
   @Test
-  @Ignore
+  //@Ignore
   public void foreachMonthsTest() {
     int count = 0;
     for (ITimePeriod p : Periods.monthSequence(period)) {
       log.trace("month [{}] = [{}]", count++, p.getStart().getMonthOfYear());
     }
 
-    int months = (int) (period.getDuration().getMillis() / (TimeSpec.MaxDaysPerMonth * TimeSpec.MillisPerDay)) + 2;
+    int months = (int) (period.getDuration().getMillis() / (TimeSpec.MaxDaysPerMonth * TimeSpec.MillisPerDay)) + 1;
     assertThat(count).isEqualTo(months);
   }
 

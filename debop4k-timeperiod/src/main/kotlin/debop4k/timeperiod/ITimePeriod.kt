@@ -53,7 +53,7 @@ interface ITimePeriod : Comparable<ITimePeriod>, Serializable {
   fun move(): Unit = move(Duration.ZERO)
   fun move(offset: Duration = Duration.ZERO): Unit
 
-  fun isSamePeriod(other: ITimePeriod): Boolean
+  fun isSamePeriod(other: ITimePeriod?): Boolean
   fun hasInside(moment: DateTime): Boolean
   fun hasInside(other: ITimePeriod): Boolean
   fun intersectsWith(other: ITimePeriod): Boolean

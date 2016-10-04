@@ -24,6 +24,7 @@ import debop4k.timeperiod.timeranges.DayRange;
 import debop4k.timeperiod.timeranges.DayRangeCollection;
 import org.junit.Test;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static debop4k.core.kodatimes.KodaTimes.asDate;
 import static debop4k.core.kodatimes.KodaTimes.asDateTime;
@@ -31,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DaySeekerTest extends AbstractTimePeriodTest {
 
-  private static final Logger log = org.slf4j.LoggerFactory.getLogger(DaySeekerTest.class);
+  private static final Logger log = LoggerFactory.getLogger(DaySeekerTest.class);
 
   @Test
   public void simpleForward() {
@@ -61,9 +62,11 @@ public class DaySeekerTest extends AbstractTimePeriodTest {
     final DaySeeker daySeeker = new DaySeeker(new CalendarVisitorFilter(), SeekDirection.Backward);
 
     DayRange day1 = daySeeker.findDay(start, 0);
+    assertThat(day1).isNotNull();
     assertThat(day1.isSamePeriod(start)).isTrue();
 
     DayRange day2 = daySeeker.findDay(start, 1);
+    assertThat(day2).isNotNull();
     assertThat(day2.isSamePeriod(start.prevDay())).isTrue();
 
     for (int i = -10; i < 20; i++) {

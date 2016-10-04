@@ -17,7 +17,7 @@
 package debop4k.ignite.examples
 
 import debop4k.core.loggerOf
-import debop4k.core.use
+import debop4k.core.utils.use
 import debop4k.data.ignite.getCache
 import debop4k.data.ignite.usingIgnite
 import org.apache.ignite.configuration.IgniteConfiguration

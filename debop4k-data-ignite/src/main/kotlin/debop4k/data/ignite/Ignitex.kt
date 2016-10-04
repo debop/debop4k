@@ -18,7 +18,7 @@
 
 package debop4k.data.ignite
 
-import debop4k.core.use
+import debop4k.core.utils.use
 import org.apache.ignite.Ignite
 import org.apache.ignite.IgniteCache
 import org.apache.ignite.Ignition

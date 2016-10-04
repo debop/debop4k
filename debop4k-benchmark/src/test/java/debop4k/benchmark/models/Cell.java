@@ -1,4 +1,4 @@
-package debop4k.benchmark.models;//package kesti4j.benchmark.models;
+package debop4k.benchmark.models;//package debop4k.benchmark.models;
 //
 //
 //import lombok.Data;

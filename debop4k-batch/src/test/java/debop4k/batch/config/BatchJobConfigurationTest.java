@@ -21,7 +21,7 @@ import org.junit.runner.RunWith;
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -35,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author sunghyouk.bae@gmail.com
  */
 @Slf4j
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest(classes = {BatchJobConfiguration.class})
 public class BatchJobConfigurationTest {
 

@@ -16,8 +16,8 @@
 
 package debop4k.core.compress
 
-import debop4k.core.closeSafe
 import debop4k.core.io.touch
+import debop4k.core.utils.closeSafe
 import debop4k.core.utils.toUtf8Bytes
 import java.io.ByteArrayOutputStream
 import java.io.File

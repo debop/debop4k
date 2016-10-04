@@ -20,23 +20,28 @@ import debop4k.timeperiod.calendars.ICalendarVisitorContext
 import debop4k.timeperiod.timeranges.DayRange
 
 /**
+ * 일 단위로 탐색을 수행할 수 있도록 하는 Context 입니다.
+ *
  * @author sunghyouk.bae@gmail.com
  */
-open class DaySeekerContext(val startDay: DayRange,
-                            val dayCount: Int) : ICalendarVisitorContext {
+open class DaySeekerContext
+@JvmOverloads constructor(val startDay: DayRange,
+                          private val _dayCount: Int = 0) : ICalendarVisitorContext {
 
-  var remainingDays: Int = 0
+  val dayCount: Int
+  var remainingDays: Int
   var foundDay: DayRange? = null
 
   init {
+    dayCount = Math.abs(_dayCount)
     remainingDays = this.dayCount
   }
 
-  val isFinished: Boolean get() = remainingDays == 0
+  val isFinished: Boolean get() = (remainingDays == 0)
 
   fun processDay(day: DayRange): Unit {
     if (!isFinished) {
-      remainingDays--
+      --remainingDays
 
       if (isFinished)
         foundDay = day

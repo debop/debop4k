@@ -17,25 +17,33 @@
 package debop4k.timeperiod.calendars.seekers
 
 import debop4k.core.loggerOf
-import debop4k.timeperiod.*
-import debop4k.timeperiod.calendars.*
-import debop4k.timeperiod.calendars.SeekDirection.Backward
-import debop4k.timeperiod.calendars.SeekDirection.Forward
-import debop4k.timeperiod.timeranges.*
+import debop4k.timeperiod.DefaultTimeCalendar
+import debop4k.timeperiod.ITimeCalendar
+import debop4k.timeperiod.TimeRange
+import debop4k.timeperiod.calendars.CalendarVisitor
+import debop4k.timeperiod.calendars.CalendarVisitorFilter
+import debop4k.timeperiod.calendars.SeekDirection
+import debop4k.timeperiod.timeranges.DayRange
+import debop4k.timeperiod.timeranges.MonthRange
+import debop4k.timeperiod.timeranges.YearRange
+import debop4k.timeperiod.timeranges.YearRangeCollection
 
-open class DaySeeker @JvmOverloads constructor(filter: ICalendarVisitorFilter = CalendarVisitorFilter(),
-                                               seekDir: SeekDirection = Forward,
+/**
+ * 일 단위로 탐색을 수행하는 Seeker 입니다.
+ *
+ * @author sunghyouk.bae@gmail.com
+ */
+open class DaySeeker @JvmOverloads constructor(filter: CalendarVisitorFilter = CalendarVisitorFilter(),
+                                               seekDir: SeekDirection = SeekDirection.Forward,
                                                calendar: ITimeCalendar = DefaultTimeCalendar)
-: CalendarVisitor<ICalendarVisitorFilter, DaySeekerContext>(filter,
-                                                            TimeRange.AnyTime,
-                                                            seekDir,
-                                                            calendar) {
-
+: CalendarVisitor<CalendarVisitorFilter, DaySeekerContext>(filter,
+                                                           TimeRange.AnyTime,
+                                                           seekDir,
+                                                           calendar) {
   private val log = loggerOf(javaClass)
 
   open fun findDay(startDay: DayRange, dayCount: Int): DayRange? {
-
-    log.trace("find day ... startDay={}, dayCount={}", startDay, dayCount)
+    log.debug("find day ... startDay={}, dayCount={}", startDay, dayCount)
 
     if (dayCount == 0)
       return startDay
@@ -44,14 +52,13 @@ open class DaySeeker @JvmOverloads constructor(filter: ICalendarVisitorFilter = 
     var visitDir = seekDirection
 
     if (dayCount < 0) {
-      visitDir = if (visitDir == Forward) Backward else Forward
+      visitDir = if (visitDir == SeekDirection.Forward) SeekDirection.Backward else SeekDirection.Forward
     }
 
     startDayVisit(startDay, context, visitDir)
     val foundDay = context.foundDay
 
-    log.trace("Day 찾기 완료. startDay={}, dayCount={}, foundDay={}", startDay, dayCount, foundDay)
-
+    log.debug("Success to find day. startDay={}, dayCount={}, visitDir={}, foundDay={}", startDay, dayCount, visitDir, foundDay)
     return foundDay
   }
 
@@ -68,10 +75,6 @@ open class DaySeeker @JvmOverloads constructor(filter: ICalendarVisitorFilter = 
   }
 
   override fun enterHours(day: DayRange, context: DaySeekerContext): Boolean {
-    return false
-  }
-
-  override fun enterMinutes(hour: HourRange, context: DaySeekerContext): Boolean {
     return false
   }
 

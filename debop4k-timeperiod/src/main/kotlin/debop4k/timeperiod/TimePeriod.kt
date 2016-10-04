@@ -109,8 +109,8 @@ open class TimePeriod(var _start: DateTime? = MinPeriodTime,
     }
   }
 
-  override fun isSamePeriod(other: ITimePeriod): Boolean {
-    return (start == other.start) && (end == other.end)
+  override fun isSamePeriod(other: ITimePeriod?): Boolean {
+    return other != null && start == other.start && end == other.end
   }
 
   override fun hasInside(moment: DateTime): Boolean {

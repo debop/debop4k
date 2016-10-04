@@ -30,7 +30,7 @@ abstract class CalendarVisitor<out F : ICalendarVisitorFilter, in C : ICalendarV
     val filter: F,
     val limits: ITimePeriod,
     val seekDirection: SeekDirection = SeekDirection.Forward,
-    val calendar: ITimeCalendar = DefaultTimeCalendar) {
+    val calendar: ITimeCalendar? = DefaultTimeCalendar) {
 
   private val log = loggerOf(javaClass)
 
@@ -46,48 +46,64 @@ abstract class CalendarVisitor<out F : ICalendarVisitorFilter, in C : ICalendarV
   }
 
   protected fun startPeriodVisit(period: ITimePeriod, context: C): Unit {
-    TODO()
+    log.debug("기간을 탐핵합니다 periods={}, context={}, seekDir={}", period, context, seekDirection)
+
+    if (period.isMoment())
+      return
+
+    onVisitStart()
+
+    val years = YearRangeCollection(period.start.year,
+                                    period.end.year - period.start.year + 1,
+                                    calendar ?: EmptyOffsetTimeCalendar)
+
+    if (onVisitYears(years, context) && enterYears(years, context)) {
+      val yearsToVisit =
+          if (isForward) years.years()
+          else years.years().sortedByDescending { it.end }
+      visitYears(yearsToVisit, period, context)
+    }
   }
 
-  private fun visitYears(yearsToVisit: Sequence<YearRange>, period: ITimePeriod, context: C): Unit {
+  private fun visitYears(yearsToVisit: List<YearRange>, period: ITimePeriod, context: C): Unit {
     yearsToVisit.forEach { year ->
       val canVisit = year.overlapsWith(period) && onVisitYear(year, context) && enterMonths(year, context)
 
       if (canVisit) {
         val monthsToVisit =
-            if (isForward) year.monthSequence()
-            else year.monthSequence().sortedByDescending { it.end }
+            if (isForward) year.months()
+            else year.months().sortedByDescending { it.end }
         visitMonths(monthsToVisit, period, context)
       }
     }
   }
 
-  private fun visitMonths(monthsToVisit: Sequence<MonthRange>, period: ITimePeriod, context: C): Unit {
+  private fun visitMonths(monthsToVisit: List<MonthRange>, period: ITimePeriod, context: C): Unit {
     monthsToVisit.forEach { m ->
       val canVisit = m.overlapsWith(period) && onVisitMonth(m, context) && enterDays(m, context)
       if (canVisit) {
         val daysToVisit =
-            if (isForward) m.daySequence()
-            else m.daySequence().sortedByDescending { it.end }
+            if (isForward) m.days()
+            else m.days().sortedByDescending { it.end }
         visitDays(daysToVisit, period, context)
       }
     }
   }
 
-  private fun visitDays(daysToVisit: Sequence<DayRange>, period: ITimePeriod, context: C): Unit {
+  private fun visitDays(daysToVisit: List<DayRange>, period: ITimePeriod, context: C): Unit {
     daysToVisit.forEach { day ->
       val canVisit = day.overlapsWith(period) && onVisitDay(day, context) && enterHours(day, context)
       if (canVisit) {
         val hoursToVisit =
-            if (isForward) day.hourSequence()
-            else day.hourSequence().sortedByDescending { it.end }
+            if (isForward) day.hours()
+            else day.hours().sortedByDescending { it.end }
 
         visitHours(hoursToVisit, period, context)
       }
     }
   }
 
-  private fun visitHours(hoursToVisit: Sequence<HourRange>, period: ITimePeriod, context: C): Unit {
+  private fun visitHours(hoursToVisit: List<HourRange>, period: ITimePeriod, context: C): Unit {
     hoursToVisit.forEach { hour ->
       val canVisit = hour.overlapsWith(period) && onVisitHour(hour, context)
       if (canVisit) {
@@ -143,7 +159,7 @@ abstract class CalendarVisitor<out F : ICalendarVisitorFilter, in C : ICalendarV
     var current = day
     var lastVisited: DayRange? = null
 
-    while (lastVisited == null && current.hasPureInsideWith(MAX_PERIOD)) {
+    while (lastVisited == null && MAX_PERIOD.hasPureInsideWith(current)) {
       if (!onVisitDay(current, context)) {
         lastVisited = current
       } else {
@@ -163,7 +179,7 @@ abstract class CalendarVisitor<out F : ICalendarVisitorFilter, in C : ICalendarV
     var current = hour
     var lastVisited: HourRange? = null
 
-    while (lastVisited == null && current.hasPureInsideWith(MAX_PERIOD)) {
+    while (lastVisited == null && MAX_PERIOD.hasPureInsideWith(current)) {
       if (!onVisitHour(current, context)) {
         lastVisited = current
       } else {
@@ -227,7 +243,7 @@ abstract class CalendarVisitor<out F : ICalendarVisitorFilter, in C : ICalendarV
       return false
     else if (!filter.dayOfMonths.isEmpty && !filter.dayOfMonths.contains(dr.dayOfMonth))
       return false
-    else if (!filter.weekOfDays.isEmpty && !filter.weekOfDays.contains(dr.dayOfWeek))
+    else if (filter.weekOfDays.isNotEmpty() && !filter.weekOfDays.contains(DayOfWeek.of(dr.start.dayOfWeek)))
       return false
     else
       return checkExcludePeriods(dr)

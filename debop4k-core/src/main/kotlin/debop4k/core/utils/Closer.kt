@@ -18,7 +18,6 @@
 
 package debop4k.core.utils
 
-import debop4k.core.closeSafe
 import debop4k.core.loggerOf
 import org.slf4j.Logger
 import java.io.Closeable

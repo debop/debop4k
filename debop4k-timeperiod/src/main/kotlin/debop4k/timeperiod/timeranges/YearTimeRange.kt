@@ -16,6 +16,7 @@
 
 package debop4k.timeperiod.timeranges
 
+import debop4k.core.collections.fastListOf
 import debop4k.core.kodatimes.now
 import debop4k.timeperiod.*
 import debop4k.timeperiod.utils.halfyearSequence
@@ -45,23 +46,35 @@ open class YearTimeRange @JvmOverloads constructor(val year: Int,
   fun halfyearSequence(): Sequence<HalfyearRange>
       = halfyearSequence(start, yearCount * HalfyearsPerYear, calendar)
 
+  fun halfyears(): List<HalfyearRange> = fastListOf(halfyearSequence().iterator())
+
   fun quarterSequence(): Sequence<QuarterRange>
       = quarterSequence(start, yearCount * QuartersPerYear, calendar)
 
+  fun quarters(): List<QuarterRange> = fastListOf(quarterSequence().iterator())
+
   fun monthSequence(): Sequence<MonthRange>
       = monthSequence(start, yearCount * MonthsPerYear, calendar)
+
+  fun months(): List<MonthRange> = fastListOf(monthSequence().iterator())
 
   fun daySequence(): Sequence<DayRange> {
     return monthSequence().flatMap(MonthRange::daySequence).asSequence()
   }
 
+  fun days(): List<DayRange> = fastListOf(daySequence().iterator())
+
   fun hourSequence(): Sequence<HourRange> {
     return daySequence().flatMap(DayRange::hourSequence).asSequence()
   }
 
+  fun hours(): List<HourRange> = days().flatMap(DayRange::hours)
+
   fun minuteSequence(): Sequence<MinuteRange> {
     return hourSequence().flatMap(HourRange::minuteSequence).asSequence()
   }
+
+  fun minutes(): List<MinuteRange> = hours().flatMap(HourRange::minutes)
 
 }
 

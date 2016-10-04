@@ -25,6 +25,7 @@ import debop4k.core.functional.eithers.Either.Right
 import java.util.*
 
 /**
+ * Option type
  * @author debop sunghyouk.bae@gmail.com
  */
 sealed class Option<out T> {
@@ -117,6 +118,9 @@ sealed class Option<out T> {
     }
   }
 
+  /**
+   * Option.None type
+   */
   object None : Option<Nothing>() {
     override fun get() = throw NoSuchElementException("None.get")
 
