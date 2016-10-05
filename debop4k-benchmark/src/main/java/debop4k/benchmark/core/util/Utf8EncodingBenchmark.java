@@ -15,8 +15,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * NOTE: 벤치마킹 테스트 할 때만 수행하세요.
  */
+@BenchmarkMode(Mode.AverageTime)
 @State(Scope.Thread)
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 @Fork(1)
 public class Utf8EncodingBenchmark {
   // experiment test input

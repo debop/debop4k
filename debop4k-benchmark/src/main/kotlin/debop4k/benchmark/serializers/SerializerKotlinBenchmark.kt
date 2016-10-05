@@ -21,7 +21,6 @@ import debop4k.core.io.serializers.BinarySerializer
 import debop4k.core.io.serializers.FstSerializer
 import debop4k.core.uninitialized
 import debop4k.core.utils.Resourcex
-import org.assertj.core.api.Assertions.assertThat
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.openjdk.jmh.annotations.*
 import java.util.concurrent.*
@@ -29,8 +28,9 @@ import java.util.concurrent.*
 //
 // NOTE: IntelliJ IDEA 용 jmh plugin 은 Java 에서만 가능하고, Kotlin 은 안된다.
 //
+@BenchmarkMode(Mode.AverageTime)
 @State(Scope.Thread)
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 @Fork(1)
 open class SerializerKotlinBenchmark {
 
@@ -42,7 +42,7 @@ open class SerializerKotlinBenchmark {
 
   @Setup
   open fun setup(): Unit {
-    val utfText = Resourcex.getString("Utf8Samples.txt")
+    val utfText = Resourcex.getString("Utf8Samples.txt", classLoader = javaClass.classLoader)
 
     cells = FastList.newList(CELL_COUNT * CELL_COUNT)
 
@@ -61,7 +61,7 @@ open class SerializerKotlinBenchmark {
   open fun binarySerializer(): Int {
     val array = binary.serialize(cells)
     val converted = binary.deserialize<FastList<Cell>>(array)
-    assertThat(converted).isNotNull().hasSize(cells.size)
+//    assertThat(converted).isNotNull().hasSize(cells.size)
     return converted.size
   }
 
@@ -69,7 +69,7 @@ open class SerializerKotlinBenchmark {
   open fun fstSerializer(): Int {
     val array = fst.serialize(cells)
     val converted = fst.deserialize<FastList<Cell>>(array)
-    assertThat(converted).isNotNull().hasSize(cells.size)
+//    assertThat(converted).isNotNull().hasSize(cells.size)
     return converted.size
   }
 }

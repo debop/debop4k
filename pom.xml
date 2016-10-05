@@ -139,6 +139,7 @@
     <postgresql.java7.version>9.4.1208.jre7</postgresql.java7.version>
     <ojdbc7.version>12.1.0.1</ojdbc7.version>
     <maven.shade.plugin.version>2.4.3</maven.shade.plugin.version>
+    <jmh.version>1.15</jmh.version>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -912,12 +913,12 @@
       <dependency>
         <groupId>org.openjdk.jmh</groupId>
         <artifactId>jmh-core</artifactId>
-        <version>1.12</version>
+        <version>${jmh.version}</version>
       </dependency>
       <dependency>
         <groupId>org.openjdk.jmh</groupId>
         <artifactId>jmh-generator-annprocess</artifactId>
-        <version>1.12</version>
+        <version>${jmh.version}</version>
       </dependency>
       <dependency>
         <groupId>org.mockito</groupId>
@@ -1109,8 +1110,8 @@
             </goals>
             <configuration>
               <sourceDirs>
-                <sourceDir>src/main/kotlin</sourceDir>
                 <sourceDir>src/main/java</sourceDir>
+                <sourceDir>src/main/kotlin</sourceDir>
               </sourceDirs>
             </configuration>
           </execution>

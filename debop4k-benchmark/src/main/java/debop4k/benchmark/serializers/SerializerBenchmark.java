@@ -22,17 +22,17 @@ import debop4k.core.io.serializers.BinarySerializer;
 import debop4k.core.io.serializers.FstSerializer;
 import debop4k.core.io.serializers.Serializer;
 import debop4k.core.utils.Resourcex;
+import kotlin.text.Charsets;
 import org.eclipse.collections.impl.list.mutable.FastList;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static org.assertj.core.api.Assertions.assertThat;
 
-
+@BenchmarkMode(Mode.AverageTime)
 @State(Scope.Thread)
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 @Fork(1)
 public class SerializerBenchmark {
 
@@ -44,7 +44,7 @@ public class SerializerBenchmark {
 
   @Setup
   public void setup() {
-    String text = Resourcex.getString("Utf8Sample.txt");
+    String text = Resourcex.getString("./Utf8Sample.txt", Charsets.UTF_8, getClass().getClassLoader());
 
     cells = FastList.newList(CELL_COUNT * CELL_COUNT);
 
@@ -62,7 +62,7 @@ public class SerializerBenchmark {
   public int binarySerializer() {
     byte[] array = binary.serialize(cells);
     List<Cell> converted = binary.deserialize(array);
-    assertThat(converted).isNotNull().hasSize(cells.size());
+//    assertThat(converted).isNotNull().hasSize(cells.size());
     return converted.size();
   }
 
@@ -70,7 +70,7 @@ public class SerializerBenchmark {
   public int fstSerializer() {
     byte[] array = fst.serialize(cells);
     List<Cell> converted = fst.deserialize(array);
-    assertThat(converted).isNotNull().hasSize(cells.size());
+//    assertThat(converted).isNotNull().hasSize(cells.size());
     return converted.size();
   }
 }
