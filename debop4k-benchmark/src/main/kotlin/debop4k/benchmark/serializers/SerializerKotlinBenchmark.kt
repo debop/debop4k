@@ -42,7 +42,7 @@ open class SerializerKotlinBenchmark {
 
   @Setup
   open fun setup(): Unit {
-    val utfText = Resourcex.getString("Utf8Samples.txt", classLoader = javaClass.classLoader)
+    val utfText = Resourcex.getString("Utf8Samples.txt")
 
     cells = FastList.newList(CELL_COUNT * CELL_COUNT)
 

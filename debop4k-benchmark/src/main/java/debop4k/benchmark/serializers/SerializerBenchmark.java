@@ -22,7 +22,6 @@ import debop4k.core.io.serializers.BinarySerializer;
 import debop4k.core.io.serializers.FstSerializer;
 import debop4k.core.io.serializers.Serializer;
 import debop4k.core.utils.Resourcex;
-import kotlin.text.Charsets;
 import org.eclipse.collections.impl.list.mutable.FastList;
 import org.openjdk.jmh.annotations.*;
 
@@ -44,7 +43,7 @@ public class SerializerBenchmark {
 
   @Setup
   public void setup() {
-    String text = Resourcex.getString("./Utf8Sample.txt", Charsets.UTF_8, getClass().getClassLoader());
+    String text = Resourcex.getString("Utf8Samples.txt");
 
     cells = FastList.newList(CELL_COUNT * CELL_COUNT);
 
