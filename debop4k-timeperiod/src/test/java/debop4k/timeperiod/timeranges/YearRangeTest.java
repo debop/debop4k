@@ -21,8 +21,8 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import org.slf4j.Logger;
 
-import static debop4k.core.kodatimes.KodaTimes.asDate;
-import static debop4k.core.kodatimes.KodaTimes.now;
+import static debop4k.core.kodatimes.KodaTimex.asDate;
+import static debop4k.core.kodatimes.KodaTimex.now;
 import static debop4k.timeperiod.TimeCalendar.EMPTY_OFFSET;
 import static debop4k.timeperiod.utils.Times.currentYear;
 import static debop4k.timeperiod.utils.Times.startTimeOfYear;

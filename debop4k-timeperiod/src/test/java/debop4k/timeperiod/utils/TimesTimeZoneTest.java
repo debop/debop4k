@@ -16,7 +16,7 @@
 
 package debop4k.timeperiod.utils;
 
-import debop4k.core.kodatimes.KodaTimes;
+import debop4k.core.kodatimes.KodaTimex;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -113,11 +113,11 @@ public class TimesTimeZoneTest extends AbstractTimePeriodTest {
       DateTimeZone tz = DateTimeZone.forID(id);
       DateTime localNow = utcNow.toDateTime(tz);
 
-      int offset = KodaTimes.timeZoneOffset(id);
+      int offset = KodaTimex.timeZoneOffset(id);
       // offset=[32400000], TimeZone=[Asia/Seoul]
       log.debug("offset=[{}], TimeZone=[{}]", offset, tz);
 
-      DateTimeZone localZone = KodaTimes.timeZoneForOffsetMillis(offset);
+      DateTimeZone localZone = KodaTimex.timeZoneForOffsetMillis(offset);
 
       // id=[ROK], offset=[32400000], localZone=[+09:00]
       log.debug("id=[{}], offset=[{}], localZone=[{}]", id, offset, localZone.getID());

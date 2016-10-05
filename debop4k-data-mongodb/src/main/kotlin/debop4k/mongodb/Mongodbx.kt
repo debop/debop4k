@@ -28,7 +28,7 @@ import org.springframework.data.mongodb.core.query.Criteria
  * @return 복사된 Document
  */
 fun <T : AbstractMongoDocument> T.copy(): T {
-  return Serializers.FST.copy(this)
+  return Serializers.FST.copy(this)!!
 }
 
 /**
@@ -38,9 +38,7 @@ fun <T : AbstractMongoDocument> T.copy(): T {
  * @return 복사된 Document
  */
 fun <T : AbstractMongoDocument> T.copyAndResetId(): T {
-  return Serializers.FST.copy(this).apply {
-    resetIdentifier()
-  }
+  return copy().apply { resetIdentifier() }
 }
 
 fun aggregationOf(vararg operations: AggregationOperation): Aggregation {

@@ -16,7 +16,7 @@
 
 package debop4k.data.orm.hibernate.dao;
 
-import debop4k.core.asyncs.Asyncs;
+import debop4k.core.asyncs.Asyncx;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +56,7 @@ public class HibernateAsyncDao extends HibernateDao {
    */
   public <T> Promise<T, Exception> uniqueResultAsync(@NonNull final DetachedCriteria dc) {
 
-    return Asyncs.future(new Callable<T>() {
+    return Asyncx.future(new Callable<T>() {
       @Override
       public T call() throws Exception {
         Session sess = getSf().openSession();

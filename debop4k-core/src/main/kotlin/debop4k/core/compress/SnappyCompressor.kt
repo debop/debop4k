@@ -26,6 +26,9 @@ import org.xerial.snappy.Snappy
  */
 class SnappyCompressor : Compressor {
 
+  /**
+   * 압축
+   */
   override fun compress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty)
       return emptyByteArray
@@ -33,6 +36,9 @@ class SnappyCompressor : Compressor {
     return Snappy.compress(input)
   }
 
+  /**
+   * 압축 복원
+   */
   override fun decompress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty)
       return emptyByteArray

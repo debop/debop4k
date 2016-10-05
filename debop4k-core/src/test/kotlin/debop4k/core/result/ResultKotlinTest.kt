@@ -17,7 +17,7 @@
 package debop4k.core.result
 
 import debop4k.core.loggerOf
-import debop4k.core.utils.Resourcex
+import debop4k.core.utils.Resources
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.io.File
@@ -292,7 +292,7 @@ class ResultKotlinTest {
 
 
   private fun readFile(name: String): String {
-    val text = Resourcex.getString("./result/$name")
+    val text = Resources.getString("./result/$name")
     if (text.isEmpty())
       throw FileNotFoundException(name)
     return text

@@ -13,7 +13,7 @@
  * limitations under the License.
  *
  */
-
+@file:JvmName("converters")
 @file:Suppress("CAST_NEVER_SUCCEEDS")
 
 package debop4k.core.conversions
@@ -57,7 +57,9 @@ class TypeConverters(val parent: TypeConverters? = null) {
     exactConvertersMap.put(ec.key, ec)
   }
 
-  fun <T : X, X : Any, R : Any> register(fromType: TypeReference<T>, toType: TypeReference<R>, converter: ExactConverter.(X) -> R) {
+  fun <T : X, X : Any, R : Any> register(fromType: TypeReference<T>,
+                                         toType: TypeReference<R>,
+                                         converter: ExactConverter.(X) -> R) {
     register(fromType.type, toType.type, converter)
   }
 

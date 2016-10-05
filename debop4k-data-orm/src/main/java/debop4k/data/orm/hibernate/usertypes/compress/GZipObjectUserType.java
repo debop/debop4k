@@ -17,7 +17,7 @@
 package debop4k.data.orm.hibernate.usertypes.compress;
 
 import debop4k.core.compress.Compressor;
-import debop4k.core.compress.Compressors;
+import debop4k.core.compress.Compressx;
 
 /**
  * {@link debop4k.core.compress.GZipCompressor} 를 이용하여 객체를 압축하여 바이트 배열로 저장합니다.
@@ -29,6 +29,6 @@ public class GZipObjectUserType extends CompressedObjectUserType {
 
   @Override
   public Compressor compressor() {
-    return Compressors.getGZIP();
+    return Compressx.getGZIP();
   }
 }

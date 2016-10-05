@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import debop4k.core.json.Jsonx;
-import debop4k.core.utils.Resourcex;
+import debop4k.core.utils.Resources;
 import debop4k.core.utils.With;
 import debop4k.mongodb.springdata.SpringDataMongoConfigurationTest;
 import lombok.SneakyThrows;
@@ -67,7 +67,7 @@ public class StoreRepositoryTest extends SpringDataMongoConfigurationTest {
     repository.deleteAll();
 
 
-    String jsonText = Resourcex.getString("starbucks-in-nyc.json");
+    String jsonText = Resources.getString("starbucks-in-nyc.json");
     log.debug("jsonText={}", jsonText);
 
     // NOTE: GeoJson 을 파싱할 수 있도록 합니다.

@@ -16,7 +16,7 @@
 
 package debop4k.http.gcm;
 
-import debop4k.core.asyncs.Asyncs;
+import debop4k.core.asyncs.Asyncx;
 import debop4k.core.json.JacksonSerializer;
 import debop4k.core.json.JsonSerializer;
 import debop4k.http.AsyncHttpx;
@@ -62,7 +62,7 @@ public class GcmHttpPostTest extends AbstractGcmTest {
     post.setEntity(new StringEntity(text, Charsets.UTF_8));
 
     Promise<HttpResponse, Exception> future = AsyncHttpx.executeAsync(post);
-    HttpResponse response = Asyncs.result(future);
+    HttpResponse response = Asyncx.result(future);
 
     log.trace("Response={}", response.getStatusLine());
     assertThat(response.getStatusLine().getStatusCode()).isEqualTo(HttpStatus.SC_OK);
@@ -77,7 +77,7 @@ public class GcmHttpPostTest extends AbstractGcmTest {
     post.setEntity(new StringEntity(text, Charsets.UTF_8));
 
     Promise<HttpResponse, Exception> future = AsyncHttpx.executeAsync(post);
-    HttpResponse response = Asyncs.result(future);
+    HttpResponse response = Asyncx.result(future);
 
     log.trace("Response={}", response.getStatusLine());
     assertThat(response.getStatusLine().getStatusCode()).isEqualTo(HttpStatus.SC_OK);

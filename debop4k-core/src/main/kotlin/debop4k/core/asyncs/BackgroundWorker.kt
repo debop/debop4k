@@ -17,6 +17,7 @@
 package debop4k.core.asyncs
 
 import debop4k.core.loggerOf
+import debop4k.core.utils.joinThread
 import java.util.concurrent.atomic.*
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
@@ -103,21 +104,9 @@ abstract class AbstractBackgroundWorker(override val name: String) : BackgroundW
       workerThread?.let {
         if (it.isAlive) {
           it.interrupt()
-          try {
-            it.join(500)
-          } catch(ie: InterruptedException) {
-            log.debug("작업 스레드가 종료되었습니다.")
-          }
+          joinThread(it, 500)
         }
       }
-//      if (workerThread != null && workerThread!!.isAlive) {
-//        workerThread!!.interrupt()
-//        try {
-//          workerThread!!.join(500)
-//        } catch(ie: InterruptedException) {
-//          log.debug("작업이 중단되었습니다.")
-//        }
-//      }
     } catch(e: Exception) {
       log.warn("{} 작업용 스레드를 종료하는데 실패했습니다.", e)
     } finally {

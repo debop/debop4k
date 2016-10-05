@@ -16,10 +16,7 @@
 
 package debop4k.core.io.serializers
 
-import debop4k.core.compress.Compressor
-import debop4k.core.compress.LZ4
-import debop4k.core.compress.SNAPPY
-import debop4k.core.compress.SnappyCompressor
+import debop4k.core.compress.*
 
 /**
  * 압축을 수행해주는 Serializer 클래스입니다.
@@ -33,7 +30,7 @@ open class CompressableSerializer
     return compressor.compress(super.serialize(graph))
   }
 
-  open override fun <T> deserialize(bytes: ByteArray?): T {
+  open override fun <T> deserialize(bytes: ByteArray?): T? {
     return super.deserialize(compressor.decompress(bytes))
   }
 }

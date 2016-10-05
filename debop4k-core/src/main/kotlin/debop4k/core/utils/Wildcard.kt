@@ -50,7 +50,7 @@ object Wildcard {
   }
 
   /**
-   * Internal matching recursive function.
+   * Internal matching recursive Functionx.
    */
   private fun match(string: CharSequence, pattern: CharSequence, sNdx: Int = 0, pNdx: Int = 0): Boolean {
     var sNdx = sNdx

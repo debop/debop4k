@@ -16,7 +16,7 @@
 
 package debop4k.timeperiod.base;
 
-import debop4k.core.kodatimes.KodaTimes;
+import debop4k.core.kodatimes.KodaTimex;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.models.Timepart;
 import debop4k.timeperiod.utils.Durations;
@@ -48,7 +48,7 @@ public class TimepartTest extends AbstractTimePeriodTest {
 
   @Test
   public void emptyDateTimeConstructor() {
-    DateTime today = KodaTimes.today();
+    DateTime today = KodaTimex.today();
     Timepart time = new Timepart(today);
 
     assertThat(time.getTotalMillis()).isEqualTo(0);
@@ -104,7 +104,7 @@ public class TimepartTest extends AbstractTimePeriodTest {
 
   @Test
   public void getDateTimeTest() {
-    DateTime now = KodaTimes.now();
+    DateTime now = KodaTimex.now();
     Duration test = Durations.hourOf(18, 23, 56, 344);
     Timepart time = Timepart.of(test);
 
@@ -113,7 +113,7 @@ public class TimepartTest extends AbstractTimePeriodTest {
 
   @Test
   public void getEmptyDateTimeTest() {
-    DateTime today = KodaTimes.today();
+    DateTime today = KodaTimex.today();
     Timepart time = new Timepart();
 
     assertThat(time.toDateTime(today)).isEqualTo(today);

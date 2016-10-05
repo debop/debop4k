@@ -17,10 +17,11 @@
 package debop4k.data.orm.hibernate.usertypes.encrypt;
 
 import debop4k.core.cryptography.Cryptographyx;
-import debop4k.core.cryptography.SymmetricEncryptor;
+import debop4k.core.cryptography.Encryptor;
+import debop4k.core.cryptography.RC2Encryptor;
 
 /**
- * {@link debop4k.core.cryptography.encryptors.RC2Encryptor} 를 이용하여,
+ * {@link RC2Encryptor} 를 이용하여,
  * 문자열을 암호화/복호화를 수행해주는 UserType 입니다.
  *
  * @author sunghyouk.bae@gmail.com
@@ -28,7 +29,7 @@ import debop4k.core.cryptography.SymmetricEncryptor;
  */
 public class RC2StringUserType extends EncryptedStringUserType {
   @Override
-  public SymmetricEncryptor encrytor() {
+  public Encryptor encrytor() {
     return Cryptographyx.getRC2();
   }
 }

@@ -16,4 +16,8 @@
 
 package debop4k.core.result
 
+/**
+ * 예외가 아님을 나타내는 클래스
+ * @author sunghyouk.bae@gmail.com
+ */
 class NoException private constructor() : Exception()

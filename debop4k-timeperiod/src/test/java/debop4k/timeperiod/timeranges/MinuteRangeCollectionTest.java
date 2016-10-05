@@ -25,7 +25,7 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
-import static debop4k.core.kodatimes.KodaTimes.trimToSecond;
+import static debop4k.core.kodatimes.KodaTimex.trimToSecond;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MinuteRangeCollectionTest extends AbstractTimePeriodTest {

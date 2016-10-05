@@ -18,7 +18,7 @@ package debop4k.core.io;
 
 import debop4k.core.AbstractCoreTest;
 import debop4k.core.collections.Arrayx;
-import debop4k.core.utils.Resourcex;
+import debop4k.core.utils.Resources;
 import debop4k.core.utils.Stringx;
 import kotlin.text.Charsets;
 import lombok.SneakyThrows;
@@ -38,7 +38,7 @@ public class IOStreamxTest extends AbstractCoreTest {
   @Test
   @SneakyThrows({IOException.class})
   public void readStream() {
-    InputStream is = Resourcex.getClassPathResourceStream("logback-test.xml");
+    InputStream is = Resources.getClassPathResourceStream("logback-test.xml");
     try {
       assertThat(is).isNotNull();
       String xml = IOStreamx.toString(is);
@@ -112,7 +112,7 @@ public class IOStreamxTest extends AbstractCoreTest {
 
   @Test
   public void inputStreamToStringList() throws Exception {
-    InputStream input = Resourcex.getClassPathResourceStream("logback-test.xml");
+    InputStream input = Resources.getClassPathResourceStream("logback-test.xml");
     try {
       List<String> lines = IOStreamx.toStringList(input);
       assertThat(lines).isNotNull();
@@ -125,7 +125,7 @@ public class IOStreamxTest extends AbstractCoreTest {
 
   @Test
   public void bytesToStringList() {
-    byte[] bytes = Resourcex.getBytes("logback-test.xml");
+    byte[] bytes = Resources.getBytes("logback-test.xml");
     List<String> lines = IOStreamx.toStringList(bytes, Charsets.UTF_8);
 
     assertThat(lines).isNotNull();

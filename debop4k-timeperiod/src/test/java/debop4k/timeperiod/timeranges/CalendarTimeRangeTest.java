@@ -16,7 +16,7 @@
 
 package debop4k.timeperiod.timeranges;
 
-import debop4k.core.kodatimes.KodaTimes;
+import debop4k.core.kodatimes.KodaTimex;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.ITimeCalendar;
 import debop4k.timeperiod.TimeCalendar;
@@ -43,7 +43,7 @@ public class CalendarTimeRangeTest extends AbstractTimePeriodTest {
 
   @Test(expected = AssertionError.class)
   public void momentTest() {
-    DateTime today = KodaTimes.today();
+    DateTime today = KodaTimex.today();
     CalendarTimeRange.of(today, today);
   }
 }

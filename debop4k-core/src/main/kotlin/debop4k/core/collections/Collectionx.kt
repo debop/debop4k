@@ -27,6 +27,7 @@ import org.eclipse.collections.impl.factory.SortedSets
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.eclipse.collections.impl.map.mutable.UnifiedMap
 import org.eclipse.collections.impl.set.mutable.UnifiedSet
+import java.lang.Iterable
 import java.util.*
 import java.util.concurrent.atomic.*
 
@@ -294,15 +295,6 @@ fun <T> isSameElements(left: Iterable<T>, right: Iterable<T>): Boolean {
   }
   return !l.hasNext() && !r.hasNext()
 }
-
-
-fun <T> Set<T>?.toList(): List<T> {
-  if (this == null)
-    return emptyFastList<T>()
-
-  return FastList.newList(this)
-}
-
 
 fun <K, V> kotlin.collections.Map<K, V>.sortWith(comparator: Comparator<in Pair<K, V>>): MutableSortedMap<K, V>
     = this.toList().sortedWith(comparator).toMap().toSortedMap()

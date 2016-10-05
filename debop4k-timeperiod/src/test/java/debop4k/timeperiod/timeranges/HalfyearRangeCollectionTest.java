@@ -16,7 +16,7 @@
 
 package debop4k.timeperiod.timeranges;
 
-import debop4k.core.kodatimes.KodaTimes;
+import debop4k.core.kodatimes.KodaTimex;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.models.Halfyear;
 import debop4k.timeperiod.utils.Times;
@@ -35,11 +35,11 @@ public class HalfyearRangeCollectionTest extends AbstractTimePeriodTest {
   @Test
   public void yearBaseMonthTest() {
 
-    DateTime moment = KodaTimes.asDate(2009, 2, 15);
+    DateTime moment = KodaTimex.asDate(2009, 2, 15);
     int year = Times.yearOf(moment.getYear(), moment.getMonthOfYear());
     HalfyearRangeCollection halfyears = new HalfyearRangeCollection(moment, 3);
 
-    assertThat(halfyears.getStart()).isEqualTo(KodaTimes.asDate(year, 1, 1));
+    assertThat(halfyears.getStart()).isEqualTo(KodaTimex.asDate(year, 1, 1));
   }
 
   @Test

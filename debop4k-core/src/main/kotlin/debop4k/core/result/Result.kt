@@ -13,7 +13,6 @@
  * limitations under the License.
  *
  */
-@file:JvmName("ResultKt")
 
 package debop4k.core.result
 

@@ -17,7 +17,7 @@
 package debop4k.core.io;
 
 import debop4k.core.AbstractCoreTest;
-import debop4k.core.asyncs.Asyncs;
+import debop4k.core.asyncs.Asyncx;
 import debop4k.core.utils.Stringx;
 import kotlin.Unit;
 import kotlin.text.Charsets;
@@ -80,7 +80,7 @@ public class FilexTest extends AbstractCoreTest {
     }
 
     Filex.deleteDirectory(path);
-//    Threadx.sleep(1000);
+//    Threads.sleep(1000);
     assertThat(Filex.exists(path)).isFalse();
   }
 
@@ -131,11 +131,11 @@ public class FilexTest extends AbstractCoreTest {
       File file = new File(path);
       try {
         Promise<Unit, Exception> writeFuture = Filex.writeAsync(file, TEST_BYTES);
-        Asyncs.ready(writeFuture);
+        Asyncx.ready(writeFuture);
 
         Promise<byte[], Exception> readFuture = Filex.readAllBytesAsync(path);
 
-        byte[] readBytes = Asyncs.result(readFuture);
+        byte[] readBytes = Asyncx.result(readFuture);
         assertThat(readBytes).isNotEmpty();
         assertThat(readBytes.length).isEqualTo(TEST_BYTES.length);
 

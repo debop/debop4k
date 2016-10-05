@@ -22,7 +22,7 @@ import debop4k.timeperiod.TimeRange;
 import org.junit.Test;
 import org.slf4j.Logger;
 
-import static debop4k.core.kodatimes.KodaTimes.asDate;
+import static debop4k.core.kodatimes.KodaTimex.asDate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TimePeriodcontainerTest extends AbstractTimePeriodTest {

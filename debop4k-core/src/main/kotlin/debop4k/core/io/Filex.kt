@@ -32,11 +32,10 @@ import kotlin.concurrent.thread
 private val log = loggerOf("Filex")
 
 const val EXTENSION_SEPARATOR = '.'
-
 const val UNIX_SEPARATOR = '/'
 const val WINDOWS_SEPARATOR = '\\'
 
-val SYSTEM_SEPARATOR = File.separatorChar
+@JvmField val SYSTEM_SEPARATOR = File.separatorChar
 
 /**
  * 디렉토리 생성

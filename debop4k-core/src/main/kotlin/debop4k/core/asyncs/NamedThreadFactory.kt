@@ -23,7 +23,9 @@ import java.util.concurrent.atomic.*
  *
  * @author sunghyouk.bae@gmail.com
  */
-class NamedThreadFactory(val prefix: String?, val isDaemon: Boolean = false) : ThreadFactory {
+class NamedThreadFactory
+@JvmOverloads constructor(val prefix: String?,
+                          val isDaemon: Boolean = false) : ThreadFactory {
 
   val name: String
     get() = if (!prefix.isNullOrBlank()) prefix!! else "thread"

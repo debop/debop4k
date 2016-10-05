@@ -1,16 +1,17 @@
 /*
- *  Copyright (c) 2016. KESTI co, ltd
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
 package debop4k.core.kodatimes
@@ -31,11 +32,10 @@ object TimeZones {
   val Offsets: ImmutableSet<Int> by lazy { Sets.immutable.withAll(ZoneOffsets.valuesView()) }
   val Zones by lazy { buildZone() }
 
-
   fun getTimeZoneIds(offset: Int): ImmutableSet<String> {
     return ZoneOffsets
-        .select { key: String, value: Int -> value == offset }
-        .collectValues { key: String, value: Int -> key }
+        .select { key, value -> value == offset }
+        .collectValues { key, value -> key }
         .toSet()
         .toImmutable()
   }

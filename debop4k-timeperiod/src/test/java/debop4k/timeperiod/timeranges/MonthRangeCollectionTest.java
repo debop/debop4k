@@ -16,7 +16,7 @@
 
 package debop4k.timeperiod.timeranges;
 
-import debop4k.core.kodatimes.KodaTimes;
+import debop4k.core.kodatimes.KodaTimex;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeSpec;
 import debop4k.timeperiod.models.YearMonth;
@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
-import static debop4k.core.kodatimes.KodaTimes.trimToDay;
+import static debop4k.core.kodatimes.KodaTimex.trimToDay;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -72,8 +72,8 @@ public class MonthRangeCollectionTest extends AbstractTimePeriodTest {
   public void monthCounts() {
     int[] monthCounts = new int[]{1, 6, 48, 180, 365};
 
-    final DateTime now = KodaTimes.now();
-    final DateTime today = KodaTimes.today();
+    final DateTime now = KodaTimex.now();
+    final DateTime today = KodaTimex.today();
 
     for (final int monthCount : monthCounts) {
       final MonthRangeCollection monthRanges = new MonthRangeCollection(now, monthCount);

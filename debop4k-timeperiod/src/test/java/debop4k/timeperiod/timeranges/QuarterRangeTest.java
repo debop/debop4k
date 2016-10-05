@@ -16,7 +16,7 @@
 
 package debop4k.timeperiod.timeranges;
 
-import debop4k.core.kodatimes.KodaTimes;
+import debop4k.core.kodatimes.KodaTimex;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeCalendar;
 import debop4k.timeperiod.TimeSpec;
@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
-import static debop4k.core.kodatimes.KodaTimes.asDate;
+import static debop4k.core.kodatimes.KodaTimex.asDate;
 import static debop4k.timeperiod.TimeCalendar.EMPTY_OFFSET;
 import static debop4k.timeperiod.utils.Times.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,7 +39,7 @@ public class QuarterRangeTest extends AbstractTimePeriodTest {
 
   @Test
   public void initValues() {
-    DateTime now = KodaTimes.now();
+    DateTime now = KodaTimex.now();
     DateTime firstQuarter = startTimeOfQuarter(now.getYear(), Quarter.FIRST);
     DateTime secondQuarter = startTimeOfQuarter(now.getYear(), Quarter.SECOND);
 
@@ -81,7 +81,7 @@ public class QuarterRangeTest extends AbstractTimePeriodTest {
 
   @Test
   public void momentTest() {
-    DateTime now = KodaTimes.now();
+    DateTime now = KodaTimex.now();
     int currentYear = now.getYear();
 
     assertThat(new QuarterRange(asDate(currentYear, 1, 1)).getQuarter()).isEqualTo(Quarter.FIRST);
@@ -99,7 +99,7 @@ public class QuarterRangeTest extends AbstractTimePeriodTest {
 
   @Test
   public void startMonth() {
-    final DateTime now = KodaTimes.now();
+    final DateTime now = KodaTimex.now();
     final int currentYear = now.getYear();
 
     assertThat(new QuarterRange(currentYear, Quarter.FIRST).getStartMonthOfYear()).isEqualTo(1);
@@ -110,7 +110,7 @@ public class QuarterRangeTest extends AbstractTimePeriodTest {
 
   @Test
   public void isMultipleCalendarYearsTest() {
-    final DateTime now = KodaTimes.now();
+    final DateTime now = KodaTimex.now();
     final int currentYear = now.getYear();
 
     assertThat(new QuarterRange(currentYear, Quarter.FIRST).isMultipleCalendarYears()).isFalse();
@@ -118,7 +118,7 @@ public class QuarterRangeTest extends AbstractTimePeriodTest {
 
   @Test
   public void calendarQuarter() {
-    final DateTime now = KodaTimes.now();
+    final DateTime now = KodaTimex.now();
     final int currentYear = now.getYear();
     final TimeCalendar calendar = EMPTY_OFFSET;
 
@@ -154,7 +154,7 @@ public class QuarterRangeTest extends AbstractTimePeriodTest {
 
   @Test
   public void getMonthsTest() {
-    final DateTime now = KodaTimes.now();
+    final DateTime now = KodaTimex.now();
     final int currentYear = now.getYear();
     final TimeCalendar calendar = EMPTY_OFFSET;
 
@@ -172,7 +172,7 @@ public class QuarterRangeTest extends AbstractTimePeriodTest {
 
   @Test
   public void addQuatersTest() {
-    final DateTime now = KodaTimes.now();
+    final DateTime now = KodaTimex.now();
     final int currentYear = now.getYear();
     final TimeCalendar calendar = EMPTY_OFFSET;
 

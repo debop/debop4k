@@ -16,7 +16,7 @@
 
 package debop4k.data.orm.hibernate.usertypes.jodatime;
 
-import debop4k.core.kodatimes.KodaTimes;
+import debop4k.core.kodatimes.KodaTimex;
 import debop4k.data.orm.hibernate.usertypes.BaseCompositeUserType;
 import debop4k.timeperiod.ITimePeriod;
 import debop4k.timeperiod.TimePeriod;
@@ -100,7 +100,7 @@ public class TimePeriodAsTimestampUserType extends BaseCompositeUserType {
     Timestamp start = (Timestamp) StandardBasicTypes.TIMESTAMP.nullSafeGet(rs, names[0], session, owner);
     Timestamp end = (Timestamp) StandardBasicTypes.TIMESTAMP.nullSafeGet(rs, names[1], session, owner);
 
-    return new TimeRange(KodaTimes.toDateTime(start), KodaTimes.toDateTime(end));
+    return new TimeRange(KodaTimex.toDateTime(start), KodaTimex.toDateTime(end));
   }
 
   @Override

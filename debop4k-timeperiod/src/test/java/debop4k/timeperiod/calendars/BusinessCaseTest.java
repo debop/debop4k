@@ -25,7 +25,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import org.slf4j.Logger;
 
-import static debop4k.core.kodatimes.KodaTimes.trimToSecond;
+import static debop4k.core.kodatimes.KodaTimex.trimToSecond;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BusinessCaseTest extends AbstractTimePeriodTest {

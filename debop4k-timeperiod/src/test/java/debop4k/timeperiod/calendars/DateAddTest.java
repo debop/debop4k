@@ -25,7 +25,7 @@ import debop4k.timeperiod.utils.Durations;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import static debop4k.core.kodatimes.KodaTimes.asDate;
+import static debop4k.core.kodatimes.KodaTimex.asDate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DateAddTest extends AbstractTimePeriodTest {

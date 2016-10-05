@@ -40,7 +40,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static debop4k.core.kodatimes.KodaTimes.asDateTime;
+import static debop4k.core.kodatimes.KodaTimex.asDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TimesForEachTest extends AbstractTimePeriodTest {

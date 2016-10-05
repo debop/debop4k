@@ -26,7 +26,8 @@ val DUMMY_CLOSE_ACTION: Runnable = Runnable { }
 /**
  * Java 7 에서 새로 제공하는 AutoCloseable 을 Java 6 에서도 사용할 수 있도록 하기 위해
  */
-open class AutoCloseableHandler(val closeHandler: Runnable = DUMMY_CLOSE_ACTION) : AutoCloseable {
+open class AutoCloseableHandler
+@JvmOverloads constructor(val closeHandler: Runnable = DUMMY_CLOSE_ACTION) : AutoCloseable {
 
   private val log = loggerOf(javaClass)
 

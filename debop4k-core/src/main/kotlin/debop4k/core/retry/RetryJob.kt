@@ -26,9 +26,10 @@ import java.util.concurrent.*
  * RetryJob
  * @author debop sunghyouk.bae@gmail.com
  */
-abstract class RetryJob<V>(val context: AsyncRetryContext,
-                           val parent: AsyncRetryExecutor,
-                           val deferred: Deferred<V, Throwable> = deferred<V, Throwable> {}) : Runnable {
+abstract class RetryJob<V>
+@JvmOverloads constructor(val context: AsyncRetryContext,
+                          val parent: AsyncRetryExecutor,
+                          val deferred: Deferred<V, Throwable> = deferred<V, Throwable> {}) : Runnable {
 
   private val log = loggerOf(javaClass)
 
@@ -67,7 +68,8 @@ abstract class RetryJob<V>(val context: AsyncRetryContext,
     try {
       retryOrAbort(t, duration, nextRetryContext)
     } catch(predicateError: Exception) {
-      log.error("Threw while trying to decide on retry ${nextRetryContext.retryCount} after $duration", predicateError)
+      log.error("Threw while trying to decide on retry {} after {}",
+                nextRetryContext.retryCount, duration, predicateError)
       deferred.reject(predicateError)
     }
   }
@@ -97,7 +99,7 @@ abstract class RetryJob<V>(val context: AsyncRetryContext,
 
 
   protected fun logSuccess(context: RetryContext, result: V, duration: Long): Unit {
-    log.info("Successful after {} retries. took {}ms and returned:{}", context.retryCount, duration, result)
+    log.info("Successful after {} retries. took {} ms and returned:{}", context.retryCount, duration, result)
   }
 
   protected fun logAbort(context: RetryContext) {
@@ -105,13 +107,13 @@ abstract class RetryJob<V>(val context: AsyncRetryContext,
   }
 
   protected fun logFailure(nextRetryContext: AsyncRetryContext, duration: Long) {
-    log.info("Giving up after {} retries, last run took: {}ms, last exceptions: {}",
+    log.info("Giving up after {} retries, last run took: {} ms, last exceptions: {}",
              context.retryCount, duration, nextRetryContext.lastThrowable)
   }
 
   protected fun logRetry(nextRetryContext: AsyncRetryContext, delay: Long, duration: Long): Unit {
     val nextRunDate = DateTime(System.currentTimeMillis() + delay)
-    log.trace("Retry {} failed after {}ms, scheduled next retry in {}ms ({})",
+    log.trace("Retry {} failed after {}ms, scheduled next retry in {} ms ({})",
               context.retryCount, duration, delay, nextRunDate, nextRetryContext.lastThrowable)
   }
 }

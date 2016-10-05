@@ -16,7 +16,7 @@
 
 package debop4k.timeperiod.timeranges;
 
-import debop4k.core.kodatimes.KodaTimes;
+import debop4k.core.kodatimes.KodaTimex;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeCalendar;
 import debop4k.timeperiod.utils.Times;
@@ -70,7 +70,7 @@ public class YearRangeCollectionTest extends AbstractTimePeriodTest {
     for (int yearCount : yearCounts) {
       final YearRangeCollection yearRanges = new YearRangeCollection(now, yearCount);
 
-      DateTime startTime = yearRanges.getCalendar().mapStart(KodaTimes.trimToYear(today));
+      DateTime startTime = yearRanges.getCalendar().mapStart(KodaTimex.trimToYear(today));
       DateTime endTime = yearRanges.getCalendar().mapEnd(startTime.plusYears(yearCount));
 
       assertThat(yearRanges.getStart()).isEqualTo(startTime);

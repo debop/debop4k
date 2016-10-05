@@ -16,7 +16,7 @@
 
 package debop4k.timeperiod.base;
 
-import debop4k.core.kodatimes.KodaTimes;
+import debop4k.core.kodatimes.KodaTimex;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeBlock;
 import debop4k.timeperiod.TimeSpec;
@@ -76,7 +76,7 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
 
   @Test
   public void momentTest() throws Exception {
-    DateTime moment = KodaTimes.now();
+    DateTime moment = KodaTimex.now();
     TimeBlock block = new TimeBlock(moment);
 
     assertThat(block.hasStart()).isTrue();

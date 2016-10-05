@@ -16,7 +16,7 @@
 
 package debop4k.timeperiod.timeranges;
 
-import debop4k.core.kodatimes.KodaTimes;
+import debop4k.core.kodatimes.KodaTimex;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeCalendar;
 import debop4k.timeperiod.utils.Times;
@@ -86,7 +86,7 @@ public class HourRangeCollectionTest extends AbstractTimePeriodTest {
     for (int hourCount : hourCounts) {
 
       final HourRangeCollection hours = HourRangeCollection.of(now, hourCount);
-      final DateTime startTime = KodaTimes.trimToMinute(now).plus(hours.getCalendar().getStartOffset());
+      final DateTime startTime = KodaTimex.trimToMinute(now).plus(hours.getCalendar().getStartOffset());
       final DateTime endTime = startTime.plusHours(hourCount).plus(hours.getCalendar().getEndOffset());
 
       assertThat(hours.getStart()).isEqualTo(startTime);

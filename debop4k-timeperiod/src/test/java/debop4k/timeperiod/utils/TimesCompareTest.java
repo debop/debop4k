@@ -23,7 +23,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import org.slf4j.Logger;
 
-import static debop4k.core.kodatimes.KodaTimes.asDate;
+import static debop4k.core.kodatimes.KodaTimex.asDate;
 import static debop4k.timeperiod.utils.Times.*;
 import static org.assertj.core.api.Assertions.assertThat;
 

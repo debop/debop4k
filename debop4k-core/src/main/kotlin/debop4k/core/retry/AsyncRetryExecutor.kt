@@ -25,12 +25,11 @@ import java.util.concurrent.*
  * AsyncRetryExecutor
  * @author debop sunghyouk.bae@gmail.com
  */
-open class AsyncRetryExecutor(val scheduler: ScheduledExecutorService,
-                              val retryPolicy: RetryPolicy = RetryPolicy.DEFAULT,
-                              val backoff: Backoff = DEFAULT_BACKOFF,
-                              val fixedDelay: Boolean = false) : RetryExecutor {
-
-  constructor(scheduler: ScheduledExecutorService) : this(scheduler, RetryPolicy.DEFAULT, DEFAULT_BACKOFF, false)
+open class AsyncRetryExecutor
+@JvmOverloads constructor(val scheduler: ScheduledExecutorService,
+                          val retryPolicy: RetryPolicy = RetryPolicy.DEFAULT,
+                          val backoff: Backoff = DEFAULT_BACKOFF,
+                          val fixedDelay: Boolean = false) : RetryExecutor {
 
   private val log = loggerOf(javaClass)
 

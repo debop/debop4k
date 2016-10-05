@@ -17,10 +17,11 @@
 package debop4k.data.orm.hibernate.usertypes.encrypt;
 
 import debop4k.core.cryptography.Cryptographyx;
+import debop4k.core.cryptography.SHA256StringDigester;
 import debop4k.core.cryptography.StringDigester;
 
 /**
- * {@link debop4k.core.cryptography.digesters.SHA256StringDigester} 를 이용하여, 문자열을 암호화하여 저장하는 UserType 입니다.
+ * {@link SHA256StringDigester} 를 이용하여, 문자열을 암호화하여 저장하는 UserType 입니다.
  *
  * @author sunghyouk.bae@gmail.com
  */

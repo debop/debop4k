@@ -25,7 +25,7 @@ import org.joda.time.Duration;
 import org.junit.Test;
 import org.slf4j.Logger;
 
-import static debop4k.core.kodatimes.KodaTimes.*;
+import static debop4k.core.kodatimes.KodaTimex.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class WeeksTest extends AbstractTimePeriodTest {

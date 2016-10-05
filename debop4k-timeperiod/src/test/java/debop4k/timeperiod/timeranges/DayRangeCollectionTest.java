@@ -16,7 +16,7 @@
 
 package debop4k.timeperiod.timeranges;
 
-import debop4k.core.kodatimes.KodaTimes;
+import debop4k.core.kodatimes.KodaTimex;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeSpec;
 import debop4k.timeperiod.utils.Times;
@@ -34,7 +34,7 @@ public class DayRangeCollectionTest extends AbstractTimePeriodTest {
 
   @Test
   public void singleDays() {
-    final DateTime start = KodaTimes.asDate(2004, 2, 22);
+    final DateTime start = KodaTimex.asDate(2004, 2, 22);
     DayRangeCollection days = new DayRangeCollection(start, 1);
 
     assertThat(days.getDayCount()).isEqualTo(1);
@@ -56,7 +56,7 @@ public class DayRangeCollectionTest extends AbstractTimePeriodTest {
   public void calendarDays() {
     final int dayCount = 5;
 
-    final DateTime start = KodaTimes.asDate(2004, 2, 22);
+    final DateTime start = KodaTimex.asDate(2004, 2, 22);
     final DateTime end = start.plusDays(dayCount - 1);
     DayRangeCollection days = new DayRangeCollection(start, dayCount);
 

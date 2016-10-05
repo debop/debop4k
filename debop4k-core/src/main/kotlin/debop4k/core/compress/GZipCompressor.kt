@@ -30,6 +30,9 @@ import java.util.zip.*
  */
 class GZipCompressor : Compressor {
 
+  /**
+   * 압축
+   */
   override fun compress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty)
       return emptyByteArray
@@ -38,10 +41,13 @@ class GZipCompressor : Compressor {
       GZIPOutputStream(bos).use { gzip ->
         gzip.write(input)
       }
-      return bos.toByteArray()
+      return bos.toByteArrayUnsafe()
     }
   }
 
+  /**
+   * 압축 복원
+   */
   override fun decompress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty)
       return emptyByteArray

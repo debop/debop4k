@@ -16,7 +16,7 @@
 
 package debop4k.data.orm.hibernate.usertypes.encrypt;
 
-import debop4k.core.cryptography.SymmetricEncryptor;
+import debop4k.core.cryptography.Encryptor;
 import debop4k.data.orm.hibernate.usertypes.BaseUserType;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
@@ -34,7 +34,7 @@ import java.sql.SQLException;
  */
 public abstract class EncryptedStringUserType extends BaseUserType {
 
-  abstract SymmetricEncryptor encrytor();
+  abstract Encryptor encrytor();
 
   public String encrypt(String plainText) {
     return encrytor().encryptString(plainText);

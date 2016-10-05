@@ -40,7 +40,7 @@ public class ResourceExTest extends AbstractCoreTest {
   @Test
   @SneakyThrows({IOException.class})
   public void loadResources() {
-    InputStream is = Resourcex.getClassPathResourceStream("logback-test.xml");
+    InputStream is = Resources.getClassPathResourceStream("logback-test.xml");
     try {
       assertThat(is).isNotNull();
       List<String> lines = IOStreamx.toStringList(is);
@@ -53,7 +53,7 @@ public class ResourceExTest extends AbstractCoreTest {
   @Test
   @SneakyThrows({IOException.class})
   public void loadResourcesByClassLoader() {
-    InputStream is = Resourcex.getClassPathResourceStream("logback-test.xml", getClass().getClassLoader());
+    InputStream is = Resources.getClassPathResourceStream("logback-test.xml", getClass().getClassLoader());
     try {
       assertThat(is).isNotNull();
       List<String> lines = IOStreamx.toStringList(is);
@@ -65,7 +65,7 @@ public class ResourceExTest extends AbstractCoreTest {
 
   @Test
   public void readString() {
-    String xml = Resourcex.getString("logback-test.xml");
+    String xml = Resources.getString("logback-test.xml");
     assertThat(xml).isNotEmpty();
     log.debug("xml={}", xml);
   }

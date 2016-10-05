@@ -38,7 +38,7 @@ interface Serializer {
    * @param bytes 바이트 배열
    * @return 역직렬화된 객체의 Optional
    */
-  fun <T> deserialize(bytes: ByteArray?): T
+  fun <T> deserialize(bytes: ByteArray?): T?
 
   /**
    * 원본 객체를 복사합니다.
@@ -46,7 +46,7 @@ interface Serializer {
    * @param  원본 객체의 수형
    * @return 복사된 객체
    */
-  fun <T> copy(src: T): T
+  fun <T> copy(src: T): T?
       = fromInputStream<T>(toInputStream(src))
 
   /**
@@ -64,7 +64,7 @@ interface Serializer {
    * @param    변환할 객체의 수형
    * @return 변환된 객체, 데이터가 없거나, 역직렬화 실패시에는 null 을 반환합니다.
    */
-  fun <T> fromInputStream(input: InputStream): T
+  fun <T> fromInputStream(input: InputStream): T?
       = deserialize(input.toByteArray())
 
 }

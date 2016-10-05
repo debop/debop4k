@@ -16,7 +16,7 @@
 
 package debop4k.data.orm.hibernate.usertypes.jodatime;
 
-import debop4k.core.kodatimes.KodaTimes;
+import debop4k.core.kodatimes.KodaTimex;
 import debop4k.data.orm.hibernate.usertypes.BaseUserType;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
@@ -54,7 +54,7 @@ public class DateTimeAsIsoFormatStringUserType extends BaseUserType {
                             Object owner) throws HibernateException, SQLException {
     String value = (String) StandardBasicTypes.STRING.nullSafeGet(rs, names[0], session, owner);
 
-    return KodaTimes.asIsoFormatDateTime(value);
+    return KodaTimex.asIsoFormatDateTime(value);
   }
 
   @Override
@@ -65,7 +65,7 @@ public class DateTimeAsIsoFormatStringUserType extends BaseUserType {
     if (value == null) {
       StandardBasicTypes.STRING.nullSafeSet(st, null, index, session);
     } else {
-      String isoStr = KodaTimes.asIsoFormatDateTimeString((DateTime) value);
+      String isoStr = KodaTimex.asIsoFormatDateTimeString((DateTime) value);
       log.trace("DateTime ISO Format={}", isoStr);
       StandardBasicTypes.STRING.nullSafeSet(st, isoStr, index, session);
     }

@@ -26,10 +26,10 @@ class ExtensionFunctionExample : AbstractExampleTest() {
   data class User(val id: Int, val name: String, val address: String)
 
   fun saveUser1(user: User) {
-    // Local function
+    // Local Functionx
     fun validate(value: String, fieldName: String) {
       if (value.isEmpty()) {
-        // local function 에서는 상위 함수의 인자에 접근할 수 있다
+        // local Functionx 에서는 상위 함수의 인자에 접근할 수 있다
         throw IllegalArgumentException("Cannot save user ${user.id}: $fieldName is empty")
       }
     }
@@ -45,7 +45,7 @@ class ExtensionFunctionExample : AbstractExampleTest() {
   fun User.validateBeforeSave() {
     fun validate(value: String, fieldName: String) {
       if (value.isEmpty()) {
-        // local function 에서는 상위 함수의 인자에 접근할 수 있다
+        // local Functionx 에서는 상위 함수의 인자에 접근할 수 있다
         throw IllegalArgumentException("Cannot save user ${id}: $fieldName is empty")
       }
     }

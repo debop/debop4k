@@ -31,6 +31,9 @@ import java.io.ByteArrayInputStream
  */
 class BZip2Compressor : Compressor {
 
+  /**
+   * 데이터 압축
+   */
   override fun compress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty)
       return emptyByteArray
@@ -43,6 +46,9 @@ class BZip2Compressor : Compressor {
     }
   }
 
+  /**
+   * 데이터 압축 복원
+   */
   override fun decompress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty)
       return emptyByteArray

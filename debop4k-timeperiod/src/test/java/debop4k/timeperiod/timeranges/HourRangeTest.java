@@ -26,8 +26,8 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
-import static debop4k.core.kodatimes.KodaTimes.now;
-import static debop4k.core.kodatimes.KodaTimes.trimToMinute;
+import static debop4k.core.kodatimes.KodaTimex.now;
+import static debop4k.core.kodatimes.KodaTimex.trimToMinute;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class HourRangeTest extends AbstractTimePeriodTest {

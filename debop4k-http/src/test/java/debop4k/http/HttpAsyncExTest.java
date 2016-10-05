@@ -16,7 +16,7 @@
 
 package debop4k.http;
 
-import debop4k.core.asyncs.Asyncs;
+import debop4k.core.asyncs.Asyncx;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import nl.komponents.kovenant.Promise;
@@ -80,7 +80,7 @@ public class HttpAsyncExTest extends AbstractHttpTest {
   private void assertHttpResponse(Promise<HttpResponse, Exception> promise,
                                   final int expectedStatusCode,
                                   final String expectedSearchWord) {
-    HttpResponse response = Asyncs.result(promise);
+    HttpResponse response = Asyncx.result(promise);
     assertThat(response).isNotNull();
     assertThat(response.getStatusLine().getStatusCode()).isEqualTo(expectedStatusCode);
 

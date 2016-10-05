@@ -21,7 +21,7 @@ import debop4k.timeperiod.TimeSpec;
 import org.junit.Test;
 import org.slf4j.Logger;
 
-import static debop4k.core.kodatimes.KodaTimes.*;
+import static debop4k.core.kodatimes.KodaTimex.*;
 import static debop4k.timeperiod.utils.Times.daysInMonth;
 import static org.assertj.core.api.Assertions.assertThat;
 

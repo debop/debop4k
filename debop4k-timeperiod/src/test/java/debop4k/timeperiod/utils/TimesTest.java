@@ -26,7 +26,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 import org.slf4j.Logger;
 
-import static debop4k.core.kodatimes.KodaTimes.*;
+import static debop4k.core.kodatimes.KodaTimex.*;
 import static debop4k.timeperiod.utils.Periods.asString;
 import static org.assertj.core.api.Assertions.assertThat;
 

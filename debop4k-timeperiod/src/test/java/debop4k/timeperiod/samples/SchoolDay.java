@@ -17,7 +17,7 @@
 package debop4k.timeperiod.samples;
 
 
-import debop4k.core.kodatimes.KodaTimes;
+import debop4k.core.kodatimes.KodaTimex;
 import debop4k.timeperiod.TimePeriodChain;
 import debop4k.timeperiod.utils.Durations;
 import org.joda.time.DateTime;
@@ -42,7 +42,7 @@ public class SchoolDay extends TimePeriodChain {
   private final Lesson lesson4;
 
   public SchoolDay() {
-    this(KodaTimes.today().plusHours(8));
+    this(KodaTimex.today().plusHours(8));
   }
 
   public SchoolDay(DateTime moment) {

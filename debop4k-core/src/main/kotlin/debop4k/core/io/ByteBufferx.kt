@@ -19,15 +19,18 @@ package debop4k.core.io
 
 import debop4k.core.collections.emptyByteArray
 import debop4k.core.collections.isNullOrEmpty
-import debop4k.core.loggerOf
 import java.nio.ByteBuffer
 
-private val log = loggerOf("ByteBufferx")
+//private val log = loggerOf("ByteBufferx")
 
-/** [ByteBuffer] 가 null 이거나 일을 수 있는 바이트가 없다면 true 를 반환한다 */
+/**
+ * [ByteBuffer] 가 null 이거나 일을 수 있는 바이트가 없다면 true 를 반환한다
+ */
 val ByteBuffer?.isNullOrEmpty: Boolean get() = (this == null || this.remaining() == 0)
 
-/** ByteBuffer를 읽어 바이트 배열을 빌드합니다 */
+/**
+ * ByteBuffer를 읽어 바이트 배열을 빌드합니다
+ */
 fun ByteBuffer?.toByteArray(): ByteArray {
   if (this.isNullOrEmpty)
     return emptyByteArray
@@ -37,7 +40,9 @@ fun ByteBuffer?.toByteArray(): ByteArray {
   return bytes
 }
 
-/** 바이트 배열을 읽어 [ByteBuffer]를 빌드합니다 */
+/**
+ * 바이트 배열을 읽어 [ByteBuffer]를 빌드합니다
+ */
 fun ByteArray?.toByteBuffer(): ByteBuffer {
   if (this.isNullOrEmpty)
     return ByteBuffer.allocate(0)
@@ -45,7 +50,9 @@ fun ByteArray?.toByteBuffer(): ByteBuffer {
   return ByteBuffer.wrap(this!!)
 }
 
-/** 바이트 배열을 읽어 [ByteBuffer]를 빌드합니다 (Heap 이 아닌 Direct Memory Access 가 가능한) */
+/**
+ * 바이트 배열을 읽어 [ByteBuffer]를 빌드합니다 (Heap 이 아닌 Direct Memory Access 가 가능한)
+ */
 fun ByteArray?.toByteBufferDirectly(): ByteBuffer {
   if (this.isNullOrEmpty)
     return ByteBuffer.allocate(0)

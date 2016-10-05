@@ -25,7 +25,7 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
-import static debop4k.core.kodatimes.KodaTimes.asDate;
+import static debop4k.core.kodatimes.KodaTimex.asDate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 

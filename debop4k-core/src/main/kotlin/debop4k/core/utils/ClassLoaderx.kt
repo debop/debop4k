@@ -14,6 +14,8 @@
  *
  */
 
+@file:JvmName("ClassLoaderx")
+
 package debop4k.core.utils
 
 import java.security.AccessController

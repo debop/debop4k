@@ -18,9 +18,7 @@ package debop4k.mongodb.bulk
 
 import com.mongodb.BasicDBObjectBuilder
 import debop4k.core.asyncs.readyAll
-import debop4k.core.collections.fastListOf
-import debop4k.core.collections.parForEachWithIndex
-import debop4k.core.collections.parGroupBy
+import debop4k.core.collections.*
 import debop4k.core.uninitialized
 import debop4k.mongodb.AbstractMongoKotlinTest
 import debop4k.mongodb.config.KotlinMongoConfiguration
@@ -46,7 +44,7 @@ import javax.inject.Inject
 @SpringBootTest(classes = arrayOf(KotlinMongoConfiguration::class))
 class BulkInsertTest : AbstractMongoKotlinTest() {
 
-  val itemCount = 4000000
+  val itemCount = 400000
   val batchSize = 1000
 
   @Inject private val mongo: MongoTemplate = uninitialized()

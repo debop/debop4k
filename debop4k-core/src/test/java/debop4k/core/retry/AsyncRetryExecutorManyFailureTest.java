@@ -24,7 +24,7 @@ import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 
-import static debop4k.core.retry.backoff.Backoffs.DEFAULT_PERIOD_MILLIS;
+import static debop4k.core.retry.backoff.Backoffx.DEFAULT_PERIOD_MILLIS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.eq;

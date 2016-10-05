@@ -26,3 +26,29 @@ fun unwrapInvokeException(rawException: Throwable): Throwable
 
 fun unwrapInvokeException(rawException: Exception): Throwable
     = if (rawException is InvocationTargetException) rawException.cause!! else rawException
+
+fun Throwable.toRuntimeException(): RuntimeException
+    = RuntimeException(this)
+
+fun Throwable.toRuntimeException(message: String): RuntimeException
+    = RuntimeException(message, this)
+
+/**
+ * Appends the specified exception to the exceptions that were
+ * suppressed in order to deliver this exception.
+ */
+fun Throwable.addSuppressed(exception: Throwable) =
+    (this as java.lang.Throwable).addSuppressed(exception)
+
+/**
+ * Returns an array containing all of the exceptions that were suppressed.
+ */
+fun Throwable.getSuppressed(): Array<Throwable>
+    = (this as java.lang.Throwable).suppressed
+
+/**
+ * Returns an array containing all of the exceptions that were suppressed.
+ */
+val Throwable.suppressed: Array<Throwable>
+  @JvmName("suppressed")
+  get() = (this as java.lang.Throwable).suppressed

@@ -18,9 +18,8 @@ package debop4k.core.compress
 
 import debop4k.core.collections.emptyByteArray
 import debop4k.core.collections.isNullOrEmpty
+import net.jpountz.lz4.*
 import net.jpountz.lz4.LZ4Compressor
-import net.jpountz.lz4.LZ4Factory
-import net.jpountz.lz4.LZ4SafeDecompressor
 
 /**
  * LZ4 알고리즘으로 압축/복원
@@ -28,16 +27,24 @@ import net.jpountz.lz4.LZ4SafeDecompressor
  */
 class LZ4Compressor : Compressor {
 
+  /**
+   * 압축
+   */
   override fun compress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty)
       return emptyByteArray
+
     return compressor.compress(input)
   }
 
+  /**
+   * 압축 복원
+   */
   override fun decompress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty)
       return emptyByteArray
 
+    // HINT: LZ4 의 최대 압축률은 255이므로, 255로 정한다
     return decompressor.decompress(input, input!!.size * 255)
   }
 

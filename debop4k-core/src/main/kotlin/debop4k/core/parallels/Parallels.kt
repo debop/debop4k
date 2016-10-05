@@ -16,21 +16,21 @@
 
 package debop4k.core.parallels
 
-import debop4k.core.cryptography.secureRandom
+import debop4k.core.cryptography.SECURE_RANDOM
 import debop4k.core.loggerOf
 import org.eclipse.collections.api.block.function.Function
 import org.eclipse.collections.impl.parallel.ParallelIterate
 import java.util.*
 
 /**
- * @see [ParallelIterates]
+ * 참고 : debop4k.core.collections.ParallelIteratex.Kt
  */
-@Deprecated(message = "Kotlin 으로 구현한 것으로 변환", replaceWith = ReplaceWith("ParallelIterates"))
+@Deprecated(message = "Kotlin 으로 구현한 것으로 변환", replaceWith = ReplaceWith("ParallelIteratex"))
 object Parallels {
 
   private val log = loggerOf(javaClass)
 
-  val random: Random = secureRandom
+  val random: Random = SECURE_RANDOM
   val processCount: Int by lazy { Runtime.getRuntime().availableProcessors() }
   val workerCount: Int by lazy { processCount * 2 }
 

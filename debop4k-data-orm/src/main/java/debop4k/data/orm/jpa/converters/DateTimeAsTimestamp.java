@@ -16,7 +16,7 @@
 
 package debop4k.data.orm.jpa.converters;
 
-import debop4k.core.kodatimes.KodaTimes;
+import debop4k.core.kodatimes.KodaTimex;
 import org.joda.time.DateTime;
 
 import javax.persistence.AttributeConverter;
@@ -38,6 +38,6 @@ public class DateTimeAsTimestamp implements AttributeConverter<DateTime, Timesta
 
   @Override
   public DateTime convertToEntityAttribute(Timestamp dbData) {
-    return (dbData != null) ? KodaTimes.toDateTime(dbData) : null;
+    return (dbData != null) ? KodaTimex.toDateTime(dbData) : null;
   }
 }

@@ -22,11 +22,12 @@ import debop4k.core.loggerOf
  * RetryPolicy
  * @author debop sunghyouk.bae@gmail.com
  */
-open class RetryPolicy(val maxRetries: Int = Int.MAX_VALUE,
-                       val retryOn: Set<Class<out Throwable>> = emptySet(),
-                       val abortOn: Set<Class<out Throwable>> = emptySet(),
-                       val retryPredicate: (Throwable?) -> Boolean = { false },
-                       val abortPredicate: (Throwable?) -> Boolean = { false }) {
+open class RetryPolicy
+@JvmOverloads constructor(val maxRetries: Int = Int.MAX_VALUE,
+                          val retryOn: Set<Class<out Throwable>> = emptySet(),
+                          val abortOn: Set<Class<out Throwable>> = emptySet(),
+                          val retryPredicate: (Throwable?) -> Boolean = { false },
+                          val abortPredicate: (Throwable?) -> Boolean = { false }) {
 
   private val log = loggerOf(javaClass)
 

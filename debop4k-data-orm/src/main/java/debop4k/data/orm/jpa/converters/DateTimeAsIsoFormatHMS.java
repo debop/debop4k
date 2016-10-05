@@ -16,7 +16,7 @@
 
 package debop4k.data.orm.jpa.converters;
 
-import debop4k.core.kodatimes.KodaTimes;
+import debop4k.core.kodatimes.KodaTimex;
 import org.joda.time.DateTime;
 
 import javax.persistence.AttributeConverter;
@@ -31,11 +31,11 @@ public class DateTimeAsIsoFormatHMS implements AttributeConverter<DateTime, Stri
 
   @Override
   public String convertToDatabaseColumn(DateTime attribute) {
-    return KodaTimes.asIsoFormatDateHMSString(attribute);
+    return KodaTimex.asIsoFormatDateHMSString(attribute);
   }
 
   @Override
   public DateTime convertToEntityAttribute(String dbData) {
-    return KodaTimes.asIsoFormatDateHMS(dbData);
+    return KodaTimex.asIsoFormatDateHMS(dbData);
   }
 }

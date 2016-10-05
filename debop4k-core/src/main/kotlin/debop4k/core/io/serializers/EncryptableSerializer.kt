@@ -16,10 +16,7 @@
 
 package debop4k.core.io.serializers
 
-import debop4k.core.cryptography.RC2
-import debop4k.core.cryptography.SymmetricEncryptor
-import debop4k.core.cryptography.TRIPLE_DES
-import debop4k.core.cryptography.encryptors.RC2Encryptor
+import debop4k.core.cryptography.*
 
 /**
  * 암호화를 병행하는 직렬화
@@ -27,13 +24,13 @@ import debop4k.core.cryptography.encryptors.RC2Encryptor
  */
 open class EncryptableSerializer
 @JvmOverloads constructor(serializer: Serializer,
-                          val encryptor: SymmetricEncryptor = RC2Encryptor()) : SerializerDecorator(serializer) {
+                          val encryptor: Encryptor = RC2Encryptor()) : SerializerDecorator(serializer) {
 
   open override fun serialize(graph: Any?): ByteArray {
     return encryptor.encrypt(super.serialize(graph))
   }
 
-  open override fun <T> deserialize(bytes: ByteArray?): T {
+  open override fun <T> deserialize(bytes: ByteArray?): T? {
     return super.deserialize(encryptor.decrypt(bytes))
   }
 }

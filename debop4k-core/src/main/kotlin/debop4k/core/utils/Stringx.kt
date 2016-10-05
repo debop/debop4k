@@ -33,11 +33,12 @@ const val EMPTY_STRING = ""
 const val TRIMMING = "..."
 const val NULL_STRING = "<null>"
 const val COMMA: String = ","
-val LINE_SEPARATOR: String get() = Systems.lineSeparator
 const val TAB: String = "\t"
-val WHITESPACE_BLOCK: Pattern by lazy { Pattern.compile("\\s+") }
-val UTF_8: Charset = Charsets.UTF_8
 const val ElipsisLength = 80
+
+@JvmField val LINE_SEPARATOR: String = Systems.lineSeparator
+@JvmField val WHITESPACE_BLOCK: Pattern = Pattern.compile("\\s+")
+@JvmField val UTF_8: Charset = Charsets.UTF_8
 
 fun String?.asNullIfEmpty(): String? = if (this.isEmpty()) null else this
 

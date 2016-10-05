@@ -16,7 +16,7 @@
 
 package debop4k.timeperiod.timeranges;
 
-import debop4k.core.kodatimes.KodaTimes;
+import debop4k.core.kodatimes.KodaTimex;
 import debop4k.timeperiod.AbstractTimePeriodTest;
 import debop4k.timeperiod.TimeCalendar;
 import debop4k.timeperiod.TimeSpec;
@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
-import static debop4k.core.kodatimes.KodaTimes.asDate;
+import static debop4k.core.kodatimes.KodaTimex.asDate;
 import static debop4k.timeperiod.utils.Times.endTimeOfMonth;
 import static debop4k.timeperiod.utils.Times.startTimeOfYear;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -87,8 +87,8 @@ public class DayRangeTest extends AbstractTimePeriodTest {
   @Test
   public void addDaysTest() {
 
-    final DateTime now = KodaTimes.now();
-    final DateTime today = KodaTimes.today();
+    final DateTime now = KodaTimex.now();
+    final DateTime today = KodaTimex.today();
     final DayRange dr = new DayRange(now);
 
 

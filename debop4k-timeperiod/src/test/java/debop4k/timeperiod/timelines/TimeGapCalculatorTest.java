@@ -27,7 +27,7 @@ import debop4k.timeperiod.utils.Times;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import static debop4k.core.kodatimes.KodaTimes.*;
+import static debop4k.core.kodatimes.KodaTimex.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 

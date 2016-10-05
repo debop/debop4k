@@ -17,7 +17,7 @@
 package debop4k.data.orm.mapping.usertypes;
 
 import debop4k.core.collections.Arrayx;
-import debop4k.core.kodatimes.KodaTimes;
+import debop4k.core.kodatimes.KodaTimex;
 import debop4k.core.utils.Stringx;
 import debop4k.data.orm.mapping.AbstractMappingTest;
 import debop4k.timeperiod.TimeRange;
@@ -139,7 +139,7 @@ public class UserTypeTest extends AbstractMappingTest {
   @Test
   public void jodaDateTime() {
     JodaTimeEntity entity = new JodaTimeEntity();
-    entity.setStart(KodaTimes.today());
+    entity.setStart(KodaTimex.today());
     entity.setEnd(entity.getStart().plusDays(1));
 
     entity.setStartTZ(Times.now());
@@ -171,7 +171,7 @@ public class UserTypeTest extends AbstractMappingTest {
     //
     // TimeZone 이 시스템 기본과 다른 경우
     //
-    DateTime startTZ = KodaTimes.asLocal(DateTime.now(), DateTimeZone.forID("EST"));
+    DateTime startTZ = KodaTimex.asLocal(DateTime.now(), DateTimeZone.forID("EST"));
     DateTime endTZ = startTZ.plusDays(1);
 
     entity = new JodaTimeEntity();

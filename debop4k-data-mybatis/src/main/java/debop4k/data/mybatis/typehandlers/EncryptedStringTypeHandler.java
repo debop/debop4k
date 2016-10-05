@@ -17,7 +17,7 @@
 package debop4k.data.mybatis.typehandlers;
 
 import debop4k.core.cryptography.Cryptographyx;
-import debop4k.core.cryptography.SymmetricEncryptor;
+import debop4k.core.cryptography.Encryptor;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
@@ -37,7 +37,7 @@ import java.sql.SQLException;
 @MappedJdbcTypes(JdbcType.VARCHAR)
 public class EncryptedStringTypeHandler extends BaseTypeHandler<String> {
 
-  private static final SymmetricEncryptor rc2 = Cryptographyx.getRC2();
+  private static final Encryptor rc2 = Cryptographyx.getRC2();
 
   @Override
   public void setNonNullParameter(PreparedStatement ps, int i, String parameter, JdbcType jdbcType) throws SQLException {
