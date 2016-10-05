@@ -1,6 +1,6 @@
 package debop4k.web;
 
-import debop4k.core.spring.Profiles;
+import debop4k.spring.config.Profiles;
 import kotlin.text.Charsets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ConfigurableApplicationContext;

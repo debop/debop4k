@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-@file:JvmName("annotation")
+@file:JvmName("BeanFactoryx")
 
 package debop4k.spring.beans
 
-import org.springframework.beans.annotation.AnnotationBeanUtils
-import org.springframework.util.StringValueResolver
+import org.springframework.beans.factory.BeanFactory
 
-fun Annotation.copyPropertiesToBean(bean: Any, vararg excludedProperties: String)
-    = AnnotationBeanUtils.copyPropertiesToBean(this, bean, *excludedProperties)
+operator fun BeanFactory.get(name: String): Any = getBean(name)
 
-fun Annotation.copyPropertiesToBean(bean: Any, resolver: StringValueResolver, vararg excludedProperties: String)
-    = AnnotationBeanUtils.copyPropertiesToBean(this, bean, resolver, *excludedProperties)
+operator fun <T> BeanFactory.get(requiredType: Class<T>): T = getBean(requiredType)
+
+operator fun <T> BeanFactory.get(name: String, requiredType: Class<T>): T = getBean(name, requiredType)
+
+operator fun BeanFactory.get(name: String, vararg args: Any): Any = getBean(name, *args)

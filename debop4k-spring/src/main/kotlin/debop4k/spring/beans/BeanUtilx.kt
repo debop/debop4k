@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:JvmName("beanutils")
+@file:JvmName("BeanUtilx")
 
 package debop4k.spring.beans
 

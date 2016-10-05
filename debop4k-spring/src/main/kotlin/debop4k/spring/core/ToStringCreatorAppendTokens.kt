@@ -24,22 +24,22 @@ import org.springframework.core.style.ToStringCreator
  */
 class ToStringCreatorAppendTokens(private val toStringCreator: ToStringCreator) {
 
-  operator fun get(fieldName: String, value: Byte) = toStringCreator.append(fieldName, value)
+  operator fun get(fieldName: String, value: Byte): ToStringCreator = toStringCreator.append(fieldName, value)
 
-  operator fun get(fieldName: String, value: Char) = toStringCreator.append(fieldName, value)
+  operator fun get(fieldName: String, value: Char): ToStringCreator = toStringCreator.append(fieldName, value)
 
-  operator fun get(fieldName: String, value: Short) = toStringCreator.append(fieldName, value)
+  operator fun get(fieldName: String, value: Short): ToStringCreator = toStringCreator.append(fieldName, value)
 
-  operator fun get(fieldName: String, value: Int) = toStringCreator.append(fieldName, value)
+  operator fun get(fieldName: String, value: Int): ToStringCreator = toStringCreator.append(fieldName, value)
 
-  operator fun get(fieldName: String, value: Long) = toStringCreator.append(fieldName, value)
+  operator fun get(fieldName: String, value: Long): ToStringCreator = toStringCreator.append(fieldName, value)
 
-  operator fun get(fieldName: String, value: Float) = toStringCreator.append(fieldName, value)
+  operator fun get(fieldName: String, value: Float): ToStringCreator = toStringCreator.append(fieldName, value)
 
-  operator fun get(fieldName: String, value: Double) = toStringCreator.append(fieldName, value)
+  operator fun get(fieldName: String, value: Double): ToStringCreator = toStringCreator.append(fieldName, value)
 
-  operator fun get(fieldName: String, value: Boolean) = toStringCreator.append(fieldName, value)
+  operator fun get(fieldName: String, value: Boolean): ToStringCreator = toStringCreator.append(fieldName, value)
 
-  operator fun get(fieldName: String, value: Any?) = toStringCreator.append(fieldName, value)
+  operator fun get(fieldName: String, value: Any?): ToStringCreator = toStringCreator.append(fieldName, value)
 
 }

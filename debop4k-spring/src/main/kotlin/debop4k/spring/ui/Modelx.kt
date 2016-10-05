@@ -14,7 +14,7 @@
  *
  */
 
-@file:JvmName("models")
+@file:JvmName("Modelx")
 
 package debop4k.spring.ui
 

@@ -35,7 +35,8 @@ val sysproperty: GetterSetterOperation<String, String>
  * [StopWatch] 실행
  */
 fun stopWatch(id: String = "", body: StopWatch.() -> Unit): StopWatch {
-  log.trace("Start stopwatch ... id=$id")
+  log.debug("Start stopwatch ... id=$id")
+
   val watch = StopWatch()
   watch.body()
   return watch
@@ -45,11 +46,13 @@ fun stopWatch(id: String = "", body: StopWatch.() -> Unit): StopWatch {
  * [StopWatch] 실행
  */
 fun <T> StopWatch.task(name: String = "", body: () -> T): T {
+  log.debug("Start stopwatch task. name={}", name)
+
   this.start(name)
   try {
     return body()
   } finally {
     this.stop()
-    log.trace("{}", this.prettyPrint())
+    log.debug("{}", this.prettyPrint())
   }
 }

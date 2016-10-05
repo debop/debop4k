@@ -12,28 +12,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:JvmName("annotations")
 
-package debop4k.spring.config.annotations
+package debop4k.spring.config
 
 import org.springframework.context.annotation.Profile
+import kotlin.annotation.AnnotationRetention.RUNTIME
+import kotlin.annotation.AnnotationTarget.TYPE
 
 
-@Target(AnnotationTarget.TYPE)
-@Retention(AnnotationRetention.RUNTIME)
+@Target(TYPE)
+@Retention(RUNTIME)
 @Profile("local")
 annotation class LocalProfile
 
-@Target(AnnotationTarget.TYPE)
-@Retention(AnnotationRetention.RUNTIME)
+@Target(TYPE)
+@Retention(RUNTIME)
 @Profile("dev", "develop", "development")
 annotation class DevelopProfile
 
-@Target(AnnotationTarget.TYPE)
-@Retention(AnnotationRetention.RUNTIME)
+@Target(TYPE)
+@Retention(RUNTIME)
 @Profile("test")
 annotation class TestProfile
 
-@Target(AnnotationTarget.TYPE)
-@Retention(AnnotationRetention.RUNTIME)
+@Target(TYPE)
+@Retention(RUNTIME)
 @Profile("prod", "production")
 annotation class ProductionProfile

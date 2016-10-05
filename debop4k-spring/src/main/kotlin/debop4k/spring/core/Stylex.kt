@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:JvmName("styles")
+@file:JvmName("Stylex")
 
 package debop4k.spring.core
 
