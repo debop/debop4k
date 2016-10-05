@@ -119,7 +119,7 @@ public class BatchInfrastructureConfiguration {
 
   @Bean
   public JobLauncher jobLauncher(JobRepository jobRepo,
-                                 @Qualifier("jobTaskExecutor") TaskExecutor executor) {
+                                 @Autowired @Qualifier("jobTaskExecutor") TaskExecutor executor) {
     SimpleJobLauncher launcher = new SimpleJobLauncher();
     launcher.setJobRepository(jobRepo);
 
