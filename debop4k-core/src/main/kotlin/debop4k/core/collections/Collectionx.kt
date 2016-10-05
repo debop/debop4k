@@ -27,7 +27,7 @@ import org.eclipse.collections.impl.factory.SortedSets
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.eclipse.collections.impl.map.mutable.UnifiedMap
 import org.eclipse.collections.impl.set.mutable.UnifiedSet
-import java.lang.Iterable
+// NOTE: java.lang.Iterable 이 참조되지 않도록 해야한다.
 import java.util.*
 import java.util.concurrent.atomic.*
 

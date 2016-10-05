@@ -19,6 +19,8 @@
 package debop4k.core.collections
 
 import debop4k.core.loggerOf
+import debop4k.core.utils.max
+import debop4k.core.utils.min
 import org.eclipse.collections.impl.list.mutable.primitive.*
 
 private val log = loggerOf("Progressionx")
