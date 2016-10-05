@@ -1,10 +1,17 @@
 # debop4k [![Build Status](https://travis-ci.org/debop/debop4k.png)](https://travis-ci.org/debop/debop4k)
 
-Common Utility for Kotlin JVM
+Backend library for Kotlin JVM
 
+## Modules
 
-## Building for production
+  * [debop4k-config](./debop4k-config/README.md)
+  * [debop4k-core](./debop4k-core/README.md)
+  * [debop4k-data](./debop4k-data/README.md)
+  * [debop4k-timeperiod](./debop4k-timeperiod/README.md)
 
-배포버전으로 최적화를 수행하려면 `-Pprod` 옵션을 주면 됩니다
+## Build from Source
 
-    ./gradlew -Pprod clean build
+Maven
+ 
+    ./mvnw clean install
+    

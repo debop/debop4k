@@ -71,6 +71,13 @@
       <groupId>edu.ucar</groupId>
       <artifactId>grib</artifactId>
     </dependency>
+    <!-- edu.ucar:grib 에서 runtime으로 사용 -->
+    <!--<dependency>-->
+    <!--<groupId>edu.ucar</groupId>-->
+    <!--<artifactId>jj2000</artifactId>-->
+    <!--<version>5.3</version>-->
+    <!--<scope>runtime</scope>-->
+    <!--</dependency>-->
     <dependency>
       <groupId>edu.ucar</groupId>
       <artifactId>netcdf4</artifactId>
