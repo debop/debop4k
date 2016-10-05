@@ -4,10 +4,15 @@ Backend library for Kotlin JVM
 
 ## Modules
 
-  * [debop4k-config](./debop4k-config/README.md)
-  * [debop4k-core](./debop4k-core/README.md)
-  * [debop4k-data](./debop4k-data/README.md)
-  * [debop4k-timeperiod](./debop4k-timeperiod/README.md)
+  * Config
+  * Core
+  * Data
+  * Data for MyBatis
+  * Data for ORM
+  * Data for MongoDB
+  * Data for Redis
+  * Data for Apache Ignite
+  * Timeperiod
 
 ## Build from Source
 
