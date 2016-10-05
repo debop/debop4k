@@ -18,7 +18,7 @@ import javax.sql.DataSource
  * @author sunghyouk.bae@gmail.com
  */
 @RunWith(SpringRunner::class)
-@SpringBootTest(classes = arrayOf(BatchJobConfiguration::class))
+@SpringBootTest(classes = arrayOf(KotlinBatchJobConfiguration::class))
 open class KotlinBatchJobConfigurationTest {
 
   @Resource(name = "jobDataSource")
