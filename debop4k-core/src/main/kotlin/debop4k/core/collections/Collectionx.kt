@@ -27,7 +27,6 @@ import org.eclipse.collections.impl.factory.SortedSets
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.eclipse.collections.impl.map.mutable.UnifiedMap
 import org.eclipse.collections.impl.set.mutable.UnifiedSet
-// NOTE: java.lang.Iterable 이 참조되지 않도록 해야한다.
 import java.util.*
 import java.util.concurrent.atomic.*
 
@@ -45,19 +44,19 @@ fun <T> Iterator<T>.toMutableList(): MutableList<T> {
 
 fun <T> Iterable<T>.size(): Int = when (this) {
   is Collection<*> -> this.size
-  else -> this.count()
+  else             -> this.count()
 }
 
 fun <T> Iterable<T>.headOrNull(): T? = when (this) {
   is List ->
     if (this.isNotEmpty()) this[0] else null
-  else ->
+  else    ->
     if (!none()) this.iterator().next() else null
 }
 
 fun <T> Iterable<T>.lastOrNull(): T? = when (this) {
   is List -> if (this.isNotEmpty()) this[this.lastIndex] else null
-  else -> if (!none()) this.last() else null
+  else    -> if (!none()) this.last() else null
 }
 
 
@@ -275,7 +274,8 @@ fun <T> Collection<T>.padTo(itemCount: Int, item: T): Collection<T> {
   return list
 }
 
-fun <T> isSameElements(left: Iterable<T>, right: Iterable<T>): Boolean {
+fun <T> isSameElements(left: Iterable<T>,
+                       right: Iterable<T>): Boolean {
   if (left is List<T> && right is List<T>) {
     if (left.size == right.size) {
       for (i in left.indices) {
@@ -296,36 +296,36 @@ fun <T> isSameElements(left: Iterable<T>, right: Iterable<T>): Boolean {
   return !l.hasNext() && !r.hasNext()
 }
 
-fun <K, V> kotlin.collections.Map<K, V>.sortWith(comparator: Comparator<in Pair<K, V>>): MutableSortedMap<K, V>
+fun <K, V> Map<K, V>.sortWith(comparator: Comparator<in Pair<K, V>>): MutableSortedMap<K, V>
     = this.toList().sortedWith(comparator).toMap().toSortedMap()
 
-fun <K : Comparable<K>, V> kotlin.collections.Map<K, V>.sortByKey(): kotlin.collections.Map<K, V>
+fun <K : Comparable<K>, V> Map<K, V>.sortByKey(): Map<K, V>
     = this.toList().sortedBy { it.first }.toMap()
 
-fun <K : Comparable<K>, V> kotlin.collections.Map<K, V>.sortByKeyDesc(): kotlin.collections.Map<K, V>
+fun <K : Comparable<K>, V> Map<K, V>.sortByKeyDesc(): Map<K, V>
     = this.toList().sortedByDescending { it.first }.toMap()
 
-fun <K, V : Comparable<V>> kotlin.collections.Map<K, V>.sortByValue(): kotlin.collections.Map<K, V>
+fun <K, V : Comparable<V>> Map<K, V>.sortByValue(): Map<K, V>
     = this.toList().sortedBy { it.second }.toMap()
 
-fun <K, V : Comparable<V>> kotlin.collections.Map<K, V>.sortByValueDesc(): kotlin.collections.Map<K, V>
+fun <K, V : Comparable<V>> Map<K, V>.sortByValueDesc(): Map<K, V>
     = this.toList().sortedByDescending { it.second }.toMap()
 
 
-fun <K : Comparable<K>, V> kotlin.collections.Map<K, V>.maxByKey(): Pair<K, V>
+fun <K : Comparable<K>, V> Map<K, V>.maxByKey(): Pair<K, V>
     = this.maxBy { it.key }!!.toPair()
 
-fun <K : Comparable<K>, V> kotlin.collections.Map<K, V>.minByKey(): Pair<K, V>
+fun <K : Comparable<K>, V> Map<K, V>.minByKey(): Pair<K, V>
     = this.minBy { it.key }!!.toPair()
 
-fun <K, V : Comparable<V>> kotlin.collections.Map<K, V>.maxByValue(): Pair<K, V>
+fun <K, V : Comparable<V>> Map<K, V>.maxByValue(): Pair<K, V>
     = this.maxBy { it.value }!!.toPair()
 
-fun <K, V : Comparable<V>> kotlin.collections.Map<K, V>.minByValue(): Pair<K, V>
+fun <K, V : Comparable<V>> Map<K, V>.minByValue(): Pair<K, V>
     = this.minBy { it.value }!!.toPair()
 
 
-fun <K, V> kotlin.collections.Map<K, V>.toSortedMap(): MutableSortedMap<K, V>
+fun <K, V> Map<K, V>.toSortedMap(): MutableSortedMap<K, V>
     = SortedMaps.mutable.ofSortedMap(this)
 
 
@@ -356,7 +356,7 @@ fun <T> Sequence<T>.toFastList(): FastList<T> {
 }
 
 /**
- * Convert [Iterable] to [FastList]
+ * Convert Iterable to [FastList]
  */
 fun <T> Iterable<T>.toFastList(): FastList<T> {
   return FastList.newList(this)
@@ -403,7 +403,7 @@ fun <T> sortedSetOf(iterable: Iterable<T>): MutableSortedSet<T>
 /**
  * Map to [UnifiedMap]
  */
-fun <K, V> kotlin.collections.Map<K, V>.toUnifiedMap(): UnifiedMap<K, V> {
+fun <K, V> Map<K, V>.toUnifiedMap(): UnifiedMap<K, V> {
   if (this is UnifiedMap<K, V>)
     return this
 

@@ -74,7 +74,7 @@ fun groupedFromCount(count: Int, groupSize: Int): List<IntProgression> {
 }
 
 /**
- * [start] ~ [end] 범위의 Integer 값을 groupSize 크기의 [IntProgression] 의 컬렉션으로 빌드합니다.
+ * [start] ~ [endInclusive] 범위의 Integer 값을 groupSize 크기의 [IntProgression] 의 컬렉션으로 빌드합니다.
  */
 @JvmOverloads
 fun groupedFromRange(start: Int, endInclusive: Int, step: Int = 1, groupSize: Int = 1): List<IntProgression> {
