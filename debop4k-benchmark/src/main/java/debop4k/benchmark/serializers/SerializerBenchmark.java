@@ -52,7 +52,7 @@ public class SerializerBenchmark {
         Cell cell = Cell.of(r, c);
         cell.setText(text);
         cell.setBytes(Cryptographyx.randomBytes(256));
-        cells.add(Cell.of(r, c));
+        cells.add(cell);
       }
     }
   }
