@@ -17,17 +17,26 @@
 
 package debop4k.http.okhttp
 
+import debop4k.core.asyncs.result
 import debop4k.core.loggerOf
+import debop4k.core.retry.AsyncRetryExecutor
+import debop4k.core.retry.backoff.FixedIntervalBackoff
+import debop4k.core.utils.Systems
 import nl.komponents.kovenant.Promise
 import nl.komponents.kovenant.deferred
 import okhttp3.*
-import org.slf4j.Logger
+import org.apache.http.HttpException
 import java.io.IOException
 import java.io.InputStream
+import java.util.concurrent.*
 
-private val log: Logger = loggerOf("OkHttpx")
+private val log = loggerOf("OkHttpx")
 
-val okHttpClient by lazy { OkHttpClient() }
+@JvmField val DefaultOkHttpClient = OkHttpClient()
+
+fun okHttpClientOf(builder: OkHttpClient.Builder): OkHttpClient {
+  return builder.build()
+}
 
 fun okHttpRequestOf(url: String): Request {
   return Request.Builder().url(url).build()
@@ -37,7 +46,19 @@ fun okHttpRequestOf(url: String): Request {
  * HTTP 통신을 수행합니다. 실패 시에는 [retryCount] 만큼 재시도 합니다.
  */
 @JvmOverloads
-fun OkHttpClient.execute(request: Request, retryCount: Int = 3): Response = TODO()
+fun OkHttpClient.execute(request: Request, retryCount: Int = 3): Response {
+  val scheduler = Executors.newScheduledThreadPool(Systems.ProcessCount)
+  val retryExecutor = AsyncRetryExecutor(scheduler)
+      .retryOn(HttpException::class.java)
+      .withMaxRetry(retryCount)
+      .withBackoff(FixedIntervalBackoff(100))
+
+  val future = retryExecutor.getWithRetry { ctx ->
+    newCall(request).execute()
+  }
+
+  return future.result()
+}
 
 /**
  * 비동기 방식으로 HTTP 통신을 수행합니다.
