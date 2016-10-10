@@ -16,33 +16,26 @@
 
 package debop4k.core.json
 
-import com.google.gson.Gson
+import com.squareup.moshi.Moshi
 import debop4k.core.utils.EMPTY_STRING
 
-
 /**
- * google gson 라이브러리를 이용한 JSON Serializer 입니다.
- * @author debop sunghyouk.bae@gmail.com
+ * MoshiSerializer
+ * @author sunghyouk.bae@gmail.com
  */
-class GsonSerializer @JvmOverloads constructor(val gson: Gson = DEFAULT_GSON) : JsonSerializer {
+class MoshiSerializer(val moshi: Moshi = DEFAULT_MOSHI) : JsonSerializer {
 
   override fun <T : Any> toString(graph: T?): String {
     if (graph == null)
       return EMPTY_STRING
 
-    return gson.toJson(graph)
+    return moshi.adapter(graph.javaClass).toJson(graph)
   }
 
   override fun <T : Any> fromString(jsonText: String?, clazz: Class<T>): T? {
-    if (jsonText.isNullOrBlank())
+    if (jsonText.isNullOrEmpty())
       return null
 
-    return gson.fromJson(jsonText, clazz)
-  }
-
-  companion object {
-    @JvmStatic
-    @JvmOverloads
-    fun of(gson: Gson = DEFAULT_GSON): GsonSerializer = GsonSerializer(gson)
+    return moshi.adapter(clazz).fromJson(jsonText!!)
   }
 }

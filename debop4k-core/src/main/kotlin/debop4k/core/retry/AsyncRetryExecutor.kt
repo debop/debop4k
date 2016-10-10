@@ -18,6 +18,7 @@ package debop4k.core.retry
 
 import debop4k.core.loggerOf
 import debop4k.core.retry.backoff.*
+import debop4k.core.utils.Systems
 import nl.komponents.kovenant.Promise
 import java.util.concurrent.*
 
@@ -26,10 +27,15 @@ import java.util.concurrent.*
  * @author debop sunghyouk.bae@gmail.com
  */
 open class AsyncRetryExecutor
-@JvmOverloads constructor(val scheduler: ScheduledExecutorService,
+@JvmOverloads constructor(val scheduler: ScheduledExecutorService = DefaultExecutorService,
                           val retryPolicy: RetryPolicy = RetryPolicy.DEFAULT,
                           val backoff: Backoff = DEFAULT_BACKOFF,
                           val fixedDelay: Boolean = false) : RetryExecutor {
+
+  companion object {
+    @JvmField val DefaultExecutorService: ScheduledExecutorService
+        = Executors.newScheduledThreadPool(Systems.ProcessCount)
+  }
 
   private val log = loggerOf(javaClass)
 

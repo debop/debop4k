@@ -20,24 +20,26 @@ package debop4k.http.okhttp
 import debop4k.core.asyncs.result
 import debop4k.core.loggerOf
 import debop4k.core.retry.AsyncRetryExecutor
+import debop4k.core.retry.backoff.FirstRetryNoDelayBackoff
 import debop4k.core.retry.backoff.FixedIntervalBackoff
-import debop4k.core.utils.Systems
 import nl.komponents.kovenant.Promise
 import nl.komponents.kovenant.deferred
 import okhttp3.*
 import org.apache.http.HttpException
 import java.io.IOException
 import java.io.InputStream
-import java.util.concurrent.*
 
 private val log = loggerOf("OkHttpx")
 
-@JvmField val DefaultOkHttpClient = OkHttpClient()
+/**
+ * 기본 [OkHttpClient] 인스턴스
+ * [OkHttpClient.Builder]를 이용하는 것이 가장 좋다
+ */
+@JvmField val DefaultOkHttpClient: OkHttpClient = OkHttpClient.Builder().build()
 
-fun okHttpClientOf(builder: OkHttpClient.Builder): OkHttpClient {
-  return builder.build()
-}
-
+/**
+ * url에 요청을 하는 [Request] 를 생성한다
+ */
 fun okHttpRequestOf(url: String): Request {
   return Request.Builder().url(url).build()
 }
@@ -47,14 +49,14 @@ fun okHttpRequestOf(url: String): Request {
  */
 @JvmOverloads
 fun OkHttpClient.execute(request: Request, retryCount: Int = 3): Response {
-  val scheduler = Executors.newScheduledThreadPool(Systems.ProcessCount)
-  val retryExecutor = AsyncRetryExecutor(scheduler)
+  val retryExecutor = AsyncRetryExecutor()
       .retryOn(HttpException::class.java)
       .withMaxRetry(retryCount)
-      .withBackoff(FixedIntervalBackoff(100))
+      .withBackoff(FirstRetryNoDelayBackoff(FixedIntervalBackoff(100)))
 
+  val call = newCall(request)
   val future = retryExecutor.getWithRetry { ctx ->
-    newCall(request).execute()
+    call.execute()
   }
 
   return future.result()
@@ -99,7 +101,7 @@ fun OkHttpClient.execAsync(request: Request,
 fun Response.bodyStream(): InputStream = this.body().byteStream()
 
 /**
- * Http [Response] 의 body 를 [byteArray] 으로 가져온다
+ * Http [Response] 의 body 를 [ByteArray] 으로 가져온다
  */
 fun Response.bodyBytes(): ByteArray = this.body().bytes()
 

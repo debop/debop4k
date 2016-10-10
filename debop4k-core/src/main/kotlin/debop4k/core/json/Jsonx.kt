@@ -22,9 +22,16 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.DeserializationFeature.*
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.joda.JodaModule
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fatboyindustrial.gsonjodatime.Converters
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.squareup.moshi.Moshi
+
+
+val DEFAULT_MOSHI: Moshi by lazy {
+  Moshi.Builder().build()
+}
 
 /**
  * 기본 Gson 인스턴스
@@ -41,6 +48,7 @@ val DEFAULT_GSON: Gson by lazy {
 /** 기본 Jackson Object Mapper */
 val DEFAULT_OBJECT_MAPPER: ObjectMapper by lazy { createDefaultObjectMapper() }
 
+
 /**
  * Jackson의 [ObjectMapper]를 생성합니다.
  */
@@ -49,6 +57,9 @@ fun createDefaultObjectMapper(): ObjectMapper {
 
     // Joda-time 라이브러리들의 수형들을 Mapping 하도록 한다.
     registerModule(JodaModule())
+
+    // Kotlin 언어의 수형을 Mapping 한다.
+    registerModule(KotlinModule())
 
     setSerializationInclusion(JsonInclude.Include.NON_NULL)
 
