@@ -19,20 +19,21 @@
 package debop4k.core.asyncs
 
 import java.util.concurrent.*
+import java.util.function.*
+
+@JvmField val DefaultExecutor: ForkJoinPool = ForkJoinPool.commonPool()
 
 @JvmOverloads
 inline fun runAsync(crossinline body: () -> Unit,
-                    executor: Executor = ForkJoinPool.commonPool()): CompletableFuture<Void>
-    = CompletableFuture.runAsync { body() }
+                    executor: Executor = DefaultExecutor): CompletableFuture<Void>
+    = CompletableFuture.runAsync(Runnable { body() }, executor)
 
 @JvmOverloads
 inline fun <T> supplyAsync(crossinline supplier: () -> T,
-                           executor: Executor = ForkJoinPool.commonPool()): CompletableFuture<T>
-    = CompletableFuture.supplyAsync { supplier() }
+                           executor: Executor = DefaultExecutor): CompletableFuture<T>
+    = CompletableFuture.supplyAsync(Supplier { supplier() }, executor)
 
-@JvmOverloads
-fun <T> completedFuture(result: T,
-                        executor: Executor = ForkJoinPool.commonPool()): CompletableFuture<T>
+fun <T> completedFuture(result: T): CompletableFuture<T>
     = CompletableFuture.completedFuture(result)
 
 fun allOfFutures(vararg futures: CompletableFuture<*>): CompletableFuture<Void>
