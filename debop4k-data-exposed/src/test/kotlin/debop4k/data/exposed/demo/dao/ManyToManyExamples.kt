@@ -102,6 +102,8 @@ class ManyToManyExamples : AbstractExposedTest() {
           println("\tAssigned team: ${team.teamName}")
         }
       }
+
+      SchemaUtils.drop(TeamUsers, Teams, AppUsers)
     }
   }
 }

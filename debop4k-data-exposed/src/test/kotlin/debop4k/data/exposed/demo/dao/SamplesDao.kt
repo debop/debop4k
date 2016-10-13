@@ -83,6 +83,8 @@ class SamplesDaoTest : AbstractExposedTest() {
       println("Cities: ${City.all().joinToString { it.name }}")
       println("Users in ${stPete.name}: ${stPete.users.joinToString { it.name }}")
       println("Adults: ${User.find { Users.age greaterEq 18 }.joinToString { it.name }}")
+
+      SchemaUtils.drop(Users, Cities)
     }
   }
 }

@@ -32,7 +32,7 @@ class RetrofitxKotlinTest : AbstractHttpKotlinTest() {
                                                val url: String = "") : Serializable
 
   interface GitHub {
-    @GET("/repos/{owner}/{repo}/collaborators?access_token=c241fa44a6bbdcb92c0a321feb8e8672172c2c26")
+    @GET("/repos/{owner}/{repo}/collaborators?access_token=5365c22a10341a28a2c963d678185f9b6710be00")
     fun contributors(@Path("owner") owner: String, @Path("repo") repo: String): Call<List<Collaborator>>
   }
 

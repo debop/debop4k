@@ -87,7 +87,7 @@ class SqlExamples : AbstractExposedTest() {
         println(it)
       }
 
-      SchemaUtils.drop(Students)
+      SchemaUtils.drop(Students, Courses)
     }
   }
 }
