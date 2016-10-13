@@ -15,11 +15,11 @@
  */
 
 dependencies {
-    compile project(":debop4k:debop4k-config")
-    compile project(":debop4k:debop4k-core")
-    compile project(":debop4k:debop4k-spring")
+    compile project(":debop4k-config")
+    compile project(":debop4k-core")
+    compile project(":debop4k-spring")
 
-    compile "com.zaxxer:HikariCP:hikaricp_version"
+    compile "com.zaxxer:HikariCP:$hikaricp_version"
 
     optional "org.apache.tomcat:tomcat-jdbc:$tomcat_jdbc_version"
 

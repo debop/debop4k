@@ -18,17 +18,20 @@ dependencies {
 
     compile project(":debop4k-config")
     compile project(":debop4k-core")
-    compile project(":debop4k-science")
-    compile project(":debop4k-timeperiod")
 
-    compile "org.mongodb:mongodb-driver:$mongodb_driver_version"
+    compile "org.redisson:redisson:$redisson_version"
+    compile "de.ruedigermoeller:fst:$fst_version"
+    compile "javax.cache:cache-api:$javax_cache_api_version"
 
-    compile "org.springframework.data:spring-data-mongodb:$spring_data_mongodb_version"
-    compile "org.springframework.boot:spring-boot-starter-data-mongodb:$spring_boot_version"
-
+    compile "org.springframework.boot:spring-boot-starter-data-redis:$spring_boot_version"
+    compile "org.springframework.boot:spring-boot-autoconfigure:$spring_boot_version"
     optional "org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version"
 
-    compile "com.querydsl:querydsl-mongodb:$querydsl_version"
-    optional "com.querydsl:querydsl-apt:$querydsl_version"
+    compile "org.springframework:spring-context:$spring_version"
+    compile "org.springframework:spring-context-support:$spring_version"
 
+    compile "net.jpountz.lz4:lz4:$lz4_version"
+    testCompile "com.esotericsoftware:kryo:$kryo_version"
+    testCompile "com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:$jackson_dataformat_cbor_version"
+    testCompile "org.msgpack:jackson-dataformat-msgpack:$jackson_dataformat_msgpack_version"
 }

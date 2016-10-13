@@ -16,19 +16,26 @@
 
 dependencies {
 
-    compile project(":debop4k-config")
     compile project(":debop4k-core")
-    compile project(":debop4k-science")
-    compile project(":debop4k-timeperiod")
 
-    compile "org.mongodb:mongodb-driver:$mongodb_driver_version"
+    // for Java test code
+    compile "org.projectlombok:lombok:$lombok_version"
 
-    compile "org.springframework.data:spring-data-mongodb:$spring_data_mongodb_version"
-    compile "org.springframework.boot:spring-boot-starter-data-mongodb:$spring_boot_version"
+    compile "org.apache.commons:commons-math3:$commons_math3_version"
+    compile "org.jscience:jscience:$jscience_version"
 
-    optional "org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version"
+    compile "org.jblas:jblas:1.2.4"
+    optional "com.univocity:univocity-parsers:2.2.2"
 
-    compile "com.querydsl:querydsl-mongodb:$querydsl_version"
-    optional "com.querydsl:querydsl-apt:$querydsl_version"
+    // ucar
+    compile "edu.ucar:netcdfAll:$ucar_version"
+    compile "edu.ucar:cdm:$ucar_version"
+    compile "edu.ucar:grib:$ucar_version"
+    compile "edu.ucar:netcdf4:$ucar_version"
+    compile "edu.ucar:opendap:$ucar_version"
+
+    compile "com.jhlabs:javaproj:1.0.6"
+    compile "com.esri.geometry:esri-geometry-api:1.2.1"
+    compile "org.geotools:gt-shapefile:15.0"
 
 }

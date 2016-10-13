@@ -15,8 +15,9 @@
  */
 
 dependencies {
-
-    compile "javax.inject:javax.inject:$javax_inject_version"
+    // Kotlin Kovenant
+    compile "nl.komponents.kovenant:kovenant:$kovenant_version"
+    compile "nl.komponents.kovenant:kovenant-rx:$kovenant_version"
 
     // Apache Commons
     compile "org.apache.commons:commons-lang3:$commons_lang3_version"
@@ -28,7 +29,7 @@ dependencies {
     compile "commons-codec:commons-codec:$commons_codec_version"
     compile "commons-net:commons-net:$commons_net_version"
     compile "commons-io:commons-io:$commons_io_version"
-    compile "commons-validator:commons-validator:$commons_validatior_version"
+    compile "commons-validator:commons-validator:$commons_validator_version"
 
     compile "org.springframework:spring-context:$spring_version"
 
@@ -53,18 +54,18 @@ dependencies {
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:$jackson_version"
 
     compile "com.google.code.gson:gson:$gson_version"
-    compile "com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serializers:$gson_jodatime_serialisers_version"
+    optional "com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:$gson_jodatime_serialisers_version"
 
     // Squareup
     compile "com.squareup.moshi:moshi:$moshi_version"
     compile "com.squareup.moshi:moshi-adapters:$moshi_version"
 
-    compile "io.reactive:rxjava:$rxjava_version"
+    compile "io.reactivex:rxjava:$rxjava_version"
 
     compile "net.jpountz.lz4:lz4:$lz4_version"
 
     testCompile "com.esotericsoftware:kryo:$kryo_version"
     testCompile "org.msgpack:jackson-dataformat-msgpack:$jackson_dataformat_msgpack_version"
-    testCompile "org.quartz-scheduler:quartz:$quartz_test"
+    testCompile "org.quartz-scheduler:quartz:$quartz_version"
 
 }

@@ -31,11 +31,11 @@ buildscript {
 group = 'debop4k'
 version = '0.0.1-SNAPSHOT'
 
-if (project.hasProperty('prod')) {
-    apply from: 'gradle/profile_prod.gradle'
-} else {
-    apply from: 'gradle/profile_dev.gradle'
-}
+//if (project.hasProperty('prod')) {
+//    apply from: 'gradle/profile_prod.gradle'
+//} else {
+//    apply from: 'gradle/profile_dev.gradle'
+//}
 
 subprojects {
     apply plugin: 'java'
@@ -124,11 +124,18 @@ subprojects {
         compile "ch.qos.logback:logback-classic:$logback_version"
         compile "javax.inject:javax.inject:$javax_inject_version"
 
+        // for Java test code
+        testCompile "org.projectlombok:lombok:$lombok_version"
+
         testCompile "junit:junit:$junit_version"
         testCompile "io.kotlintest:kotlintest:$kotlintest_version"
 
         testCompile "org.assertj:assertj-core:$assertj_core_version"
         testCompile "org.assertj:assertj-joda-time:$assertj_joda_time_version"
+
+        testCompile "org.mockito:mockito-all:2.0.2-beta"
+        testCompile "com.nhaarman:mockito-kotlin:0.6.2"
+        testCompile "com.jayway.awaitility:awaitility:1.7.0"
 
         testCompile("org.springframework:spring-test:$spring_version")
         testCompile("org.springframework.boot:spring-boot-starter-test:$spring_boot_version") {

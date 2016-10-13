@@ -16,10 +16,11 @@
 
 dependencies {
 
-    compile project(":debop4k-data")
+    compile project(":debop4k-config")
+    compile project(":debop4k-core")
+    compile project(":debop4k-spring")
 
-    compile "org.springframework.boot:spring-boot-starter-batch:$spring_boot_version"
-    testCompile "org.springframework.batch:spring-batch-test:$spring_batch_version"
-
-    testCompile "com.h2database:h2:$h2_version"
+    compile "org.springframework.boot:spring-boot-starter-aop:$spring_boot_version"
+    compile "org.springframework.boot:spring-boot-starter-web:$spring_boot_version"
+    compile "org.springframework.boot:spring-boot-starter-data-rest:$spring_boot_version"
 }

@@ -16,10 +16,9 @@
 
 dependencies {
 
-    compile project(":debop4k-data")
+    compile project(":debop4k-core")
 
-    compile "org.springframework.boot:spring-boot-starter-batch:$spring_boot_version"
-    testCompile "org.springframework.batch:spring-batch-test:$spring_batch_version"
+    compile "joda-time:joda-time:$joda_time_version"
+    compile "org.joda:joda-convert:$joda_convert_version"
 
-    testCompile "com.h2database:h2:$h2_version"
 }

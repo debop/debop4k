@@ -17,5 +17,5 @@
 dependencies {
 
     compile "com.typesafe:config:$typesafe_config_version"
-    compile "org.eclipse.colletions:eclipse-colletions:$eclipse_collections_version"
+    compile "org.eclipse.collections:eclipse-collections:$eclipse_collections_version"
 }

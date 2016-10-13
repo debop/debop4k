@@ -23,34 +23,35 @@ import javax.persistence.EntityManager
 
 private val log = loggerOf("Statelessx")
 
-
-fun <T> SessionFactory.withStateless(func: (StatelessSession) -> T?): T? {
-  this.openStatelessSession().use { stateless ->
+inline fun <T> SessionFactory.withStateless(func: (StatelessSession) -> T?): T? {
+  return this.openStatelessSession().use { stateless: StatelessSession ->
     val tx = stateless.beginTransaction()
     try {
       val result = func.invoke(stateless)
       tx.commit()
-      return result
+
+      return@use result
     } catch(e: Exception) {
       try {
         tx.rollback()
       } catch(e: Throwable) {
       }
-      return null
+      return@use null as T?
     }
   }
 }
 
-fun <T> SessionFactory.withStatelessReadOnly(func: (StatelessSession) -> T?): T? {
-  this.openStatelessSession().use { stateless ->
+inline fun <T> SessionFactory.withStatelessReadOnly(func: (StatelessSession) -> T?): T? {
+  return this.openStatelessSession().use { stateless: StatelessSession ->
     val conn = stateless.connection()
     conn.isReadOnly = true
     conn.autoCommit = false
     val tx = stateless.beginTransaction()
+
     try {
       val result = func.invoke(stateless)
       tx.commit()
-      return result
+      return@use result
     } catch(e: Exception) {
       tx.rollback()
       throw RuntimeException(e)

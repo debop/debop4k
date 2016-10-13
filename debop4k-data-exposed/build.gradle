@@ -19,7 +19,7 @@ dependencies {
     compile project(":debop4k-data")
 
     compile "org.jetbrains.exposed:exposed:$exposed_version"
-    compile "com.fasterxml.uuid:java-uuid:generator:3.1.4"
+    compile "com.fasterxml.uuid:java-uuid-generator:3.1.4"
 
     testCompile "com.h2database:h2:$h2_version"
 }

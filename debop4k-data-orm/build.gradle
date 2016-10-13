@@ -14,11 +14,19 @@
  *
  */
 
+sourceSets {
+    main.kotlin.srcDirs = ['src/main/java']
+    main.java.srcDirs = ['src/main/java']
+}
 dependencies {
 
+    compile project(":debop4k-core")
     compile project(":debop4k-data")
     compile project(":debop4k-timeperiod")
     compile project(":debop4k-redis")
+
+    // for Java
+    compile "org.projectlombok:lombok:$lombok_version"
 
     compile "org.springframework.boot:spring-boot-starter-aop:$spring_boot_version"
     compile "org.springframework.boot:spring-boot-starter-data-jpa:$spring_boot_version"
@@ -28,7 +36,7 @@ dependencies {
     compile "org.hibernate:hibernate-core:$hibernate_version"
     compile "org.hibernate:hibernate-entitymanager:$hibernate_version"
     compile "org.hibernate:hibernate-spatial:$hibernate_version"
-    compile "org.hibernate.javax.persistence:hibernate-jpa-2-1-api:$hibernate_jpa_2_1_api_version"
+    compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:$hibernate_jpa_2_1_api_version"
     compile "javax.el:javax.el-api:$javax_el_api_version"
 
     compile "com.github.debop:hibernate-redis:$hibernate_redis_version"

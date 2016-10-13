@@ -17,13 +17,9 @@
 package debop4k.data.jdbc
 
 import debop4k.core.loggerOf
-import lombok.NonNull
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.SqlParameter
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
-import org.springframework.jdbc.core.namedparam.SqlParameterSource
-import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils
+import org.springframework.jdbc.core.namedparam.*
 import org.springframework.jdbc.core.simple.SimpleJdbcCall
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert
 import org.springframework.stereotype.Component
@@ -62,7 +58,7 @@ open class JdbcDao @Inject constructor(val dataSource: DataSource,
    * 엔티티를 지정한 테이블에 추가합니다.
    *
    * @param entity    저장할 엔티티
-   * @param tablename 대상 테이블
+   * @param tableName 대상 테이블
    * @return Auto Increment key 값
    */
   open fun addAndReturnKey(entity: Any, tableName: String): Number {
@@ -80,7 +76,7 @@ open class JdbcDao @Inject constructor(val dataSource: DataSource,
     return template.batchUpdate(sql, paramsArray)
   }
 
-  open fun callProcedure(@NonNull procName: String, params: Map<String, *>): Map<String, Any> {
+  open fun callProcedure(procName: String, params: Map<String, *>): Map<String, Any> {
     val jdbcCall = SimpleJdbcCall(dataSource).withProcedureName(procName)
     return jdbcCall.execute(params)
   }

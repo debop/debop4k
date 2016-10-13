@@ -17,6 +17,6 @@
 
 dependencies {
 
-    compile "org.eclipse.colletions:eclipse-colletions:$eclipse_collections_version"
+    compile "org.eclipse.collections:eclipse-collections:$eclipse_collections_version"
 
 }
