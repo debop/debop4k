@@ -503,6 +503,7 @@
         <artifactId>spring-boot-configuration-processor</artifactId>
         <version>${spring.boot.version}</version>
         <scope>provided</scope>
+        <optional>true</optional>
       </dependency>
 
       <dependency>
@@ -677,7 +678,7 @@
       <dependency>
         <groupId>org.msgpack</groupId>
         <artifactId>jackson-dataformat-msgpack</artifactId>
-        <version>0.8.9</version>
+        <version>0.8.11</version>
         <scope>test</scope>
       </dependency>
 
@@ -798,21 +799,6 @@
       </dependency>
 
       <!-- Http -->
-      <dependency>
-        <groupId>org.apache.httpcomponents</groupId>
-        <artifactId>httpcore</artifactId>
-        <version>4.4.5</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.httpcomponents</groupId>
-        <artifactId>httpclient</artifactId>
-        <version>4.5.2</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.httpcomponents</groupId>
-        <artifactId>httpcore-nio</artifactId>
-        <version>4.4.5</version>
-      </dependency>
       <dependency>
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpasyncclient</artifactId>

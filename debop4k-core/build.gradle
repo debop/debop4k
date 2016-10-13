@@ -1,0 +1,70 @@
+/*
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+dependencies {
+
+    compile "javax.inject:javax.inject:$javax_inject_version"
+
+    // Apache Commons
+    compile "org.apache.commons:commons-lang3:$commons_lang3_version"
+    compile "org.apache.commons:commons-math3:$commons_math3_version"
+    compile "org.apache.commons:commons-compress:$commons_compress_version"
+    compile "org.apache.commons:commons-collections4:$commons_collections4_version"
+    compile "org.apache.commons:commons-csv:$commons_csv_version"
+
+    compile "commons-codec:commons-codec:$commons_codec_version"
+    compile "commons-net:commons-net:$commons_net_version"
+    compile "commons-io:commons-io:$commons_io_version"
+    compile "commons-validator:commons-validator:$commons_validatior_version"
+
+    compile "org.springframework:spring-context:$spring_version"
+
+    compile "com.google.guava:guava:$guava_version"
+    compile "org.eclipse.collections:eclipse-collections:$eclipse_collections_version"
+    compile "org.eclipse.collections:eclipse-collections-forkjoin:$eclipse_collections_version"
+
+    compile "joda-time:joda-time:$joda_time_version"
+    compile "org.joda:joda-convert:$joda_convert_version"
+
+    compile "de.ruedigermoeller:fst:$fst_version"
+    compile "org.xerial.snappy:snappy-java:$snappy_java_version"
+
+    compile "org.jasypt:jasypt:$jasypt_version"
+
+    // JSON 관련 라이브러리
+    compile "com.fasterxml.jackson.core:jackson-core:$jackson_version"
+    compile "com.fasterxml.jackson.core:jackson-annotations:$jackson_version"
+    compile "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
+
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:$jackson_version"
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:$jackson_version"
+
+    compile "com.google.code.gson:gson:$gson_version"
+    compile "com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serializers:$gson_jodatime_serialisers_version"
+
+    // Squareup
+    compile "com.squareup.moshi:moshi:$moshi_version"
+    compile "com.squareup.moshi:moshi-adapters:$moshi_version"
+
+    compile "io.reactive:rxjava:$rxjava_version"
+
+    compile "net.jpountz.lz4:lz4:$lz4_version"
+
+    testCompile "com.esotericsoftware:kryo:$kryo_version"
+    testCompile "org.msgpack:jackson-dataformat-msgpack:$jackson_dataformat_msgpack_version"
+    testCompile "org.quartz-scheduler:quartz:$quartz_test"
+
+}

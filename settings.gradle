@@ -1,0 +1,47 @@
+/*
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+rootProject.name = 'debop4k-parent'
+
+include 'debop4k-batch'
+include 'debop4k-benchmark'
+include 'debop4k-config'
+include 'debop4k-core'
+include 'debop4k-csv'
+
+include 'debop4k-data'
+include 'debop4k-data-exposed'
+include 'debop4k-data-ignite'
+include 'debop4k-data-mongodb'
+include 'debop4k-data-mybatis'
+include 'debop4k-data-orm'
+
+include 'debop4k-examples'
+
+include 'debop4k-http'
+include 'debop4k-reactive'
+include 'debop4k-redis'
+include 'debop4k-science'
+
+include 'debop4k-spring'
+include 'debop4k-spring-boot-autoconfigure'
+include 'debop4k-spring-jdbc'
+include 'debop4k-spring-security'
+include 'debop4k-spring-webmvc'
+
+include 'debop4k-timeperiod'
+include 'debop4k-units'
+include 'debop4k-web'
