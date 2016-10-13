@@ -19,6 +19,9 @@ package debop4k.data.exposed.dao
 import org.jetbrains.exposed.dao.*
 import org.jetbrains.exposed.sql.Column
 
+/**
+ * Primary Key의 수형이 Long인 테이블을 표현합니다.
+ */
 open class LongIdTable(name: String = "", columnName: String = "id") : IdTable<Long>(name) {
   override val id: Column<EntityID<Long>>
       = long(columnName).autoIncrement().primaryKey().entityId()

@@ -16,14 +16,18 @@
 
 package debop4k.data.exposed.dao
 
+import com.fasterxml.uuid.Generators
 import org.jetbrains.exposed.dao.*
 import org.jetbrains.exposed.sql.Column
 import java.util.*
 
+/**
+ * Primary Key의 수형이 UUID 인 테이블을 표현합니다.
+ */
 open class UUIDIdTable(name: String = "", columnName: String = "id") : IdTable<UUID>(name) {
   override val id: Column<EntityID<UUID>>
       = uuid(columnName)
-      .clientDefault { UUID.randomUUID() }
+      .clientDefault { Generators.timeBasedGenerator().generate() }
       .primaryKey()
       .entityId()
 }
