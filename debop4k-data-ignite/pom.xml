@@ -63,11 +63,6 @@
     </dependency>
     <dependency>
       <groupId>org.apache.ignite</groupId>
-      <artifactId>ignite-geospatial</artifactId>
-      <version>${ignite.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.ignite</groupId>
       <artifactId>ignite-slf4j</artifactId>
       <version>${ignite.version}</version>
     </dependency>

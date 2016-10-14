@@ -50,11 +50,9 @@ fun Criterion.not(): Criterion = not(this)
 
 fun String.gt(value: Any): Criterion = gt(this, value)
 fun String.ge(value: Any): Criterion = ge(this, value)
-fun String.geProperty(otherPropertyName: String): Criterion
-    = geProperty(this, otherPropertyName)
+fun String.geProperty(otherPropertyName: String): Criterion = geProperty(this, otherPropertyName)
 
-fun String.gtProperty(otherPropertyName: String): Criterion
-    = gtProperty(this, otherPropertyName)
+fun String.gtProperty(otherPropertyName: String): Criterion = gtProperty(this, otherPropertyName)
 
 @JvmOverloads
 fun String.greater(value: Any, includeValue: Boolean = true): Criterion
@@ -67,12 +65,8 @@ fun String.greaterProperty(otherPropertyName: String, includeValue: Boolean = tr
 
 fun String.lt(value: Any): Criterion = lt(this, value)
 fun String.le(value: Any): Criterion = le(this, value)
-
-fun String.leProperty(otherPropertyName: String): Criterion
-    = leProperty(this, otherPropertyName)
-
-fun String.ltProperty(otherPropertyName: String): Criterion
-    = ltProperty(this, otherPropertyName)
+fun String.leProperty(otherPropertyName: String): Criterion = leProperty(this, otherPropertyName)
+fun String.ltProperty(otherPropertyName: String): Criterion = ltProperty(this, otherPropertyName)
 
 @JvmOverloads
 fun String.less(value: Any, includeValue: Boolean = true): Criterion
@@ -121,7 +115,10 @@ fun String.between(lo: Any?, hi: Any?, loInclude: Boolean = true, hiInclude: Boo
  * @return the is in range criterion
  */
 @JvmOverloads
-fun Any.inRange(loPropertyName: String, hiPropertyName: String, loInclude: Boolean = true, hiInclude: Boolean = true): Criterion {
+fun Any.inRange(loPropertyName: String,
+                hiPropertyName: String,
+                loInclude: Boolean = true,
+                hiInclude: Boolean = true): Criterion {
 
   val loCriterion = loPropertyName.greater(this, loInclude)
   val hiCriterion = hiPropertyName.less(this, hiInclude)
@@ -182,7 +179,8 @@ fun String.eqIncludeNull(value: Any?): Criterion
     = if (value == null) isNull(this) else eqOrIsNull(this, value)
 
 @JvmOverloads
-fun String.insensitiveLikeIncludeNull(value: String?, matchMode: MatchMode = ANYWHERE): Criterion {
+fun String.insensitiveLikeIncludeNull(value: String?,
+                                      matchMode: MatchMode = MatchMode.ANYWHERE): Criterion {
   if (value.isNullOrBlank())
     return isEmpty(this)
 
@@ -408,10 +406,10 @@ fun DetachedCriteria.addOverlap(loPropertyName: String,
                                 hiInclude: Boolean = true): DetachedCriteria
     = add(overlap(loPropertyName, hiPropertyName, lo, hi, loInclude, hiInclude))
 
-fun DetachedCriteria.addElapsed(propertyName: String, moment: Date): DetachedCriteria = add(propertyName.lt(moment))
-fun DetachedCriteria.addElapsedOrEquals(propertyName: String, moment: Date): DetachedCriteria = add(propertyName.le(moment))
-fun DetachedCriteria.addFutures(propertyName: String, moment: Date): DetachedCriteria = add(propertyName.gt(moment))
-fun DetachedCriteria.addFuturesOrEquals(propertyName: String, moment: Date): DetachedCriteria = add(propertyName.ge(moment))
+fun DetachedCriteria.addElapsed(propertyName: String, moment: Date) = add(propertyName.lt(moment))
+fun DetachedCriteria.addElapsedOrEquals(propertyName: String, moment: Date) = add(propertyName.le(moment))
+fun DetachedCriteria.addFutures(propertyName: String, moment: Date) = add(propertyName.gt(moment))
+fun DetachedCriteria.addFuturesOrEquals(propertyName: String, moment: Date) = add(propertyName.ge(moment))
 
 /**
  * 속성 값이 null인 경우는 false로 간주하고, value와 같은 값을 가지는 질의어를 추가합니다.

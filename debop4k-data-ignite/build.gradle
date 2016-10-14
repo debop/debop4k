@@ -21,7 +21,8 @@ dependencies {
     compile "org.apache.ignite:ignite-core:$ignite_version"
     compile "org.apache.ignite:ignite-spring:$ignite_version"
     compile "org.apache.ignite:ignite-indexing:$ignite_version"
-    compile "org.apache.ignite:ignite-geospatial:$ignite_version"
+    // geospatial은 incubating 상태이다
+    //compile "org.apache.ignite:ignite-geospatial:$ignite_version"
 
     optional "org.hibernate:hibernate-core:$hibernate_version"
     optional "org.hibernate:hibernate-entitymanager:$hibernate_version"
