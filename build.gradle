@@ -27,7 +27,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.springframework.build.gradle:propdeps-plugin:0.0.7"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version"
-//        classpath "io.franzbecker:gradle-lombok:1.7"
+        classpath "io.spring.gradle:dependency-management-plugin:0.6.1.RELEASE"
     }
 }
 
@@ -47,25 +47,7 @@ subprojects {
     apply plugin: 'propdeps'
     apply plugin: 'propdeps-maven'
     apply plugin: 'propdeps-idea'
-//    apply plugin: "io.franzbecker.gradle-lombok"
-
-//    if (name.endsWith("java8")) {
-//        println("Project ${name} set to Java 8")
-//        sourceCompatibility = JavaVersion.VERSION_1_8
-//        targetCompatibility = JavaVersion.VERSION_1_8
-//    } else if (name.endsWith("java7")) {
-//        println("Project ${name} set to Java 7")
-//        sourceCompatibility = JavaVersion.VERSION_1_7
-//        targetCompatibility = JavaVersion.VERSION_1_7
-//    } else if (name.endsWith("java6")) {
-//        println("Project ${name} set to Java 6")
-//        sourceCompatibility = JavaVersion.VERSION_1_6
-//        targetCompatibility = JavaVersion.VERSION_1_6
-//    } else {
-//        println("Project ${name} set to JDK 8 (default, likely pom-only project)")
-//        sourceCompatibility = JavaVersion.VERSION_1_8
-//        targetCompatibility = JavaVersion.VERSION_1_8
-//    }
+    apply plugin: "io.spring.dependency-management"
 
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
@@ -116,6 +98,18 @@ subprojects {
         maven { url "https://code.lds.org/nexus/content/groups/main-repo" }
         maven { url "https://artifacts.unidata.ucar.edu/content/repositories/unidata-releases" }
         maven { url "https://maven.open-web.nl/content/groups/public/" }
+    }
+
+    dependencyManagement {
+        dependencies {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:$spring_boot_version"
+
+            dependency "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+            dependency "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+            dependency "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+            dependency "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+        }
     }
 
     dependencies {
