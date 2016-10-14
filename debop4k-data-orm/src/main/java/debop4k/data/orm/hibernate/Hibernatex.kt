@@ -66,6 +66,9 @@ val EntityManager.sessionFactory: SessionFactory
 
 val EntityManager.currentSession: Session get() = unwrap(Session::class.java)
 
-fun SessionFactory.getEntityName(entityClass: Class<*>): String
-    = getClassMetadata(entityClass).entityName
+fun SessionFactory.getEntityName(entityClass: Class<*>): String {
+  return this.metamodel.entity(entityClass).name
+//  return getClassMetadata(entityClass).entityName
+}
+
 

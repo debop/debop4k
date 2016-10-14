@@ -19,6 +19,7 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://repo.spring.io/plugins-release" }
         maven { url "https://dl.bintray.com/kotlin/kotlin-eap-1.1" }
     }
@@ -26,6 +27,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.springframework.build.gradle:propdeps-plugin:0.0.7"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version"
+        classpath "io.franzbecker:gradle-lombok:1.7"
     }
 }
 
@@ -45,6 +47,7 @@ subprojects {
     apply plugin: 'propdeps'
     apply plugin: 'propdeps-maven'
     apply plugin: 'propdeps-idea'
+    apply plugin: "io.franzbecker.gradle-lombok"
 
 //    if (name.endsWith("java8")) {
 //        println("Project ${name} set to Java 8")
@@ -126,8 +129,8 @@ subprojects {
         compile "ch.qos.logback:logback-classic:$logback_version"
         compile "javax.inject:javax.inject:$javax_inject_version"
 
-        // for Java test code
-        testCompile "org.projectlombok:lombok:$lombok_version"
+        // for Java code
+        compile "org.projectlombok:lombok:$lombok_version"
 
         testCompile "junit:junit:$junit_version"
         testCompile "com.carrotsearch:junit-benchmarks:0.7.2"

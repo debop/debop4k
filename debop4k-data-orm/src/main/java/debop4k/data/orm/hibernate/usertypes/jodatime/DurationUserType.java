@@ -19,7 +19,7 @@ package debop4k.data.orm.hibernate.usertypes.jodatime;
 import debop4k.data.orm.hibernate.usertypes.BaseUserType;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.StandardBasicTypes;
 import org.joda.time.Duration;
 
@@ -46,7 +46,7 @@ public class DurationUserType extends BaseUserType {
   @Override
   public Object nullSafeGet(ResultSet rs,
                             String[] names,
-                            SessionImplementor session,
+                            SharedSessionContractImplementor session,
                             Object owner) throws HibernateException, SQLException {
     Long millis = (Long) StandardBasicTypes.LONG.nullSafeGet(rs, names[0], session, owner);
     return (millis != null) ? Duration.millis(millis) : null;
@@ -56,7 +56,7 @@ public class DurationUserType extends BaseUserType {
   public void nullSafeSet(PreparedStatement st,
                           Object value,
                           int index,
-                          SessionImplementor session) throws HibernateException, SQLException {
+                          SharedSessionContractImplementor session) throws HibernateException, SQLException {
     if (value == null) {
       StandardBasicTypes.LONG.nullSafeSet(st, null, index, session);
     } else {

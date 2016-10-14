@@ -21,21 +21,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 @Slf4j
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = {HibernateSpringBootApplication.class})
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = {JpaSpringBootApplication.class})
 public class JpaAutoConfigurationTest {
 
   @Inject HibernateProperties hibernateProps;
-  @Inject EntityManagerFactory emf;
+  @PersistenceUnit EntityManagerFactory emf;
 
   @Test
   public void initializeTest() {

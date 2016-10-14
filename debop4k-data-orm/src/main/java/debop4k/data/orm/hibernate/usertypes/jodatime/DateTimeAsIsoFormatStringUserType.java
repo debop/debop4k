@@ -20,7 +20,7 @@ import debop4k.core.kodatimes.KodaTimex;
 import debop4k.data.orm.hibernate.usertypes.BaseUserType;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.StandardBasicTypes;
 import org.joda.time.DateTime;
 
@@ -50,7 +50,7 @@ public class DateTimeAsIsoFormatStringUserType extends BaseUserType {
   @Override
   public Object nullSafeGet(ResultSet rs,
                             String[] names,
-                            SessionImplementor session,
+                            SharedSessionContractImplementor session,
                             Object owner) throws HibernateException, SQLException {
     String value = (String) StandardBasicTypes.STRING.nullSafeGet(rs, names[0], session, owner);
 
@@ -61,7 +61,7 @@ public class DateTimeAsIsoFormatStringUserType extends BaseUserType {
   public void nullSafeSet(PreparedStatement st,
                           Object value,
                           int index,
-                          SessionImplementor session) throws HibernateException, SQLException {
+                          SharedSessionContractImplementor session) throws HibernateException, SQLException {
     if (value == null) {
       StandardBasicTypes.STRING.nullSafeSet(st, null, index, session);
     } else {

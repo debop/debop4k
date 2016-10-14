@@ -164,7 +164,7 @@ class PeriodsKotlinTest : AbstractTimePeriodKotlinTest() {
     for (unit in PeriodUnit.values()) {
       if (!excludeUnits.contains(unit)) {
         count.set(0)
-        val results = period.parMapPeriod(unit) { p -> count.andIncrement }
+        val results = period.parMapPeriod(unit) { increment(it) }
 
         assertThat(results.size).isEqualTo(count.get())
       }

@@ -24,7 +24,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
 import org.hibernate.internal.SessionImpl;
 import org.hibernate.internal.StatelessSessionImpl;
-import org.hibernate.jpa.HibernateEntityManagerFactory;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
@@ -50,9 +49,9 @@ public class StatelessSessionFactoryBean implements FactoryBean<StatelessSession
   private final SessionFactory sf;
 
   @Inject
-  public StatelessSessionFactoryBean(HibernateEntityManagerFactory emf) {
-    this.emf = emf;
-    this.sf = emf.getSessionFactory();
+  public StatelessSessionFactoryBean(SessionFactory sf) {
+    this.emf = sf;
+    this.sf = sf;
   }
 
   @Override

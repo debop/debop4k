@@ -1,3 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-debop4k.data.orm.spring.boot.autoconfigure.HibernateAutoConfiguration,\
 debop4k.data.orm.spring.boot.autoconfigure.JpaAutoConfiguration

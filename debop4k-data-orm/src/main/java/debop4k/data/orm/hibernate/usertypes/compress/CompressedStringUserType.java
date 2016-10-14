@@ -18,7 +18,7 @@ package debop4k.data.orm.hibernate.usertypes.compress;
 
 import debop4k.core.collections.Arrayx;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.BinaryType;
 
 import java.sql.PreparedStatement;
@@ -55,8 +55,8 @@ public abstract class CompressedStringUserType extends CompressedUserType {
   @Override
   public Object nullSafeGet(ResultSet rs,
                             String[] names,
-                            SessionImplementor
-                                session, Object owner) throws HibernateException, SQLException {
+                            SharedSessionContractImplementor session,
+                            Object owner) throws HibernateException, SQLException {
     byte[] compressedBytes = BinaryType.INSTANCE.nullSafeGet(rs, names[0], session);
     return decompress(compressedBytes);
   }
@@ -65,7 +65,7 @@ public abstract class CompressedStringUserType extends CompressedUserType {
   public void nullSafeSet(PreparedStatement st,
                           Object value,
                           int index,
-                          SessionImplementor session) throws HibernateException, SQLException {
+                          SharedSessionContractImplementor session) throws HibernateException, SQLException {
     if (value == null) {
       BinaryType.INSTANCE.nullSafeSet(st, null, index, session);
     } else {

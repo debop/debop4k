@@ -23,6 +23,7 @@ import debop4k.data.orm.hibernate.dao.HibernateQueryDslDao;
 import debop4k.data.orm.hibernate.interceptors.PersistentObjectInterceptor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -100,6 +101,7 @@ public abstract class AbstractHibernateConfiguration extends AbstractDataSourceC
   }
 
   @Bean
+  @NotNull
   @Override
   public HibernateTransactionManager transactionManager() {
     return new HibernateTransactionManager(sessionFactory().getObject());

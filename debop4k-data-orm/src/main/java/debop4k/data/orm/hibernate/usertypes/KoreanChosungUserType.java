@@ -19,7 +19,7 @@ package debop4k.data.orm.hibernate.usertypes;
 import debop4k.core.utils.KoreanString;
 import org.eclipse.collections.impl.list.mutable.primitive.CharArrayList;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.sql.PreparedStatement;
@@ -39,6 +39,7 @@ import java.sql.SQLException;
  * @since 2015. 8. 26.
  */
 public class KoreanChosungUserType extends BaseUserType {
+
   @Override
   public int[] sqlTypes() {
     return new int[]{StandardBasicTypes.STRING.sqlType(), StandardBasicTypes.STRING.sqlType()};
@@ -52,7 +53,7 @@ public class KoreanChosungUserType extends BaseUserType {
   @Override
   public Object nullSafeGet(ResultSet rs,
                             String[] names,
-                            SessionImplementor session,
+                            SharedSessionContractImplementor session,
                             Object owner) throws HibernateException, SQLException {
     return StandardBasicTypes.STRING.nullSafeGet(rs, names[0], session, owner);
   }
@@ -61,7 +62,7 @@ public class KoreanChosungUserType extends BaseUserType {
   public void nullSafeSet(PreparedStatement st,
                           Object value,
                           int index,
-                          SessionImplementor session) throws HibernateException, SQLException {
+                          SharedSessionContractImplementor session) throws HibernateException, SQLException {
     if (value == null) {
       StandardBasicTypes.STRING.nullSafeSet(st, null, index, session);
       StandardBasicTypes.STRING.nullSafeSet(st, null, index + 1, session);

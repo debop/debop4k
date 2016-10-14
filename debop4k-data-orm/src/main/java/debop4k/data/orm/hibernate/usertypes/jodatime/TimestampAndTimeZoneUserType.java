@@ -18,7 +18,7 @@ package debop4k.data.orm.hibernate.usertypes.jodatime;
 
 import debop4k.data.orm.hibernate.usertypes.BaseUserType;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.StandardBasicTypes;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -60,7 +60,7 @@ public class TimestampAndTimeZoneUserType extends BaseUserType {
   @Override
   public Object nullSafeGet(ResultSet rs,
                             String[] names,
-                            SessionImplementor session,
+                            SharedSessionContractImplementor session,
                             Object owner) throws HibernateException, SQLException {
     Timestamp timestamp = (Timestamp) StandardBasicTypes.TIMESTAMP.nullSafeGet(rs, names[0], session, owner);
     String zoneId = (String) StandardBasicTypes.STRING.nullSafeGet(rs, names[1], session, owner);
@@ -73,7 +73,7 @@ public class TimestampAndTimeZoneUserType extends BaseUserType {
   }
 
   @Override
-  public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session) throws HibernateException, SQLException {
+  public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session) throws HibernateException, SQLException {
     DateTime time = (DateTime) value;
     if (time == null) {
       StandardBasicTypes.TIMESTAMP.nullSafeSet(st, null, index, session);

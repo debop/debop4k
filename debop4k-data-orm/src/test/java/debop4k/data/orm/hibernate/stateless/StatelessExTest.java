@@ -17,7 +17,7 @@
 package debop4k.data.orm.hibernate.stateless;
 
 import debop4k.data.orm.hibernate.StatelessEx;
-import debop4k.data.orm.jpa.AbstractJpaTest;
+import debop4k.data.orm.hibernate.config.HibernateConfiguration;
 import debop4k.data.orm.mapping.Employee;
 import kotlin.jvm.functions.Function1;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +25,10 @@ import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.internal.StatelessSessionImpl;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -35,7 +39,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Hibernate SessionFactory 를 직접 이용하여 Stateless Session 을 이용하도록 합니다.
  */
 @Slf4j
-public class StatelessExTest extends AbstractJpaTest {
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = {HibernateConfiguration.class})
+@Transactional
+public class StatelessExTest {
 
   @Inject SessionFactory sf;
 

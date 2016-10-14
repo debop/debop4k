@@ -20,7 +20,7 @@ import debop4k.data.orm.jpa.JpaEntity;
 import debop4k.data.orm.jpa.config.AbstractJpaH2Configuration;
 import debop4k.data.orm.jpa.converters.ConverterEntity;
 import debop4k.data.orm.mapping.Employee;
-import org.hibernate.cache.redis.hibernate5.SingletonRedisRegionFactory;
+import org.hibernate.cache.redis.hibernate52.SingletonRedisRegionFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 

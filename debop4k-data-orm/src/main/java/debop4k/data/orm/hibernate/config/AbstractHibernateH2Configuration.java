@@ -18,6 +18,7 @@ package debop4k.data.orm.hibernate.config;
 
 import debop4k.config.database.DatabaseSetting;
 import org.hibernate.cfg.Environment;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Properties;
 
@@ -32,6 +33,7 @@ import static debop4k.data.JdbcDrivers.DRIVER_CLASS_H2;
 public abstract class AbstractHibernateH2Configuration extends AbstractHibernateConfiguration {
 
   @Override
+  @NotNull
   protected DatabaseSetting getDatabaseSetting() {
     return
         DatabaseSetting.builder()

@@ -18,7 +18,7 @@ package debop4k.data.orm.hibernate.usertypes.jodatime;
 
 import debop4k.data.orm.hibernate.usertypes.BaseUserType;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.StandardBasicTypes;
 import org.joda.time.DateTime;
 
@@ -68,7 +68,7 @@ public class DateTimeUserType extends BaseUserType {
   @Override
   public Object nullSafeGet(ResultSet rs,
                             String[] names,
-                            SessionImplementor session,
+                            SharedSessionContractImplementor session,
                             Object owner) throws HibernateException, SQLException {
     Object value = StandardBasicTypes.TIMESTAMP.nullSafeGet(rs, names[0], session, owner);
     return asDateTime(value);
@@ -78,7 +78,7 @@ public class DateTimeUserType extends BaseUserType {
   public void nullSafeSet(PreparedStatement st,
                           Object value,
                           int index,
-                          SessionImplementor session) throws HibernateException, SQLException {
+                          SharedSessionContractImplementor session) throws HibernateException, SQLException {
     Timestamp timestamp = (value instanceof DateTime)
                           ? new Timestamp(((DateTime) value).getMillis())
                           : null;

@@ -27,6 +27,7 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.*;
 import org.hibernate.criterion.*;
+import org.hibernate.query.Query;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -217,15 +218,15 @@ public class HibernateDao {
   }
 
   public List findBySQLString(@NonNull String queryString, HibernateParameter... parameters) {
-    return find(session().createSQLQuery(queryString), parameters);
+    return find(session().createNativeQuery(queryString), parameters);
   }
 
   public List findBySQLString(@NonNull String queryString, Pageable pageable, HibernateParameter... parameters) {
-    return find(session().createSQLQuery(queryString), pageable, parameters);
+    return find(session().createNativeQuery(queryString), pageable, parameters);
   }
 
   public List findBySQLString(@NonNull String queryString, int firstResult, int maxResults, HibernateParameter... parameters) {
-    return find(session().createSQLQuery(queryString), firstResult, maxResults, parameters);
+    return find(session().createNativeQuery(queryString), firstResult, maxResults, parameters);
   }
 
   @SuppressWarnings("unchecked")
@@ -290,7 +291,7 @@ public class HibernateDao {
   }
 
   public <T> T findUniqueBySQLString(@NonNull String sqlString, HibernateParameter... parameters) {
-    return findUnique(session().createSQLQuery(sqlString), parameters);
+    return findUnique(session().createNativeQuery(sqlString), parameters);
   }
 
   public <T> T findFirst(Criteria criteria, Order... orders) {
@@ -318,7 +319,7 @@ public class HibernateDao {
   }
 
   public <T> T findFirstBySQLString(@NonNull String sqlString, HibernateParameter... parameters) {
-    return findFirst(session().createSQLQuery(sqlString), parameters);
+    return findFirst(session().createNativeQuery(sqlString), parameters);
   }
 
   public boolean exists(@NonNull Class<?> clazz) {
@@ -348,7 +349,7 @@ public class HibernateDao {
   }
 
   public boolean existsBySQLString(@NonNull String sqlString, HibernateParameter... parameters) {
-    Query query = session().createSQLQuery(sqlString);
+    Query query = session().createNativeQuery(sqlString);
     return exists(query, parameters);
   }
 
@@ -383,7 +384,7 @@ public class HibernateDao {
   }
 
   public long countBySQLString(@NonNull String sqlString, HibernateParameter... parameters) {
-    Query query = session().createSQLQuery(sqlString);
+    Query query = session().createNativeQuery(sqlString);
     return count(query, parameters);
   }
 
@@ -419,9 +420,7 @@ public class HibernateDao {
 
   public int deleteAll(Collection<?> entities) {
     Session session = session();
-    for (Object entity : entities) {
-      session.delete(entity);
-    }
+    entities.forEach(session::delete);
     return entities.size();
   }
 
@@ -457,7 +456,7 @@ public class HibernateDao {
   }
 
   public int executeUpdateBySQLString(@NonNull String sqlString, HibernateParameter... parameter) {
-    return executeUpdate(session().createSQLQuery(sqlString), parameter);
+    return executeUpdate(session().createNativeQuery(sqlString), parameter);
   }
 
   private <P> Criteria buildProjectionCriteria(@NonNull Class<P> projectClass,

@@ -19,7 +19,7 @@ package debop4k.data.orm.hibernate.usertypes.encrypt;
 import debop4k.core.cryptography.Encryptor;
 import debop4k.data.orm.hibernate.usertypes.BaseUserType;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.StringType;
 
 import java.sql.PreparedStatement;
@@ -57,7 +57,7 @@ public abstract class EncryptedStringUserType extends BaseUserType {
   @Override
   public Object nullSafeGet(ResultSet rs,
                             String[] names,
-                            SessionImplementor session,
+                            SharedSessionContractImplementor session,
                             Object owner) throws HibernateException, SQLException {
     String encryptedText = (String) StringType.INSTANCE.nullSafeGet(rs, names[0], session, owner);
     return decrypt(encryptedText);
@@ -67,7 +67,7 @@ public abstract class EncryptedStringUserType extends BaseUserType {
   public void nullSafeSet(PreparedStatement st,
                           Object value,
                           int index,
-                          SessionImplementor session) throws HibernateException, SQLException {
+                          SharedSessionContractImplementor session) throws HibernateException, SQLException {
     if (value == null) {
       StringType.INSTANCE.nullSafeSet(st, null, index, session);
     } else {

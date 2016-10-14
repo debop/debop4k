@@ -20,7 +20,7 @@ import debop4k.core.cryptography.StringDigester;
 import debop4k.data.orm.hibernate.usertypes.BaseUserType;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.StringType;
 
@@ -56,7 +56,7 @@ public abstract class HashStringUserType extends BaseUserType {
   @Override
   public Object nullSafeGet(ResultSet rs,
                             String[] names,
-                            SessionImplementor session,
+                            SharedSessionContractImplementor session,
                             Object owner) throws HibernateException, SQLException {
     return StringType.INSTANCE.nullSafeGet(rs, names[0], session, owner);
   }
@@ -65,7 +65,7 @@ public abstract class HashStringUserType extends BaseUserType {
   public void nullSafeSet(PreparedStatement st,
                           Object value,
                           int index,
-                          SessionImplementor session) throws HibernateException, SQLException {
+                          SharedSessionContractImplementor session) throws HibernateException, SQLException {
     String digestedText = (value == null) ? null : digest((String) value);
     StringType.INSTANCE.nullSafeSet(st, digestedText, index, session);
   }

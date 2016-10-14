@@ -23,7 +23,7 @@ import debop4k.timeperiod.TimePeriod;
 import debop4k.timeperiod.TimeRange;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.TimestampType;
 import org.hibernate.type.Type;
@@ -95,7 +95,7 @@ public class TimePeriodAsTimestampUserType extends BaseCompositeUserType {
   @Override
   public Object nullSafeGet(ResultSet rs,
                             String[] names,
-                            SessionImplementor session,
+                            SharedSessionContractImplementor session,
                             Object owner) throws HibernateException, SQLException {
     Timestamp start = (Timestamp) StandardBasicTypes.TIMESTAMP.nullSafeGet(rs, names[0], session, owner);
     Timestamp end = (Timestamp) StandardBasicTypes.TIMESTAMP.nullSafeGet(rs, names[1], session, owner);
@@ -107,7 +107,7 @@ public class TimePeriodAsTimestampUserType extends BaseCompositeUserType {
   public void nullSafeSet(PreparedStatement st,
                           Object value,
                           int index,
-                          SessionImplementor session) throws HibernateException, SQLException {
+                          SharedSessionContractImplementor session) throws HibernateException, SQLException {
 
     ITimePeriod period = asTimePeriod(value);
     if (period == null) {

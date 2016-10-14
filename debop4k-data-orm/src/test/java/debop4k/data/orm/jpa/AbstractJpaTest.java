@@ -20,12 +20,12 @@ import debop4k.data.orm.jpa.config.JpaConfiguration;
 import debop4k.data.orm.mapping.Employee;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManagerFactory;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest(classes = {JpaConfiguration.class})
 public abstract class AbstractJpaTest {
 

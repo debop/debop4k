@@ -25,7 +25,8 @@ import javax.persistence.EntityManager
 
 inline fun <T> SessionFactory.withStateless(func: (StatelessSession) -> T?): T? {
   val log: Logger = loggerOf("Statelessx")
-  this.openStatelessSession() use { stateless: StatelessSession ->
+
+  this.openStatelessSession() use { stateless ->
     val tx = stateless.beginTransaction()
     try {
       val result = func.invoke(stateless)
@@ -43,8 +44,11 @@ inline fun <T> SessionFactory.withStateless(func: (StatelessSession) -> T?): T? 
   }
 }
 
+@Deprecated(message = "AOP 를 이용하세요.", replaceWith = ReplaceWith("withStateless"))
 inline fun <T> SessionFactory.withStatelessReadOnly(func: (StatelessSession) -> T?): T? {
-  this.openStatelessSession() use { stateless: StatelessSession ->
+
+  this.openStatelessSession() use { stateless ->
+
     val conn = stateless.connection()
     conn.isReadOnly = true
     conn.autoCommit = false

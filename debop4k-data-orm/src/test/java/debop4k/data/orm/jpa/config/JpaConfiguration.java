@@ -19,7 +19,7 @@ package debop4k.data.orm.jpa.config;
 import com.typesafe.config.Config;
 import debop4k.config.ConfigLoader;
 import debop4k.config.database.DatabaseSetting;
-import debop4k.data.orm.jpa.config.databases.JpaPostgreSqlConfiguration;
+import debop4k.data.orm.jpa.config.databases.JpaH2Configuration;
 import debop4k.data.orm.mapping.Employee;
 import debop4k.redisson.spring.cache.RedissonCacheManager;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +35,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 @EnableCaching
 @EnableJpaRepositories(basePackageClasses = {Employee.class})
-public class JpaConfiguration extends JpaPostgreSqlConfiguration {
+public class JpaConfiguration extends JpaH2Configuration {
 
   public String environment() {
     return System.getProperty("profile", "local").toLowerCase();

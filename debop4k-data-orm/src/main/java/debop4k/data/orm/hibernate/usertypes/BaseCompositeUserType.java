@@ -18,7 +18,7 @@ package debop4k.data.orm.hibernate.usertypes;
 
 import debop4k.core.utils.Objects;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.CompositeUserType;
 
 import java.io.Serializable;
@@ -50,17 +50,17 @@ public abstract class BaseCompositeUserType implements CompositeUserType {
   }
 
   @Override
-  public Serializable disassemble(Object value, SessionImplementor session) throws HibernateException {
+  public Serializable disassemble(Object value, SharedSessionContractImplementor session) throws HibernateException {
     return (Serializable) deepCopy(value);
   }
 
   @Override
-  public Object assemble(Serializable cached, SessionImplementor session, Object owner) throws HibernateException {
+  public Object assemble(Serializable cached, SharedSessionContractImplementor session, Object owner) throws HibernateException {
     return deepCopy(cached);
   }
 
   @Override
-  public Object replace(Object original, Object target, SessionImplementor session, Object owner) throws HibernateException {
+  public Object replace(Object original, Object target, SharedSessionContractImplementor session, Object owner) throws HibernateException {
     return deepCopy(original);
   }
 

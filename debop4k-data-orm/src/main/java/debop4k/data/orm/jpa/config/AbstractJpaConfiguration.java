@@ -22,9 +22,7 @@ import debop4k.data.orm.hibernate.dao.HibernateDao;
 import debop4k.data.orm.hibernate.dao.HibernateQueryDslDao;
 import debop4k.data.orm.jpa.dao.JpaDao;
 import debop4k.data.orm.jpa.dao.JpaQuerydslDao;
-import debop4k.data.orm.jpa.stateless.StatelessSessionFactoryBean;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.jpa.HibernateEntityManagerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,12 +33,10 @@ import org.springframework.orm.hibernate5.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.persistence.EntityManagerFactory;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -103,18 +99,15 @@ public abstract class AbstractJpaConfiguration extends AbstractDataSourceConfigu
     return factoryBean;
   }
 
-  @Bean
-  public HibernateJpaSessionFactoryBean hibernateJpaSession(EntityManagerFactory emf) {
-    HibernateJpaSessionFactoryBean factoryBean = new HibernateJpaSessionFactoryBean();
-    factoryBean.setEntityManagerFactory(emf);
-    return factoryBean;
-  }
+//  @Bean
+//  public SessionFactory sessionFactory(EntityManagerFactory emf) {
+//    return ((HibernateEntityManagerFactory) emf).getSessionFactory();
+//  }
 
-
-  @Bean
-  public StatelessSessionFactoryBean statelessSessionFactory(EntityManagerFactory emf) {
-    return new StatelessSessionFactoryBean((HibernateEntityManagerFactory) emf);
-  }
+//  @Bean
+//  public StatelessSessionFactoryBean statelessSessionFactory(SessionFactory sf) {
+//    return new StatelessSessionFactoryBean(sf);
+//  }
 
   @Bean
   public PlatformTransactionManager transactionManager() {

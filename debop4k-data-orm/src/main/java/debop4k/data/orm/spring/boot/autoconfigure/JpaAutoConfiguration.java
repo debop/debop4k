@@ -20,10 +20,9 @@ import debop4k.data.orm.hibernate.dao.HibernateDao;
 import debop4k.data.orm.hibernate.dao.HibernateQueryDslDao;
 import debop4k.data.orm.jpa.dao.JpaDao;
 import debop4k.data.orm.jpa.dao.JpaQuerydslDao;
-import debop4k.data.orm.jpa.stateless.StatelessSessionFactoryBean;
 import debop4k.data.spring.boot.autoconfigure.HikariDataSourceAutoConfiguration;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.jpa.HibernateEntityManagerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -34,12 +33,10 @@ import org.springframework.orm.hibernate5.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Arrays;
 
@@ -91,21 +88,14 @@ public class JpaAutoConfiguration extends HikariDataSourceAutoConfiguration {
     return factoryBean;
   }
 
-  @Bean
-  public HibernateJpaSessionFactoryBean hibernateJpaSession(EntityManagerFactory emf) {
-    HibernateJpaSessionFactoryBean factoryBean = new HibernateJpaSessionFactoryBean();
-    factoryBean.setEntityManagerFactory(emf);
-    return factoryBean;
-  }
-
-
-  @Bean
-  public StatelessSessionFactoryBean statelessSessionFactory(EntityManagerFactory emf) {
-    return new StatelessSessionFactoryBean((HibernateEntityManagerFactory) emf);
-  }
+//  @Bean
+//  public StatelessSessionFactoryBean statelessSessionFactory(EntityManagerFactory emf) {
+//    return new StatelessSessionFactoryBean((SessionFactory)emf);
+//  }
 
   @Bean
   @Override
+  @NonNull
   public PlatformTransactionManager transactionManager() {
     return new JpaTransactionManager(entityManagerFactory().getObject());
   }
