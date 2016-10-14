@@ -21,9 +21,6 @@ dependencies {
     compile "org.openjdk.jmh:jmh-core:$jmh_version"
     compile "org.openjdk.jmh:jmh-generator-annprocess:$jmh_version"
 
-    // for Java
-    compile "org.projectlombok:lombok:$lombok_version"
-
 }
 
 // TODO: jmh generation task 구현

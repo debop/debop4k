@@ -18,9 +18,6 @@ dependencies {
 
     compile project(":debop4k-core")
 
-    // for Java test code
-    compile "org.projectlombok:lombok:$lombok_version"
-
     compile "org.apache.commons:commons-math3:$commons_math3_version"
     compile "org.jscience:jscience:$jscience_version"
 

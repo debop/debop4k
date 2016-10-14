@@ -25,6 +25,11 @@ dependencies {
 
     compile "org.springframework.boot:spring-boot-starter-aop:$spring_boot_version"
     compile "org.springframework.boot:spring-boot-starter-data-jpa:$spring_boot_version"
+    compile "org.springframework.data:spring-data-commons:$spring_data_commons_version"
+    compile "org.springframework.data:spring-data-jpa:$spring_data_jpa_version"
+
+    compile "org.springframework:spring-orm:$spring_version"
+    compile "org.springframework:spring-tx:$spring_version"
 
     compile "org.hibernate:hibernate-core:$hibernate_version"
     compile "org.hibernate:hibernate-entitymanager:$hibernate_version"
@@ -57,7 +62,9 @@ dependencies {
     testCompile "mysql:mysql-connector-java:$mysql_connector_java_version"
     testCompile "org.postgresql:postgresql:$postgresql_version"
 
-    optional "com.querydsl:querydsl-apt:$querydsl_version"
+    compileOnly("com.querydsl:querydsl-apt:$querydsl_version") {
+        exclude(module: 'hibernate-jpa-2.0-api')
+    }
 }
 
 sourceSets {
