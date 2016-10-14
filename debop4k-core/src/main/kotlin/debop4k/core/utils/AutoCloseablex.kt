@@ -19,6 +19,7 @@
 package debop4k.core.utils
 
 import debop4k.core.loggerOf
+import java.io.Closeable
 import java.util.concurrent.atomic.*
 
 val DUMMY_CLOSE_ACTION: Runnable = Runnable { }
@@ -41,6 +42,23 @@ open class AutoCloseableHandler
         log.warn("AutoCloseable 인스턴스의 close() 호출에서 예외가 발생했습니다. 무시합니다.", ignored)
       }
     }
+  }
+}
+
+/** Java 6 [AutoCloseable] 에 대해 close 메소드를 수행하도록 합니다 */
+inline infix fun <T : Closeable?, R> T.use(block: (T) -> R): R {
+  var closed = false
+
+  try {
+    return block(this)
+  } catch(e: Throwable) {
+    closed = true
+    @Suppress("NON_PUBLIC_CALL_FROM_PUBLIC_INLINE")
+    this?.closeSuppressed(e)
+    throw e
+  } finally {
+    if (this != null && !closed)
+      close()
   }
 }
 

@@ -17,32 +17,34 @@
 package debop4k.data.orm.hibernate
 
 import debop4k.core.loggerOf
+import debop4k.core.utils.use
 import org.hibernate.SessionFactory
 import org.hibernate.StatelessSession
+import org.slf4j.Logger
 import javax.persistence.EntityManager
 
-private val log = loggerOf("Statelessx")
-
 inline fun <T> SessionFactory.withStateless(func: (StatelessSession) -> T?): T? {
-  return this.openStatelessSession().use { stateless: StatelessSession ->
+  val log: Logger = loggerOf("Statelessx")
+  this.openStatelessSession() use { stateless: StatelessSession ->
     val tx = stateless.beginTransaction()
     try {
       val result = func.invoke(stateless)
       tx.commit()
-
-      return@use result
+      return result
     } catch(e: Exception) {
       try {
         tx.rollback()
-      } catch(e: Throwable) {
+      } catch(ignored: Throwable) {
+        log.warn("Can't rollback.", ignored)
+        // nothing to do
       }
-      return@use null as T?
+      return null
     }
   }
 }
 
 inline fun <T> SessionFactory.withStatelessReadOnly(func: (StatelessSession) -> T?): T? {
-  return this.openStatelessSession().use { stateless: StatelessSession ->
+  this.openStatelessSession() use { stateless: StatelessSession ->
     val conn = stateless.connection()
     conn.isReadOnly = true
     conn.autoCommit = false
@@ -51,7 +53,7 @@ inline fun <T> SessionFactory.withStatelessReadOnly(func: (StatelessSession) -> 
     try {
       val result = func.invoke(stateless)
       tx.commit()
-      return@use result
+      return result
     } catch(e: Exception) {
       tx.rollback()
       throw RuntimeException(e)

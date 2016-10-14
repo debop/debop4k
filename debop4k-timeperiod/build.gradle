@@ -19,6 +19,6 @@ dependencies {
     compile project(":debop4k-core")
 
     compile "joda-time:joda-time:$joda_time_version"
-    compile "org.joda:joda-convert:$joda_convert_version"
+//    compile "org.joda:joda-convert:$joda_convert_version"
 
 }

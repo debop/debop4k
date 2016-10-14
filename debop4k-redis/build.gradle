@@ -35,3 +35,4 @@ dependencies {
     testCompile "com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:$jackson_dataformat_cbor_version"
     testCompile "org.msgpack:jackson-dataformat-msgpack:$jackson_dataformat_msgpack_version"
 }
+

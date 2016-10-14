@@ -23,4 +23,8 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-aop:$spring_boot_version"
     compile "org.springframework.boot:spring-boot-starter-web:$spring_boot_version"
     compile "org.springframework.boot:spring-boot-starter-data-rest:$spring_boot_version"
+
+    // for Java test code
+    compile "org.projectlombok:lombok:$lombok_version"
+
 }

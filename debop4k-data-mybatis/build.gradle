@@ -35,3 +35,8 @@ dependencies {
     testCompile "mysql:mysql-connector-java:$mysql_connector_java_version"
 
 }
+
+// Spring Boot AutoConfigure 처리
+// http://docs.spring.io/spring-boot/docs/1.3.5.RELEASE/reference/html/configuration-metadata.html#configuration-metadata-annotation-processor
+compileJava.dependsOn(processResources)
+compileKotlin.dependsOn(processResources)

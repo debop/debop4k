@@ -36,6 +36,8 @@ dependencies {
 
     compile "com.jhlabs:javaproj:1.0.6"
     compile "com.esri.geometry:esri-geometry-api:1.2.1"
-    compile "org.geotools:gt-shapefile:15.0"
+    compile("org.geotools:gt-shapefile:15.0") {
+        exclude(module: 'jai_core')
+    }
 
 }

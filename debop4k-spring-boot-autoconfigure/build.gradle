@@ -17,6 +17,6 @@
 dependencies {
 
     compile "org.springframework.boot:spring-boot-autoconfigure:$spring_boot_version"
-    compile "org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version"
+    optional "org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version"
 
 }

@@ -20,6 +20,10 @@ dependencies {
 
     compile "javax.servlet:javax.servlet-api:$javax_servlet_api_version"
 
-    compile "org.springframework:spring-web:$spring_version"
-    compile "org.springframework:spring-webmvc:$spring_version"
+    optional "org.springframework.boot:spring-boot-starter-web:$spring_boot_version"
+//    optional "org.springframework:spring-web:$spring_version"
+//    optional "org.springframework:spring-webmvc:$spring_version"
+
+    optional "org.springframework.boot:spring-boot-autoconfigure:$spring_boot_version"
+    optional "org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version"
 }

@@ -14,35 +14,40 @@
  *
  */
 
-sourceSets {
-    main.kotlin.srcDirs = ['src/main/java']
-    main.java.srcDirs = ['src/main/java']
-}
 dependencies {
 
-    compile project(":debop4k-core")
     compile project(":debop4k-data")
     compile project(":debop4k-timeperiod")
     compile project(":debop4k-redis")
 
     // for Java
-    compile "org.projectlombok:lombok:$lombok_version"
+    provided "org.projectlombok:lombok:$lombok_version"
+
+    compile "org.springframework.boot:spring-boot-autoconfigure:$spring_boot_version"
+    optional "org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version"
 
     compile "org.springframework.boot:spring-boot-starter-aop:$spring_boot_version"
     compile "org.springframework.boot:spring-boot-starter-data-jpa:$spring_boot_version"
-    compile "org.springframework.boot:spring-boot-autoconfigure:$spring_boot_version"
-    optional "org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version"
 
     compile "org.hibernate:hibernate-core:$hibernate_version"
     compile "org.hibernate:hibernate-entitymanager:$hibernate_version"
     compile "org.hibernate:hibernate-spatial:$hibernate_version"
     compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:$hibernate_jpa_2_1_api_version"
+    compile "org.hibernate:hibernate-validator:$hibernate_validator_version"
+
     compile "javax.el:javax.el-api:$javax_el_api_version"
 
     compile "com.github.debop:hibernate-redis:$hibernate_redis_version"
 
-    compile "com.querydsl:querydsl-jpa:$querydsl_version"
-    compile "com.querydsl:querydsl-jpa-codegen:$querydsl_version"
+    compile("com.querydsl:querydsl-jpa:$querydsl_version") {
+        exclude(module: 'jsr305')
+    }
+    compile("com.querydsl:querydsl-jpa-codegen:$querydsl_version") {
+        exclude(module: 'hibernate-jpa-2.0-api')
+    }
+    testCompile("org.hibernate:hibernate-testing:$hibernate_version") {
+        exclude(module: 'log4j')
+    }
 
     optional "org.hibernate:hibernate-validator:$hibernate_validator_version"
     optional "org.hibernate:hibernate-validator-annotation-processor:$hibernate_validator_version"
@@ -54,4 +59,73 @@ dependencies {
     testCompile "org.hsqldb:hsqldb:$hsqldb_version"
     testCompile "mysql:mysql-connector-java:$mysql_connector_java_version"
     testCompile "org.postgresql:postgresql:$postgresql_version"
+
+    optional "com.querydsl:querydsl-apt:$querydsl_version"
+}
+
+sourceSets {
+    main.kotlin.srcDirs = ['src/main/java']
+    main.java.srcDirs = ['src/main/java']
+
+    generated.java.srcDirs = ['build/generated/java']
+    testGenerated.java.srcDirs = ['build/generated/test']
+}
+
+task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
+    source = sourceSets.main.java
+    classpath = configurations.compile
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor"
+    ]
+    destinationDir = sourceSets.generated.java.srcDirs.iterator().next()
+}
+
+compileJava {
+    dependsOn
+    generateQueryDSL
+    source
+    generateQueryDSL.destinationDir
+
+}
+
+compileGeneratedJava {
+    dependsOn generateQueryDSL
+    options.warnings = false
+    classpath += sourceSets.main.runtimeClasspath
+
+}
+
+task testGenerateQueryDSL(type: JavaCompile, group: 'verification', description: 'Generates the Test QueryDSL query types') {
+    source = [sourceSets.main.java, sourceSets.test.java]
+    classpath = configurations.testCompile
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor"
+    ]
+    destinationDir = sourceSets.testGenerated.java.srcDirs.iterator().next()
+}
+
+compileTestJava {
+    dependsOn testGenerateQueryDSL
+    source += testGenerateQueryDSL.destinationDir
+
+}
+
+compileTestGeneratedJava {
+    dependsOn testGenerateQueryDSL
+    options.warnings = false
+    classpath += sourceSets.test.runtimeClasspath
+}
+
+clean {
+    delete sourceSets.generated.java.srcDirs
+    delete sourceSets.testGenerated.java.srcDirs
+}
+idea {
+    module {
+        sourceDirs += file("build/generated/java")
+        testSourceDirs += file("build/generated/test")
+
+    }
 }
