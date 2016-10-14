@@ -31,14 +31,18 @@ buildscript {
     }
 }
 
-group = 'debop4k'
-version = '0.0.1-SNAPSHOT'
-
 //if (project.hasProperty('prod')) {
 //    apply from: 'gradle/profile_prod.gradle'
 //} else {
 //    apply from: 'gradle/profile_dev.gradle'
 //}
+
+
+allprojects {
+    group = 'debop4k'
+    version = '0.3.0-SNAPSHOT'
+}
+
 
 subprojects {
     apply plugin: 'java'
@@ -101,9 +105,10 @@ subprojects {
     }
 
     dependencyManagement {
-        dependencies {
+        imports {
             mavenBom "org.springframework.boot:spring-boot-dependencies:$spring_boot_version"
-
+        }
+        dependencies {
             dependency "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
             dependency "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
