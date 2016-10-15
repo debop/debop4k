@@ -89,10 +89,10 @@ open class TimeLine<T : ITimePeriod>(override val periods: ITimePeriodContainer,
     val intersections = TimePeriodCollection()
 
     periods
-        .filter { !it.isMoment() }
+        .filter { !it.isMoment }
         .forEach { p ->
           val intersection = limits.intersection(p)
-          if (intersection != null && !intersection.isMoment()) {
+          if (intersection != null && !intersection.isMoment) {
             if (mapper != null) {
               intersection.setup(mapPeriodStart(intersection.start),
                                  mapPeriodEnd(intersection.end))

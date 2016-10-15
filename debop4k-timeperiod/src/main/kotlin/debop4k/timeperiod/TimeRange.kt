@@ -61,8 +61,8 @@ open class TimeRange(start: DateTime? = MinPeriodTime,
     if (offset == Duration.ZERO)
       return TimeRange(this)
 
-    val ns = if (hasStart()) start + offset else start
-    val ne = if (hasEnd()) end + offset else end
+    val ns = if (hasStart) start + offset else start
+    val ne = if (hasEnd) end + offset else end
     return TimeRange(ns, ne, readonly)
   }
 
@@ -84,10 +84,10 @@ open class TimeRange(start: DateTime? = MinPeriodTime,
   }
 
   override fun expandTo(period: ITimePeriod) {
-    if (period.hasStart())
+    if (period.hasStart)
       expandStartTo(period.start)
 
-    if (period.hasEnd())
+    if (period.hasEnd)
       expandEndTo(period.end)
   }
 
@@ -109,7 +109,7 @@ open class TimeRange(start: DateTime? = MinPeriodTime,
   }
 
   override fun shrinkTo(period: ITimePeriod) {
-    if (period.hasStart()) shrinkStartTo(period.start)
-    if (period.hasEnd()) shrinkEndTo(period.end)
+    if (period.hasStart) shrinkStartTo(period.start)
+    if (period.hasEnd) shrinkEndTo(period.end)
   }
 }

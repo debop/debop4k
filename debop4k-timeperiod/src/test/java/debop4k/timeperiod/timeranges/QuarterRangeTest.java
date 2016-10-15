@@ -124,28 +124,28 @@ public class QuarterRangeTest extends AbstractTimePeriodTest {
 
     QuarterRange q1 = new QuarterRange(currentYear, Quarter.FIRST, calendar);
 
-    assertThat(q1.isReadonly()).isTrue();
+    assertThat(q1.getReadonly()).isTrue();
     assertThat(q1.getQuarter()).isEqualTo(Quarter.FIRST);
     assertThat(q1.getStart()).isEqualTo(asDate(currentYear, 1, 1));
     assertThat(q1.getEnd()).isEqualTo(asDate(currentYear, 4, 1));
 
     QuarterRange q2 = new QuarterRange(currentYear, Quarter.SECOND, calendar);
 
-    assertThat(q2.isReadonly()).isTrue();
+    assertThat(q2.getReadonly()).isTrue();
     assertThat(q2.getQuarter()).isEqualTo(Quarter.SECOND);
     assertThat(q2.getStart()).isEqualTo(asDate(currentYear, 4, 1));
     assertThat(q2.getEnd()).isEqualTo(asDate(currentYear, 7, 1));
 
     QuarterRange q3 = new QuarterRange(currentYear, Quarter.THIRD, calendar);
 
-    assertThat(q3.isReadonly()).isTrue();
+    assertThat(q3.getReadonly()).isTrue();
     assertThat(q3.getQuarter()).isEqualTo(Quarter.THIRD);
     assertThat(q3.getStart()).isEqualTo(asDate(currentYear, 7, 1));
     assertThat(q3.getEnd()).isEqualTo(asDate(currentYear, 10, 1));
 
     QuarterRange q4 = new QuarterRange(currentYear, Quarter.FOURTH, calendar);
 
-    assertThat(q4.isReadonly()).isTrue();
+    assertThat(q4.getReadonly()).isTrue();
     assertThat(q4.getQuarter()).isEqualTo(Quarter.FOURTH);
     assertThat(q4.getStart()).isEqualTo(asDate(currentYear, 10, 1));
     assertThat(q4.getEnd()).isEqualTo(asDate(currentYear + 1, 1, 1));

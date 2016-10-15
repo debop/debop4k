@@ -57,7 +57,7 @@ public class YearRangeTest extends AbstractTimePeriodTest {
   public void yearIndex() {
     int yearIndex = 1994;
     YearRange yearRange = new YearRange(yearIndex, EMPTY_OFFSET);
-    assertThat(yearRange.isReadonly()).isTrue();
+    assertThat(yearRange.getReadonly()).isTrue();
     assertThat(yearRange.getStart()).isEqualTo(startTimeOfYear(yearIndex));
     assertThat(yearRange.getEnd()).isEqualTo(startTimeOfYear(yearIndex + 1));
   }

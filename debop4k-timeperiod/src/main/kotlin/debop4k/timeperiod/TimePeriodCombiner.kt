@@ -27,8 +27,4 @@ open class TimePeriodCombiner<T : ITimePeriod>(val mapper: ITimePeriodMapper? = 
   fun combinePeriods(periods: Collection<ITimePeriod>): ITimePeriodCollection {
     return TimeLine<T>(TimePeriodCollection.of(periods), null, mapper).combinePeriods()
   }
-
-//  fun combinePeriods(vararg periods: ITimePeriod): ITimePeriodCollection {
-//    return TimeLine<T>(TimePeriodCollection.of(*periods), null, mapper).combinePeriods()
-//  }
 }

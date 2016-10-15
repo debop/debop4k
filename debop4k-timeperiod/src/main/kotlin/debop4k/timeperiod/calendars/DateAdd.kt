@@ -43,16 +43,6 @@ open class DateAdd {
   open protected val includePeriods: TimePeriodCollection get() = _includePeriods
   open protected val excludePeriods: TimePeriodCollection get() = _excludePeriods
 
-  /**
-   * 시작 일자로부터 offset 기간이 지난 일자를 계산합니다. (기간에 포함될 기간과 제외할 기간을 명시적으로 지정해 놓을 수 있습니다.)
-   *
-   * @param start        시작 일자
-   * @param offset       기간
-   * @return 시작 일자로부터 offset 기간 이후의 일자
-   */
-  open fun add(start: DateTime, offset: Duration): DateTime? {
-    return add(start, offset, Next)
-  }
 
   /**
    * 시작 일자로부터 offset 기간이 지난 일자를 계산합니다. (기간에 포함될 기간과 제외할 기간을 명시적으로 지정해 놓을 수 있습니다.)
@@ -62,6 +52,7 @@ open class DateAdd {
    * @param seekBoundary 마지막 일자 포함 여부
    * @return 시작 일자로부터 offset 기간 이후의 일자
    */
+  @JvmOverloads
   open fun add(start: DateTime,
                offset: Duration,
                seekBoundary: SeekBoundaryMode = Next): DateTime? {
@@ -90,18 +81,7 @@ open class DateAdd {
    * @param seekBoundary 마지막 일자 포함 여부
    * @return 시작 일자로부터 offset 기간 이전의 일자
    */
-  open fun subtract(start: DateTime, offset: Duration): DateTime? {
-    return subtract(start, offset, Next);
-  }
-
-  /**
-   * 시작 일자로부터 offset 기간 이전의 일자를 계산합니다. (기간에 포함될 기간과 제외할 기간을 명시적으로 지정해 놓을 수 있습니다.)
-   *
-   * @param start        시작 일자
-   * @param offset       기간
-   * @param seekBoundary 마지막 일자 포함 여부
-   * @return 시작 일자로부터 offset 기간 이전의 일자
-   */
+  @JvmOverloads
   open fun subtract(start: DateTime,
                     offset: Duration,
                     seekBoundary: SeekBoundaryMode = Next): DateTime? {

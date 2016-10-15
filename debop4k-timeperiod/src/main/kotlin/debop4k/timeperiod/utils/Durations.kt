@@ -18,19 +18,15 @@
 
 package debop4k.timeperiod.utils
 
-import debop4k.core.kodatimes.days
-import debop4k.core.kodatimes.hours
-import debop4k.core.kodatimes.minutes
-import debop4k.core.kodatimes.seconds
-import debop4k.timeperiod.DaysPerWeek
-import debop4k.timeperiod.MonthsPerHalfyear
-import debop4k.timeperiod.MonthsPerQuarter
+import debop4k.core.kodatimes.*
+import debop4k.timeperiod.*
 import debop4k.timeperiod.models.*
 import org.joda.time.DateTime
 import org.joda.time.Duration
 
 /**
  * Utility class for [Duration]
+ *
  * @author debop sunghyouk.bae@gmail.com
  */
 object Durations {

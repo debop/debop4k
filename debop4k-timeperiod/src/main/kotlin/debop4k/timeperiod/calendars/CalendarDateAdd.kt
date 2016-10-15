@@ -18,12 +18,9 @@ package debop4k.timeperiod.calendars
 
 import debop4k.core.loggerOf
 import debop4k.timeperiod.*
-import debop4k.timeperiod.calendars.SeekBoundaryMode.Next
 import debop4k.timeperiod.models.DayOfWeek
 import debop4k.timeperiod.timelines.TimeGapCalculator
-import debop4k.timeperiod.timeranges.DayOfWeekHourRange
-import debop4k.timeperiod.timeranges.HourRangeInDay
-import debop4k.timeperiod.timeranges.WeekRange
+import debop4k.timeperiod.timeranges.*
 import org.eclipse.collections.api.block.procedure.Procedure
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.joda.time.DateTime
@@ -63,10 +60,6 @@ open class CalendarDateAdd : DateAdd() {
     weekDays.addAll(dayOfWeeks.asList())
   }
 
-  override fun add(start: DateTime, offset: Duration): DateTime? {
-    return add(start, offset, Next)
-  }
-
   override fun add(start: DateTime, offset: Duration, seekBoundary: SeekBoundaryMode): DateTime? {
     log.trace("add... start={}, offset={}, seekBoundary={}", start, offset, seekBoundary)
 
@@ -82,10 +75,6 @@ open class CalendarDateAdd : DateAdd() {
 
     log.trace("add... endInclusive={}", pair.first)
     return pair.first
-  }
-
-  override fun subtract(start: DateTime, offset: Duration): DateTime? {
-    return subtract(start, offset, Next)
   }
 
   override fun subtract(start: DateTime, offset: Duration, seekBoundary: SeekBoundaryMode): DateTime? {

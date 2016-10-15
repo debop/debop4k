@@ -115,8 +115,8 @@ public class WeeksTest extends AbstractTimePeriodTest {
       WeekRange endDayWeekRange = new WeekRange(endDayYearWeek);
       WeekRange startDayWeekRange = new WeekRange(startDayYearWeek);
 
-      assertThat(endDayWeekRange.hasPeriod()).isTrue();
-      assertThat(startDayWeekRange.hasPeriod()).isTrue();
+      assertThat(endDayWeekRange.getHasPeriod()).isTrue();
+      assertThat(startDayWeekRange.getHasPeriod()).isTrue();
 
       log.trace("start day weeksView=[{}]", startDayWeekRange);
 

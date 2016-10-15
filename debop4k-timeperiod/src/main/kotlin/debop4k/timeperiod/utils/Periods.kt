@@ -170,10 +170,6 @@ fun ITimePeriod.hasPureInsideWith(moment: DateTime): Boolean
 fun ITimePeriod.hasPureInsideWith(target: ITimePeriod): Boolean
     = this.hasPureInsideWith(target.start) && this.hasPureInsideWith(target.end)
 
-fun ITimePeriod?.isAnyTime(): Boolean = (this != null) && this.isAnyTime()
-
-fun ITimePeriod?.isNotAnyTime(): Boolean = (this != null) && !this.isAnyTime()
-
 /**
  * 두 [ITimePeriod] 의 관계를 파악합니다.
  */
@@ -285,7 +281,7 @@ fun ITimePeriod.periodList(unit: PeriodUnit): FastList<ITimePeriod> = when (unit
 fun ITimePeriod.yearRangeSequence(): FastList<ITimePeriod> {
   val years = fastListOf<ITimePeriod>()
 
-  if (this.isAnyTime())
+  if (this.isAnyTime)
     return years
 
   if (this.start.isSameYear(this.end)) {
@@ -315,7 +311,7 @@ fun ITimePeriod.yearRangeSequence(): FastList<ITimePeriod> {
 fun ITimePeriod.halfyearRangeSequence(): FastList<ITimePeriod> {
   val halfyears = fastListOf<ITimePeriod>()
 
-  if (this.isAnyTime())
+  if (this.isAnyTime)
     return halfyears
 
   if (start.isSameHalfyear(end)) {
@@ -351,7 +347,7 @@ fun ITimePeriod.halfyearRangeSequence(): FastList<ITimePeriod> {
 fun ITimePeriod.quarterRangeSequence(): FastList<ITimePeriod> {
   val quarters = fastListOf<ITimePeriod>()
 
-  if (this.isAnyTime()) {
+  if (this.isAnyTime) {
     return quarters
   }
 
@@ -387,7 +383,7 @@ fun ITimePeriod.quarterRangeSequence(): FastList<ITimePeriod> {
 fun ITimePeriod.monthRangeSequence(): FastList<ITimePeriod> {
   val months = fastListOf<ITimePeriod>()
 
-  if (isAnyTime()) {
+  if (isAnyTime) {
     return months
   }
 
@@ -419,7 +415,7 @@ fun ITimePeriod.monthRangeSequence(): FastList<ITimePeriod> {
 
 fun ITimePeriod.weekRangeSequence(): FastList<ITimePeriod> {
   val weeks = fastListOf<ITimePeriod>()
-  if (isAnyTime()) {
+  if (isAnyTime) {
     return weeks
   }
 
@@ -457,7 +453,7 @@ fun ITimePeriod.weekRangeSequence(): FastList<ITimePeriod> {
 fun ITimePeriod.dayRangeSequence(): FastList<ITimePeriod> {
   val days = fastListOf<ITimePeriod>()
 
-  if (isAnyTime()) {
+  if (isAnyTime) {
     return days
   }
 
@@ -489,7 +485,7 @@ fun ITimePeriod.dayRangeSequence(): FastList<ITimePeriod> {
 fun ITimePeriod.hourRangeSequence(): FastList<ITimePeriod> {
   val hours = fastListOf<ITimePeriod>()
 
-  if (isAnyTime()) {
+  if (isAnyTime) {
     return hours
   }
 
@@ -520,7 +516,7 @@ fun ITimePeriod.hourRangeSequence(): FastList<ITimePeriod> {
 fun ITimePeriod.minuteRangeSequence(): FastList<ITimePeriod> {
   val minutes = fastListOf<ITimePeriod>()
 
-  if (isAnyTime()) {
+  if (isAnyTime) {
     return minutes
   }
 
@@ -562,7 +558,7 @@ fun ITimePeriod.permutations(unit: PeriodUnit): Permutation<ITimePeriod> {
 }
 
 fun ITimePeriod.yearPermutation(): Permutation<ITimePeriod> {
-  if (isAnyTime()) {
+  if (isAnyTime) {
     return emptyPermutation()
   }
 
@@ -589,7 +585,7 @@ fun ITimePeriod.yearPermutation(): Permutation<ITimePeriod> {
 }
 
 fun ITimePeriod.halfyearPermutation(): Permutation<ITimePeriod> {
-  if (isAnyTime()) {
+  if (isAnyTime) {
     return emptyPermutation()
   }
 
@@ -618,7 +614,7 @@ fun ITimePeriod.halfyearPermutation(): Permutation<ITimePeriod> {
 }
 
 fun ITimePeriod.quarterPermutation(): Permutation<ITimePeriod> {
-  if (isAnyTime())
+  if (isAnyTime)
     return emptyPermutation()
 
   assertHasPeriod()
@@ -646,7 +642,7 @@ fun ITimePeriod.quarterPermutation(): Permutation<ITimePeriod> {
 }
 
 fun ITimePeriod.monthPermutation(): Permutation<ITimePeriod> {
-  if (isAnyTime())
+  if (isAnyTime)
     return emptyPermutation()
 
   assertHasPeriod()
@@ -674,7 +670,7 @@ fun ITimePeriod.monthPermutation(): Permutation<ITimePeriod> {
 }
 
 fun ITimePeriod.weekPermutation(): Permutation<ITimePeriod> {
-  if (isAnyTime())
+  if (isAnyTime)
     return emptyPermutation()
 
   assertHasPeriod()
@@ -707,7 +703,7 @@ fun ITimePeriod.weekPermutation(): Permutation<ITimePeriod> {
 }
 
 fun ITimePeriod.dayPermutation(): Permutation<ITimePeriod> {
-  if (isAnyTime())
+  if (isAnyTime)
     return emptyPermutation()
 
   assertHasPeriod()
@@ -735,7 +731,7 @@ fun ITimePeriod.dayPermutation(): Permutation<ITimePeriod> {
 }
 
 fun ITimePeriod.hourPermutation(): Permutation<ITimePeriod> {
-  if (isAnyTime())
+  if (isAnyTime)
     return emptyPermutation()
 
   assertHasPeriod()
@@ -763,7 +759,7 @@ fun ITimePeriod.hourPermutation(): Permutation<ITimePeriod> {
 }
 
 fun ITimePeriod.minutePermutation(): Permutation<ITimePeriod> {
-  if (isAnyTime())
+  if (isAnyTime)
     return emptyPermutation()
 
   assertHasPeriod()
@@ -805,7 +801,7 @@ fun ITimePeriod.sequences(unit: PeriodUnit): Sequence<ITimePeriod> {
 }
 
 fun ITimePeriod.yearSequences(): Sequence<ITimePeriod> {
-  if (isAnyTime())
+  if (isAnyTime)
     return sequenceOf()
 
   assertHasPeriod()
@@ -831,7 +827,7 @@ fun ITimePeriod.yearSequences(): Sequence<ITimePeriod> {
 }
 
 fun ITimePeriod.halfyearSequences(): Sequence<ITimePeriod> {
-  if (isAnyTime())
+  if (isAnyTime)
     return sequenceOf()
 
   assertHasPeriod()
@@ -857,7 +853,7 @@ fun ITimePeriod.halfyearSequences(): Sequence<ITimePeriod> {
 }
 
 fun ITimePeriod.quarterSequences(): Sequence<ITimePeriod> {
-  if (isAnyTime())
+  if (isAnyTime)
     return sequenceOf()
 
   assertHasPeriod()
@@ -883,7 +879,7 @@ fun ITimePeriod.quarterSequences(): Sequence<ITimePeriod> {
 }
 
 fun ITimePeriod.monthSequences(): Sequence<ITimePeriod> {
-  if (isAnyTime())
+  if (isAnyTime)
     return sequenceOf()
 
   assertHasPeriod()
@@ -909,7 +905,7 @@ fun ITimePeriod.monthSequences(): Sequence<ITimePeriod> {
 }
 
 fun ITimePeriod.weekSequences(): Sequence<ITimePeriod> {
-  if (isAnyTime())
+  if (isAnyTime)
     return sequenceOf()
 
   assertHasPeriod()
@@ -935,7 +931,7 @@ fun ITimePeriod.weekSequences(): Sequence<ITimePeriod> {
 }
 
 fun ITimePeriod.daySequences(): Sequence<ITimePeriod> {
-  if (isAnyTime())
+  if (isAnyTime)
     return sequenceOf()
 
   assertHasPeriod()
@@ -961,7 +957,7 @@ fun ITimePeriod.daySequences(): Sequence<ITimePeriod> {
 }
 
 fun ITimePeriod.hourSequences(): Sequence<ITimePeriod> {
-  if (isAnyTime())
+  if (isAnyTime)
     return sequenceOf()
 
   assertHasPeriod()
@@ -987,7 +983,7 @@ fun ITimePeriod.hourSequences(): Sequence<ITimePeriod> {
 }
 
 fun ITimePeriod.minuteSequences(): Sequence<ITimePeriod> {
-  if (isAnyTime())
+  if (isAnyTime)
     return sequenceOf()
 
   assertHasPeriod()
@@ -1015,7 +1011,7 @@ fun ITimePeriod.minuteSequences(): Sequence<ITimePeriod> {
 }
 
 fun ITimePeriod?.assertHasPeriod(): Unit {
-  assert(this != null && this.hasPeriod()) { "기간이 설정되지 않았습니다. period=$this" }
+  assert(this != null && hasPeriod) { "기간이 설정되지 않았습니다. period=$this" }
 }
 
 fun <R> ITimePeriod.mapPeriod(unit: PeriodUnit, func: (ITimePeriod) -> R): FastList<R> {

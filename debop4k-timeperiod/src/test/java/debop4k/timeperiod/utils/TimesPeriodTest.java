@@ -118,7 +118,7 @@ public class TimesPeriodTest extends AbstractTimePeriodTest {
         ITimePeriod period = Periods.periodOf(moment, unit, count, calendar);
 
         log.trace("unit={}, period={}, moment={}", unit, period, moment);
-        assertThat(period.hasPeriod()).isTrue();
+        assertThat(period.getHasPeriod()).isTrue();
         assertThat(period.hasInside(moment)).isTrue();
         assertThat(period.hasInside(endTime)).isFalse();
       }

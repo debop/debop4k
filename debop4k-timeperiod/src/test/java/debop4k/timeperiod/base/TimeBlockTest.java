@@ -52,9 +52,9 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     assertThat(TimeBlock.AnyTime.isAnyTime()).isTrue();
     assertThat(TimeBlock.AnyTime.getReadonly()).isTrue();
 
-    assertThat(TimeBlock.AnyTime.hasPeriod()).isFalse();
-    assertThat(TimeBlock.AnyTime.hasStart()).isFalse();
-    assertThat(TimeBlock.AnyTime.hasEnd()).isFalse();
+    assertThat(TimeBlock.AnyTime.getHasPeriod()).isFalse();
+    assertThat(TimeBlock.AnyTime.getHasStart()).isFalse();
+    assertThat(TimeBlock.AnyTime.getHasEnd()).isFalse();
     assertThat(TimeBlock.AnyTime.isMoment()).isFalse();
   }
 
@@ -68,9 +68,9 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     assertThat(block.isAnyTime()).isTrue();
     assertThat(block.getReadonly()).isFalse();
 
-    assertThat(block.hasPeriod()).isFalse();
-    assertThat(block.hasStart()).isFalse();
-    assertThat(block.hasEnd()).isFalse();
+    assertThat(block.getHasPeriod()).isFalse();
+    assertThat(block.getHasStart()).isFalse();
+    assertThat(block.getHasEnd()).isFalse();
     assertThat(block.isMoment()).isFalse();
   }
 
@@ -79,13 +79,13 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     DateTime moment = KodaTimex.now();
     TimeBlock block = new TimeBlock(moment);
 
-    assertThat(block.hasStart()).isTrue();
-    assertThat(block.hasEnd()).isTrue();
+    assertThat(block.getHasStart()).isTrue();
+    assertThat(block.getHasEnd()).isTrue();
     assertThat(block.getDuration()).isEqualTo(TimeSpec.MinDuration);
 
     assertThat(block.isAnyTime()).isFalse();
     assertThat(block.isMoment()).isTrue();
-    assertThat(block.hasPeriod()).isTrue();
+    assertThat(block.getHasPeriod()).isTrue();
   }
 
   @Test
@@ -105,16 +105,16 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
   public void hasStartTest() {
     // 현재부터 ~
     TimeBlock block = new TimeBlock(Times.now(), (DateTime) null, false);
-    assertThat(block.hasStart()).isTrue();
-    assertThat(block.hasEnd()).isFalse();
+    assertThat(block.getHasStart()).isTrue();
+    assertThat(block.getHasEnd()).isFalse();
   }
 
   @Test
   public void hasEndTest() {
     //  ~ 현재까지
     TimeBlock range = new TimeBlock((DateTime) null, Times.now());
-    assertThat(range.hasStart()).isFalse();
-    assertThat(range.hasEnd()).isTrue();
+    assertThat(range.getHasStart()).isFalse();
+    assertThat(range.getHasEnd()).isTrue();
   }
 
   @Test
@@ -125,7 +125,7 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     assertThat(range.getEnd()).isEqualTo(end);
     assertThat(range.getDuration()).isEqualTo(duration);
 
-    assertThat(range.hasPeriod()).isTrue();
+    assertThat(range.getHasPeriod()).isTrue();
     assertThat(range.isAnyTime()).isFalse();
     assertThat(range.isMoment()).isFalse();
     assertThat(range.getReadonly()).isFalse();
@@ -149,10 +149,10 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     assertThat(range.getEnd()).isEqualTo(end);
     assertThat(range.getDuration()).isEqualTo(duration);
 
-    assertThat(range.hasPeriod()).isTrue();
+    assertThat(range.getHasPeriod()).isTrue();
     assertThat(range.isAnyTime()).isFalse();
     assertThat(range.isMoment()).isFalse();
-    assertThat(range.isReadonly()).isFalse();
+    assertThat(range.getReadonly()).isFalse();
   }
 
   @Test //(expected = AssertionError.class)
@@ -169,9 +169,9 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     assertThat(copy.getEnd()).isEqualTo(source.getEnd());
     assertThat(copy.getDuration()).isEqualTo(source.getDuration());
 
-    assertThat(copy.isReadonly()).isEqualTo(source.isReadonly());
+    assertThat(copy.getReadonly()).isEqualTo(source.getReadonly());
 
-    assertThat(copy.hasPeriod()).isTrue();
+    assertThat(copy.getHasPeriod()).isTrue();
     assertThat(copy.isAnyTime()).isFalse();
     assertThat(copy.isMoment()).isFalse();
   }
@@ -519,10 +519,10 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     // reference
     assertThat(testData.getReference().getStart()).isEqualTo(start);
     assertThat(testData.getReference().getEnd()).isEqualTo(end);
-    assertThat(testData.getReference().isReadonly()).isTrue();
+    assertThat(testData.getReference().getReadonly()).isTrue();
 
     // after
-    assertThat(testData.getAfter().isReadonly()).isTrue();
+    assertThat(testData.getAfter().getReadonly()).isTrue();
     assertThat(testData.getAfter().getStart().compareTo(start)).isLessThan(0);
     assertThat(testData.getAfter().getEnd().compareTo(start)).isLessThan(0);
 
@@ -531,7 +531,7 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     assertThat(testData.getReference().relation(testData.getAfter())).isEqualTo(PeriodRelation.After);
 
     // start touching
-    assertThat(testData.getStartTouching().isReadonly()).isTrue();
+    assertThat(testData.getStartTouching().getReadonly()).isTrue();
     assertThat(testData.getStartTouching().getStart().getMillis()).isLessThan(start.getMillis());
     assertThat(testData.getStartTouching().getEnd()).isEqualTo(start);
 
@@ -540,7 +540,7 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     assertThat(testData.getReference().relation(testData.getStartTouching())).isEqualTo(PeriodRelation.StartTouching);
 
     // start inside
-    assertThat(testData.getStartInside().isReadonly()).isTrue();
+    assertThat(testData.getStartInside().getReadonly()).isTrue();
     assertThat(testData.getStartInside().getStart().getMillis()).isLessThan(start.getMillis());
     assertThat(testData.getStartInside().getEnd().getMillis()).isLessThan(end.getMillis());
 
@@ -549,7 +549,7 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     assertThat(testData.getReference().relation(testData.getStartInside())).isEqualTo(PeriodRelation.StartInside);
 
     // inside start touching
-    assertThat(testData.getInsideStartTouching().isReadonly()).isTrue();
+    assertThat(testData.getInsideStartTouching().getReadonly()).isTrue();
     assertThat(testData.getInsideStartTouching().getStart().getMillis()).isEqualTo(start.getMillis());
     assertThat(testData.getInsideStartTouching().getEnd().getMillis()).isGreaterThan(end.getMillis());
 
@@ -558,7 +558,7 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     assertThat(testData.getReference().relation(testData.getInsideStartTouching())).isEqualTo(PeriodRelation.InsideStartTouching);
 
     // enclosing start touching
-    assertThat(testData.getInsideStartTouching().isReadonly()).isTrue();
+    assertThat(testData.getInsideStartTouching().getReadonly()).isTrue();
     assertThat(testData.getInsideStartTouching().getStart().getMillis()).isEqualTo(start.getMillis());
     assertThat(testData.getInsideStartTouching().getEnd().getMillis()).isGreaterThan(end.getMillis());
 
@@ -567,7 +567,7 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     assertThat(testData.getReference().relation(testData.getInsideStartTouching())).isEqualTo(PeriodRelation.InsideStartTouching);
 
     // enclosing
-    assertThat(testData.getEnclosing().isReadonly()).isTrue();
+    assertThat(testData.getEnclosing().getReadonly()).isTrue();
     assertThat(testData.getEnclosing().getStart().getMillis()).isGreaterThan(start.getMillis());
     assertThat(testData.getEnclosing().getEnd().getMillis()).isLessThan(end.getMillis());
 
@@ -576,7 +576,7 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     assertThat(testData.getReference().relation(testData.getEnclosing())).isEqualTo(PeriodRelation.Enclosing);
 
     // enclosing endInclusive touching
-    assertThat(testData.getEnclosingEndTouching().isReadonly()).isTrue();
+    assertThat(testData.getEnclosingEndTouching().getReadonly()).isTrue();
     assertThat(testData.getEnclosingEndTouching().getStart().getMillis()).isGreaterThan(start.getMillis());
     assertThat(testData.getEnclosingEndTouching().getEnd().getMillis()).isEqualTo(end.getMillis());
 
@@ -585,7 +585,7 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     assertThat(testData.getReference().relation(testData.getEnclosingEndTouching())).isEqualTo(PeriodRelation.EnclosingEndTouching);
 
     // exact match
-    assertThat(testData.getExactMatch().isReadonly()).isTrue();
+    assertThat(testData.getExactMatch().getReadonly()).isTrue();
     assertThat(testData.getExactMatch().getStart().getMillis()).isEqualTo(start.getMillis());
     assertThat(testData.getExactMatch().getEnd().getMillis()).isEqualTo(end.getMillis());
 
@@ -594,7 +594,7 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     assertThat(testData.getReference().relation(testData.getExactMatch())).isEqualTo(PeriodRelation.ExactMatch);
 
     // inside
-    assertThat(testData.getInside().isReadonly()).isTrue();
+    assertThat(testData.getInside().getReadonly()).isTrue();
     assertThat(testData.getInside().getStart().getMillis()).isLessThan(start.getMillis());
     assertThat(testData.getInside().getEnd().getMillis()).isGreaterThan(end.getMillis());
 
@@ -603,7 +603,7 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     assertThat(testData.getReference().relation(testData.getInside())).isEqualTo(PeriodRelation.Inside);
 
     // inside endInclusive touching
-    assertThat(testData.getInsideEndTouching().isReadonly()).isTrue();
+    assertThat(testData.getInsideEndTouching().getReadonly()).isTrue();
     assertThat(testData.getInsideEndTouching().getStart().getMillis()).isLessThan(start.getMillis());
     assertThat(testData.getInsideEndTouching().getEnd().getMillis()).isEqualTo(end.getMillis());
 
@@ -612,7 +612,7 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     assertThat(testData.getReference().relation(testData.getInsideEndTouching())).isEqualTo(PeriodRelation.InsideEndTouching);
 
     // endInclusive inside
-    assertThat(testData.getEndInside().isReadonly()).isTrue();
+    assertThat(testData.getEndInside().getReadonly()).isTrue();
     assertThat(testData.getEndInside().getStart().getMillis()).isGreaterThan(start.getMillis());
     assertThat(testData.getEndInside().getStart().getMillis()).isLessThan(end.getMillis());
     assertThat(testData.getEndInside().getEnd().getMillis()).isGreaterThan(end.getMillis());
@@ -622,7 +622,7 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     assertThat(testData.getReference().relation(testData.getEndInside())).isEqualTo(PeriodRelation.EndInside);
 
     // endInclusive touching
-    assertThat(testData.getEndTouching().isReadonly()).isTrue();
+    assertThat(testData.getEndTouching().getReadonly()).isTrue();
     assertThat(testData.getEndTouching().getStart().getMillis()).isEqualTo(end.getMillis());
     assertThat(testData.getEndTouching().getEnd().getMillis()).isGreaterThan(end.getMillis());
 
@@ -631,7 +631,7 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     assertThat(testData.getReference().relation(testData.getEndTouching())).isEqualTo(PeriodRelation.EndTouching);
 
     // before
-    assertThat(testData.getBefore().isReadonly()).isTrue();
+    assertThat(testData.getBefore().getReadonly()).isTrue();
     assertThat(testData.getBefore().getStart().getMillis()).isGreaterThan(end.getMillis());
     assertThat(testData.getBefore().getEnd().getMillis()).isGreaterThan(end.getMillis());
 
@@ -645,16 +645,16 @@ public class TimeBlockTest extends AbstractTimePeriodTest {
     TimeBlock range = new TimeBlock(start, duration);
 
     assertThat(range.getStart()).isEqualTo(start);
-    assertThat(range.hasStart()).isTrue();
+    assertThat(range.getHasStart()).isTrue();
     assertThat(range.getEnd()).isEqualTo(end);
-    assertThat(range.hasEnd()).isTrue();
+    assertThat(range.getHasEnd()).isTrue();
 
     range.reset();
 
     assertThat(range.getStart()).isEqualTo(TimeSpec.MinPeriodTime);
-    assertThat(range.hasStart()).isFalse();
+    assertThat(range.getHasStart()).isFalse();
     assertThat(range.getEnd()).isEqualTo(TimeSpec.MaxPeriodTime);
-    assertThat(range.hasEnd()).isFalse();
+    assertThat(range.getHasEnd()).isFalse();
   }
 
   @Test

@@ -48,7 +48,7 @@ abstract class CalendarVisitor<out F : ICalendarVisitorFilter, in C : ICalendarV
   protected fun startPeriodVisit(period: ITimePeriod, context: C): Unit {
     log.debug("기간을 탐핵합니다 periods={}, context={}, seekDir={}", period, context, seekDirection)
 
-    if (period.isMoment())
+    if (period.isMoment)
       return
 
     onVisitStart()

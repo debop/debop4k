@@ -116,14 +116,14 @@ public class HalfyearRangeTest extends AbstractTimePeriodTest {
 
     HalfyearRange h1 = new HalfyearRange(currentYear, Halfyear.First, calendar);
 
-    assertThat(h1.isReadonly()).isTrue();
+    assertThat(h1.getReadonly()).isTrue();
     assertThat(h1.getHalfyear()).isEqualTo(Halfyear.First);
     assertThat(h1.getStart()).isEqualTo(asDate(currentYear, 1, 1));
     assertThat(h1.getEnd()).isEqualTo(asDate(currentYear, 7, 1));
 
     HalfyearRange h2 = new HalfyearRange(currentYear, Halfyear.Second, calendar);
 
-    assertThat(h2.isReadonly()).isTrue();
+    assertThat(h2.getReadonly()).isTrue();
     assertThat(h2.getHalfyear()).isEqualTo(Halfyear.Second);
     assertThat(h2.getStart()).isEqualTo(asDate(currentYear, 7, 1));
     assertThat(h2.getEnd()).isEqualTo(asDate(currentYear + 1, 1, 1));

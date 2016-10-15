@@ -90,8 +90,8 @@ open class TimePeriod(var _start: DateTime? = MinPeriodTime,
     if (offset.millis == 0L) {
       return TimeBlock(this)
     }
-    val s = if (hasStart()) start + offset else start
-    val e = if (hasEnd()) end + offset else end
+    val s = if (hasStart) start + offset else start
+    val e = if (hasEnd) end + offset else end
 
     return TimeBlock(s, e, readonly)
   }
@@ -101,11 +101,11 @@ open class TimePeriod(var _start: DateTime? = MinPeriodTime,
     assertMutable()
 
     if (offset > Duration.ZERO) {
-      if (hasEnd()) end += offset
-      if (hasStart()) start += offset
+      if (hasEnd) end += offset
+      if (hasStart) start += offset
     } else {
-      if (hasStart()) start += offset
-      if (hasEnd()) end += offset
+      if (hasStart) start += offset
+      if (hasEnd) end += offset
     }
   }
 
