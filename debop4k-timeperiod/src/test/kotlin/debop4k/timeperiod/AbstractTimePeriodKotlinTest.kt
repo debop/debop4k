@@ -16,13 +16,16 @@
 
 package debop4k.timeperiod
 
+import debop4k.core.kodatimes.now
 import debop4k.core.loggerOf
+import org.joda.time.DateTime
 
-/**
- * Created by debop
- */
 abstract class AbstractTimePeriodKotlinTest {
 
   protected val log = loggerOf(javaClass)
+
+  val testDate = DateTime(2000, 10, 2, 13, 45, 53, 673)
+  val testDiffDate = DateTime(2002, 9, 3, 7, 14, 22, 234)
+  val testNow = now()
 
 }

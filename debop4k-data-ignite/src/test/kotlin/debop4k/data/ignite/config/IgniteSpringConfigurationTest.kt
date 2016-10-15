@@ -14,10 +14,10 @@
  *
  */
 
-package debop4k.ignite.config
+package debop4k.data.ignite.config
 
-import debop4k.core.loggerOf
 import debop4k.core.uninitialized
+import debop4k.data.ignite.AbstractIgniteTest
 import org.apache.ignite.Ignite
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -26,15 +26,9 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
 import javax.inject.Inject
 
-/**
- * IgniteSpringConfigurationTest
- * @author sunghyouk.bae@gmail.com
- */
 @RunWith(SpringRunner::class)
 @SpringBootTest(classes = arrayOf(IgniteSpringConfiguration::class))
-class IgniteSpringConfigurationTest {
-
-  private val log = loggerOf(javaClass)
+class IgniteSpringConfigurationTest : AbstractIgniteTest() {
 
   @Inject val ignite: Ignite = uninitialized()
 

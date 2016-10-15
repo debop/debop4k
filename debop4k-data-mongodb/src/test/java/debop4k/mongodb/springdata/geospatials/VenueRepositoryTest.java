@@ -28,7 +28,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.geo.Box;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -37,7 +37,7 @@ import java.util.List;
  * @author sunghyouk.bae@gmail.com
  */
 @Slf4j
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest(classes = {SpringDataMongoConfiguration.class})
 public class VenueRepositoryTest extends AbstractMongoTest {
 

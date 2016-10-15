@@ -14,22 +14,18 @@
  *
  */
 
-package debop4k.redisson.kotlin
+package debop4k.data.ignite
 
 import debop4k.core.loggerOf
-import debop4k.core.uninitialized
-import debop4k.redisson.kotlin.config.RedissonKotlinConfigration
-import org.junit.runner.RunWith
-import org.redisson.api.RedissonClient
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit4.SpringRunner
-import javax.inject.Inject
+import org.apache.ignite.configuration.IgniteConfiguration
 
-@RunWith(SpringRunner::class)
-@SpringBootTest(classes = arrayOf(RedissonKotlinConfigration::class))
-abstract class AbstractRedissonKotlinTest {
+/**
+ * AbstractIgniteTest
+ * @author sunghyouk.bae@gmail.com
+ */
+abstract class AbstractIgniteTest {
 
   protected val log = loggerOf(javaClass)
 
-  @Inject val redisson: RedissonClient = uninitialized()
+  protected val DefaultIgniteConfiguration by lazy { IgniteConfiguration() }
 }

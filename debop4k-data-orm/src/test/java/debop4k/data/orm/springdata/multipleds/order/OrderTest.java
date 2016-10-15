@@ -23,7 +23,7 @@ package debop4k.data.orm.springdata.multipleds.order;//package debop4k.data.orm.
 //import org.junit.Test;
 //import org.junit.runner.RunWith;
 //import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+//import org.springframework.test.context.junit4.SpringRunner;
 //import org.springframework.transaction.annotation.Transactional;
 //
 //import javax.inject.Inject;
@@ -31,7 +31,7 @@ package debop4k.data.orm.springdata.multipleds.order;//package debop4k.data.orm.
 //import static org.assertj.core.api.Assertionx.assertThat;
 //
 //@Loggingx
-//@RunWith(SpringJUnit4ClassRunner.class)
+//@RunWith(SpringRunner.class)
 //@SpringBootTest(classes = { Application.class })
 //@Transactional(transactionManager = "orderTransactionManager")
 //public class OrderTest {

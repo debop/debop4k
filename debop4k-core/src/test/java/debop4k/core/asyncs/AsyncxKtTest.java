@@ -24,7 +24,7 @@ import org.eclipse.collections.impl.list.mutable.FastList;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -34,7 +34,7 @@ import static debop4k.core.asyncs.Asyncx.result;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest(classes = {AsyncExConfiguration.class})
 public class AsyncxKtTest extends AbstractCoreTest {
 

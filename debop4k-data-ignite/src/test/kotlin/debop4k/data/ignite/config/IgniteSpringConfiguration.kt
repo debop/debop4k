@@ -14,7 +14,7 @@
  *
  */
 
-package debop4k.ignite.config
+package debop4k.data.ignite.config
 
 import org.apache.ignite.Ignite
 import org.apache.ignite.Ignition
@@ -22,18 +22,14 @@ import org.apache.ignite.configuration.IgniteConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
-/**
- * IgniteSpringConfiguration
- * @author sunghyouk.bae@gmail.com
- */
 @Configuration
 open class IgniteSpringConfiguration {
 
   @Bean
-  open fun igniteConfiguration(): IgniteConfiguration {
-    val cfg = IgniteConfiguration()
-    cfg.asyncCallbackPoolSize = 16
-    return cfg
+  open fun igniteConfig(): IgniteConfiguration {
+    return IgniteConfiguration().apply {
+      asyncCallbackPoolSize = 16
+    }
   }
 
   @Bean
