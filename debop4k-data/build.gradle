@@ -32,7 +32,7 @@ dependencies {
     optional "org.hibernate:hibernate-validator-annotation-processor:$hibernate_validator_version"
     optional "commons-validator:commons-validator:$commons_validator_version"
 
-    optional "org.lazyluke:log4jdbc-remix:$log4jdbc_remix_version"
+    compile "org.lazyluke:log4jdbc-remix:$log4jdbc_remix_version"
 
     testCompile "com.h2database:h2:$h2_version"
     testCompile "org.hsqldb:hsqldb:$hsqldb_version"

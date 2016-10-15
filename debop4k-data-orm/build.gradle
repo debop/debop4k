@@ -62,7 +62,7 @@ dependencies {
     testCompile "mysql:mysql-connector-java:$mysql_connector_java_version"
     testCompile "org.postgresql:postgresql:$postgresql_version"
 
-    compileOnly("com.querydsl:querydsl-apt:$querydsl_version") {
+    provided("com.querydsl:querydsl-apt:$querydsl_version") {
         exclude(module: 'hibernate-jpa-2.0-api')
     }
 }

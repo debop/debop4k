@@ -51,6 +51,7 @@ subprojects {
     apply plugin: 'propdeps'
     apply plugin: 'propdeps-maven'
     apply plugin: 'propdeps-idea'
+    apply plugin: 'propdeps-eclipse'
     apply plugin: "io.spring.dependency-management"
 
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -129,7 +130,7 @@ subprojects {
         compile "javax.inject:javax.inject:$javax_inject_version"
 
         // for Java code
-        compileOnly "org.projectlombok:lombok:$lombok_version"
+        provided "org.projectlombok:lombok:$lombok_version"
 
         testCompile "junit:junit:$junit_version"
         testCompile "com.carrotsearch:junit-benchmarks:0.7.2"
