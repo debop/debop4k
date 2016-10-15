@@ -185,9 +185,7 @@ open class JdbcOperationsTest : AbstractJdbcTest() {
                    .description)
         .isEqualTo("python")
 
-    assertThat(template.queryExForObject(selectById, 1) { rs, rowNum ->
-      mapperFunction(rs, rowNum)
-    }.description)
+    assertThat(template.queryExForObject(selectById, 1) { rs, rowNum -> mapperFunction(rs, rowNum) }?.description)
         .isEqualTo("python")
   }
 
