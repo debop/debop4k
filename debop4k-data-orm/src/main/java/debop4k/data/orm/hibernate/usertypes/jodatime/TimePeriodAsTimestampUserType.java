@@ -114,8 +114,8 @@ public class TimePeriodAsTimestampUserType extends BaseCompositeUserType {
       StandardBasicTypes.TIMESTAMP.nullSafeSet(st, null, index, session);
       StandardBasicTypes.TIMESTAMP.nullSafeSet(st, null, index + 1, session);
     } else {
-      Timestamp start = period.hasStart() ? new Timestamp(period.getStart().getMillis()) : null;
-      Timestamp end = period.hasEnd() ? new Timestamp(period.getEnd().getMillis()) : null;
+      Timestamp start = period.getHasStart() ? new Timestamp(period.getStart().getMillis()) : null;
+      Timestamp end = period.getHasEnd() ? new Timestamp(period.getEnd().getMillis()) : null;
       StandardBasicTypes.TIMESTAMP.nullSafeSet(st, start, index, session);
       StandardBasicTypes.TIMESTAMP.nullSafeSet(st, end, index + 1, session);
     }
