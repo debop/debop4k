@@ -22,7 +22,7 @@ dependencies {
     compile "org.mybatis:mybatis:$mybatis_version"
     compile "org.mybatis:mybatis-spring:$mybatis_spring_version"
 
-    compile "org.lazyluke:log4jdbc-remix:$log4jdbc_remix_version"
+    compile "org.lazyluke:log4jdbc-remix"
 
     optional "org.hibernate:hibernate-validator:$hibernate_validator_version"
     optional "org.hibernate:hibernate-validator-annotation-processor:$hibernate_validator_version"

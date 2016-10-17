@@ -120,6 +120,36 @@ subprojects {
 
             dependency "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
             dependency "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+
+            dependency "com.google.guava:guava:19.0"
+
+            dependency "org.lazyluke:log4jdbc-remix:0.2.7"
+            dependency "org.mybatis:mybatis:$mybatis_version"
+            dependency "org.mybatis:mybatis-spring:$mybatis_spring_version"
+
+            dependency "com.squareup.okhttp3:okhttp:3.4.1"
+            dependency "com.squareup.okio:okio:1.9.0"
+
+            dependency "com.zaxxer:HikariCP:2.5.1"
+
+            dependency "org.apache.tomcat:tomcat-jdbc:8.5.5"
+            dependency "org.apache.tomcat:tomcat-juli:8.5.5"
+
+            dependency "org.assertj:assertj-core:3.5.2"
+            dependency "org.assertj:assertj-joda-time:2.0.0"
+            dependency "org.mockito:mockito-core:2.2.3"
+            dependency "org.mockito:mockito-all:2.0.2-beta"
+
+            dependency "org.ow2.asm:asm:5.0.4"
+            dependency "org.postgresql:postgresql:9.4.1211.jre7"
+
+            dependency "org.slf4j:slf4j-api:$slf4j_version"
+            dependency "org.slf4j:jcl-over-slf4j:$slf4j_version"
+            dependency "org.slf4j:log4j-over-slf4j:$slf4j_version"
+
+            dependency "org.springframework.security:spring-security-config:$spring_security_version"
+            dependency "org.springframework.security:spring-security-core:$spring_security_version"
+            dependency "org.springframework.security:spring-security-web:$spring_security_version"
         }
     }
 
@@ -141,10 +171,10 @@ subprojects {
         testCompile "com.carrotsearch:junit-benchmarks:0.7.2"
         testCompile "io.kotlintest:kotlintest:$kotlintest_version"
 
-        testCompile "org.assertj:assertj-core:$assertj_core_version"
-        testCompile "org.assertj:assertj-joda-time:$assertj_joda_time_version"
+        testCompile "org.assertj:assertj-core"
+        testCompile "org.assertj:assertj-joda-time"
 
-        testCompile "org.mockito:mockito-all:2.0.2-beta"
+        testCompile "org.mockito:mockito-all"
         testCompile "com.nhaarman:mockito-kotlin:0.6.2"
         testCompile "com.jayway.awaitility:awaitility:1.7.0"
 

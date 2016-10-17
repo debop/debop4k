@@ -31,6 +31,8 @@ dependencies {
     compile "edu.ucar:netcdf4:$ucar_version"
     compile "edu.ucar:opendap:$ucar_version"
 
+    compile "org.quartz-scheduler:quartz:$quartz_version"
+
     compile "com.jhlabs:javaproj:1.0.6"
     compile "com.esri.geometry:esri-geometry-api:1.2.1"
     compile("org.geotools:gt-shapefile:15.0") {
