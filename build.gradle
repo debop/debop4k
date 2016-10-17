@@ -85,7 +85,12 @@ subprojects {
 
     test {
         ignoreFailures false
-//        jvmArgs "-XX:MaxPermSize=512m"
+        // maxParallelForks 4
+
+        // set heap size for the test JVM(s)
+        minHeapSize = "512m"
+        maxHeapSize = "8G"
+        jvmArgs "-XX:ReservedCodeCacheSize=2g"
     }
 
     repositories {
