@@ -39,7 +39,7 @@ class CSVParser(val format: CSVFormat = DEFAULT_CSVFORMAT) {
 
   companion object {
 
-    private val log = LoggerFactory.getLogger(javaClass)
+    private val log = LoggerFactory.getLogger(CSVParser::class.java)
 
     private const val Start = 0
     private const val Field = 1
