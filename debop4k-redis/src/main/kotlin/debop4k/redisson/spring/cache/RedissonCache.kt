@@ -94,7 +94,7 @@ open class RedissonCache(val mapCache: RMapCache<Any?, Any?>,
   }
 
   private fun toValueWrapper(value: Any?): ValueWrapper? {
-    return value?.let { SimpleValueWrapper(it) } ?: null
+    return value?.let(::SimpleValueWrapper) ?: null
   }
 
   private fun isNullOrNullCacheValue(value: Any?): Boolean {

@@ -86,7 +86,7 @@ class SimpleExample : AbstractIgniteTest() {
       }
 
       range.parForEach {
-        log.debug("\tGot [key=$it, value=${cache.get(it)}]")
+        log.trace("\tGot [key=$it, value=${cache.get(it)}]")
         assertThat(it).isEqualTo(cache.get(it).toInt())
       }
     }
