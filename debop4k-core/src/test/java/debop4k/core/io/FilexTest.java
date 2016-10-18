@@ -82,6 +82,7 @@ public class FilexTest extends AbstractCoreTest {
     Filex.deleteDirectory(path);
 //    Threads.sleep(1000);
     assertThat(Filex.exists(path)).isFalse();
+    Filex.deleteDirectory("./test");
   }
 
   @Test

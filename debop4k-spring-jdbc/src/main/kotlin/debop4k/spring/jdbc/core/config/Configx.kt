@@ -29,7 +29,7 @@ fun EmbeddedDatabaseType.buildDataSource(body: EmbeddedDatabaseTag.() -> Unit): 
   val tag = EmbeddedDatabaseTag().apply {
     body()
   }
-  val scripts = tag.scripts
+  // val scripts = tag.scripts
 
   val factory = EmbeddedDatabaseFactory().apply {
     setDatabaseType(this@buildDataSource)

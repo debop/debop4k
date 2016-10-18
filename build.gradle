@@ -124,8 +124,13 @@ subprojects {
             dependency "org.jetbrains.exposed:exposed:$exposed_version"
             dependency "org.jetbrains.exposed:spring-transaction:$exposed_version"
 
+            dependency "javax.cache:cache-api:$javax_cache_api_version"
+
             dependency "com.fasterxml.uuid:java-uuid-generator:3.1.4"
             dependency "com.google.guava:guava:19.0"
+            dependency "de.ruedigermoeller:fst:$fst_version"
+            dependency "net.jpountz.lz4:lz4:$lz4_version"
+            dependency "com.esotericsoftware:kryo:$kryo_version"
 
             dependency "org.lazyluke:log4jdbc-remix:0.2.7"
             dependency "org.mybatis:mybatis:$mybatis_version"
@@ -133,6 +138,8 @@ subprojects {
 
             dependency "com.squareup.okhttp3:okhttp:3.4.1"
             dependency "com.squareup.okio:okio:1.9.0"
+
+            dependency "org.redisson:redisson:$redisson_version"
 
             dependency "com.zaxxer:HikariCP:2.5.1"
 
@@ -153,6 +160,9 @@ subprojects {
             dependency "org.slf4j:slf4j-api:$slf4j_version"
             dependency "org.slf4j:jcl-over-slf4j:$slf4j_version"
             dependency "org.slf4j:log4j-over-slf4j:$slf4j_version"
+
+            dependency "org.springframework.boot:spring-boot-autoconfigure:$spring_boot_version"
+            dependency "org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version"
 
             dependency "org.springframework.security:spring-security-config:$spring_security_version"
             dependency "org.springframework.security:spring-security-core:$spring_security_version"

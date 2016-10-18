@@ -98,7 +98,7 @@ open class RedissonCache(val mapCache: RMapCache<Any?, Any?>,
   }
 
   private fun isNullOrNullCacheValue(value: Any?): Boolean {
-    return value == null || value.javaClass.name == NullCacheValue.javaClass.name
+    return value == null || value.javaClass.name == NullCacheValue::class.java.name
   }
 
 

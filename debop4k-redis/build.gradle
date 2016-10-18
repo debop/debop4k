@@ -19,19 +19,20 @@ dependencies {
     compile project(":debop4k-config")
     compile project(":debop4k-core")
 
-    compile "org.redisson:redisson:$redisson_version"
-    compile "de.ruedigermoeller:fst:$fst_version"
-    compile "javax.cache:cache-api:$javax_cache_api_version"
+    compile "org.redisson:redisson"
+    compile "de.ruedigermoeller:fst"
+    compile "javax.cache:cache-api"
 
-    compile "org.springframework.boot:spring-boot-starter-data-redis:$spring_boot_version"
-    compile "org.springframework.boot:spring-boot-autoconfigure:$spring_boot_version"
-    optional "org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version"
+    compile "org.springframework.boot:spring-boot-starter-data-redis"
+    compile "org.springframework.boot:spring-boot-autoconfigure"
+    optional "org.springframework.boot:spring-boot-configuration-processor"
 
-    compile "org.springframework:spring-context:$spring_version"
-    compile "org.springframework:spring-context-support:$spring_version"
+    compile "org.springframework:spring-context"
+    compile "org.springframework:spring-context-support"
 
-    compile "net.jpountz.lz4:lz4:$lz4_version"
-    testCompile "com.esotericsoftware:kryo:$kryo_version"
+    compile "net.jpountz.lz4:lz4"
+    testCompile "com.esotericsoftware:kryo"
+
     testCompile "com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:$jackson_dataformat_cbor_version"
     testCompile "org.msgpack:jackson-dataformat-msgpack:$jackson_dataformat_msgpack_version"
 }

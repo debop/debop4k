@@ -20,13 +20,13 @@ package debop4k.core.io.serializers
  * 직렬화를 위한 Decorator
  * @author sunghyouk.bae@gmail.com
  */
-abstract class SerializerDecorator(val serializer: Serializer) : Serializer {
+abstract class SerializerDecorator(val serializer: Serializer) : Serializer by serializer {
 
-  open override fun serialize(graph: Any?): ByteArray {
-    return serializer.serialize(graph)
-  }
-
-  open override fun <T> deserialize(bytes: ByteArray?): T? {
-    return serializer.deserialize(bytes)
-  }
+//  open override fun serialize(graph: Any?): ByteArray {
+//    return serializer.serialize(graph)
+//  }
+//
+//  open override fun <T> deserialize(bytes: ByteArray?): T? {
+//    return serializer.deserialize(bytes)
+//  }
 }
