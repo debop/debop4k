@@ -29,7 +29,7 @@ import java.sql.ResultSet
  * 결과가 없는 [ResultSet]에 대해 null 을 반환하도록 합니다.
  */
 //@Suppress("BASE_WITH_NULLABLE_UPPER_BOUND")
-fun <T> emptyResultToNull(body: () -> T): T? = try {
+inline fun <T> emptyResultToNull(body: () -> T): T? = try {
   body()
 } catch(e: EmptyResultDataAccessException) {
   null
@@ -38,13 +38,13 @@ fun <T> emptyResultToNull(body: () -> T): T? = try {
 /**
  * 결과 레코드가 없는 [ResultSet]에 대해 [None] 값을 반환합니다.
  */
-fun <T> emptyResultToOption(body: () -> T): Option<T> = try {
+inline fun <T> emptyResultToOption(body: () -> T): Option<T> = try {
   Some(body())
 } catch(e: EmptyResultDataAccessException) {
   None
 }
 
-fun <T> rowMapperObject(rowMapper: (ResultSet, Int) -> T): RowMapper<T>
+inline fun <T> rowMapperObject(crossinline rowMapper: (ResultSet, Int) -> T): RowMapper<T>
     = RowMapper { rs, rowNum -> rowMapper(rs, rowNum) }
 
 inline fun <T> ResultSet.extract(body: ResultSetGetFieldTokens.() -> T): T
@@ -53,12 +53,12 @@ inline fun <T> ResultSet.extract(body: ResultSetGetFieldTokens.() -> T): T
 inline fun PreparedStatement.arguments(body: PreparedStatementArgumentSetter.() -> Unit): Unit
     = PreparedStatementArgumentSetter(this).body()
 
-fun <T> JdbcOperations.queryEx(sql: String, vararg args: Any, rse: (ResultSet) -> T?): T?
+inline fun <T> JdbcOperations.queryEx(sql: String, vararg args: Any, crossinline rse: (ResultSet) -> T?): T?
     = this.query(sql, ResultSetExtractor<T> { rs -> rse(rs) }, *args)
 
-fun <T> JdbcOperations.queryEx(sql: String, vararg args: Any, rowMapper: (ResultSet, Int) -> T?): List<T?>
+inline fun <T> JdbcOperations.queryEx(sql: String, vararg args: Any, crossinline rowMapper: (ResultSet, Int) -> T?): List<T?>
     = this.query(sql, rowMapperObject(rowMapper), *args)
 
-fun <T> JdbcOperations.queryExForObject(sql: String, vararg args: Any, rowMapper: (ResultSet, Int) -> T?): T?
+inline fun <T> JdbcOperations.queryExForObject(sql: String, vararg args: Any, crossinline rowMapper: (ResultSet, Int) -> T?): T?
     = this.queryForObject(sql, rowMapperObject(rowMapper), *args)
 

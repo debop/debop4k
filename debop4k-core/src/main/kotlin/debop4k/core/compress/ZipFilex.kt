@@ -243,7 +243,7 @@ fun addToZip(zos: ZipOutputStream,
              path: String,
              comment: String? = null): Unit {
   var _path: String = path
-  while (!_path.isNullOrEmpty() && _path[0] == '/') {
+  while (!_path.isEmpty() && _path[0] == '/') {
     _path = _path.substring(1)
   }
 
@@ -272,7 +272,7 @@ fun addFolderToZip(zos: ZipOutputStream,
                    path: String,
                    comment: String? = null): Unit {
   var _path: String = path
-  while (!_path.isNullOrEmpty() && _path[0] == '/') {
+  while (!_path.isEmpty() && _path[0] == '/') {
     _path = _path.substring(1)
   }
 

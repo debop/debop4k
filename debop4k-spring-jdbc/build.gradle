@@ -18,8 +18,8 @@ dependencies {
 
     compile project(":debop4k-spring")
 
-    compile "org.springframework:spring-jdbc:$spring_version"
-    compile "org.springframework:spring-tx:$spring_version"
+    compile "org.springframework:spring-jdbc"
+    compile "org.springframework:spring-tx"
 
-    testCompile "com.h2database:h2:$h2_version"
+    testCompile "com.h2database:h2"
 }

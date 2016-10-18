@@ -48,7 +48,7 @@ fun connectionOf(jdbcUrl: String, info: Map<String, String>): Connection
     = DriverManager.getConnection(jdbcUrl, info.toProperties())
 
 @JvmOverloads
-fun connectionOf(jdbcUrl: String, username: String? = null, password: String? = null)
+fun connectionOf(jdbcUrl: String, username: String? = null, password: String? = null): Connection
     = DriverManager.getConnection(jdbcUrl, username, password)
 
 inline fun <T> Connection.use(block: (Connection) -> T): T {

@@ -53,7 +53,6 @@ open class JdbcOperationsTest : AbstractJdbcTest() {
     st
   }
 
-
   @Test fun testInitialized() {
     assertThat(dataSource).isNotNull()
     assertThat(template).isNotNull()
