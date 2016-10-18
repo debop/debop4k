@@ -23,20 +23,19 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.Test
 import java.sql.Connection
 
-object Courses : Table("course") {
-  val id = integer("id").primaryKey().autoIncrement()
-  val name = varchar("name", 50)
-}
-
-object Students : Table("student") {
-  val id = integer("student_id").autoIncrement().primaryKey()
-  val name = varchar("name", 50)
-  val grade = integer("grade").default(1)
-  val course = integer("course_id") references Courses.id
-}
-
 class SqlExamples : AbstractExposedTest() {
 
+  object Courses : Table("course") {
+    val id = integer("id").primaryKey().autoIncrement()
+    val name = varchar("name", 50)
+  }
+
+  object Students : Table("student") {
+    val id = integer("student_id").autoIncrement().primaryKey()
+    val name = varchar("name", 50)
+    val grade = integer("grade").default(1)
+    val course = integer("course_id") references Courses.id
+  }
 
   @Test
   fun testSimpleSql() {

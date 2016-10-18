@@ -14,21 +14,19 @@
  *
  */
 
-dependencies {
+package debop4k.data.exposed.examples
 
-    compile project(":debop4k-data")
+import org.junit.Test
 
-    compile "org.jetbrains.exposed:exposed"
-    compile "org.jetbrains.exposed:spring-transaction"
+/**
+ * SelfReferenceTest
+ * @author sunghyouk.bae@gmail.com
+ */
+@Suppress("unsued")
+class SelfReferenceTest {
 
-    compile "com.fasterxml.uuid:java-uuid-generator"
+  @Test
+  fun simpleTest() {
 
-    testCompile "com.h2database:h2"
-
-    // MySql MXJ에서는 최신 Driver 가 아닌 5.1.39 를 사용해야 합니다.
-    testCompile "mysql:mysql-connector-java:5.1.39"
-    testCompile "mysql:mysql-connector-mxj:5.0.12"
-
-    testCompile "org.postgresql:postgresql:9.4.1211.jre7"
-    testCompile "ru.yandex.qatools.embed:postgresql-embedded:1.15"
+  }
 }

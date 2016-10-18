@@ -23,32 +23,32 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.Test
 
-object Cities : IntIdTable() {
-  val name = varchar("name", 50).uniqueIndex()
-}
-
-object Users : IntIdTable() {
-  val name = varchar("name", 50).index()
-  val city = reference("city", Cities)
-  val age = integer("age").nullable()
-}
-
-class City(id: EntityID<Int>) : IntEntity(id) {
-  companion object : IntEntityClass<City>(Cities)
-
-  var name by Cities.name
-  val users by User referrersOn Users.city
-}
-
-class User(id: EntityID<Int>) : IntEntity(id) {
-  companion object : IntEntityClass<User>(Users)
-
-  var name by Users.name
-  var city by City referencedOn Users.city
-  var age by Users.age
-}
-
 class SamplesDaoTest : AbstractExposedTest() {
+
+  object Cities : IntIdTable() {
+    val name = varchar("name", 50).uniqueIndex()
+  }
+
+  object Users : IntIdTable() {
+    val name = varchar("name", 50).index()
+    val city = reference("city", Cities)
+    val age = integer("age").nullable()
+  }
+
+  class City(id: EntityID<Int>) : IntEntity(id) {
+    companion object : IntEntityClass<City>(Cities)
+
+    var name by Cities.name
+    val users by User referrersOn Users.city
+  }
+
+  class User(id: EntityID<Int>) : IntEntity(id) {
+    companion object : IntEntityClass<User>(Users)
+
+    var name by Users.name
+    var city by City referencedOn Users.city
+    var age by Users.age
+  }
 
   @Test
   fun testSimpleDao() {

@@ -121,6 +121,10 @@ subprojects {
             dependency "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
             dependency "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 
+            dependency "org.jetbrains.exposed:exposed:$exposed_version"
+            dependency "org.jetbrains.exposed:spring-transaction:$exposed_version"
+
+            dependency "com.fasterxml.uuid:java-uuid-generator:3.1.4"
             dependency "com.google.guava:guava:19.0"
 
             dependency "org.lazyluke:log4jdbc-remix:0.2.7"
@@ -141,6 +145,9 @@ subprojects {
             dependency "org.mockito:mockito-all:2.0.2-beta"
 
             dependency "org.ow2.asm:asm:5.0.4"
+
+            dependency "com.h2database:h2:$h2_version"
+            dependency "mysql:mysql-connector-java:$mysql_connector_java_version"
             dependency "org.postgresql:postgresql:9.4.1211.jre7"
 
             dependency "org.slf4j:slf4j-api:$slf4j_version"

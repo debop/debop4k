@@ -23,18 +23,18 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.Test
 
-object Cities : Table() {
-  val id = integer("id").autoIncrement().primaryKey()
-  val name = varchar("name", 50).uniqueIndex()
-}
-
-object Users : Table() {
-  val id = varchar("id", 10).primaryKey()
-  val name = varchar("name", length = 50)
-  val cityId = (integer("city_id") references Cities.id).nullable()
-}
-
 class SimpleSqlTest : AbstractExposedTest() {
+
+  object Cities : Table() {
+    val id = integer("id").autoIncrement().primaryKey()
+    val name = varchar("name", 50).uniqueIndex()
+  }
+
+  object Users : Table() {
+    val id = varchar("id", 10).primaryKey()
+    val name = varchar("name", length = 50)
+    val cityId = (integer("city_id") references Cities.id).nullable()
+  }
 
   @Test
   fun testSqlDDL() {

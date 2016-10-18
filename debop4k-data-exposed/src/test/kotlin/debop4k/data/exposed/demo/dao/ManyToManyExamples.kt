@@ -31,12 +31,6 @@ class ManyToManyExamples : AbstractExposedTest() {
     val userName = varchar("user_name", 50).index()
   }
 
-//  object Teams : IdTable<String>("team") {
-//    override val id = varchar("team_id", 100).primaryKey().entityId()
-//    val teamName = varchar("team_name", 100)
-//
-//  }
-
   object Teams : IntIdTable("team") {
     val teamName = varchar("team_name", 100)
   }
