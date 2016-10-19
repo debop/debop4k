@@ -104,6 +104,8 @@ abstract class DatabaseTestBase() {
                                     driver = dbSettings.driver)
 
     transaction(Connection.TRANSACTION_SERIALIZABLE, 1) {
+      logger.addLogger(StdOutSqlLogger())
+
       statement()
     }
   }
