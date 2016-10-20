@@ -23,7 +23,7 @@ import org.slf4j.Logger
 import java.sql.*
 import javax.sql.DataSource
 
-val log: Logger = loggerOf("Jdbcx")
+private val log: Logger = loggerOf("Jdbcx")
 
 inline fun <T> DataSource.use(crossinline block: (Connection) -> T): T {
   val conn = this.connection
@@ -32,7 +32,7 @@ inline fun <T> DataSource.use(crossinline block: (Connection) -> T): T {
     c.use { cc ->
       return block(cc)
     }
-  } ?: throw IllegalStateException("No Connection returns from $this")
+  } ?: error("No Connection returns from $this")
 }
 
 inline fun <T> DataSource.statement(crossinline block: (Statement) -> T): T
@@ -55,7 +55,6 @@ inline fun <T> Connection.use(block: (Connection) -> T): T {
   try {
     return block(this)
   } catch(e: Throwable) {
-    log.error("Fail to execute block using connection.", e)
     throw SQLDataException(e)
   } finally {
     this.close()
@@ -64,7 +63,7 @@ inline fun <T> Connection.use(block: (Connection) -> T): T {
 
 inline fun <T> Connection.statement(crossinline block: (Statement) -> T): T {
   val statement = this.createStatement()
-  return statement?.use(block) ?: throw IllegalStateException("No Statement")
+  return statement?.use(block) ?: error("No Statement")
 }
 
 fun Connection.update(sql: String): Int
@@ -144,7 +143,7 @@ operator fun ResultSet.get(columnId: Int): Any?
 
 private fun ResultSet.ensureHasRow(): ResultSet {
   if (!this.next())
-    throw IllegalStateException("There are no rows left in cursor")
+    error("There are no rows left in cursor")
   return this
 }
 

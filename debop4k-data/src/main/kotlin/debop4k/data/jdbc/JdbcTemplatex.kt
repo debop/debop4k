@@ -18,14 +18,10 @@
 
 package debop4k.data.jdbc
 
-import debop4k.core.loggerOf
 import org.springframework.jdbc.core.JdbcOperations
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils
 import java.sql.ResultSet
-
-
-private val log = loggerOf("JdbcTemplatex")
 
 
 fun <T> JdbcOperations.query(sql: String, resultsetExtractor: (ResultSet) -> T): T
