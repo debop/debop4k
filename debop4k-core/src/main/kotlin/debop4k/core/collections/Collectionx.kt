@@ -278,11 +278,7 @@ fun <T> isSameElements(left: Iterable<T>,
                        right: Iterable<T>): Boolean {
   if (left is List<T> && right is List<T>) {
     if (left.size == right.size) {
-      for (i in left.indices) {
-        if (left[i] != right[i])
-          return false
-      }
-      return true
+      return left.indices.none { left[it] != right[it] }
     }
     return false
   }
@@ -336,11 +332,18 @@ fun <T> fastListOf(): FastList<T> = FastList.newList<T>()
  * Build [FastList]
  */
 fun <T> fastListOf(vararg elements: T): FastList<T> {
-  return if (elements.size == 0) FastList.newList()
+  return if (elements.isEmpty()) FastList.newList()
   else FastList.newListWith(*elements)
 }
 
+/**
+ * Build [FastList]
+ */
 fun <T> fastListOf(iterable: Iterable<T>): FastList<T> = FastList.newList(iterable)
+
+/**
+ * Build [FastList]
+ */
 fun <T> fastListOf(iterator: Iterator<T>): FastList<T> {
   val list = fastListOf<T>()
   while (iterator.hasNext()) {
@@ -379,8 +382,19 @@ fun <T> Array<out T>.toFastList(): FastList<T> = FastList.newListWith(*this)
 fun <T> Array<out T>.toUnifiedSet(): UnifiedSet<T>
     = UnifiedSet.newSetWith(*this)
 
+/**
+ * Build [UnifiedSet]
+ */
 fun <T> emptyUnifiedSet(): UnifiedSet<T> = UnifiedSet.newSet()
+
+/**
+ * Build [UnifiedSet]
+ */
 fun <T> unifiedSetOf(): UnifiedSet<T> = UnifiedSet.newSet()
+
+/**
+ * Build [UnifiedSet]
+ */
 fun <T> unifiedSetOf(vararg values: T): UnifiedSet<T> = UnifiedSet.newSetWith(*values)
 
 /**

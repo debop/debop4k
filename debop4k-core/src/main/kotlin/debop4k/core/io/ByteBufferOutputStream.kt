@@ -24,8 +24,7 @@ import java.nio.ByteBuffer
  */
 open class ByteBufferOutputStream(val buffer: ByteBuffer) : OutputStream() {
 
-  @JvmOverloads
-  constructor(capacity: Int = DEFAULT_BUFFER_SIZE) : this(ByteBuffer.allocateDirect(capacity))
+  @JvmOverloads constructor(capacity: Int = DEFAULT_BUFFER_SIZE) : this(ByteBuffer.allocateDirect(capacity))
 
   override fun write(b: Int): Unit {
     if (!buffer.hasRemaining()) flush()
@@ -40,8 +39,7 @@ open class ByteBufferOutputStream(val buffer: ByteBuffer) : OutputStream() {
   }
 
   companion object {
-    @JvmStatic
-    fun of(src: ByteBuffer): ByteBufferOutputStream {
+    @JvmStatic fun of(src: ByteBuffer): ByteBufferOutputStream {
       val buffer = src.duplicate().apply { flip() }
       return ByteBufferOutputStream(buffer)
     }

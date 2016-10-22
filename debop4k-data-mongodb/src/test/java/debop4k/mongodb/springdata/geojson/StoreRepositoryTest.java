@@ -71,7 +71,7 @@ public class StoreRepositoryTest extends SpringDataMongoConfigurationTest {
     log.debug("jsonText={}", jsonText);
 
     // NOTE: GeoJson 을 파싱할 수 있도록 합니다.
-    ObjectMapper mapper = Jsonx.getDEFAULT_OBJECT_MAPPER();
+    ObjectMapper mapper = Jsonx.getDefaultObjectMapper();
     mapper.addMixIn(GeoJsonPoint.class, GeoJsonPointMixin.class);
 
     List<Store> stores = mapper.readValue(jsonText, new TypeReference<List<Store>>() {});

@@ -29,14 +29,14 @@ import com.google.gson.GsonBuilder
 import com.squareup.moshi.Moshi
 
 
-val DEFAULT_MOSHI: Moshi by lazy {
+val DefaultMoshi: Moshi by lazy {
   Moshi.Builder().build()
 }
 
 /**
  * 기본 Gson 인스턴스
  */
-val DEFAULT_GSON: Gson by lazy {
+val DefaultGson: Gson by lazy {
 
   val builder = GsonBuilder().enableComplexMapKeySerialization().serializeNulls()
 
@@ -46,8 +46,7 @@ val DEFAULT_GSON: Gson by lazy {
 }
 
 /** 기본 Jackson Object Mapper */
-val DEFAULT_OBJECT_MAPPER: ObjectMapper by lazy { createDefaultObjectMapper() }
-
+val DefaultObjectMapper: ObjectMapper by lazy { createDefaultObjectMapper() }
 
 /**
  * Jackson의 [ObjectMapper]를 생성합니다.
@@ -75,9 +74,9 @@ fun createDefaultObjectMapper(): ObjectMapper {
 }
 
 /** Jackson 라이브러리를 사용하는 Serializer */
-val defaultJacksonSerializer by lazy { JacksonSerializer() }
+val DefaultJacksonSerializer by lazy { JacksonSerializer() }
 
 /** GSON 라이브러리를 사용하는 Serializer */
-val defaultGsonSerializer by lazy { GsonSerializer() }
+val DefaultGsonSerializer by lazy { GsonSerializer() }
 
 

@@ -24,7 +24,7 @@ import debop4k.core.utils.EMPTY_STRING
  * google gson 라이브러리를 이용한 JSON Serializer 입니다.
  * @author debop sunghyouk.bae@gmail.com
  */
-class GsonSerializer @JvmOverloads constructor(val gson: Gson = DEFAULT_GSON) : JsonSerializer {
+class GsonSerializer @JvmOverloads constructor(val gson: Gson = DefaultGson) : JsonSerializer {
 
   override fun <T : Any> toString(graph: T?): String {
     if (graph == null)
@@ -43,6 +43,6 @@ class GsonSerializer @JvmOverloads constructor(val gson: Gson = DEFAULT_GSON) : 
   companion object {
     @JvmStatic
     @JvmOverloads
-    fun of(gson: Gson = DEFAULT_GSON): GsonSerializer = GsonSerializer(gson)
+    fun of(gson: Gson = DefaultGson): GsonSerializer = GsonSerializer(gson)
   }
 }

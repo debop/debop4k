@@ -19,11 +19,12 @@ package debop4k.examples.functions
 import debop4k.examples.AbstractExampleTest
 import debop4k.examples.asyncs.runAsync
 import org.junit.Test
+import java.io.Serializable
 import java.util.concurrent.*
 
 class ExtensionFunctionExample : AbstractExampleTest() {
 
-  data class User(val id: Int, val name: String, val address: String)
+  data class User(val id: Int, val name: String, val address: String) : Serializable
 
   fun saveUser1(user: User) {
     // Local Functionx

@@ -35,6 +35,12 @@ open class CompressableSerializer
   }
 }
 
+class DeflaterBinarySerializer : CompressableSerializer(Serializers.BINARY, DEFLATER)
+class DeflaterFstSerializer : CompressableSerializer(Serializers.FST, DEFLATER)
+
+class GZipBinarySerializer : CompressableSerializer(Serializers.BINARY, GZIP)
+class GZipFstSerializer : CompressableSerializer(Serializers.FST, GZIP)
+
 class LZ4BinarySerializer : CompressableSerializer(Serializers.BINARY, LZ4)
 class LZ4FstSerializer : CompressableSerializer(Serializers.FST, LZ4)
 

@@ -72,8 +72,8 @@ val UtmZoneBoundingBoxes: Map<UtmZone, BoundingBox> by lazy {
     for (lat in UtmLatitudes.keys) {
       val zone = UtmZone(lon, lat)
 
-      val longitude = getLongitudeByUtm(lon)
-      val latitude = getLatitudeByUtm(lat)
+      val longitude = lon.toLongitudeByUtm() //getLongitudeByUtm(lon)
+      val latitude = lat.toLatitudeByUtm() //getLatitudeByUtm(lat)
 
       val bbox = BoundingBox.of(longitude,
                                 latitude + UTM_LATITUDE_SIZE,
@@ -91,10 +91,10 @@ fun utmZoneOf(utmZoneStr: String?): UtmZone {
   if (utmZoneStr.isNullOrBlank() || utmZoneStr?.length != 3) {
     throw IllegalArgumentException("UtmZone 형식이 아닙니다. utmZoneStr=$utmZoneStr")
   }
-  val longitudeZone = utmZoneStr?.substring(0, 2)?.toInt()
-  val latitudeZone = utmZoneStr?.substring(2, 3)?.toUpperCase()?.first()
+  val longitudeZone = utmZoneStr.substring(0, 2).toInt()
+  val latitudeZone = utmZoneStr.substring(2, 3).toUpperCase().first()
 
-  return UtmZone(longitudeZone!!, latitudeZone!!)
+  return UtmZone(longitudeZone, latitudeZone)
 }
 
 fun utmZoneOf(longitudeZone: Int, latitudeZone: Char): UtmZone {
@@ -186,7 +186,6 @@ fun getUtmLatitude(latitude: Double): Char {
 
 /**
  * UTM Zone에 해당하는 영역을 위경도 좌표로 표현한 Bounding Box 을 반환합니다.
- * @param utm UtmZone
  * @return UTM Zone 영역을 위경도 좌표로 표현한 Bounding Box
  */
 fun UtmZone.boundingBox(): BoundingBox {
@@ -205,8 +204,6 @@ fun getBoundingBox(utm: UtmZone): BoundingBox {
 
 /**
  * UTM Zone 의 특정 Cell의 Bounding Box 를 계산합니다.
-
- * @param utm  UTM Zone
  * @param size Cell 의 크기 (경위도의 단위)
  * @param row  Cell 의 row index (0부터 시작)
  * @param col  Cell의 column index (0부터 시작)

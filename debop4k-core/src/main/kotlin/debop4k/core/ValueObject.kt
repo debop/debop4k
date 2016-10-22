@@ -16,7 +16,6 @@
 
 package debop4k.core
 
-import org.apache.commons.lang3.builder.HashCodeBuilder
 import java.io.Serializable
 
 /**
@@ -39,7 +38,7 @@ abstract class AbstractValueObject : ValueObject {
     else -> javaClass == other.javaClass && hashCode() == other.hashCode()
   }
 
-  override fun hashCode(): Int = HashCodeBuilder.reflectionHashCode(this)
+  override fun hashCode(): Int = System.identityHashCode(this) //HashCodeBuilder.reflectionHashCode(this)
 
   override fun toString(): String = buildStringHelper().toString()
 

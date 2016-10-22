@@ -27,7 +27,7 @@ import debop4k.core.utils.EMPTY_STRING
  * @author debop sunghyouk.bae@gmail.com
  */
 class JacksonSerializer
-@JvmOverloads constructor(val mapper: ObjectMapper = DEFAULT_OBJECT_MAPPER) : JsonSerializer {
+@JvmOverloads constructor(val mapper: ObjectMapper = DefaultObjectMapper) : JsonSerializer {
 
   /** 객체를 Json 직렬화를 수행하여 바이트 배열로 반환한다 */
   override fun <T : Any> toByteArray(graph: T?): ByteArray {
@@ -64,6 +64,6 @@ class JacksonSerializer
   companion object {
     @JvmStatic
     @JvmOverloads
-    fun of(mapper: ObjectMapper = DEFAULT_OBJECT_MAPPER) = JacksonSerializer(mapper)
+    fun of(mapper: ObjectMapper = DefaultObjectMapper) = JacksonSerializer(mapper)
   }
 }

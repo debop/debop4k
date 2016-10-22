@@ -43,7 +43,7 @@ interface Serializer {
   /**
    * 원본 객체를 복사합니다.
    * @param src 원본 객체
-   * @param  원본 객체의 수형
+   * @param <T> 원본 수형
    * @return 복사된 객체
    */
   fun <T> copy(src: T): T?
@@ -61,7 +61,7 @@ interface Serializer {
    * input stream 을 읽어, 역직렬화를 수행하여 객체로 변한합니다.
 
    * @param input input stream
-   * @param    변환할 객체의 수형
+   * @param <T>  변환할 객체의 수형
    * @return 변환된 객체, 데이터가 없거나, 역직렬화 실패시에는 null 을 반환합니다.
    */
   fun <T> fromInputStream(input: InputStream): T?

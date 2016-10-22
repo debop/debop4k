@@ -35,6 +35,9 @@ open class EncryptableSerializer
   }
 }
 
+class DESBinarySerializer : EncryptableSerializer(Serializers.BINARY, DES)
+class DESFstSerializer : EncryptableSerializer(Serializers.FST, DES)
+
 class RC2BinarySerializer : EncryptableSerializer(Serializers.BINARY, RC2)
 class RC2FstSerializer : EncryptableSerializer(Serializers.FST, RC2)
 

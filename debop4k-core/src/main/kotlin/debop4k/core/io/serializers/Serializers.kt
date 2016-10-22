@@ -29,6 +29,18 @@ object Serializers {
   /** FST Serializer for Java 6 */
   @JvmField val FST = FstSerializer()
 
+  /** Deflater + Binary Serializer */
+  @JvmField val DEFLATER_BINARY = DeflaterBinarySerializer()
+
+  /** Deflater + FST Serializer */
+  @JvmField val DEFLATER_FST = DeflaterFstSerializer()
+
+  /** GZip + Binary Serializer */
+  @JvmField val GZIP_BINARY = GZipBinarySerializer()
+
+  /** GZip + FST Serializer */
+  @JvmField val GZIP_FST = GZipFstSerializer()
+
   /** LZ4 + Binary Serializer */
   @JvmField val LZ4_BINARY = LZ4BinarySerializer()
 

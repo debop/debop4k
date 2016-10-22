@@ -29,9 +29,7 @@ import java.util.zip.*
  */
 class ZipCompressor : Compressor {
 
-  /**
-   * 압축
-   */
+  /** 압축 */
   override fun compress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty)
       return emptyByteArray
@@ -44,9 +42,7 @@ class ZipCompressor : Compressor {
     }
   }
 
-  /**
-   * 압축 복원
-   */
+  /** 압축 복원 */
   override fun decompress(input: ByteArray?): ByteArray {
     if (input.isNullOrEmpty)
       return emptyByteArray

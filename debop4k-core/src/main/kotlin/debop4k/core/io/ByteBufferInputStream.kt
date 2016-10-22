@@ -53,8 +53,7 @@ open class ByteBufferInputStream(val buffer: ByteBuffer) : InputStream() {
   }
 
   companion object {
-    @JvmStatic
-    fun of(src: ByteBuffer): ByteBufferInputStream {
+    @JvmStatic fun of(src: ByteBuffer): ByteBufferInputStream {
       val buffer = src.duplicate().apply { flip() }
       return ByteBufferInputStream(buffer)
     }

@@ -49,13 +49,8 @@ class LZ4Compressor : Compressor {
   }
 
   companion object {
-    @JvmStatic
-    val factory: LZ4Factory by lazy { LZ4Factory.fastestInstance() }
-
-    @JvmStatic
-    val compressor: LZ4Compressor by lazy { factory.fastCompressor() }
-
-    @JvmStatic
-    val decompressor: LZ4SafeDecompressor by lazy { factory.safeDecompressor() }
+    @JvmStatic val factory: LZ4Factory by lazy { LZ4Factory.fastestInstance() }
+    @JvmStatic val compressor: LZ4Compressor by lazy { factory.fastCompressor() }
+    @JvmStatic val decompressor: LZ4SafeDecompressor by lazy { factory.safeDecompressor() }
   }
 }

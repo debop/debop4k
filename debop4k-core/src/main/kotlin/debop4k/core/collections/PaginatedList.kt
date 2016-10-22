@@ -41,10 +41,11 @@ interface PaginatedList<out T> {
  *
  * @author debop sunghyouk.bae@gmail.com
  */
-data class SimplePaginatedList<out T>(override val contents: List<T>,
-                                      override val pageNo: Int = 0,
-                                      override val pageSize: Int = 10,
-                                      override val totalItemCount: Long) : PaginatedList<T>, Serializable {
+data class SimplePaginatedList<out T>
+@JvmOverloads constructor(override val contents: List<T>,
+                          override val pageNo: Int = 0,
+                          override val pageSize: Int = 10,
+                          override val totalItemCount: Long) : PaginatedList<T>, Serializable {
 
   override val totalPageCount: Long
 

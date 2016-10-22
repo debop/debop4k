@@ -22,11 +22,4 @@ package debop4k.core.io.serializers
  */
 abstract class SerializerDecorator(val serializer: Serializer) : Serializer by serializer {
 
-//  open override fun serialize(graph: Any?): ByteArray {
-//    return serializer.serialize(graph)
-//  }
-//
-//  open override fun <T> deserialize(bytes: ByteArray?): T? {
-//    return serializer.deserialize(bytes)
-//  }
 }

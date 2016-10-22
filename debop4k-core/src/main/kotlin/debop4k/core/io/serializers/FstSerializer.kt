@@ -18,7 +18,6 @@ package debop4k.core.io.serializers
 
 import debop4k.core.collections.emptyByteArray
 import debop4k.core.collections.isNullOrEmpty
-import debop4k.core.uninitialized
 import org.nustaq.serialization.FSTConfiguration
 
 /**
@@ -41,7 +40,7 @@ open class FstSerializer
   @Suppress("UNCHECKED_CAST")
   override fun <T> deserialize(bytes: ByteArray?): T? {
     if (bytes.isNullOrEmpty)
-      return uninitialized()
+      return null
 
     // Fst 2.x 이상에서 지원
     return conf.asObject(bytes) as? T

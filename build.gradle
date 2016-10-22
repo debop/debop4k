@@ -116,6 +116,8 @@ subprojects {
         }
         dependencies {
             dependency "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+            dependency "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+            dependency "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
             dependency "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
             dependency "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
@@ -171,11 +173,13 @@ subprojects {
     }
 
     dependencies {
-        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-        compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+        compile "org.jetbrains.kotlin:kotlin-stdlib"
+        compile "org.jetbrains.kotlin:kotlin-stdlib-jre7"
+        compile "org.jetbrains.kotlin:kotlin-stdlib-jre8"
+        compile "org.jetbrains.kotlin:kotlin-reflect"
 
-        testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
-        testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+        testCompile "org.jetbrains.kotlin:kotlin-test"
+        testCompile "org.jetbrains.kotlin:kotlin-test-junit"
 
         compile "org.slf4j:slf4j-api:$slf4j_version"
         compile "ch.qos.logback:logback-classic:$logback_version"

@@ -26,7 +26,7 @@ fun <T> firstNotNull(first: T, second: T): T {
 
 fun shouldBe(cond: Boolean): Unit = assert(cond)
 
-fun shouldBe(cond: Boolean, msg: () -> String): Unit = assert(cond, msg)
+inline fun shouldBe(cond: Boolean, msg: () -> Any): Unit = assert(cond, msg)
 
 fun shouldBe(cond: Boolean, fmt: String, vararg args: Any): Unit {
   assert(cond) { fmt.format(*args) }

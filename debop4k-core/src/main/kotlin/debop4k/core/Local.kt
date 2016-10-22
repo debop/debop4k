@@ -52,7 +52,7 @@ object Local {
   @Suppress("UNCHECKED_CAST")
   @JvmStatic
   operator fun <T> get(key: Any): T? {
-    return storage[key] as? T?
+    return storage[key] as? T
   }
 
   /** Thread Local 저장소에 값을 저장합니다. */

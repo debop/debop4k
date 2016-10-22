@@ -115,4 +115,28 @@ class TupleKotlinTest : AbstractCoreKotlinTest() {
       assertThat(t[i]).isEqualTo(any?.toString()?.toInt())
     }
   }
+
+  @Test
+  fun testTuple13() {
+    val t = tupleOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
+    val (a, b, c, d, e, f, g, h, i, j, k, l, m) = t
+    assertThat(a).isEqualTo(t.first).isEqualTo(1)
+    assertThat(b).isEqualTo(t.second).isEqualTo(2)
+    assertThat(c).isEqualTo(t.third).isEqualTo(3)
+    assertThat(d).isEqualTo(t.fourth).isEqualTo(4)
+    assertThat(e).isEqualTo(t.fifth).isEqualTo(5)
+    assertThat(f).isEqualTo(t.sixth).isEqualTo(6)
+    assertThat(g).isEqualTo(t.seventh).isEqualTo(7)
+    assertThat(h).isEqualTo(t.eighth).isEqualTo(8)
+    assertThat(i).isEqualTo(t.ninth).isEqualTo(9)
+    assertThat(j).isEqualTo(t.ten).isEqualTo(10)
+    assertThat(k).isEqualTo(t.eleven).isEqualTo(11)
+    assertThat(l).isEqualTo(t.twelve).isEqualTo(12)
+    assertThat(m).isEqualTo(t.thirteen).isEqualTo(13)
+    assertThat(t.toList()).isEqualTo(listOf(a, b, c, d, e, f, g, h, i, j, k, l, m))
+
+    t.toList().forEachIndexed { i, v ->
+      assertThat(t[i]).isEqualTo(v?.toString()?.toInt())
+    }
+  }
 }

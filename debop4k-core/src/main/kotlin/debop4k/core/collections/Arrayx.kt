@@ -29,7 +29,7 @@ val emptyIntArray: IntArray get() = IntArray(0)
 val emptyLongArray: LongArray get() = LongArray(0)
 val emptyFloatArray: FloatArray get() = FloatArray(0)
 val emptyDoubleArray: DoubleArray get() = DoubleArray(0)
-val emptyStringArray: Array<String> get() = arrayOf<String>()
+val emptyStringArray: Array<String> get() = arrayOf()
 
 val CharArray?.isNullOrEmpty: Boolean get() = this == null || this.isEmpty()
 val ByteArray?.isNullOrEmpty: Boolean get() = this == null || this.isEmpty()

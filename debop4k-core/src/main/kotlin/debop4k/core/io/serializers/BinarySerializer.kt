@@ -20,7 +20,6 @@ package debop4k.core.io.serializers
 import debop4k.core.collections.emptyByteArray
 import debop4k.core.collections.isNullOrEmpty
 import debop4k.core.io.fastByteArrayOutputStreamOf
-import debop4k.core.uninitialized
 import java.io.*
 
 /**
@@ -44,7 +43,7 @@ class BinarySerializer : Serializer {
   @Suppress("UNCHECKED_CAST")
   override fun <T> deserialize(bytes: ByteArray?): T? {
     if (bytes.isNullOrEmpty)
-      return uninitialized()
+      return null
 
     ByteArrayInputStream(bytes).use { bis ->
       ObjectInputStream(bis).use { ois ->

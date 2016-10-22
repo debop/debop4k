@@ -16,7 +16,7 @@
 
 package debop4k.http.retrofit
 
-import debop4k.core.json.DEFAULT_OBJECT_MAPPER
+import debop4k.core.json.DefaultObjectMapper
 import debop4k.core.loggerOf
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -26,7 +26,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 private val log = loggerOf("Retrofitx")
 
 @JvmField val DefaultConverterFactory: Converter.Factory
-    = JacksonConverterFactory.create(DEFAULT_OBJECT_MAPPER)
+    = JacksonConverterFactory.create(DefaultObjectMapper)
 //    = MoshiConverterFactory.create()
 
 /**

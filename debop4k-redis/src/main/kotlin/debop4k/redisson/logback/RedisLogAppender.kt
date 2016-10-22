@@ -20,15 +20,12 @@ import ch.qos.logback.classic.spi.LoggingEvent
 import ch.qos.logback.classic.spi.ThrowableProxyUtil
 import ch.qos.logback.core.CoreConstants
 import ch.qos.logback.core.UnsynchronizedAppenderBase
+import debop4k.core.json.DefaultJacksonSerializer
 import debop4k.core.json.JsonSerializer
-import debop4k.core.json.defaultJacksonSerializer
 import debop4k.core.logback.LogDocument
 import debop4k.core.uninitialized
 import debop4k.core.utils.EMPTY_STRING
-import debop4k.redisson.DEFAULT_DATABASE
-import debop4k.redisson.DEFAULT_HOST
-import debop4k.redisson.DEFAULT_PORT
-import debop4k.redisson.DEFAULT_TIMEOUT
+import debop4k.redisson.*
 import org.joda.time.DateTime
 import org.redisson.Redisson
 import org.redisson.api.RedissonClient
@@ -44,7 +41,7 @@ open class RedisLogAppender : UnsynchronizedAppenderBase<LoggingEvent>() {
     @JvmField val DEFAULT_KEY = RedisLogAppender::class.java.`package`.name + ".logs"
   }
 
-  val serializer: JsonSerializer = defaultJacksonSerializer
+  val serializer: JsonSerializer = DefaultJacksonSerializer
 
   @Volatile protected var redisson: RedissonClient? = uninitialized()
 

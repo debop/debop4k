@@ -14,28 +14,25 @@
  *
  */
 
-package debop4k.core.json
+package debop4k.examples.coroutines
 
-import com.squareup.moshi.Moshi
-import debop4k.core.utils.EMPTY_STRING
+import debop4k.examples.AbstractExampleTest
+import org.junit.Test
 
 /**
- * MoshiSerializer
+ * CoroutineExample
  * @author sunghyouk.bae@gmail.com
  */
-class MoshiSerializer(val moshi: Moshi = DefaultMoshi) : JsonSerializer {
+class CoroutineExample : AbstractExampleTest() {
 
-  override fun <T : Any> toString(graph: T?): String {
-    if (graph == null)
-      return EMPTY_STRING
-
-    return moshi.adapter(graph.javaClass).toJson(graph)
-  }
-
-  override fun <T : Any> fromString(jsonText: String?, clazz: Class<T>): T? {
-    if (jsonText.isNullOrEmpty())
-      return null
-
-    return moshi.adapter(clazz).fromJson(jsonText!!)
+  @Test
+  fun testAsync() {
+//    val future = async<String> {
+//      (1..5).map {
+//        await(startLongAsyncOperation(it)) // suspend while the long method is running
+//      }.joinToString("\n")
+//    }
+//
+//    println(future.get())
   }
 }

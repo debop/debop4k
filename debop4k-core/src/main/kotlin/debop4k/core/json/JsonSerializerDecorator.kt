@@ -27,14 +27,6 @@ import debop4k.core.utils.toUtf8String
  */
 abstract class JsonSerializerDecorator(val serializer: JsonSerializer) : JsonSerializer by serializer {
 
-//  override fun <T : Any> toByteArray(graph: T?): ByteArray {
-//    return serializer.toByteArray(graph)
-//  }
-//
-//  override fun <T : Any> fromByteArray(jsonBytes: ByteArray?, clazz: Class<T>): T? {
-//    return serializer.fromByteArray(jsonBytes, clazz)
-//  }
-
   override fun <T : Any> toString(graph: T?): String {
     return toByteArray(graph).toUtf8String()
   }

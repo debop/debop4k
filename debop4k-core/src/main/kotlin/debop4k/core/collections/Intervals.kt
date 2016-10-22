@@ -34,8 +34,8 @@ object Intervals {
    * @param intProcedure 실행할 consumer
    */
   @JvmStatic
-  fun runEach(interval: IntInterval, intProcedure: (Int) -> Unit) {
-    interval.forEach(intProcedure)
+  inline fun runEach(interval: IntInterval, crossinline intProcedure: (Int) -> Unit) {
+    interval.forEach { intProcedure(it) }
   }
 
   object Ints {
@@ -60,6 +60,7 @@ object Intervals {
       for (i in 0..partitionCount - 1) {
         lists.add(IntArrayList())
       }
+
       interval.forEachWithIndex { value, index ->
         val partition = index / groupSize
         lists[partition].add(value)

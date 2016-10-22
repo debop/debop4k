@@ -26,7 +26,8 @@ import java.nio.ByteBuffer
 /**
  * [ByteBuffer] 가 null 이거나 일을 수 있는 바이트가 없다면 true 를 반환한다
  */
-val ByteBuffer?.isNullOrEmpty: Boolean get() = (this == null || this.remaining() == 0)
+val ByteBuffer?.isNullOrEmpty: Boolean
+  get() = (this == null || this.remaining() == 0)
 
 /**
  * ByteBuffer를 읽어 바이트 배열을 빌드합니다

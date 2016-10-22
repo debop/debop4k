@@ -48,7 +48,6 @@ fun createDirectory(dir: String): File? {
     val created = file.mkdirs()
 
     return if (created) file else null
-
   } catch(e: Exception) {
     log.error("디렉토리 생성에 실패했습니다. dir=$dir")
     return null
@@ -95,12 +94,13 @@ fun moveAsync(src: File, dest: File): Promise<Unit, Exception> = task { move(src
 
 /** 파일 삭제 */
 fun delete(file: File): Unit {
-  log.debug("delete file... file=$file")
+  log.debug("delete file... file={}", file)
   FileUtils.forceDelete(file)
 }
 
 /** 파일이 존재할 때 파일 삭제 */
 fun deleteIfExists(path: String): Unit {
+  log.debug("delete file... path={}", path)
   val file = File(path)
   if (file.exists()) {
     FileUtils.deleteQuietly(file)
