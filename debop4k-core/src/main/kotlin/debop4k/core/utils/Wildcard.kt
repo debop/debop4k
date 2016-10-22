@@ -52,6 +52,7 @@ object Wildcard {
   /**
    * Internal matching recursive Functionx.
    */
+  @Suppress("NAME_SHADOWING")
   private fun match(string: CharSequence, pattern: CharSequence, sNdx: Int = 0, pNdx: Int = 0): Boolean {
     var sNdx = sNdx
     var pNdx = pNdx

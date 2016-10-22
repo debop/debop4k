@@ -117,10 +117,10 @@ fun zip(file: File): File? {
   val zipFilename = file.absolutePath + ZIP_EXT
 
   return ZipBuilder.of(zipFilename)
-             .add(file)?.apply { recursive = true }
-             ?.save()
-             ?.toZipFile()
-         ?: null
+      .add(file)
+      ?.apply { recursive = true }
+      ?.save()
+      ?.toZipFile()
 }
 
 /**

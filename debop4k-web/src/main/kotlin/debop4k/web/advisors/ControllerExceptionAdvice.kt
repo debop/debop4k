@@ -14,15 +14,20 @@
  *
  */
 
-dependencies {
+package debop4k.web.advisors
 
-    compile project(":debop4k-config")
-    compile project(":debop4k-core")
-    compile project(":debop4k-spring")
+import org.springframework.web.bind.annotation.ControllerAdvice
+import org.springframework.web.bind.annotation.ExceptionHandler
+import java.lang.RuntimeException
 
-    compile "org.springframework.boot:spring-boot-starter-aop:$spring_boot_version"
-    compile "org.springframework.boot:spring-boot-starter-web:$spring_boot_version"
-    compile "org.springframework.boot:spring-boot-starter-tomcat:$spring_boot_version"
-    compile "org.springframework.boot:spring-boot-starter-data-rest:$spring_boot_version"
+/**
+ * Spring MVC의 Controller 에서 발생하는 예외를 처리하는 Handler 입니다.
+ * @author sunghyouk.bae@gmail.com
+ */
+@ControllerAdvice
+class ControllerExceptionAdvice {
+
+  @ExceptionHandler(RuntimeException::class)
+  fun runtimeExceptionHandler(): String = "error/runtime"
 
 }

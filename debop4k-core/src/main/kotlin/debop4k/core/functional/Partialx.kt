@@ -14,7 +14,8 @@
  *
  */
 
-@file:JvmName("partials")
+@file:JvmName("Partialx")
+@file:Suppress("UNUSED_PARAMETER")
 
 package debop4k.core.functional
 

@@ -14,15 +14,20 @@
  *
  */
 
-dependencies {
+package debop4k.web.rest
 
-    compile project(":debop4k-config")
-    compile project(":debop4k-core")
-    compile project(":debop4k-spring")
+import java.io.Serializable
 
-    compile "org.springframework.boot:spring-boot-starter-aop:$spring_boot_version"
-    compile "org.springframework.boot:spring-boot-starter-web:$spring_boot_version"
-    compile "org.springframework.boot:spring-boot-starter-tomcat:$spring_boot_version"
-    compile "org.springframework.boot:spring-boot-starter-data-rest:$spring_boot_version"
+/**
+ * RESTful API 의 결과
+ * @author sunghyouk.bae@gmail.com
+ */
+data class ApiResult
+@JvmOverloads
+constructor(val header: ApiHeader = DefaultApiHeader, val body: Any? = null) : Serializable {
+
+  constructor(code: Int, body: Any?) : this(ApiHeader(code = code), body)
 
 }
+
+val EmptyApiResult = ApiResult()

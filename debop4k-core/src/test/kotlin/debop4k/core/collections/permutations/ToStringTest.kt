@@ -49,7 +49,7 @@ class ToStringTest : AbstractPermutationTest() {
 
     assertThat(notFull.toString()).isEqualTo("[1, 2, ?]")
 
-    notFull.forEach { it }
+    notFull.forEach { }
     assertThat(notFull.toString()).isEqualTo("[1, 2]")
   }
 }

@@ -20,6 +20,7 @@ package debop4k.core.utils
 
 import debop4k.core.loggerOf
 import java.io.Closeable
+import java.lang.Exception
 import java.util.concurrent.atomic.*
 
 val DUMMY_CLOSE_ACTION: Runnable = Runnable { }
@@ -87,6 +88,7 @@ fun AutoCloseable.closeSafe(): Unit {
   }
 }
 
+@Suppress("UNUSED_PARAMETER")
 internal fun AutoCloseable.closeSuppressed(cause: Throwable): Unit {
   try {
     close()
