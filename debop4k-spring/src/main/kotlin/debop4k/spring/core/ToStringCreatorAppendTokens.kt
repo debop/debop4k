@@ -1,11 +1,10 @@
 /*
- * Copyright 2016 Sunghyouk Bae<sunghyouk.bae@gmail.com>
- *
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,10 +18,10 @@ package debop4k.spring.core
 import org.springframework.core.style.ToStringCreator
 
 /**
- * [ToStringCreator] 를 Wrapping 한 클래스입니다.
+ * [toStringCreatorOf] 를 Wrapping 한 클래스입니다.
  * @author debop sunghyouk.bae@gmail.com
  */
-class ToStringCreatorAppendTokens(private val toStringCreator: ToStringCreator) {
+open class ToStringCreatorAppendTokens(private val toStringCreator: ToStringCreator) {
 
   operator fun get(fieldName: String, value: Byte): ToStringCreator = toStringCreator.append(fieldName, value)
 

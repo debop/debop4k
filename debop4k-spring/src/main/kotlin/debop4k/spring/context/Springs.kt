@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.spring.context
@@ -36,6 +35,7 @@ import javax.inject.Inject
  * Springs
  * @author debop sunghyouk.bae@gmail.com
  */
+// TODO: Object로 변경하고, ApplicationContext를 static variable에 inject 하도록 합니다.
 @Component
 open class Springs @Inject constructor(private val _context: ApplicationContext) {
 

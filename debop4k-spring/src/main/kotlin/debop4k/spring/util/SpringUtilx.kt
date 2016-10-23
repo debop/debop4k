@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 @file:JvmName("SpringUtilx")
@@ -19,10 +18,10 @@
 package debop4k.spring.util
 
 import debop4k.core.functional.GetterSetterOperation
-import org.slf4j.LoggerFactory
+import debop4k.core.loggerOf
 import org.springframework.util.StopWatch
 
-private val log = LoggerFactory.getLogger("SpringUtilx")
+private val log = loggerOf("SpringUtilx")
 
 /**
  * [System#getProperty], [System#setProperty] 를 kotlin 방식으로 수행해주는 변수
@@ -34,7 +33,8 @@ val sysproperty: GetterSetterOperation<String, String>
 /**
  * [StopWatch] 실행
  */
-fun stopWatch(id: String = "", body: StopWatch.() -> Unit): StopWatch {
+inline fun stopWatch(id: String = "", body: StopWatch.() -> Unit): StopWatch {
+  val log = loggerOf("StopWatch")
   log.debug("Start stopwatch ... id=$id")
 
   val watch = StopWatch()
@@ -45,7 +45,8 @@ fun stopWatch(id: String = "", body: StopWatch.() -> Unit): StopWatch {
 /**
  * [StopWatch] 실행
  */
-fun <T> StopWatch.task(name: String = "", body: () -> T): T {
+inline fun <T> StopWatch.task(name: String = "", body: () -> T): T {
+  val log = loggerOf("StopWatch")
   log.debug("Start stopwatch task. name={}", name)
 
   this.start(name)
@@ -53,6 +54,6 @@ fun <T> StopWatch.task(name: String = "", body: () -> T): T {
     return body()
   } finally {
     this.stop()
-    log.debug("{}", this.prettyPrint())
+    log.debug("Stopwatch result={}", this.prettyPrint())
   }
 }
