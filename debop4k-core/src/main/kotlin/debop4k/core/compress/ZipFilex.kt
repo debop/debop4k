@@ -146,6 +146,7 @@ fun unzip(zipFile: File, destDir: File?, vararg patterns: String): Unit {
         continue
       }
     }
+
     val file = File(destDir, entryName)
     if (entry.isDirectory) {
       if (!file.mkdirs()) {
@@ -185,12 +186,9 @@ fun addToZip(zos: ZipOutputStream,
   if (!file.exists()) {
     FileNotFoundException(file.toString())
   }
-  var _path: String? = path
-  if (_path == null) {
-    _path = file.name
-  }
+  var _path: String = path ?: file.name
 
-  while (_path!!.length != 0 && _path[0] == '/') {
+  while (_path.length != 0 && _path[0] == '/') {
     _path = _path.substring(1)
   }
 
@@ -240,9 +238,9 @@ fun addToZip(zos: ZipOutputStream,
 @JvmOverloads
 fun addToZip(zos: ZipOutputStream,
              content: ByteArray,
-             path: String,
+             path: String?,
              comment: String? = null): Unit {
-  var _path: String = path
+  var _path = path ?: ""
   while (!_path.isEmpty() && _path[0] == '/') {
     _path = _path.substring(1)
   }
@@ -269,9 +267,9 @@ fun addToZip(zos: ZipOutputStream,
 
 @JvmOverloads
 fun addFolderToZip(zos: ZipOutputStream,
-                   path: String,
+                   path: String?,
                    comment: String? = null): Unit {
-  var _path: String = path
+  var _path: String = path ?: ""
   while (!_path.isEmpty() && _path[0] == '/') {
     _path = _path.substring(1)
   }

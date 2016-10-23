@@ -28,7 +28,7 @@ import java.nio.charset.Charset
 
 private val log = loggerOf("IOStreamx")
 
-@JvmField val DEFAULT_BLOCK_SIZE = 4096
+const val DEFAULT_BLOCK_SIZE = 1024 * 8
 
 /** Empty [InputStream] */
 val emptyInputStream: InputStream
@@ -45,12 +45,13 @@ fun fastByteArrayOutputStreamOf(blockSize: Int = DEFAULT_BLOCK_SIZE): FastByteAr
 /**
  * [InputStream]의 정보를 읽어, [OutputStream]에 씁니다.
  */
-fun InputStream.copy(output: OutputStream): Long {
-  val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+@JvmOverloads
+fun InputStream.copy(output: OutputStream, bufferSize: Int = DEFAULT_BUFFER_SIZE): Long {
+  val buffer = ByteArray(bufferSize)
   var readBytes = 0L
 
   do {
-    val bytes = this.read(buffer, 0, DEFAULT_BUFFER_SIZE)
+    val bytes = this.read(buffer, 0, bufferSize)
     if (bytes > 0) {
       output.write(buffer, 0, bytes)
       readBytes += bytes
@@ -61,6 +62,7 @@ fun InputStream.copy(output: OutputStream): Long {
   return readBytes
 }
 
+@JvmOverloads
 fun InputStream.copy(writer: Writer, cs: Charset = Charsets.UTF_8): Long {
   return this.reader(cs).copy(writer)
 }
@@ -128,10 +130,7 @@ fun ByteArray?.toOutputStream(blockSize: Int = DEFAULT_BLOCK_SIZE): FastByteArra
 @JvmOverloads
 fun String?.toOutputStream(blockSize: Int = DEFAULT_BLOCK_SIZE,
                            cs: Charset = Charsets.UTF_8): FastByteArrayOutputStream {
-  if (this.isNullOrBlank())
-    return emptyOutputStream
-
-  return this!!.toByteArray(cs).toOutputStream(blockSize)
+  return this?.toByteArray(cs)?.toOutputStream(blockSize) ?: emptyOutputStream
 }
 
 fun InputStream?.availableBytes(): ByteArray {
@@ -149,8 +148,7 @@ fun InputStream?.toByteArray(): ByteArray {
 }
 
 /** [InputStream]을 읽어 [ByteBuffer]를 빌드합니다 */
-fun InputStream.toByteBuffer(): ByteBuffer
-    = ByteBuffer.wrap(this.toByteArray())
+fun InputStream.toByteBuffer(): ByteBuffer = ByteBuffer.wrap(this.toByteArray())
 
 /** [InputStream]을 읽어 문자열로 빌드합니다 */
 @JvmOverloads

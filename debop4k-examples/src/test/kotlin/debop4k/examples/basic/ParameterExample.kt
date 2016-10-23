@@ -29,7 +29,9 @@ class ParameterExample : AbstractExampleTest() {
   @Test
   fun parameterBackingField() {
 
+    @Suppress("NAME_SHADOWING")
     fun overrideParameter(arg1: Int): Int {
+      // shadowd paramter
       var arg1: Int = arg1
       arg1 += arg1
       return arg1

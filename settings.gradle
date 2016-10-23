@@ -29,8 +29,6 @@ include 'debop4k-data-mongodb'
 include 'debop4k-data-mybatis'
 include 'debop4k-data-orm'
 
-include 'debop4k-examples'
-
 include 'debop4k-http'
 include 'debop4k-reactive'
 include 'debop4k-redis'
@@ -45,3 +43,5 @@ include 'debop4k-spring-webmvc'
 include 'debop4k-timeperiod'
 include 'debop4k-units'
 include 'debop4k-web'
+
+include 'debop4k-examples'
