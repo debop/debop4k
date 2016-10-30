@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.reactive
@@ -35,6 +34,16 @@ class BasicRectiveTest : AbstractReactiveTest() {
 
     verify(a, times(1)).received("Hello")
   }
+
+  @Test fun testCreateObservable() {
+    observable<String> { subscriber ->
+      subscriber.onNext("Hello")
+      subscriber.onCompleted()
+    }.subscribe { a.received(it) }
+
+    verify(a, times(1)).received("Hello")
+  }
+
 
   @Test fun testFilter() {
     Observable.from(listOf(1, 2, 3)).filter { it >= 2 }.subscribe(received())

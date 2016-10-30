@@ -11,20 +11,17 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 @file:JvmName("Completablex")
 
 package debop4k.reactive
 
-import rx.Completable
-import rx.Observable
-import rx.Single
+import rx.*
 import rx.functions.Action0
 import java.util.concurrent.*
 import kotlin.reflect.KCallable
 
-fun <T> completableOf(f: () -> T): Completable
+inline fun <T> completableOf(crossinline f: () -> T): Completable
     = Completable.fromAction { f.invoke() }
 
 fun <T> completableOf(f: KCallable<T>): Completable

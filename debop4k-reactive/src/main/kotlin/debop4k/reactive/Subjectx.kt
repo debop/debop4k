@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 @file:JvmName("Subjectx")
 
@@ -28,4 +27,7 @@ fun <T> ReplaySubject(capacity: Int = 16): ReplaySubject<T> = rx.subjects.Replay
 
 fun <F, T> Subject<F, T>.synchronized(): Subject<F, T> = SerializedSubject(this)
 
-fun <T> TestSubject(scheduler: TestScheduler = TestScheduler()): TestSubject<T> = rx.subjects.TestSubject.create(scheduler)
+@JvmOverloads
+fun <T> TestSubject(scheduler: TestScheduler = TestScheduler()): TestSubject<T> {
+  return rx.subjects.TestSubject.create(scheduler)
+}

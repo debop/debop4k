@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 @file:JvmName("Observablex")
@@ -27,7 +26,9 @@ import rx.observables.BlockingObservable
 
 fun <T> emptyObservable(): Observable<T> = Observable.empty()
 fun <T> observable(body: OnSubscribe<T>): Observable<T> = Observable.create(body)
-fun <T> observable(body: (s: Subscriber<in T>) -> Unit): Observable<T> = Observable.create(body)
+fun <T> observable(body: (s: Subscriber<in T>) -> Unit): Observable<T> {
+  return Observable.create(body)
+}
 
 fun <T> deferredObservable(observableFactory: () -> Observable<T>): Observable<T> =
     Observable.defer(observableFactory)
@@ -75,7 +76,7 @@ fun <T> Throwable.toObservable(): Observable<T> = Observable.error(this)
 fun <T> Iterable<Observable<out T>>.merge(): Observable<T> = Observable.merge(this.toObservable())
 fun <T> Iterable<Observable<out T>>.mergeDelayError(): Observable<T> = Observable.mergeDelayError(this.toObservable())
 
-fun <T, R> Observable<T>.fold(initial: R, body: (R, T) -> R): Observable<R> {
+inline fun <T, R> Observable<T>.fold(initial: R, crossinline body: (R, T) -> R): Observable<R> {
   return reduce(initial, { a, e -> body(a, e) })
 }
 
@@ -85,7 +86,7 @@ fun <T> BlockingObservable<T>.firstOrNull(): T = this.firstOrDefault(null)
 
 fun <T> Observable<T>.onErrorReturnNull(): Observable<T?> = this.onErrorReturn<T> { null }
 
-fun <T, R> Observable<T>.lift(operator: (Subscriber<in R>) -> Subscriber<in T>): Observable<R> {
+inline fun <T, R> Observable<T>.lift(crossinline operator: (Subscriber<in R>) -> Subscriber<in T>): Observable<R> {
   return this.lift { operator(it!!) }
 }
 
@@ -101,7 +102,7 @@ fun <T> Observable<T>.withIndex(): Observable<IndexedValue<T>> {
   }
 }
 
-fun <T, R> Observable<T>.flatMapSequence(body: (T) -> Sequence<R>): Observable<R> {
+inline fun <T, R> Observable<T>.flatMapSequence(crossinline body: (T) -> Sequence<R>): Observable<R> {
   return flatMap { body(it).toObservable() }
 }
 
@@ -114,12 +115,12 @@ inline fun <T> Observable<T>.subscribeWith(body: FunctionSubscriberModifier<T>.(
 fun <T> Observable<Observable<T>>.switchOnNext(): Observable<T> = Observable.switchOnNext(this)
 
 @Suppress("UNCHECKED_CAST")
-fun <T, R> List<Observable<T>>.combineLatest(combineFunction: (args: List<T>) -> R): Observable<R> {
+inline fun <T, R> List<Observable<T>>.combineLatest(crossinline combineFunction: (args: List<T>) -> R): Observable<R> {
   return Observable.combineLatest(this, { combineFunction(it.asList() as List<T>) })
 }
 
 @Suppress("UNCHECKED_CAST")
-fun <T, R> List<Observable<T>>.zip(zipFunction: (args: List<T>) -> R): Observable<R> {
+inline fun <T, R> List<Observable<T>>.zip(crossinline zipFunction: (args: List<T>) -> R): Observable<R> {
   return Observable.zip(this, { zipFunction(it.asList() as List<T>) })
 }
 

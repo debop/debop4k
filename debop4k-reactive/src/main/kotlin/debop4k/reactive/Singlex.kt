@@ -11,15 +11,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 @file:JvmName("Singlex")
 
 package debop4k.reactive
 
-import rx.Single
-import rx.SingleSubscriber
-import rx.Subscription
+import rx.*
 import java.util.concurrent.*
 import java.util.function.*
 
