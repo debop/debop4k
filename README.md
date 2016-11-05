@@ -1,6 +1,6 @@
 # debop4k [![Build Status](https://travis-ci.org/debop/debop4k.png)](https://travis-ci.org/debop/debop4k)
 
-Backend library for Kotlin JVM
+Backend application library for Kotlin JVM
 
 ## Modules
 
@@ -16,7 +16,13 @@ Backend library for Kotlin JVM
 
 ## Build from Source
 
-Maven
- 
+### Gradle (recommended) 
+  
+    ./gradlew clean install
+
+### Maven
+  
     ./mvnw clean install
     
+
+
