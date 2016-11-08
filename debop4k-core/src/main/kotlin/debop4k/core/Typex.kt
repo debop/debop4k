@@ -18,6 +18,8 @@
 
 package debop4k.core
 
+import java.lang.IllegalArgumentException
+import java.lang.IllegalStateException
 import java.lang.reflect.*
 import kotlin.reflect.KClass
 
@@ -48,9 +50,9 @@ fun Type.erasedType(): Class<Any> = when (this) {
     val testArray = java.lang.reflect.Array.newInstance(elementType, 0)
     testArray.javaClass
   }
-  is TypeVariable<*>   -> throw IllegalStateException("지원되지 않는 수형입니다.")
+  is TypeVariable<*> -> error("지원되지 않는 수형입니다.")
   is WildcardType      -> this.upperBounds[0].erasedType()
-  else                 -> throw IllegalStateException("지원되지 않는 수형힙니다.")
+  else -> error("지원되지 않는 수형힙니다.")
 }
 
 fun <T : Any> KClass<T>.isAssignableFrom(other: Type): Boolean =

@@ -17,6 +17,7 @@
 package debop4k.core.retry
 
 import nl.komponents.kovenant.Promise
+import java.lang.Exception
 import java.util.concurrent.*
 
 /**

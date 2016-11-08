@@ -16,6 +16,8 @@
 
 package debop4k.core.result
 
+import java.lang.Exception
+
 /**
  * 예외가 아님을 나타내는 클래스
  * @author sunghyouk.bae@gmail.com

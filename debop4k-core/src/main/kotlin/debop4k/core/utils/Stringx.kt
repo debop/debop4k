@@ -31,6 +31,7 @@ import debop4k.core.utils.codecs.encodeBase64AsString
 import debop4k.core.utils.codecs.encodeHexAsString
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.eclipse.collections.impl.list.mutable.primitive.CharArrayList
+import java.lang.UnsupportedOperationException
 import java.nio.charset.Charset
 import java.util.regex.*
 

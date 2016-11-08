@@ -16,6 +16,8 @@
 
 package debop4k.core
 
+import java.lang.IllegalArgumentException
+
 /**
  * 문자열을 인코딩하는 방식
  *

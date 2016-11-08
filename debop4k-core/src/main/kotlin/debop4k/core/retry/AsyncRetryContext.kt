@@ -16,6 +16,8 @@
 
 package debop4k.core.retry
 
+import java.lang.Exception
+
 /**
  * AsyncRetryContext
  * @author debop sunghyouk.bae@gmail.com

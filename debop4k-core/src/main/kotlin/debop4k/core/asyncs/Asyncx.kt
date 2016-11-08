@@ -19,6 +19,7 @@
 package debop4k.core.asyncs
 
 import nl.komponents.kovenant.*
+import java.lang.Exception
 import java.util.concurrent.*
 
 /**

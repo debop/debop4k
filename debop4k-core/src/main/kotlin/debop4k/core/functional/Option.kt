@@ -22,6 +22,7 @@ import debop4k.core.functional.Option.Some
 import debop4k.core.functional.eithers.Either
 import debop4k.core.functional.eithers.Either.Left
 import debop4k.core.functional.eithers.Either.Right
+import java.lang.Exception
 import java.util.*
 
 /**

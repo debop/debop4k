@@ -18,6 +18,8 @@
 
 package debop4k.core
 
+import java.lang.IllegalArgumentException
+
 infix inline fun <T> T.firstNotNull(factory: () -> T): T = this ?: factory() //if (this != null) this else factory()
 
 infix inline fun <T> T.verifiedBy(verifier: (T) -> Unit): T {

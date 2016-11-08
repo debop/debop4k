@@ -18,6 +18,8 @@
 
 package debop4k.core
 
+import java.lang.IllegalArgumentException
+
 fun <T> firstNotNull(first: T, second: T): T {
   if (!areEquals(first, null)) return first
   else if (!areEquals(second, null)) return second

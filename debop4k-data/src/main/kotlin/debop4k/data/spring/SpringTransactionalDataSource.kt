@@ -18,6 +18,7 @@ package debop4k.data.spring
 
 import org.springframework.jdbc.datasource.AbstractDataSource
 import org.springframework.jdbc.datasource.DataSourceUtils
+import java.lang.UnsupportedOperationException
 import java.sql.Connection
 import javax.sql.DataSource
 
@@ -33,7 +34,7 @@ class SpringTransactionalDataSource : AbstractDataSource() {
   override fun getConnection(): Connection {
     val conn = DataSourceUtils.getConnection(inner)
     if (!DataSourceUtils.isConnectionTransactional(conn, inner)) {
-      throw IllegalStateException("Connection is not transactional")
+      error("Connection is not transactional")
     }
     return conn
   }

@@ -18,6 +18,7 @@ package debop4k.core.collections
 
 import org.eclipse.collections.api.block.predicate.Predicate
 import org.eclipse.collections.impl.list.mutable.FastList
+import java.lang.IndexOutOfBoundsException
 import java.util.*
 
 /**

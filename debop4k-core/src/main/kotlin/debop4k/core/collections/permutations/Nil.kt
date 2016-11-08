@@ -16,6 +16,7 @@
 
 package debop4k.core.collections.permutations
 
+import java.lang.IndexOutOfBoundsException
 import java.util.*
 
 /**
