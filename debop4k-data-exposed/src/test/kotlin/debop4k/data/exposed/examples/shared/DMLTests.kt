@@ -11,15 +11,23 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
-package debop4k.data.exposed.examples
+package debop4k.data.exposed.examples.shared
 
-import debop4k.data.exposed.examples.DMLData.Cities
-import debop4k.data.exposed.examples.DMLData.UserData
-import debop4k.data.exposed.examples.DMLData.Users
+import debop4k.core.kodatimes.asUtc
+import debop4k.core.kodatimes.trimToMillis
+import debop4k.data.exposed.dao.LongIdTable
+import debop4k.data.exposed.examples.DatabaseTestBase
+import debop4k.data.exposed.examples.TestDB
+import debop4k.data.exposed.examples.TestDB.POSTGRESQL
+import debop4k.data.exposed.examples.shared.DMLData.Cities
+import debop4k.data.exposed.examples.shared.DMLData.E
+import debop4k.data.exposed.examples.shared.DMLData.Misc
+import debop4k.data.exposed.examples.shared.DMLData.UserData
+import debop4k.data.exposed.examples.shared.DMLData.Users
 import org.assertj.core.api.Assertions.assertThat
+import org.jetbrains.exposed.dao.IntIdTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
 import org.joda.time.DateTime
@@ -424,7 +432,7 @@ class DMLTests : DatabaseTestBase() {
 
   @Test fun testOrderBy02() {
     val expected = listOf("eugene", "sergey", "andrey", "alex", "smth")
-    withCitiesAndUsers(exclude = listOf(TestDB.POSTGRESQL)) { cities, users, userData ->
+    withCitiesAndUsers(exclude = listOf(POSTGRESQL)) { cities, users, userData ->
       val r = users.slice(users.id).selectAll()
           .orderBy(users.cityId, false)
           .orderBy(users.id)
@@ -438,7 +446,7 @@ class DMLTests : DatabaseTestBase() {
 
   @Test fun testOrderBy03() {
     val expected = listOf("eugene", "sergey", "andrey", "alex", "smth")
-    withCitiesAndUsers(exclude = listOf(TestDB.POSTGRESQL)) { cities, users, userData ->
+    withCitiesAndUsers(exclude = listOf(POSTGRESQL)) { cities, users, userData ->
       val r = users.slice(users.id).selectAll()
           .orderBy(users.cityId to false)
           .orderBy(users.id to true)
@@ -565,47 +573,85 @@ class DMLTests : DatabaseTestBase() {
 
   @Test fun testCalc03() {
     withCitiesAndUsers { cities, users, userData ->
+      val sum = Expression.build { Sum(cities.id * 100 + userData.value / 10, IntegerColumnType()) }
+      val r = (users innerJoin userData innerJoin cities).slice(users.id, sum)
+          .selectAll()
+          .groupBy(users.id)
+          .orderBy(users.id)
+          .toList()
 
+      assertThat(r).hasSize(2)
+      assertThat(r[0][users.id]).isEqualTo("eugene")
+      assertThat(r[0][sum]).isEqualTo(202)
+      assertThat(r[1][users.id]).isEqualTo("sergey")
+      assertThat(r[1][sum]).isEqualTo(203)
     }
   }
 
   @Test fun testSubstring01() {
     withCitiesAndUsers { cities, users, userData ->
+      val substring = users.name.substring(1, 2)
+      val r = users.slice(users.id, substring)
+          .selectAll()
+          .orderBy(users.id)
+          .toList()
 
+      assertThat(r).hasSize(5)
+      assertThat(r[0][substring]).isEqualTo("Al")
+      assertThat(r[1][substring]).isEqualTo("An")
+      assertThat(r[2][substring]).isEqualTo("Eu")
+      assertThat(r[3][substring]).isEqualTo("Se")
+      assertThat(r[4][substring]).isEqualTo("So")
     }
   }
 
   @Test fun testInsertSelect01() {
     withCitiesAndUsers { cities, users, userData ->
+      val substring = users.name.substring(1, 2).upperCase()
+      cities.insert(users.slice(substring).selectAll().orderBy(users.id).limit(2))
 
+      val r = cities.slice(cities.name).selectAll().orderBy(cities.id, false).limit(2).toList()
+      assertThat(r).hasSize(2)
+      assertThat(r[0][cities.name]).isEqualTo("AN")
+      assertThat(r[1][cities.name]).isEqualTo("AL")
     }
   }
 
   @Test fun testInsertSelect02() {
     withCitiesAndUsers { cities, users, userData ->
+      userData.insert(userData.slice(userData.user_id, userData.comment, intParam(42)).selectAll())
 
+      val r = userData.select { userData.value eq 42 }.orderBy(userData.user_id).toList()
+      assertThat(r).hasSize(3)
     }
   }
 
   @Test fun testSelectCase01() {
     withCitiesAndUsers { cities, users, userData ->
+      val field = Expression.build { case().When(users.id eq "alex", stringLiteral("11")).Else(stringLiteral("22")) }
+      val r = users.slice(users.id, field).selectAll().orderBy(users.id).limit(2).toList()
 
+      assertThat(r).hasSize(2)
+      assertThat(r[0][users.id]).isEqualTo("alex")
+      assertThat(r[0][field]).isEqualTo("11")
+      assertThat(r[1][users.id]).isEqualTo("andrey")
+      assertThat(r[1][field]).isEqualTo("22")
     }
   }
 
-  private fun DMLData.Misc.checkRow(row: ResultRow,
-                                    n: Int, nn: Int?,
-                                    d: DateTime, dn: DateTime?,
-                                    t: DateTime, tn: DateTime?,
-                                    e: DMLData.E, en: DMLData.E?,
-                                    s: String, sn: String?,
-                                    dc: BigDecimal, dcn: BigDecimal?) {
+  private fun Misc.checkRow(row: ResultRow,
+                            n: Int, nn: Int?,
+                            d: DateTime, dn: DateTime?,
+                            t: DateTime, tn: DateTime?,
+                            e: E, en: E?,
+                            s: String, sn: String?,
+                            dc: BigDecimal, dcn: BigDecimal?) {
     assertThat(row[this.n]).isEqualTo(n)
     assertThat(row[this.nn]).isEqualTo(nn)
-    assertThat(row[this.d]).isEqualTo(d)
-    assertThat(row[this.dn]).isEqualTo(dn)
-    assertThat(row[this.t]).isEqualTo(t)
-    assertThat(row[this.tn]).isEqualTo(tn)
+    assertThat(row[this.d]).isEqualTo(d.asUtc().withTimeAtStartOfDay())
+    assertThat(row[this.dn]).isEqualTo(dn?.asUtc()?.withTimeAtStartOfDay())
+    assertThat(row[this.t].trimToMillis()).isEqualTo(t.asUtc().trimToMillis())
+    assertThat(row[this.tn]?.trimToMillis()).isEqualTo(tn?.asUtc()?.trimToMillis())
     assertThat(row[this.e]).isEqualTo(e)
     assertThat(row[this.en]).isEqualTo(en)
     assertThat(row[this.s]).isEqualTo(s)
@@ -615,50 +661,161 @@ class DMLTests : DatabaseTestBase() {
   }
 
   @Test fun testInsert01() {
-    withCitiesAndUsers { cities, users, userData ->
+    val tbl = DMLData.Misc
+    val date = today
+    val time = DateTime.now()
 
+    withTables(tbl) {
+      tbl.insert {
+        it[n] = 42
+        it[d] = date
+        it[t] = time
+        it[e] = DMLData.E.ONE
+        it[s] = "test"
+        it[dc] = BigDecimal("239.42")
+      }
+
+      val row = tbl.selectAll().single()
+      tbl.checkRow(row, 42, null, date, null, time, null, DMLData.E.ONE, null, "test", null, BigDecimal("239.42"), null)
     }
   }
 
   @Test fun testInsert02() {
-    withCitiesAndUsers { cities, users, userData ->
+    val tbl = DMLData.Misc
+    val date = today
+    val time = DateTime.now()
 
+    withTables(tbl) {
+      tbl.insert {
+        it[n] = 42
+        it[nn] = null
+        it[d] = date
+        it[dn] = null
+        it[t] = time
+        it[tn] = null
+        it[e] = DMLData.E.ONE
+        it[en] = null
+        it[s] = "test"
+        it[sn] = null
+        it[dc] = BigDecimal("239.42")
+        it[dcn] = null
+      }
+
+      val row = tbl.selectAll().single()
+      tbl.checkRow(row, 42, null, date, null, time, null, DMLData.E.ONE, null, "test", null, BigDecimal("239.42"), null)
     }
   }
 
   @Test fun testInsert03() {
-    withCitiesAndUsers { cities, users, userData ->
+    val tbl = DMLData.Misc
+    val date = today
+    val time = DateTime.now()
 
+    withTables(tbl) {
+      tbl.insert {
+        it[n] = 42
+        it[nn] = 42
+        it[d] = date
+        it[dn] = date
+        it[t] = time
+        it[tn] = time
+        it[e] = DMLData.E.ONE
+        it[en] = DMLData.E.ONE
+        it[s] = "test"
+        it[sn] = "test"
+        it[dc] = BigDecimal("239.42")
+        it[dcn] = BigDecimal("239.42")
+      }
+
+      val row = tbl.selectAll().single()
+      tbl.checkRow(row, 42, 42,
+                   date, date,
+                   time, time,
+                   DMLData.E.ONE, DMLData.E.ONE,
+                   "test", "test",
+                   BigDecimal("239.42"), BigDecimal("239.42"))
     }
   }
 
   @Test fun testInsert04() {
-    withCitiesAndUsers { cities, users, userData ->
+    val stringThatNeedsEscaping = "A'braham Barakhyaru"
+    val tbl = DMLData.Misc
+    val date = today
+    val time = DateTime.now()
 
+    withTables(tbl) {
+      tbl.insert {
+        it[n] = 42
+        it[d] = date
+        it[t] = time
+        it[e] = DMLData.E.ONE
+        it[s] = stringThatNeedsEscaping
+        it[dc] = BigDecimal("239.42")
+      }
+      val row = tbl.selectAll().single()
+      tbl.checkRow(row, 42, null, date, null, time, null, DMLData.E.ONE, null, stringThatNeedsEscaping, null, BigDecimal("239.42"), null)
     }
   }
 
   @Test fun testGeneratedKey01() {
-    withCitiesAndUsers { cities, users, userData ->
+    withTables(DMLData.Cities) {
+      val id = DMLData.Cities.insert {
+        it[DMLData.Cities.name] = "FooCity"
+      } get DMLData.Cities.id
 
+      val row = DMLData.Cities.selectAll().last()
+      assertThat(row[DMLData.Cities.id]).isEqualTo(id)
     }
   }
 
   @Test fun testGeneratedKey02() {
-    withCitiesAndUsers { cities, users, userData ->
-
+    val LongIdTable = object : Table() {
+      val id = long("id").autoIncrement().primaryKey()
+      val name = text("name")
+    }
+    withTables(LongIdTable) {
+      val id = LongIdTable.insert {
+        it[LongIdTable.name] = "Foo"
+      } get LongIdTable.id
+      val row = LongIdTable.selectAll().last()
+      assertThat(row[LongIdTable.id]).isEqualTo(id)
     }
   }
 
   @Test fun testGeneratedKey03() {
-    withCitiesAndUsers { cities, users, userData ->
+    val IntIdTable = object : IntIdTable() {
+      val name = text("name")
+    }
+    withTables(IntIdTable) {
+      val id = IntIdTable.insertAndGetId {
+        it[IntIdTable.name] = "Foo"
+      }
+      assertThat(IntIdTable.selectAll().last()[IntIdTable.id]).isEqualTo(id)
+    }
+  }
 
+  @Test fun testGeneratedKey04() {
+    val LongIdTable = object : LongIdTable() {
+      val name = text("name")
+    }
+    withTables(LongIdTable) {
+      val id = LongIdTable.insertAndGetId {
+        it[LongIdTable.name] = "Foo"
+      }
+      assertThat(LongIdTable.selectAll().last()[LongIdTable.id]).isEqualTo(id)
     }
   }
 
   @Test fun testSelectDistinct() {
-    withCitiesAndUsers { cities, users, userData ->
+    val cities = DMLData.Cities
+    withTables(cities) {
+      cities.insert { it[cities.name] = "test" }
+      cities.insert { it[cities.name] = "test" }
 
+      assertThat(cities.selectAll().count()).isEqualTo(2)
+      assertThat(cities.selectAll().withDistinct().count()).isEqualTo(2)
+      assertThat(cities.slice(cities.name).selectAll().withDistinct().count()).isEqualTo(1)
+      assertThat(cities.slice(cities.name).selectAll().withDistinct().single()[cities.name]).isEqualTo("test")
     }
   }
 

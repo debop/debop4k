@@ -11,15 +11,17 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
-package debop4k.data.exposed.examples
+package debop4k.data.exposed.examples.shared
 
 import debop4k.data.exposed.dao.*
 import debop4k.data.exposed.emptySizedCollection
-import debop4k.data.exposed.examples.ViaData.ConnectionTable
-import debop4k.data.exposed.examples.ViaData.allTables
+import debop4k.data.exposed.examples.DatabaseTestBase
+import debop4k.data.exposed.examples.shared.ViaData.ConnectionTable
+import debop4k.data.exposed.examples.shared.ViaData.NumbersTable
+import debop4k.data.exposed.examples.shared.ViaData.StringsTable
+import debop4k.data.exposed.examples.shared.ViaData.allTables
 import debop4k.data.exposed.sizedCollectionOf
 import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.exposed.dao.EntityID
@@ -59,16 +61,16 @@ object ViaData {
 }
 
 class VNumber(id: EntityID<UUID>) : UUIDEntity(id) {
-  var number by ViaData.NumbersTable.number
-  var connectedStrings: SizedIterable<VString> by VString via ViaData.ConnectionTable
+  var number by NumbersTable.number
+  var connectedStrings: SizedIterable<VString> by VString via ConnectionTable
 
-  companion object : UUIDEntityClass<VNumber>(ViaData.NumbersTable)
+  companion object : UUIDEntityClass<VNumber>(NumbersTable)
 }
 
 class VString(id: EntityID<Long>) : LongEntity(id) {
-  var text by ViaData.StringsTable.text
+  var text by StringsTable.text
 
-  companion object : LongEntityClass<VString>(ViaData.StringsTable)
+  companion object : LongEntityClass<VString>(StringsTable)
 }
 
 class ViaTest : DatabaseTestBase() {
@@ -80,7 +82,7 @@ class ViaTest : DatabaseTestBase() {
       val s = VString.new { text = "aaa" }
       n.connectedStrings = SizedCollection(listOf(s))
 
-      val row = ViaData.ConnectionTable.selectAll().single()
+      val row = ConnectionTable.selectAll().single()
 
       assertThat(row[ConnectionTable.numId]).isEqualTo(n.id)
       assertThat(row[ConnectionTable.stringId]).isEqualTo(s.id)

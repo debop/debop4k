@@ -11,16 +11,20 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
-package debop4k.data.exposed.examples
+package debop4k.data.exposed.examples.shared
 
 import debop4k.core.uninitialized
+import debop4k.data.exposed.examples.DatabaseTestBase
+import debop4k.data.exposed.examples.TestDB
+import debop4k.data.exposed.examples.TestDB.MYSQL
+import debop4k.data.exposed.examples.shared.DMLData.Cities
 import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.TransactionManager
+import org.jetbrains.exposed.sql.transactions.TransactionManager.Companion
 import org.junit.Test
 import kotlin.concurrent.thread
 
@@ -31,23 +35,20 @@ class ThreadLocalManagerTest : DatabaseTestBase() {
     var secondThreadTm: TransactionManager? = uninitialized()
     var isMySQL = false
 
-    withDb(TestDB.MYSQL) {
+    withDb(MYSQL) {
       isMySQL = true
-      SchemaUtils.create(DMLData.Cities)
-
+      SchemaUtils.create(Cities)
       val firstThreadTm = TransactionManager.currentThreadManager.get()
 
       thread {
         withDb(TestDB.MYSQL) {
           DMLData.Cities.selectAll().toList()
-          secondThreadTm = TransactionManager.currentThreadManager.get()
+          secondThreadTm = Companion.currentThreadManager.get()
           assertThat(secondThreadTm).isNotEqualTo(firstThreadTm)
         }
       }.join()
-
       assertThat(TransactionManager.currentThreadManager.get()).isEqualTo(firstThreadTm)
     }
-
     if (isMySQL) {
       assertThat(TransactionManager.currentThreadManager.get()).isEqualTo(secondThreadTm)
     }

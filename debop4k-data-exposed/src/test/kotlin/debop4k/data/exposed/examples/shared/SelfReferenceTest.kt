@@ -11,14 +11,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
-package debop4k.data.exposed.examples
+package debop4k.data.exposed.examples.shared
 
-import debop4k.data.exposed.examples.DMLData.Cities
-import debop4k.data.exposed.examples.DMLData.UserData
-import debop4k.data.exposed.examples.DMLData.Users
+import debop4k.data.exposed.examples.shared.DMLData.Cities
+import debop4k.data.exposed.examples.shared.DMLData.UserData
+import debop4k.data.exposed.examples.shared.DMLData.Users
 import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.exposed.dao.EntityCache
 import org.jetbrains.exposed.dao.IntIdTable

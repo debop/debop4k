@@ -1,8 +1,31 @@
-package debop4k.data.exposed.examples
+/*
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
+package debop4k.data.exposed.examples.shared
+
+import debop4k.data.exposed.examples.DatabaseTestBase
+import debop4k.data.exposed.examples.shared.EntityHookData.Cities
+import debop4k.data.exposed.examples.shared.EntityHookData.City
+import debop4k.data.exposed.examples.shared.EntityHookData.Country
+import debop4k.data.exposed.examples.shared.EntityHookData.User
 import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.exposed.dao.*
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.dao.EntityChangeType.Removed
+import org.jetbrains.exposed.sql.ReferenceOption.CASCADE
+import org.jetbrains.exposed.sql.SizedCollection
+import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.Test
 
@@ -24,8 +47,8 @@ object EntityHookData {
   }
 
   object UsersToCities : Table() {
-    val user = reference("user", Users, ReferenceOption.CASCADE)
-    val city = reference("city", Cities, ReferenceOption.CASCADE)
+    val user = reference("user", Users, CASCADE)
+    val city = reference("city", Cities, CASCADE)
   }
 
   class User(id: EntityID<Int>) : IntEntity(id) {
@@ -59,10 +82,10 @@ class EntityHookTest : DatabaseTestBase() {
   fun testCreated01() {
     withTables(*EntityHookData.allTables) {
       val entities: Pair<Unit, Collection<EntityChange<*>>> = transactionWithEntityHook {
-        val ru = EntityHookData.Country.new {
+        val ru = Country.new {
           name = "RU"
         }
-        val x = EntityHookData.City.new {
+        val x = City.new {
           name = "St. Petersburg"
           country = ru
         }
@@ -70,10 +93,10 @@ class EntityHookTest : DatabaseTestBase() {
 
       assertThat(entities.second.count()).isEqualTo(2)
 
-      val cityName: List<String> = entities.second.map { it.toEntity(EntityHookData.City)?.name }.filterNotNull()
+      val cityName: List<String> = entities.second.map { it.toEntity(City)?.name }.filterNotNull()
       assertThat(cityName).containsOnly("St. Petersburg").hasSize(1)
 
-      val countryName = entities.second.map { it.toEntity(EntityHookData.Country)?.name }.filterNotNull()
+      val countryName = entities.second.map { it.toEntity(Country)?.name }.filterNotNull()
       assertThat(countryName).containsOnly("RU").hasSize(1)
     }
   }
@@ -82,10 +105,10 @@ class EntityHookTest : DatabaseTestBase() {
   fun testDelete01() {
     withTables(*EntityHookData.allTables) {
       val spbId = transaction {
-        val ru = EntityHookData.Country.new {
+        val ru = Country.new {
           name = "RU"
         }
-        val x = EntityHookData.City.new {
+        val x = City.new {
           name = "St. Petersburg"
           country = ru
         }
@@ -94,12 +117,12 @@ class EntityHookTest : DatabaseTestBase() {
       }
 
       val entities = transactionWithEntityHook {
-        val spb = EntityHookData.City.findById(spbId)!!
+        val spb = City.findById(spbId)!!
         spb.delete()
       }
 
       assertThat(entities.second.count()).isEqualTo(1)
-      assertThat(entities.second.single().changeType).isEqualTo(EntityChangeType.Removed)
+      assertThat(entities.second.single().changeType).isEqualTo(Removed)
       assertThat(entities.second.single().id).isEqualTo(spbId)
     }
   }
@@ -108,10 +131,10 @@ class EntityHookTest : DatabaseTestBase() {
   fun testModifiedSimple01() {
     withTables(*EntityHookData.allTables) {
       transaction {
-        val ru = EntityHookData.Country.new {
+        val ru = Country.new {
           name = "RU"
         }
-        val x = EntityHookData.City.new {
+        val x = City.new {
           name = "St. Petersburg"
           country = ru
         }
@@ -119,20 +142,20 @@ class EntityHookTest : DatabaseTestBase() {
       }
 
       val entities = transactionWithEntityHook {
-        val de = EntityHookData.Country.new {
+        val de = Country.new {
           name = "DE"
         }
-        val x = EntityHookData.City.all().single()
+        val x = City.all().single()
         x.name = "Munich"
         x.country = de
       }
 
       assertThat(entities.second.count()).isEqualTo(2)
 
-      val cityName: List<String> = entities.second.map { it.toEntity(EntityHookData.City)?.name }.filterNotNull()
+      val cityName: List<String> = entities.second.map { it.toEntity(City)?.name }.filterNotNull()
       assertThat(cityName).containsOnly("Munich").hasSize(1)
 
-      val countryName = entities.second.map { it.toEntity(EntityHookData.Country)?.name }.filterNotNull()
+      val countryName = entities.second.map { it.toEntity(Country)?.name }.filterNotNull()
       assertThat(countryName).containsOnly("DE").hasSize(1)
     }
   }
@@ -140,21 +163,21 @@ class EntityHookTest : DatabaseTestBase() {
   @Test fun testModifiedInnerTable01() {
     withTables(*EntityHookData.allTables) {
       transaction {
-        val ru = EntityHookData.Country.new {
+        val ru = Country.new {
           name = "RU"
         }
-        val de = EntityHookData.Country.new {
+        val de = Country.new {
           name = "DE"
         }
-        EntityHookData.City.new {
+        City.new {
           name = "St. Petersburg"
           country = ru
         }
-        EntityHookData.City.new {
+        City.new {
           name = "Munich"
           country = de
         }
-        EntityHookData.User.new {
+        User.new {
           name = "John"
           age = 30
         }
@@ -162,17 +185,17 @@ class EntityHookTest : DatabaseTestBase() {
       }
 
       val entities = transactionWithEntityHook {
-        val spb = EntityHookData.City.find({ EntityHookData.Cities.name eq "St. Petersburg" }).single()
-        val john = EntityHookData.User.all().single()
+        val spb = City.find({ Cities.name eq "St. Petersburg" }).single()
+        val john = User.all().single()
         john.cities = SizedCollection(listOf(spb))
       }
 
       assertThat(entities.second.count()).isEqualTo(2)
 
-      val cityName: List<String> = entities.second.map { it.toEntity(EntityHookData.City)?.name }.filterNotNull()
+      val cityName: List<String> = entities.second.map { it.toEntity(City)?.name }.filterNotNull()
       assertThat(cityName).containsOnly("St. Petersburg").hasSize(1)
 
-      val countryName = entities.second.map { it.toEntity(EntityHookData.User)?.name }.filterNotNull()
+      val countryName = entities.second.map { it.toEntity(User)?.name }.filterNotNull()
       assertThat(countryName).containsOnly("John").hasSize(1)
     }
   }
@@ -180,21 +203,21 @@ class EntityHookTest : DatabaseTestBase() {
   @Test fun testModifiedInnerTable02() {
     withTables(*EntityHookData.allTables) {
       transaction {
-        val ru = EntityHookData.Country.new {
+        val ru = Country.new {
           name = "RU"
         }
-        val de = EntityHookData.Country.new {
+        val de = Country.new {
           name = "DE"
         }
-        val spb = EntityHookData.City.new {
+        val spb = City.new {
           name = "St. Petersburg"
           country = ru
         }
-        val muc = EntityHookData.City.new {
+        val muc = City.new {
           name = "Munich"
           country = de
         }
-        val john = EntityHookData.User.new {
+        val john = User.new {
           name = "John"
           age = 30
         }
@@ -203,17 +226,17 @@ class EntityHookTest : DatabaseTestBase() {
       }
 
       val entities = transactionWithEntityHook {
-        val spb = EntityHookData.City.find({ EntityHookData.Cities.name eq "St. Petersburg" }).single()
-        val john = EntityHookData.User.all().single()
+        val spb = City.find({ Cities.name eq "St. Petersburg" }).single()
+        val john = User.all().single()
         john.cities = SizedCollection(listOf(spb))
       }
 
       assertThat(entities.second.count()).isEqualTo(3)
 
-      val cityName: List<String> = entities.second.map { it.toEntity(EntityHookData.City)?.name }.filterNotNull()
+      val cityName: List<String> = entities.second.map { it.toEntity(City)?.name }.filterNotNull()
       assertThat(cityName).containsOnly("St. Petersburg", "Munich").hasSize(2)
 
-      val countryName = entities.second.map { it.toEntity(EntityHookData.User)?.name }.filterNotNull()
+      val countryName = entities.second.map { it.toEntity(User)?.name }.filterNotNull()
       assertThat(countryName).containsOnly("John").hasSize(1)
     }
   }
@@ -221,21 +244,21 @@ class EntityHookTest : DatabaseTestBase() {
   @Test fun testModifiedInnerTable03() {
     withTables(*EntityHookData.allTables) {
       transaction {
-        val ru = EntityHookData.Country.new {
+        val ru = Country.new {
           name = "RU"
         }
-        val de = EntityHookData.Country.new {
+        val de = Country.new {
           name = "DE"
         }
-        val spb = EntityHookData.City.new {
+        val spb = City.new {
           name = "St. Petersburg"
           country = ru
         }
-        val muc = EntityHookData.City.new {
+        val muc = City.new {
           name = "Munich"
           country = de
         }
-        val john = EntityHookData.User.new {
+        val john = User.new {
           name = "John"
           age = 30
         }
@@ -244,16 +267,16 @@ class EntityHookTest : DatabaseTestBase() {
       }
 
       val entities = transactionWithEntityHook {
-        val john = EntityHookData.User.all().single()
+        val john = User.all().single()
         john.cities = SizedCollection(emptyList())
       }
 
       assertThat(entities.second.count()).isEqualTo(2)
 
-      val cityName: List<String> = entities.second.map { it.toEntity(EntityHookData.City)?.name }.filterNotNull()
+      val cityName: List<String> = entities.second.map { it.toEntity(City)?.name }.filterNotNull()
       assertThat(cityName).containsOnly("St. Petersburg").hasSize(1)
 
-      val countryName = entities.second.map { it.toEntity(EntityHookData.User)?.name }.filterNotNull()
+      val countryName = entities.second.map { it.toEntity(User)?.name }.filterNotNull()
       assertThat(countryName).containsOnly("John").hasSize(1)
     }
   }

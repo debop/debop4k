@@ -11,18 +11,17 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
-package debop4k.data.exposed.examples
+package debop4k.data.exposed.examples.shared
 
 import com.fasterxml.uuid.Generators
 import debop4k.core.utils.toUtf8String
 import debop4k.data.exposed.dao.UUIDIdTable
+import debop4k.data.exposed.examples.DatabaseTestBase
+import debop4k.data.exposed.examples.TestDB.*
 import org.assertj.core.api.Assertions.assertThat
-import org.jetbrains.exposed.dao.EntityID
-import org.jetbrains.exposed.dao.IdTable
-import org.jetbrains.exposed.dao.IntIdTable
+import org.jetbrains.exposed.dao.*
 import org.jetbrains.exposed.sql.*
 import org.junit.Test
 import javax.sql.rowset.serial.SerialBlob
@@ -76,7 +75,7 @@ class DDLTests : DatabaseTestBase() {
       val email = varchar("email", 255).uniqueIndex()
     }
 
-    withDb(TestDB.H2) {
+    withDb(H2) {
       SchemaUtils.createMissingTablesAndColumns(TestTable)
       try {
         assertEquals(true, TestTable.exists())
@@ -107,7 +106,7 @@ class DDLTests : DatabaseTestBase() {
     }
 
     // MySQL, PostgreSQL, SQLITE 는 하나 이상의 컬럼이 있어야 합니다.
-    withTables(excludeSettings = listOf(TestDB.MYSQL, TestDB.POSTGRESQL), tables = TestTable) {
+    withTables(excludeSettings = listOf(MYSQL, POSTGRESQL), tables = TestTable) {
       assertThat(TestTable.ddl.single()).isEqualToIgnoringCase("CREATE TABLE IF NOT EXISTS test_named_table")
     }
   }
@@ -122,7 +121,7 @@ class DDLTests : DatabaseTestBase() {
       //            val testCollate = varchar("testCollate", 2, "ascii_general_ci")
     }
 
-    withTables(excludeSettings = listOf(TestDB.MYSQL), tables = TestTable) {
+    withTables(excludeSettings = listOf(MYSQL), tables = TestTable) {
       assertThat(TestTable.ddl.single())
           .containsIgnoringCase("CREATE TABLE IF NOT EXISTS test_table_with_different_column_types (id ")
           .containsIgnoringCase("name VARCHAR(42) PRIMARY KEY, age INT NULL")
@@ -136,7 +135,7 @@ class DDLTests : DatabaseTestBase() {
       val age = integer("age").nullable()
     }
 
-    withTables(excludeSettings = listOf(TestDB.MYSQL), tables = TestTable) {
+    withTables(excludeSettings = listOf(MYSQL), tables = TestTable) {
       assertThat(TestTable.ddl.single())
           .isEqualToIgnoringCase("CREATE TABLE IF NOT EXISTS test_table_with_different_column_types (id INT, name VARCHAR(42), age INT NULL, CONSTRAINT pk_test_table_with_different_column_types PRIMARY KEY (id, name))")
     }
@@ -256,7 +255,7 @@ class DDLTests : DatabaseTestBase() {
     val t = IntIdTable(tableName)
 
 
-    withDb(TestDB.H2) {
+    withDb(H2) {
       SchemaUtils.createMissingTablesAndColumns(initialTable)
       assertThat(t.id.ddl.first().toUpperCase()).startsWith("ALTER TABLE ${tableName.toUpperCase()}")
 //      assertEquals("ALTER TABLE $tableName ADD COLUMN id ${t.id.columnType.sqlType()}", t.id.ddl.first())

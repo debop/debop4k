@@ -11,12 +11,20 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
-package debop4k.data.exposed.examples
+package debop4k.data.exposed.examples.shared
 
 import com.fasterxml.uuid.Generators
+import debop4k.data.exposed.examples.DatabaseTestBase
+import debop4k.data.exposed.examples.shared.EntityData.AEntity
+import debop4k.data.exposed.examples.shared.EntityData.BEntity
+import debop4k.data.exposed.examples.shared.EntityData.XEntity
+import debop4k.data.exposed.examples.shared.EntityData.XTable
+import debop4k.data.exposed.examples.shared.EntityData.XType.A
+import debop4k.data.exposed.examples.shared.EntityData.XType.B
+import debop4k.data.exposed.examples.shared.EntityData.YEntity
+import debop4k.data.exposed.examples.shared.EntityData.YTable
 import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.exposed.dao.*
 import org.jetbrains.exposed.sql.Column
@@ -58,8 +66,8 @@ object EntityData {
           this.b1 = b1
         }
         val answer = when (type) {
-          XType.B -> BEntity.create { init() }
-          else    -> new { init() }
+          B    -> BEntity.create { init() }
+          else -> new { init() }
         }
         return answer
       }
@@ -90,9 +98,9 @@ class EntityTests : DatabaseTestBase() {
 
   @Test
   fun testDefaults01() {
-    withTables(EntityData.YTable,
-               EntityData.XTable) {
-      val x = EntityData.XEntity.new {}
+    withTables(YTable,
+               XTable) {
+      val x = XEntity.new {}
 
       assertThat(x.b1).isTrue()
       assertThat(x.b2).isFalse()
@@ -101,13 +109,13 @@ class EntityTests : DatabaseTestBase() {
 
   @Test
   fun testDefaults02() {
-    withTables(EntityData.YTable, EntityData.XTable) {
-      val a: EntityData.AEntity = EntityData.AEntity.create(false, EntityData.XType.A)
+    withTables(YTable, XTable) {
+      val a: AEntity = AEntity.create(false, A)
       assertThat(a.b1).isFalse()
 
-      val b: EntityData.BEntity =
-          EntityData.AEntity.create(false, EntityData.XType.B) as EntityData.BEntity
-      val y = EntityData.YEntity.new { x = false }
+      val b: BEntity =
+          AEntity.create(false, B) as BEntity
+      val y = YEntity.new { x = false }
 
       b.y = y
 
@@ -118,10 +126,10 @@ class EntityTests : DatabaseTestBase() {
 
   @Test
   fun testBackReference01() {
-    withTables(EntityData.YTable, EntityData.XTable) {
-      val y = EntityData.YEntity.new {}
+    withTables(YTable, XTable) {
+      val y = YEntity.new {}
       flushCache()
-      val b = EntityData.BEntity.new {}
+      val b = BEntity.new {}
       b.y = y
 
       assertThat(y.b).isEqualTo(b)
@@ -130,10 +138,10 @@ class EntityTests : DatabaseTestBase() {
 
   @Test
   fun testBackReference02() {
-    withTables(EntityData.YTable, EntityData.XTable) {
-      val b = EntityData.BEntity.new {}
+    withTables(YTable, XTable) {
+      val b = BEntity.new {}
       flushCache()
-      val y = EntityData.YEntity.new {}
+      val y = YEntity.new {}
       b.y = y
 
       assertThat(y.b).isEqualTo(b)
@@ -160,7 +168,7 @@ class EntityTests : DatabaseTestBase() {
     companion object : IntEntityClass<Post>(Posts)
 
     var board by Board optionalReferencedOn Posts.board
-    var parent by Post optionalReferencedOn Posts.parent
+    var parent by Companion optionalReferencedOn Posts.parent
   }
 
   @Test
