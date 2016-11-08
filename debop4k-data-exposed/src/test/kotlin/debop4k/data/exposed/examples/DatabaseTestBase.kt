@@ -33,7 +33,7 @@ import java.util.*
 import kotlin.concurrent.thread
 
 
-enum class TestDB(val connection: String,
+enum class TestDB(val jdbcUrl: String,
                   val driver: String,
                   val beforeConnection: () -> Any,
                   val afterConnection: () -> Unit) {
@@ -99,7 +99,7 @@ abstract class DatabaseTestBase() {
       registeredOnShutdown += dbSettings
     }
 
-    val database = Database.connect(dbSettings.connection,
+    val database = Database.connect(dbSettings.jdbcUrl,
                                     user = "root",
                                     driver = dbSettings.driver)
 

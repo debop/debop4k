@@ -18,6 +18,7 @@ package debop4k.core.collections.permutations
 
 import debop4k.core.collections.fastListOf
 import debop4k.core.utils.hashOf
+import java.lang.IndexOutOfBoundsException
 import java.util.*
 
 /**

@@ -16,6 +16,9 @@
 
 package debop4k.core.result
 
+import java.lang.Exception
+import java.lang.UnsupportedOperationException
+
 /**
  * kittinunf/Result 를 Porting 함 (Functional/Reactive/Asynchronous Programming 시 결과값 표현엥 응용할 수 있음)
  *

@@ -29,4 +29,4 @@ open class LongIdTable(name: String = "", columnName: String = "id") : IdTable<L
 
 abstract class LongEntity(id: EntityID<Long>) : Entity<Long>(id)
 
-abstract class LongEntityClass<E : LongEntity>(table: IdTable<Long>) : EntityClass<Long, E>(table)
+abstract class LongEntityClass<out E : LongEntity>(table: IdTable<Long>) : EntityClass<Long, E>(table)

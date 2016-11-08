@@ -27,6 +27,7 @@ import org.eclipse.collections.impl.factory.SortedSets
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.eclipse.collections.impl.map.mutable.UnifiedMap
 import org.eclipse.collections.impl.set.mutable.UnifiedSet
+import java.lang.IllegalStateException
 import java.util.*
 import java.util.concurrent.atomic.*
 
@@ -192,7 +193,7 @@ open class LazyBatchSequence<out T>(val stream: Iterable<T>, val groupSize: Int 
     })
 
     override fun iterator(): Iterator<T> {
-      return iteratorRef.getAndSet(null) ?: throw IllegalStateException("이미 사용한 Iterator 입니다.")
+      return iteratorRef.getAndSet(null) ?: error("이미 사용한 Iterator 입니다.")
     }
 
     fun consumeToLimit() {

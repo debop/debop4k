@@ -20,6 +20,7 @@ package debop4k.core
 
 import debop4k.core.collections.toList
 import java.io.Serializable
+import java.lang.IndexOutOfBoundsException
 
 interface Product : Serializable {
 

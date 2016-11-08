@@ -70,7 +70,7 @@
   </modules>
 
   <scm>
-    <connection>scm:git:debop@github.com/debop/debop4k.git</connection>
+    <jdbcUrl>scm:git:debop@github.com/debop/debop4k.git</jdbcUrl>
     <url>scm:git:debop@github.com/debop/debop4k.git</url>
     <developerConnection>scm:git:debop@github.com/debop/debop4k.git</developerConnection>
     <tag>develop</tag>

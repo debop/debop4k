@@ -16,6 +16,8 @@
 
 package debop4k.core
 
+import java.lang.RuntimeException
+
 /**
  * NotImplementedException
  * @author sunghyouk.bae@gmail.com

@@ -16,6 +16,8 @@
 
 package debop4k.core.collections.permutations
 
+import java.lang.UnsupportedOperationException
+
 /**
  * [Permutation] 을 위한 Iterator 입니다.
  *

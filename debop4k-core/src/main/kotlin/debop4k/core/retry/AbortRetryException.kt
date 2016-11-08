@@ -15,6 +15,8 @@
 
 package debop4k.core.retry
 
+import java.lang.RuntimeException
+
 /**
  * AbortRetryException
  * @author debop sunghyouk.bae@gmail.com

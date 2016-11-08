@@ -16,6 +16,8 @@
 
 package debop4k.core.result
 
+import java.lang.Exception
+
 /**
  * Validation
  * @author sunghyouk.bae@gmail.com

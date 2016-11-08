@@ -15,6 +15,8 @@
 
 package debop4k.core
 
+import java.lang.RuntimeException
+
 /**
  * ThreadRuntimeException
  * @author debop sunghyouk.bae@gmail.com

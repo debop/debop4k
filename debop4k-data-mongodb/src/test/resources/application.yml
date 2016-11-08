@@ -10,4 +10,4 @@ debop4k:
     # port: 27017
 
     options:
-      max-connection-per-host: 100
+      max-jdbcUrl-per-host: 100

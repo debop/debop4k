@@ -18,6 +18,7 @@ package debop4k.core.retry
 
 import nl.komponents.kovenant.Deferred
 import nl.komponents.kovenant.deferred
+import java.lang.Exception
 
 /**
  * 동기방식의 재시도 작업

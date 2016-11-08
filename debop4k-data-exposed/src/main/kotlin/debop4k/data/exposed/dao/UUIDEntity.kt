@@ -17,7 +17,10 @@
 package debop4k.data.exposed.dao
 
 import com.fasterxml.uuid.Generators
-import org.jetbrains.exposed.dao.*
+import org.jetbrains.exposed.dao.Entity
+import org.jetbrains.exposed.dao.EntityClass
+import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.dao.IdTable
 import org.jetbrains.exposed.sql.Column
 import java.util.*
 
@@ -34,4 +37,4 @@ open class UUIDIdTable(name: String = "", columnName: String = "id") : IdTable<U
 
 abstract class UUIDEntity(id: EntityID<UUID>) : Entity<UUID>(id)
 
-abstract class UUIDEntityClass<E : UUIDEntity>(table: IdTable<UUID>) : EntityClass<UUID, E>(table)
+abstract class UUIDEntityClass<out E : UUIDEntity>(table: IdTable<UUID>) : EntityClass<UUID, E>(table)

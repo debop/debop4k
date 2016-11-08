@@ -20,7 +20,9 @@ import com.fasterxml.uuid.Generators
 import debop4k.core.utils.toUtf8String
 import debop4k.data.exposed.dao.UUIDIdTable
 import org.assertj.core.api.Assertions.assertThat
-import org.jetbrains.exposed.dao.*
+import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.dao.IdTable
+import org.jetbrains.exposed.dao.IntIdTable
 import org.jetbrains.exposed.sql.*
 import org.junit.Test
 import javax.sql.rowset.serial.SerialBlob
@@ -212,12 +214,12 @@ class DDLTests : DatabaseTestBase() {
       val bytes = "Hello there!".toByteArray()
 //      val blob = if (currentDialect.dataTypeProvider.blobAsStream) {
 //        SerialBlob(bytes)
-//      } else connection.createBlob().apply {
+//      } else jdbcUrl.createBlob().apply {
 //        setBytes(1, bytes)
 //      }
       val blob = try {
         SerialBlob(bytes)
-      } catch(e: Exception) {
+      } catch(e: Throwable) {
         connection.createBlob().apply { setBytes(1, bytes) }
       }
 

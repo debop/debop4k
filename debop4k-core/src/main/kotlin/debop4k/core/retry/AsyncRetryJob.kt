@@ -17,6 +17,7 @@
 package debop4k.core.retry
 
 import nl.komponents.kovenant.*
+import java.lang.Exception
 
 /**
  * 비동기 Retry Job 을 표현합니다.

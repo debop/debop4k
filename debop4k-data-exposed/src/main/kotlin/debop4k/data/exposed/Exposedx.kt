@@ -19,8 +19,14 @@ package debop4k.data.exposed
 
 import org.jetbrains.exposed.sql.SizedCollection
 
+/**
+ * 빈 [SizedCollection]
+ */
 fun <T> emptySizedCollection(): SizedCollection<T> = SizedCollection<T>(emptyList())
 
+/**
+ * [SizedCollection] 생성
+ */
 fun <T> sizedCollectionOf(vararg args: T): SizedCollection<T> {
   return SizedCollection(listOf(*args))
 }

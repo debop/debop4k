@@ -23,6 +23,8 @@ import debop4k.core.functional.Option.None
 import debop4k.core.functional.Option.Some
 import debop4k.core.functional.eithers.Either.Left
 import debop4k.core.functional.eithers.Either.Right
+import java.lang.Exception
+import java.lang.UnsupportedOperationException
 import java.util.*
 
 sealed class Either<out L, out R> {

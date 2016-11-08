@@ -16,6 +16,8 @@
 package debop4k.core.collections
 
 import org.eclipse.collections.impl.list.mutable.FastList
+import java.lang.IndexOutOfBoundsException
+import java.lang.UnsupportedOperationException
 import java.util.*
 
 /**

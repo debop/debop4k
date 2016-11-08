@@ -19,6 +19,8 @@
 
 package debop4k.core
 
+import java.lang.Exception
+import java.lang.RuntimeException
 import java.lang.reflect.InvocationTargetException
 
 fun unwrapInvokeException(rawException: Throwable): Throwable
