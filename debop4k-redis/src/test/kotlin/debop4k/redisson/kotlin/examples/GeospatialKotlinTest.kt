@@ -11,13 +11,11 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.redisson.kotlin.examples
 
 import debop4k.redisson.kotlin.AbstractRedissonKotlinTest
-import org.junit.Ignore
 import org.junit.Test
 import org.redisson.api.GeoEntry
 import org.redisson.api.GeoUnit
@@ -26,7 +24,7 @@ import org.redisson.api.GeoUnit
 class GeospatialKotlinTest : AbstractRedissonKotlinTest() {
 
   @Test
-  @Ignore("Redis 3.2 부터 지원, Ubuntu 에서는 Redis 3.0.7이 설치되어 있다.")
+      //  @Ignore("Redis 3.2 부터 지원, Ubuntu 에서는 Redis 3.0.7이 설치되어 있다.")
   fun geoAdd() {
     val geo = redisson.getGeo<String>("test")
     geo.add(GeoEntry(13.361389, 38.115556, "Palermo"),

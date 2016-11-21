@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.examples.basic
@@ -34,6 +33,10 @@ class IteratingExample : AbstractExampleTest() {
     for ((letter, binary) in binaryReps) {
       log.debug("$letter = $binary")
     }
+
+    binaryReps.forEach { letter, binary ->
+      log.debug("$letter = $binary")
+    }
   }
 
   @Test
@@ -41,6 +44,10 @@ class IteratingExample : AbstractExampleTest() {
     val list = arrayListOf("10", "11", "1001")
 
     for ((index, element) in list.withIndex()) {
+      log.debug("$index: $element")
+    }
+
+    list.withIndex().forEach { (index, element) ->
       log.debug("$index: $element")
     }
   }
