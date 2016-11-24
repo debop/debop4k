@@ -23,26 +23,31 @@ import org.redisson.api.GeoUnit
 
 class GeospatialKotlinTest : AbstractRedissonKotlinTest() {
 
-  @Test
-      //  @Ignore("Redis 3.2 부터 지원, Ubuntu 에서는 Redis 3.0.7이 설치되어 있다.")
-  fun geoAdd() {
+  @Test fun geoAdd() {
     val geo = redisson.getGeo<String>("test")
-    geo.add(GeoEntry(13.361389, 38.115556, "Palermo"),
-            GeoEntry(15.087269, 37.502669, "Catania"))
+
+    // 두 지점을 저장
+    geo.add(GeoEntry(13.361389, 38.115556, "Palermo"), GeoEntry(15.087269, 37.502669, "Catania"))
+    // 한 지점을 비동기로 저장
     geo.addAsync(37.618423, 55.751244, "Moscow")
 
+    // 두 지점의 거리를 계산
     val distance = geo.dist("Palermo", "Catania", GeoUnit.KILOMETERS)
     println("Palermo - Catania distance: $distance")
 
+    // 지정한 지점들의 GeoHash 문자열(11자리)을 나타낸다
     val map = geo.hashAsync("Palermo", "Catania")
-    println("hash: ${map.get()}")
+    println("geo hash: ${map.get()}")
 
+    // 지점들의 위치를 얻습니다
     val positions = geo.pos("test2", "Palermo", "test3", "Catania")
     println("positions = $positions")
 
+    // 원 형태의 영역에 속한 모든 등록 지점들을 조회합니다
     val cities = geo.radius(15.0, 37.0, 200.0, GeoUnit.KILOMETERS)
     println("cities = $cities")
 
+    // 원 형태의 영역에 속한 모든 등록 지점과 지점의 경위도 정보를 가져옵니다.
     val cityWithPositions = geo.radiusWithPosition(15.0, 37.0, 200.0, GeoUnit.KILOMETERS)
     println("city with positions = $cityWithPositions")
   }
