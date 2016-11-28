@@ -32,7 +32,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan(basePackageClasses = {ActorRepository.class})
 @MapperScan(basePackageClasses = {ActorMapper.class, UUIDBeanMapper.class})
-public class MyBatisConfiguration extends AbstractPostgresFlywayMyBatisConfiguration {
+public class MyBatisConfiguration extends AbstractH2FlywayMyBatisConfiguration {
 
   @Override
   protected boolean cleanDatabaseForTest() {

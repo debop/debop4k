@@ -16,7 +16,7 @@
 
 package debop4k.data.mybatis.kotlin.config
 
-import debop4k.data.mybatis.config.AbstractPostgresFlywayMyBatisConfiguration
+import debop4k.data.mybatis.config.AbstractH2FlywayMyBatisConfiguration
 import debop4k.data.mybatis.kotlin.mappers.KotlinActorMapper
 import debop4k.data.mybatis.kotlin.repository.KotlinActorRepository
 import org.mybatis.spring.SqlSessionFactoryBean
@@ -29,7 +29,7 @@ import org.springframework.context.annotation.ComponentScan
  */
 @ComponentScan(basePackageClasses = arrayOf(KotlinActorRepository::class))
 @MapperScan(basePackageClasses = arrayOf(KotlinActorMapper::class))
-open class KotlinMyBatisConfiguration : AbstractPostgresFlywayMyBatisConfiguration() {
+open class KotlinMyBatisConfiguration : AbstractH2FlywayMyBatisConfiguration() {
 
   override fun cleanDatabaseForTest(): Boolean {
     return true
