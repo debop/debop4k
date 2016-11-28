@@ -153,12 +153,12 @@ data class Storage(val bytes: Double = 0.0) : Comparable<Storage>, Serializable 
         Storage(value * unit.factor)
 
     @JvmStatic
-    fun parse(storageStr: String): Storage {
-      if (storageStr.isBlank())
+    fun parse(storageStr: String?): Storage {
+      if (storageStr.isNullOrBlank())
         return Storage.ZERO
 
       try {
-        val (bytes, unit) = storageStr.split(" ", limit = 2)
+        val (bytes, unit) = storageStr!!.split(" ", limit = 2)
         return of(bytes.toDouble(), StorageUnit.parse(unit))
 
       } catch(e: Exception) {

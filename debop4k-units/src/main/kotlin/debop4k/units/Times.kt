@@ -20,6 +20,9 @@ package debop4k.units
 
 import java.io.Serializable
 
+/**
+ * 시간 단위를 나타내는 클래스
+ */
 enum class TimeUnit(val unitName: String, val factor: Double) {
 
   NANO_SECOND("ns", 1.0e-9),
@@ -43,7 +46,9 @@ enum class TimeUnit(val unitName: String, val factor: Double) {
   }
 }
 
-
+/**
+ * 시간을 나타내는 클래스. 내부적으로 second 를 기본 단위로 사용합니다.
+ */
 data class Time(val second: Double = 0.0) : Comparable<Time>, Serializable {
 
   final operator fun plus(other: Time): Time = Time(second + other.second)
@@ -87,12 +92,12 @@ data class Time(val second: Double = 0.0) : Comparable<Time>, Serializable {
         Time(time * unit.factor)
 
     @JvmStatic
-    fun parse(timeStr: String): Time {
+    fun parse(timeStr: String?): Time {
       if (timeStr.isNullOrBlank())
         return ZERO
 
       try {
-        val (time, unit) = timeStr.split(" ", limit = 2)
+        val (time, unit) = timeStr!!.split(" ", limit = 2)
         return Time.of(time.toDouble(), TimeUnit.parse(unit))
       } catch(e: Exception) {
         throw NumberFormatException("Unknown Time string. timeStr=$timeStr")

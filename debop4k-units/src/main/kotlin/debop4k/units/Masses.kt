@@ -68,8 +68,6 @@ enum class MassUnit(val unitName: String, val factor: Double) {
 
 /**
  * 질량/무게 (Mass/Weight) 를 표현합니다.
- *
- * @author debop sunghyouk.bae@gmail.com
  */
 data class Mass(val gram: Double = 0.0) : Comparable<Mass>, Serializable {
 
@@ -135,12 +133,12 @@ data class Mass(val gram: Double = 0.0) : Comparable<Mass>, Serializable {
         Mass(value * unit.factor)
 
     @JvmStatic
-    fun parse(str: String): Mass {
+    fun parse(str: String?): Mass {
       if (str.isNullOrBlank())
         return Mass.ZERO
 
       try {
-        val (value, unit) = str.trim().split(" ", limit = 2)
+        val (value, unit) = str!!.trim().split(" ", limit = 2)
         return of(value.toDouble(), MassUnit.parse(unit))
 
       } catch(e: Exception) {

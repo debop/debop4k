@@ -31,6 +31,9 @@ fun Double.mileperhour(): Velocity = Velocity.of(this, VelocityUnit.MILE_PER_HOU
 fun Double.knot(): Velocity = Velocity.of(this, VelocityUnit.KNOT)
 fun Double.mach(): Velocity = Velocity.of(this, VelocityUnit.MACH)
 
+/**
+ * 속도 단위 종류
+ */
 enum class VelocityUnit(val unitName: String, val factor: Double) {
 
   METER_PER_SEC("m/s", 1.0),
@@ -56,6 +59,9 @@ enum class VelocityUnit(val unitName: String, val factor: Double) {
   }
 }
 
+/**
+ * 속도를 나타내는 클래스. 기본 단위로 meter/second 를 사용합니다.
+ */
 data class Velocity(val ms: Double = 0.0) : Comparable<Velocity>, Serializable {
 
   operator fun plus(other: Velocity): Velocity = Velocity(ms + other.ms)
@@ -92,12 +98,12 @@ data class Velocity(val ms: Double = 0.0) : Comparable<Velocity>, Serializable {
         Velocity(speed * unit.factor)
 
     @JvmStatic
-    fun parse(velocityStr: String): Velocity {
+    fun parse(velocityStr: String?): Velocity {
       if (velocityStr.isNullOrBlank())
         return ZERO
 
       try {
-        val (velocity, unit) = velocityStr.split(" ", limit = 2)
+        val (velocity, unit) = velocityStr!!.split(" ", limit = 2)
         return of(velocity.toDouble(), VelocityUnit.parse(unit))
       } catch(e: Exception) {
         throw NumberFormatException("Unknown Velocity string. velocityStr=$velocityStr")

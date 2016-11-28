@@ -30,6 +30,9 @@ fun Double.hectare(): Area = Area.of(this, AreaUnit.HECTARE)
 //fun Double.yard2():Area = Area.of(this, AreaUnit.YARD_2)
 fun Double.acre(): Area = Area.of(this, AreaUnit.ACRE)
 
+/**
+ * 면적을 나타내는 단위를 표현합니다
+ */
 enum class AreaUnit(val unitName: String, val factor: Double) {
 
   MILLI_METER_2("mm^2", 1.0e-6),
@@ -67,6 +70,9 @@ enum class AreaUnit(val unitName: String, val factor: Double) {
   }
 }
 
+/**
+ * 면적을 나타내는 클래스
+ */
 data class Area(val m2: Double = 0.0) : Comparable<Area>, Serializable {
 
   operator fun plus(other: Area): Area = Area(m2 + other.m2)

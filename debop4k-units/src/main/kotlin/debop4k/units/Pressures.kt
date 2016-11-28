@@ -170,12 +170,12 @@ data class Pressure(val pascal: Double = 0.0) : Comparable<Pressure>, Serializab
         Pressure(value * unit.factor)
 
     @JvmStatic
-    fun parse(str: String): Pressure {
+    fun parse(str: String?): Pressure {
       if (str.isNullOrBlank())
         return ZERO
 
       try {
-        val (pressure, unit) = str.split(" ", limit = 2)
+        val (pressure, unit) = str!!.split(" ", limit = 2)
         return of(pressure.toDouble(), PressureUnit.parse(unit))
       } catch(e: Exception) {
         throw NumberFormatException("Unknown pressure format. str=$str")

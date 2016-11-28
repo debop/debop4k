@@ -33,6 +33,9 @@ fun Double.gallon(): Volumn = Volumn.of(this, VolumnUnit.GALLON)
 fun Double.barrel(): Volumn = Volumn.of(this, VolumnUnit.BARREL)
 fun Double.once(): Volumn = Volumn.of(this, VolumnUnit.ONCE)
 
+/**
+ * 체적 (Volume) 종류 및 단위
+ */
 enum class VolumnUnit(val unitName: String, val factor: Double) {
 
   CC("cc", 1.0e-9),
@@ -65,6 +68,10 @@ enum class VolumnUnit(val unitName: String, val factor: Double) {
   }
 }
 
+/**
+ * 체적 (Volume) 을 나타내는 클래스.
+ * 리터를 기본단위로 사용합니다.
+ */
 data class Volumn(val liter: Double = 0.0) : Comparable<Volumn>, Serializable {
 
   operator fun plus(other: Volumn): Volumn = Volumn(liter + other.liter)
@@ -105,12 +112,12 @@ data class Volumn(val liter: Double = 0.0) : Comparable<Volumn>, Serializable {
         Volumn(volumn * unit.factor)
 
     @JvmStatic
-    fun parse(volStr: String): Volumn {
+    fun parse(volStr: String?): Volumn {
       if (volStr.isNullOrBlank())
         return ZERO
 
       try {
-        val (vol, unit) = volStr.split(" ", limit = 2)
+        val (vol, unit) = volStr!!.split(" ", limit = 2)
         return of(vol.toDouble(), VolumnUnit.parse(unit))
       } catch(e: Exception) {
         throw NumberFormatException("Unknown Volumn string. volStr=$volStr")

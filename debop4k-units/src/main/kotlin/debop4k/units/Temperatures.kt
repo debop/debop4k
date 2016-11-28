@@ -28,6 +28,9 @@ fun Double.fahrenheit(): Temperature = Temperature.of(this, TemperatureUnit.FAHR
 fun Double.C2F(): Double = this * 1.8 + 32.0
 fun Double.F2C(): Double = (this - 32.0) / 1.8
 
+/**
+ * 온도 단위의 종류
+ */
 enum class TemperatureUnit(val unitName: String, val factor: Double) {
 
   KELVIN("K", 0.0),
@@ -47,6 +50,9 @@ enum class TemperatureUnit(val unitName: String, val factor: Double) {
   }
 }
 
+/**
+ * 온도를 나타내는 클래스입니다.
+ */
 data class Temperature(val kelvin: Double = 0.0) : Comparable<Temperature>, Serializable {
 
   operator fun plus(other: Temperature) = Temperature(kelvin + other.kelvin)
@@ -76,12 +82,12 @@ data class Temperature(val kelvin: Double = 0.0) : Comparable<Temperature>, Seri
         Temperature(temp + unit.factor)
 
     @JvmStatic
-    fun parse(tempStr: String): Temperature {
+    fun parse(tempStr: String?): Temperature {
       if (tempStr.isNullOrBlank())
         return ZERO
 
       try {
-        val (temp, unit) = tempStr.split(" ", limit = 2)
+        val (temp, unit) = tempStr!!.split(" ", limit = 2)
         return of(temp.toDouble(), TemperatureUnit.parse(unit))
       } catch(e: Exception) {
         throw NumberFormatException("Unknown Temperature string. tempStr=$tempStr")

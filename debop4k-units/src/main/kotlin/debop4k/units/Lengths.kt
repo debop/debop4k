@@ -101,6 +101,7 @@ data class Length(val meter: Double = 0.0) : Comparable<Length>, Serializable {
 
 
   companion object {
+
     @JvmField val ZERO = Length(0.0)
     @JvmField val MIN_VALUE = Length(Double.MIN_VALUE)
     @JvmField val MAX_VALUE = Length(Double.MAX_VALUE)
@@ -113,13 +114,16 @@ data class Length(val meter: Double = 0.0) : Comparable<Length>, Serializable {
     fun of(length: Double = 0.0, unit: LengthUnit = LengthUnit.METER): Length =
         Length(length * unit.factor)
 
+    /**
+     * 문자열을 파싱하여 [Length] 인스턴스를 빌드합니다
+     */
     @JvmStatic
-    fun parse(str: String): Length {
-      if (str.isBlank()) {
+    fun parse(str: String?): Length {
+      if (str.isNullOrBlank()) {
         return ZERO
       }
       try {
-        val (length, unit) = str.split(" ", limit = 2)
+        val (length, unit) = str!!.split(" ", limit = 2)
         return of(length.toDouble(), LengthUnit.parse(unit))
       } catch(e: Exception) {
         throw NumberFormatException("Invalid Length string. str=$str")

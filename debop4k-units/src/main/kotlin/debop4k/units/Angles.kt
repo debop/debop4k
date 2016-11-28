@@ -100,7 +100,7 @@ data class Angle(val degree: Double = 0.0) : Comparable<Angle>, Serializable {
   companion object {
 
     @JvmField val ZERO = Angle(0.0)
-    @JvmField val DEGREE_ZERO = ZERO
+    @JvmField val DEGREE_0 = ZERO
     @JvmField val DEGREE_90 = Angle(90.0)
     @JvmField val DEGREE_180 = Angle(180.0)
     @JvmField val DEGREE_270 = Angle(270.0)
@@ -112,20 +112,32 @@ data class Angle(val degree: Double = 0.0) : Comparable<Angle>, Serializable {
     @JvmField val NEGATIVE_INF = Angle(Double.NEGATIVE_INFINITY)
     @JvmField val NaN = Angle(Double.NaN)
 
+    /**
+     * 각도를 가지고 [Angle] 인스턴스를 빌드합니다
+     */
     @JvmOverloads
     @JvmStatic
     fun of(angle: Double = 0.0, unit: AngleUnit = AngleUnit.Degree): Angle = when (unit) {
       AngleUnit.Degree -> degree(angle)
       AngleUnit.Radian -> radian(angle)
-      else -> throw IllegalArgumentException("Unknown Angle unit. unit=$unit")
+      else             -> throw IllegalArgumentException("Unknown Angle unit. unit=$unit")
     }
 
+    /**
+     * degree 단위의 각도 값을 가지고 [Angle] 인스턴스를 빌드합니다.
+     */
     @JvmStatic
     fun degree(angle: Double) = Angle(angle)
 
+    /**
+     * radian 단위의 각도 값을 가지고 [Angle] 인스턴스를 빌드합니다.
+     */
     @JvmStatic
     fun radian(angle: Double) = Angle(radianToDegree(angle))
 
+    /**
+     * 각도를 나타내는 문자열을 파싱하여 [Angle] 인스턴스를 빌드합니다
+     */
     @JvmStatic
     fun parse(str: String?): Angle {
       if (str.isNullOrBlank())
