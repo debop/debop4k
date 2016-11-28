@@ -40,7 +40,7 @@ class DataSourcesKotlinTest : AbstractDataKotlinTest() {
             ps.close()
           }
         } catch(e: SQLException) {
-          throw RuntimeException("connection error", e)
+          throw RuntimeException("connection error")
         } finally {
           conn.close()
         }
@@ -75,9 +75,9 @@ class DataSourcesKotlinTest : AbstractDataKotlinTest() {
     connectionTest(ds)
   }
 
-  @Test fun `create postgresql connection`() {
-    val setting = DatabaseSetting(driverClass = JdbcDrivers.DRIVER_CLASS_POSTGRESQL,
-                                  jdbcUrl = "jdbc:postgresql://localhost/hibernate",
+  @Test fun `create mysql connection`() {
+    val setting = DatabaseSetting(driverClass = JdbcDrivers.DRIVER_CLASS_MARIADB,
+                                  jdbcUrl = "jdbc:mysql://localhost:3306/test?serverTimezone=UTC",
                                   username = "root",
                                   password = "root")
     val ds = DataSources.of(setting)

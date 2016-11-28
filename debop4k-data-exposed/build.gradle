@@ -28,7 +28,6 @@ dependencies {
     // MySql MXJ에서는 최신 Driver 가 아닌 5.1.39 를 사용해야 합니다.
     testCompile "mysql:mysql-connector-java:5.1.39"
     testCompile "mysql:mysql-connector-mxj:5.0.12"
-
     testCompile "org.postgresql:postgresql:9.4.1211.jre7"
     testCompile "ru.yandex.qatools.embed:postgresql-embedded:1.15"
 }

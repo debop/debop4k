@@ -55,7 +55,7 @@ object JdbcDrivers {
   /**
    * MySQL Jdbc driver class name
    */
-  @JvmField val DRIVER_CLASS_MYSQL = "com.mysql.jdbc.Driver"
+  @JvmField val DRIVER_CLASS_MYSQL = "com.mysql.cj.jdbc.Driver"
   /**
    * MySQL hibernate dialect
    */

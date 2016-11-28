@@ -31,7 +31,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import static debop4k.data.JdbcDrivers.DRIVER_CLASS_POSTGRESQL;
+import static debop4k.data.JdbcDrivers.DRIVER_CLASS_MARIADB;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
@@ -106,9 +106,9 @@ public class DataSourcesTest {
   }
 
   @Test
-  public void newDataSourceForPostgresFromProperties() throws Exception {
+  public void newDataSourceForMysqlFromProperties() throws Exception {
     Properties props = new Properties();
-    props.load(getClass().getClassLoader().getResourceAsStream("hikari-postgres.properties"));
+    props.load(getClass().getClassLoader().getResourceAsStream("hikari-mysql.properties"));
 
     HikariConfig config = new HikariConfig(props);
     DataSource ds = DataSources.withConfig(config);
@@ -127,11 +127,11 @@ public class DataSourcesTest {
   }
 
   @Test
-  public void newDataSourceForPostgreSQL() throws Exception {
+  public void newDataSourceForMySql() throws Exception {
     DatabaseSetting setting =
         DatabaseSetting.builder()
-                       .driverClass(DRIVER_CLASS_POSTGRESQL)
-                       .jdbcUrl("jdbc:postgresql://127.0.0.1/hibernate")
+                       .driverClass(DRIVER_CLASS_MARIADB)
+                       .jdbcUrl("jdbc:mysql://localhost/test?serverTimezone=UTC")
                        .username("root")
                        .password("root")
                        .build();

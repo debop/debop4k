@@ -111,6 +111,11 @@
       <artifactId>mysql-connector-java</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.mariadb.jdbc</groupId>
+      <artifactId>mariadb-java-client</artifactId>
+      <version>1.4.6</version>
+    </dependency>
     <!--<dependency>-->
       <!--<groupId>com.oracle</groupId>-->
       <!--<artifactId>ojdbc7</artifactId>-->
