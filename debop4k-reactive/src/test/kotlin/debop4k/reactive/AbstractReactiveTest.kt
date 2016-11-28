@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.reactive
@@ -29,8 +28,8 @@ abstract class AbstractReactiveTest {
 
   val log = loggerOf(javaClass)
 
-  val a: ScriptAssertion = mock<ScriptAssertion>()
-  val w: Observable<Int> = mock<Observable<Int>>()
+  val a = mock<ScriptAssertion>()
+  val w = mock<Observable<Int>>()
 
   @Before fun setup() {
     MockitoAnnotations.initMocks(this)

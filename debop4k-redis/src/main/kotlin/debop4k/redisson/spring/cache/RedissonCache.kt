@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.redisson.spring.cache
@@ -61,7 +60,7 @@ open class RedissonCache(val mapCache: RMapCache<Any?, Any?>,
   override fun <T : Any?> get(key: Any?, valueLoader: Callable<T>?): T {
     val wrapper = get(key)
     try {
-      return (wrapper?.get() ?: valueLoader?.call() ?: null) as T
+      return (wrapper?.get() ?: valueLoader?.call()) as T
     } catch(e: Throwable) {
       return null as T
     }
@@ -94,7 +93,7 @@ open class RedissonCache(val mapCache: RMapCache<Any?, Any?>,
   }
 
   private fun toValueWrapper(value: Any?): ValueWrapper? {
-    return value?.let(::SimpleValueWrapper) ?: null
+    return value?.let(::SimpleValueWrapper)
   }
 
   private fun isNullOrNullCacheValue(value: Any?): Boolean {
