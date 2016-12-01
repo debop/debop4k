@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 @file:JvmName("Geometryx")
@@ -19,9 +18,7 @@
 package debop4k.science.gis.coords
 
 import debop4k.core.loggerOf
-import debop4k.core.utils.COMMA
-import debop4k.core.utils.asDouble
-import debop4k.core.utils.asInt
+import debop4k.core.utils.*
 import java.awt.Point
 import java.awt.Polygon
 import java.awt.geom.Line2D
@@ -95,7 +92,7 @@ fun Double.isValidLongitude(): Boolean = this >= -180.0 && this <= 180.0
 
 @JvmOverloads
 fun bboxOf(bboxStr: String?, limitBox: BoundingBox = WorldBBox): BoundingBox? {
-  log.trace("bbox 값을 파싱합니다. bboxStr={}", bboxStr)
+  log.trace("bbox 값을 파싱합니다. bboxStr={}, limitBox={}", bboxStr, limitBox)
 
   if (bboxStr.isNullOrBlank())
     return null
@@ -160,10 +157,10 @@ fun Array<Point2D.Double>?.area(): Double {
 
 /** 다각형의 무게 중심을 구한다 */
 fun Polygon?.centerOfGravity(): Point2D.Double?
-    = this?.toPointArray().centerOfGravity() ?: null
+    = this?.toPointArray().centerOfGravity()
 
 fun Iterable<Point2D.Double>?.centerOfGravity(): Point2D.Double? {
-  return this?.toList()?.toTypedArray().centerOfGravity() ?: null
+  return this?.toList()?.toTypedArray().centerOfGravity()
 }
 
 fun Array<Point2D.Double>?.centerOfGravity(): Point2D.Double {

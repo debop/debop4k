@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 @file:JvmName("AsyncHttpx")
 
@@ -50,7 +49,7 @@ fun executeAsyncAsParallel(requests: Iterable<HttpUriRequest>): List<Promise<Htt
 @JvmOverloads
 fun getContent(promise: Promise<HttpResponse?, Exception>, cs: Charset = Charsets.UTF_8): String {
   val response = promise.result()
-  return EntityUtils.toString(response?.entity ?: null, cs)
+  return EntityUtils.toString(response?.entity, cs)
 }
 
 @JvmOverloads
