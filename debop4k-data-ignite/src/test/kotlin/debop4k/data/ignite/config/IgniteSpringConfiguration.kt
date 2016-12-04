@@ -11,11 +11,11 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.data.ignite.config
 
+import debop4k.core.utils.Systems
 import org.apache.ignite.Ignite
 import org.apache.ignite.Ignition
 import org.apache.ignite.configuration.IgniteConfiguration
@@ -28,7 +28,8 @@ open class IgniteSpringConfiguration {
   @Bean
   open fun igniteConfig(): IgniteConfiguration {
     return IgniteConfiguration().apply {
-      asyncCallbackPoolSize = 16
+      // Callback Pool Size
+      asyncCallbackPoolSize = Systems.ProcessCount * 2
     }
   }
 

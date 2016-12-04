@@ -11,13 +11,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.data.ignite.examples
 
 import debop4k.core.collections.parForEach
 import debop4k.core.uninitialized
+import debop4k.core.utils.parallelStream
 import debop4k.core.utils.use
 import debop4k.data.ignite.AbstractIgniteTest
 import debop4k.data.ignite.getCache
@@ -50,8 +50,12 @@ class SimpleExample : AbstractIgniteTest() {
 
   @Test
   fun testConfiguration() {
-    ignite.getCache<String, Any?>("default").use { cache ->
+    ignite.getCache<String, String?>("default").use { cache ->
       cache.put("a", "abc")
+      cache.putIfAbsent("b", "b")
+      val b = cache.getAndPutIfAbsent("b", "not exists")
+      assertThat(b).isEqualTo("b")
+      assertThat(cache.get("b")).isEqualTo("b")
       log.debug("cache matrics = {}", cache.metrics())
     }
   }
@@ -75,9 +79,27 @@ class SimpleExample : AbstractIgniteTest() {
     assertThat(sum).isEqualTo(28)
   }
 
-  @Test
-  fun testDataGrid() {
+  @Test fun testCachePutAndGet() {
     val range = 0..100
+
+    ignite.getCache<Int, String>("dataGrid").use { cache ->
+
+      // Store keys in cache (values will end up on different cache nodes).
+      range.forEach {
+        cache.put(it, it.toString())
+      }
+
+      range.forEach {
+        log.trace("\tGot [key=$it, value=${cache.get(it)}]")
+        assertThat(it).isEqualTo(cache.get(it).toInt())
+      }
+    }
+  }
+
+  @Test
+  fun testCachePutAndGetAsParallel() {
+    val range = 0..100
+
     ignite.getCache<Int, String>("dataGrid").use { cache ->
 
       // Store keys in cache (values will end up on different cache nodes).
@@ -86,6 +108,24 @@ class SimpleExample : AbstractIgniteTest() {
       }
 
       range.parForEach {
+        log.trace("\tGot [key=$it, value=${cache.get(it)}]")
+        assertThat(it).isEqualTo(cache.get(it).toInt())
+      }
+    }
+  }
+
+  @Test
+  fun testCachePutAndGetJavaParallel() {
+    val range = 0..100
+
+    ignite.getCache<Int, String>("dataGrid").use { cache ->
+
+      // Store keys in cache (values will end up on different cache nodes).
+      range.parallelStream().forEach {
+        cache.put(it, it.toString())
+      }
+
+      range.parallelStream().forEach {
         log.trace("\tGot [key=$it, value=${cache.get(it)}]")
         assertThat(it).isEqualTo(cache.get(it).toInt())
       }

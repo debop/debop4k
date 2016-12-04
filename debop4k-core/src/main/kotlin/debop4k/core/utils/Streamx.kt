@@ -11,13 +11,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 @file:JvmName("Streamx")
 
 package debop4k.core.utils
 
+import debop4k.core.collections.toFastList
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.eclipse.collections.impl.list.mutable.primitive.*
 import java.util.*
@@ -35,11 +35,16 @@ fun <T> Array<T>.stream(): Stream<T> {
 }
 
 fun <T> Iterable<T>.stream(): Stream<T> {
-  return StreamSupport.stream({ Spliterators.spliteratorUnknownSize(this.iterator(), 0) }, 0, false)
+  if (this is List<T>)
+    return this.stream()
+
+  return this.toFastList().stream()
 }
 
 fun <T> Iterable<T>.parallelStream(): Stream<T> {
-  return StreamSupport.stream({ Spliterators.spliteratorUnknownSize(this.iterator(), 0) }, 0, true)
+  return this.stream().parallel()
+//  return StreamSupport.stream(this.spliterator(), false).parallel()
+//  return StreamSupport.stream({ Spliterators.spliteratorUnknownSize(this.iterator(), 0) }, 0, true).parallel()
 }
 
 fun <T> Iterator<T>.stream(): Stream<T> {

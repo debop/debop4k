@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.core.utils
@@ -20,6 +19,7 @@ import debop4k.core.AbstractCoreKotlinTest
 import org.assertj.core.api.Assertions.assertThat
 import org.eclipse.collections.impl.list.primitive.IntInterval
 import org.junit.Test
+import java.util.concurrent.atomic.*
 import java.util.stream.*
 
 /**
@@ -56,5 +56,17 @@ class StreamxKotlinTest : AbstractCoreKotlinTest() {
     var sum = 0
     IntInterval.fromTo(0, 10).forEach { i -> sum += i }
     assertThat(sum).isEqualTo(55)
+  }
+
+
+  @Test
+  fun testParallelStream() {
+    val sum = AtomicInteger(0)
+    (0..100).parallelStream().forEach {
+      i ->
+      sum.accumulateAndGet(i, { acc, x -> acc + x })
+      log.debug("sum $i")
+    }
+    assertThat(sum.get()).isEqualTo(5050)
   }
 }
