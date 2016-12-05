@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 @file:JvmName("ParallelIteratex")
@@ -59,8 +58,9 @@ inline fun <T> Iterable<T>.parCount(crossinline predicate: (T) -> Boolean): Int 
 /**
  * Parallel forEach
  */
-inline fun <T> Iterable<T>.parForEach(crossinline action: (T) -> Unit): Unit {
-  ParallelIterate.forEach(this, { action(it) })
+@JvmOverloads
+inline fun <T> Iterable<T>.parForEach(batchSize: Int = DEFAULT_MIN_FORK_SIZE, crossinline action: (T) -> Unit): Unit {
+  ParallelIterate.forEach(this, { action(it) }, batchSize)
 }
 
 /**
