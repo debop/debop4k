@@ -28,7 +28,7 @@ import java.util.concurrent.*
  * @author sunghyouk.bae@gmail.com
  */
 open class RedissonCache(val mapCache: RMapCache<Any?, Any?>,
-                         val expiration: Long) : Cache {
+                         val expiration: Long = DEFAULT_CACHE_TIMEOUT) : Cache {
 
   private val log = loggerOf(javaClass)
 
@@ -50,7 +50,7 @@ open class RedissonCache(val mapCache: RMapCache<Any?, Any?>,
       return null as T
     } else {
       if (type != null && !type.isInstance(value)) {
-        throw IllegalStateException("Cache value is not of required type [${type.name}]: $value")
+        error("Cache value is not of required type [${type.name}]: $value")
       }
     }
     return value as T
@@ -68,14 +68,18 @@ open class RedissonCache(val mapCache: RMapCache<Any?, Any?>,
 
   override fun put(key: Any?, value: Any?) {
     log.trace("insert cache item... key={}, value={}", key, value)
-    if (expiration > 0)
+
+    if (expiration > 0) {
       mapCache.fastPut(key, value, expiration, TimeUnit.MILLISECONDS)
-    else
+    } else {
       mapCache.fastPut(key, value)
+    }
   }
 
   override fun putIfAbsent(key: Any?, value: Any?): ValueWrapper? {
-    var oldValue: Any? =
+    log.trace("insert cache item if absent... key={}, value={}", key, value)
+
+    val oldValue: Any? =
         if (expiration > 0) {
           mapCache.putIfAbsent(key, value, expiration, TimeUnit.MILLISECONDS)
         } else {
@@ -99,6 +103,4 @@ open class RedissonCache(val mapCache: RMapCache<Any?, Any?>,
   private fun isNullOrNullCacheValue(value: Any?): Boolean {
     return value == null || value.javaClass.name == NullCacheValue::class.java.name
   }
-
-
 }

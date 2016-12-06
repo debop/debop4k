@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.science.gis.coords;
@@ -45,13 +44,13 @@ public final class GeometryEx {
    */
   public static double Px2M = 0.0002645833333333;
 
-  public static double MIN_X = -20037508.3427892;
-  public static double MAX_X = 20037508.3427892;
-  public static double MIN_Y = -44927335.4270971;
-  public static double MAX_Y = 44927335.4270966;
+  public static final double MIN_X = -20037508.3427892;
+  public static final double MAX_X = 20037508.3427892;
+  public static final double MIN_Y = -44927335.4270971;
+  public static final double MAX_Y = 44927335.4270966;
 
-  public static double MIN_Y_ENC = -147730762.669922;
-  public static double MAX_Y_ENC = 147730758.194568;
+  public static final double MIN_Y_ENC = -147730762.669922;
+  public static final double MAX_Y_ENC = 147730758.194568;
 
   public static final Point2D.Double TOP_LEFT = new Point2D.Double(MIN_X, 147730758.194568); // lon : -180, lat :  89.99999999
   public static final Point2D.Double BOTTOM_RIGHT = new Point2D.Double(MAX_X, -147730762.669922); // lon :  180, lat : -89.99999999

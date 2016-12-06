@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.redisson.spring
@@ -20,8 +19,11 @@ import org.redisson.api.RedissonReactiveClient
 
 /**
  * [RedissonReactiveClient] 를 이용하여 추가 기능을 구현할 예정입니다.
+ * <p>
+ * 참고: https://github.com/mrniko/redisson/wiki/8.-Redis-commands-mapping
+ * Kotlin 의 class delegate 기능을 이용한다
+ *
  * @author sunghyouk.bae@gmail.com
  */
 class RedissonReactiveTemplate(val redisson: RedissonReactiveClient) : RedissonReactiveClient by redisson {
-
 }

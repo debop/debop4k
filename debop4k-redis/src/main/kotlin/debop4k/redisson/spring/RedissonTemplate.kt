@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.redisson.spring
@@ -27,5 +26,4 @@ import org.redisson.api.RedissonClient
  * @author sunghyouk.bae@gmail.com
  */
 class RedissonTemplate(val redisson: RedissonClient) : RedissonClient by redisson {
-
 }

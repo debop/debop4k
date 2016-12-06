@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.redisson.spring.cache
@@ -53,7 +52,7 @@ open class RedissonCacheManager(val redisson: RedissonClient) : CacheManager, Di
   private val caches = ConcurrentHashMap<String, RedissonCache>()
   private val expires = ConcurrentHashMap<String, Long>()
 
-  var defaultExpiryInMillis: Long = 60 * 60 * 1000L   // 60 분
+  var defaultExpiryInMillis: Long = DEFAULT_CACHE_TIMEOUT   // 60 분
 
 
 //  override fun loadCaches(): MutableCollection<out Cache>? {

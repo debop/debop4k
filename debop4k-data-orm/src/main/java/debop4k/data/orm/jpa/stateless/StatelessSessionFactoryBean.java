@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.data.orm.jpa.stateless;
@@ -73,12 +72,12 @@ public class StatelessSessionFactoryBean implements FactoryBean<StatelessSession
   /**
    * StatelessSession interceptor
    */
-  class StatelessSessionInterceptor implements org.aopalliance.intercept.MethodInterceptor {
+  static class StatelessSessionInterceptor implements org.aopalliance.intercept.MethodInterceptor {
 
     private final EntityManagerFactory emf;
     private final SessionFactory sf;
 
-    public StatelessSessionInterceptor(EntityManagerFactory emf, SessionFactory sf) {
+    StatelessSessionInterceptor(EntityManagerFactory emf, SessionFactory sf) {
       this.emf = emf;
       this.sf = sf;
     }

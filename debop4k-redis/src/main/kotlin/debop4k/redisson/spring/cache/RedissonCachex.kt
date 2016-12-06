@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 @file:JvmName("RedissonCachex")
@@ -22,6 +21,8 @@ import debop4k.redisson.DEFAULT_DELIMETER
 import org.springframework.cache.Cache
 import org.springframework.cache.interceptor.KeyGenerator
 import java.lang.reflect.Method
+
+const val DEFAULT_CACHE_TIMEOUT = 60 * 60 * 1000L // 60 Minutes
 
 /**
  * 캐시 값이 NULL 인 것을 표현하는 클래스

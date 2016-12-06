@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.data.orm.hibernate;
@@ -51,15 +50,15 @@ public class HibernateParameter extends AbstractNamedParameter {
    * @param paramType 파라미터 수형
    * @return {@link HibernateParameter} 인스턴스
    */
-  public static HibernateParameter of(@NonNull String name, Object value, Type paramType) {
+  public static HibernateParameter of(@NonNull String name, Object value, @NonNull Type paramType) {
     return new HibernateParameter(name, value, paramType);
   }
 
   private final Type paramType;
 
-  /**
-   * default constructor
-   */
+//  /**
+//   * default constructor
+//   */
   //protected HibernateParameter() { this("parameter", null, null); }
 
   /**
@@ -79,7 +78,7 @@ public class HibernateParameter extends AbstractNamedParameter {
    * @param value     parameter value
    * @param paramType 파라미터 수형
    */
-  public HibernateParameter(@NonNull String name, Object value, Type paramType) {
+  public HibernateParameter(@NonNull String name, Object value, @NonNull Type paramType) {
     super(name, value);
     this.paramType = paramType;
   }

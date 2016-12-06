@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 @file:JvmName("Redissonx")
@@ -19,10 +18,15 @@
 package debop4k.redisson
 
 import debop4k.core.io.toInputStream
+import debop4k.core.loggerOf
 import org.redisson.client.codec.Codec
 import org.redisson.codec.SnappyCodec
 import org.redisson.config.Config
+import java.io.File
+import java.io.InputStream
 import java.net.URL
+
+private val log = loggerOf("Redissonx")
 
 @JvmField val DEFAULT_HOST = "127.0.0.1"
 @JvmField val DEFAULT_PORT = 6379
@@ -39,21 +43,20 @@ import java.net.URL
 @JvmField val DEFAULT_CODEC = SnappyCodec()
 
 @JvmOverloads
-fun configFromYaml(inputStream: java.io.InputStream, codec: org.redisson.client.codec.Codec = debop4k.redisson.DEFAULT_CODEC): org.redisson.config.Config {
-  val cfg = org.redisson.config.Config.fromYAML(inputStream)
-  if (cfg != null && cfg.codec == null) {
-    cfg.codec = codec
+fun configFromYaml(inputStream: InputStream, codec: Codec = DEFAULT_CODEC): Config {
+  log.debug("load redisson config from YAML")
+  return Config.fromYAML(inputStream).apply {
+    this.codec = codec
   }
-  return cfg
 }
 
 @JvmOverloads
-fun configFromYaml(content: String, codec: org.redisson.client.codec.Codec = debop4k.redisson.DEFAULT_CODEC): org.redisson.config.Config {
+fun configFromYaml(content: String, codec: Codec = DEFAULT_CODEC): Config {
   return configFromYaml(content.toInputStream(), codec)
 }
 
 @JvmOverloads
-fun configFromYaml(file: java.io.File, codec: org.redisson.client.codec.Codec = debop4k.redisson.DEFAULT_CODEC): org.redisson.config.Config {
+fun configFromYaml(file: File, codec: Codec = DEFAULT_CODEC): Config {
   return debop4k.redisson.configFromYaml(file.inputStream(), codec)
 }
 
@@ -67,8 +70,10 @@ fun configFromYaml(url: URL, codec: Codec = DEFAULT_CODEC): Config {
 fun configWithSingleServer(host: String = DEFAULT_HOST,
                            port: Int = DEFAULT_PORT,
                            codec: Codec = DEFAULT_CODEC): Config {
-  val cfg = Config()
-  cfg.useSingleServer().setAddress(host + ":" + port)
-  cfg.codec = codec
-  return cfg
+  log.debug("load redisson config. host={}, port={}, codec={}", host, port, codec)
+
+  return Config().apply {
+    this.useSingleServer().setAddress(host + ":" + port)
+    this.codec = codec
+  }
 }
