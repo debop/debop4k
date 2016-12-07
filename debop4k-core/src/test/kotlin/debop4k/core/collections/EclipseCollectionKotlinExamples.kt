@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2016. KESTI co, ltd
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,10 +28,6 @@ import org.eclipse.collections.impl.set.mutable.primitive.IntHashSet
 import org.junit.Test
 import java.util.concurrent.*
 
-/**
- * EclipseCollectionKotlinExamples
- * @author debop sunghyouk.bae@gmail.com
- */
 class EclipseCollectionKotlinExamples : AbstractCoreKotlinTest() {
 
   val executor: ExecutorService = Executors.newFixedThreadPool(4)
@@ -180,7 +176,7 @@ data class Pet(val type: PetType, val name: String, val age: Int)
 data class Person(val firstName: String, val lastName: String,
                   val pets: FastList<Pet> = FastList.newList<Pet>()) {
 
-  val getPetType: (Pet) -> PetType = { it.type }
+  val getPetType: (Pet) -> PetType = Pet::type
 
   fun named(name: String): Boolean {
     return (firstName + " " + lastName) == name
@@ -191,13 +187,12 @@ data class Person(val firstName: String, val lastName: String,
   }
 
   val petTypes: MutableBag<PetType>
-    get() = pets.collect({ it.type }, HashBag.newBag())
+    get() = pets.collect(Pet::type, HashBag.newBag())
 
   fun addPet(petType: PetType, name: String, age: Int): Person {
     pets.add(Pet(petType, name, age))
     return this
   }
 
-  val numgerOfPets: Int
-    get() = pets.size
+  val numgerOfPets: Int get() = pets.size
 }
