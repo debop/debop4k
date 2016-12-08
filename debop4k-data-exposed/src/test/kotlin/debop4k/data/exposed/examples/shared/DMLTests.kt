@@ -72,6 +72,9 @@ object DMLData {
     val e = enumeration("e", E::class.java)
     val en = enumeration("en", E::class.java).nullable()
 
+//    val es = enumerationByName("es", 5, E::class.java)
+//    val esn = enumerationByName("esn", 5, E::class.java).nullable()
+
     val s = varchar("s", 100)
     val sn = varchar("sn", 100).nullable()
 
@@ -644,6 +647,7 @@ class DMLTests : DatabaseTestBase() {
                             d: DateTime, dn: DateTime?,
                             t: DateTime, tn: DateTime?,
                             e: E, en: E?,
+      //                            es:E, esn: E?,
                             s: String, sn: String?,
                             dc: BigDecimal, dcn: BigDecimal?) {
     assertThat(row[this.n]).isEqualTo(n)
@@ -654,6 +658,8 @@ class DMLTests : DatabaseTestBase() {
     assertThat(row[this.tn]?.trimToMillis()).isEqualTo(tn?.asUtc()?.trimToMillis())
     assertThat(row[this.e]).isEqualTo(e)
     assertThat(row[this.en]).isEqualTo(en)
+//    assertThat(row[this.es]).isEqualTo(es)
+//    assertThat(row[this.esn]).isEqualTo(esn)
     assertThat(row[this.s]).isEqualTo(s)
     assertThat(row[this.sn]).isEqualTo(sn)
     assertThat(row[this.dc]).isEqualTo(dc)
@@ -820,7 +826,25 @@ class DMLTests : DatabaseTestBase() {
   }
 
   @Test fun testSelect01() {
+    val tbl = DMLData.Misc
 
+    withTables(tbl) {
+      val date = today
+      val time = DateTime.now()
+      val sTest = "test"
+      val dec = BigDecimal("239.42")
+      tbl.insert {
+        it[n] = 42
+        it[d] = date
+        it[t] = time
+        it[e] = DMLData.E.ONE
+//        it[es] = DMLData.E.ONE
+        it[s] = sTest
+        it[dc] = dec
+      }
+
+      tbl.checkRow(tbl.select { tbl.n.eq(42) }.single(), 42, null, date, null, time, null, DMLData.E.ONE, null, sTest, null, dec, null)
+    }
   }
 
   @Test fun testSelect02() {
@@ -836,11 +860,30 @@ class DMLTests : DatabaseTestBase() {
   }
 
   @Test fun testJoinWithAlias01() {
+    /*
+      SELECT Users.id, Users.name, Users.city_id, u2.id, u2.name, u2.city_id
+      FROM Users LEFT JOIN Users AS u2 ON u2.id = 'smth'
+      WHERE Users.id = 'alex'
+     */
+    withCitiesAndUsers { cities, users, userData ->
+      val usersAlias = users.alias("u2")
+      val resultRow = Join(users).join(usersAlias, JoinType.LEFT, usersAlias[users.id], stringLiteral("smth"))
+          .select { users.id eq "alex" }
+          .single()
 
+      assertThat(resultRow[users.name]).isEqualTo("Alex")
+      assertThat(resultRow[usersAlias[users.name]]).isEqualTo("Something")
+    }
   }
 
   @Test fun testStringFunctions() {
+    withCitiesAndUsers { cities, users, userData ->
+      val lcase = DMLData.Cities.name.lowerCase()
+      assertThat(cities.slice(lcase).selectAll().any { it[lcase] == "prague" }).isTrue()
 
+      val ucase = DMLData.Cities.name.upperCase()
+      assertThat(cities.slice(ucase).selectAll().any { it[ucase] == "PRAGUE" }).isTrue()
+    }
   }
 
   @Test fun testJoinSubQuery01() {
