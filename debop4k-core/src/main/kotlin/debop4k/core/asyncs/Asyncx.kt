@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 @file:JvmName("Asyncx")
@@ -19,7 +18,7 @@
 package debop4k.core.asyncs
 
 import nl.komponents.kovenant.*
-import java.lang.Exception
+import java.lang.*
 import java.util.concurrent.*
 
 /**
@@ -101,15 +100,21 @@ fun <V> futureAll(context: Context = Kovenant.context,
   return tasks.map { task(context) { it() } }
 }
 
-fun <V> delayedFuture(delay: Long = 0L, timeunit: TimeUnit = TimeUnit.MILLISECONDS, body: () -> V): Promise<V, Exception> {
+/**
+ * 지정된 시간만큼 지연한 후 [body] 를 비동기 방식으로 실행합니다
+ */
+@JvmOverloads
+inline fun <V> delayedFuture(delay: Long = 0L,
+                             timeunit: TimeUnit = TimeUnit.MILLISECONDS,
+                             crossinline body: () -> V): Promise<V, Exception> {
   if (delay > 0) {
-    return task { body() }
-  } else {
     return task {
       Thread.sleep(timeunit.toMillis(delay))
     } then {
       body()
     }
+  } else {
+    return task { body() }
   }
 }
 

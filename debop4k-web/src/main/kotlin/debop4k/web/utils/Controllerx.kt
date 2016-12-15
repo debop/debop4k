@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 @file:JvmName("Controllerx")
 
@@ -23,7 +22,6 @@ import debop4k.core.io.exists
 import debop4k.core.io.readAllBytesAsync
 import debop4k.core.loggerOf
 import debop4k.web.rest.ApiResult
-import lombok.NonNull
 import nl.komponents.kovenant.Promise
 import org.springframework.http.*
 import org.springframework.web.context.request.async.WebAsyncTask
@@ -114,17 +112,19 @@ fun sendFileAsync(response: HttpServletResponse,
 
 /**
  * Http Response 에 파일을 다운로드 하기 위해 파일 내용을 읽어 오고, HttpResponse 의 Header 에 관련 정보를 설정합니다.
+ * 파일 크기가 작은 경우에 쓰고, 대용량 파일일 경우는 chunk 를 할 수 있도록 해야 합니다.
+ *
  * @param response    Http Response 객체
  * @param path        다운로드할 파일 경로
  * @param contentType 파일의 Content type
  * @return 파일 내용
  */
 @JvmOverloads
-fun handleFileSend(@NonNull response: HttpServletResponse,
-                   @NonNull path: String,
+fun handleFileSend(response: HttpServletResponse,
+                   path: String,
                    contentType: MediaType = MediaType.APPLICATION_OCTET_STREAM): ByteArray {
   if (!exists(path))
-    throw FileNotFoundException("파일을 찾을 수 없습니다. path=" + path)
+    throw FileNotFoundException("파일을 찾을 수 없습니다. path=$path")
 
   val result = readAllBytesAsync(path)
 
@@ -135,4 +135,30 @@ fun handleFileSend(@NonNull response: HttpServletResponse,
   response.setContentLength(bytes.size)
 
   return bytes
+}
+
+/**
+ * [HttpServletResponse] 의 OutputStream 에 지정한 파일 내용을 씁니다.
+ *
+ * @param file        다운로드할 파일
+ * @param contentType 파일의 Content type
+ */
+@JvmOverloads
+fun HttpServletResponse.sendFile(file: File, contentType: MediaType = MediaType.APPLICATION_OCTET_STREAM) {
+  if (!file.exists())
+    throw FileNotFoundException("파일을 찾을 수 없습니다. file=$file")
+
+  this.setHeader("Content-Disposition", "attachment: filename=${file.name}")
+  this.contentType = contentType.toString()
+
+  val length = file.length()
+  val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+
+  file.inputStream().buffered().use {
+    do {
+      val read = it.read(buffer)
+      if (read > 0)
+        this.outputStream.write(buffer, 0, read)
+    } while (read > 0)
+  }
 }

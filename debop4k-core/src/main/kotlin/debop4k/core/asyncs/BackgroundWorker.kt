@@ -11,15 +11,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.core.asyncs
 
 import debop4k.core.loggerOf
 import debop4k.core.utils.joinThread
-import java.lang.Exception
-import java.lang.RuntimeException
+import java.lang.*
 import java.util.concurrent.atomic.*
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
@@ -60,9 +58,10 @@ abstract class AbstractBackgroundWorker(override val name: String) : BackgroundW
   protected val running = AtomicBoolean(false)
   @Volatile protected var workerThread: Thread? = null
 
-  /** 구현 해야 합니다 */
+  /** 실제 Background 작업을 수행할 Thread를 생성합니다 */
   abstract fun newWorkerThread(): Thread
 
+  /** 백그라운드 작업용 스레드가 실행 중인가? */
   override val isRunning: Boolean
     get() = running.get()
 
@@ -110,7 +109,7 @@ abstract class AbstractBackgroundWorker(override val name: String) : BackgroundW
         }
       }
     } catch(e: Exception) {
-      log.warn("{} 작업용 스레드를 종료하는데 실패했습니다.", e)
+      log.warn("{} 작업용 스레드를 종료하는데 실패했습니다.", name, e)
     } finally {
       workerThread = null
       running.set(false)
