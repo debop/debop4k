@@ -1,0 +1,8 @@
+
+dependencies {
+
+    compile project(":debop4k-config")
+    compile project(":debop4k-core")
+
+    compile "com.sparkjava:spark-core:$sparkjava_version"
+}

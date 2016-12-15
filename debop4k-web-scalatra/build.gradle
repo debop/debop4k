@@ -1,0 +1,10 @@
+dependencies {
+    compile project(":debop4k-config")
+    compile project(":debop4k-core")
+
+    compile "org.scala-lang:scala-library:$scala_version"
+
+    compile "org.scalatra:scalatra:$scalatra_version"
+    compile "org.scalatra:scalatra-scalate:$scalatra_version"
+    compile "org.scalatra:scalatra-json:$scalatra_version"
+}

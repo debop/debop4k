@@ -42,6 +42,10 @@ include 'debop4k-spring-webmvc'
 
 include 'debop4k-timeperiod'
 include 'debop4k-units'
+
 include 'debop4k-web'
+include 'debop4k-web-scalatra'
+include 'debop4k-web-sparkjava'
 
 include 'debop4k-examples'
+
