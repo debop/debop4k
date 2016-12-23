@@ -37,7 +37,8 @@ import javax.inject.Inject
 import javax.sql.DataSource
 
 /**
- * HikariDataSourceAutoConfiguration
+ * HikariCP [DataSource] 를 Spring Boot 에서 자동 환경설정할 수 있도록 해줍니다.
+ *
  * @author sunghyouk.bae@gmail.com
  */
 @Configuration
@@ -102,11 +103,13 @@ open class HikariDataSourceAutoConfiguration {
       return
     }
 
-    log.debug("Flyway 를 이용하여 Database 셋업을 수행합니다...")
+    log.info("Flyway 를 이용하여 Database 셋업을 수행합니다...")
+
     val flyway = Flyway()
     flyway.dataSource = dataSource
 
     if (dataSourceProps.flyway!!.isClearDatabase) {
+      log.info("Flyway에서 기존 DB를 초기화합니다...")
       flyway.clean()
     }
 

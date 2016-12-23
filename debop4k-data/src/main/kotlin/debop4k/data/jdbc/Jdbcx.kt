@@ -25,6 +25,9 @@ import javax.sql.DataSource
 
 private val log: Logger = loggerOf("Jdbcx")
 
+/**
+ * [DataSource]의 [Connection] 이용하여 지정한 [block] 을 실행합니다.
+ */
 inline fun <T> DataSource.use(crossinline block: (Connection) -> T): T {
   val conn = this.connection
 
@@ -44,9 +47,15 @@ fun <T> DataSource.update(sql: String): Int
 inline fun <T> DataSource.query(sql: String, crossinline block: (ResultSet) -> T): T
     = this.use { it.query(sql, block) }
 
+/**
+ * 지정한 [jdbcUrl] 을 이용하여 [Connection] 을 생성합니다.
+ */
 fun connectionOf(jdbcUrl: String, info: Map<String, String>): Connection
     = DriverManager.getConnection(jdbcUrl, info.toProperties())
 
+/**
+ * 지정한 [jdbcUrl] 을 이용하여 [Connection] 을 생성합니다.
+ */
 @JvmOverloads
 fun connectionOf(jdbcUrl: String, username: String? = null, password: String? = null): Connection
     = DriverManager.getConnection(jdbcUrl, username, password)
@@ -61,24 +70,38 @@ inline fun <T> Connection.use(block: (Connection) -> T): T {
   }
 }
 
+/**
+ * [Connection]에 해당하는 DB에 [block] 을 실행합니다.
+ */
 inline fun <T> Connection.statement(crossinline block: (Statement) -> T): T {
   val statement = this.createStatement()
   return statement?.use(block) ?: error("No Statement")
 }
 
-fun Connection.update(sql: String): Int
-    = statement { it.executeUpdate(sql) }
+/**
+ * [Connection]에 해당하는 DB에 [sql] 구문을 실행합니다.
+ */
+fun Connection.update(sql: String): Int {
+  return if (sql.isBlank()) {
+    return -1
+  } else {
+    statement { it.executeUpdate(sql) }
+  }
+}
 
-inline fun <T> Connection.query(sql: String, crossinline block: (ResultSet) -> T): T {
+/**
+ * [Connection]에 해당하는 DB에 [sql] 구문을 실행하고, 결과를 [mapper] 을 이용하여 객체로 빌드합니다.
+ */
+inline fun <T> Connection.query(sql: String, crossinline mapper: (ResultSet) -> T): T {
   return statement {
-    it.executeQuery(sql).use(block)
+    it.executeQuery(sql).use(mapper)
   }
 }
 
 
-inline fun <T, S : Statement> S.use(block: (S) -> T): T {
+inline fun <T, S : Statement> S.use(mapper: (S) -> T): T {
   try {
-    return block(this)
+    return mapper(this)
   } finally {
     this.close()
   }
@@ -92,18 +115,18 @@ fun PreparedStatement.update(): Int {
   }
 }
 
-inline fun <T> PreparedStatement.query(block: (ResultSet) -> T): T {
+inline fun <T> PreparedStatement.query(mapper: (ResultSet) -> T): T {
   try {
     val rs = this.executeQuery()
-    return block(rs)
+    return mapper(rs)
   } finally {
     this.close()
   }
 }
 
-inline fun <T> ResultSet.use(block: (ResultSet) -> T): T {
+inline fun <T> ResultSet.use(mapper: (ResultSet) -> T): T {
   try {
-    return block(this)
+    return mapper(this)
   } finally {
     this.close()
   }

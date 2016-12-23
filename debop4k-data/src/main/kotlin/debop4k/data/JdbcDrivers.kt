@@ -16,6 +16,8 @@
 
 package debop4k.data
 
+import debop4k.core.utils.isNotNull
+
 /**
  * JdbcDrivers
  * @author debop sunghyouk.bae@gmail.com
@@ -109,15 +111,17 @@ object JdbcDrivers {
    */
   @JvmField val DIALECT_ORACLE10g = "org.hibernate.dialect.Oracle10gDialect"
 
-
+  /** driverClass 가 MySQL 인가? */
   @JvmStatic
-  fun isMySQL(driverClassName: String): Boolean {
-    return driverClassName == DRIVER_CLASS_MYSQL ||
-           driverClassName == DRIVER_CLASS_MARIADB
+  fun isMySQL(driverClassName: String? = null): Boolean {
+    return driverClassName.isNotNull() &&
+           (driverClassName == DRIVER_CLASS_MYSQL ||
+            driverClassName == DRIVER_CLASS_MARIADB)
   }
 
+  /** driverClass 가 PostgreSQL 인가? */
   @JvmStatic
   fun isPostgreSQL(driverClassName: String? = null): Boolean {
-    return driverClassName == DRIVER_CLASS_POSTGRESQL
+    return driverClassName.isNotNull() && driverClassName == DRIVER_CLASS_POSTGRESQL
   }
 }
