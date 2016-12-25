@@ -27,7 +27,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.GenericApplicationContext
 import org.springframework.context.support.GenericXmlApplicationContext
 import org.springframework.stereotype.Component
-import java.lang.Exception
+import java.lang.*
 import java.util.*
 import java.util.concurrent.atomic.*
 import javax.inject.Inject
@@ -38,12 +38,10 @@ import javax.inject.Inject
  */
 // TODO: Object로 변경하고, ApplicationContext를 static variable에 inject 하도록 합니다.
 @Component
-open class Springs @Inject constructor(private val _context: ApplicationContext) {
+open class Springs @Inject constructor(_context: ApplicationContext) {
 
   init {
-    if (globalContext.get() == null) {
-      globalContext.compareAndSet(null, _context)
-    }
+    globalContext.compareAndSet(null, _context)
   }
 
   private val log = loggerOf(Springs::class)
@@ -127,7 +125,7 @@ open class Springs @Inject constructor(private val _context: ApplicationContext)
     if (localContext === contextToReset) {
       localContextStack.get().pop()
       if (localContextStack.get().size == 0) {
-        Local.set(LOCAL_SPRING_CONTEXT, null)
+        Local[LOCAL_SPRING_CONTEXT] = null
       }
       log.info("Local application context 를 reset 했습니다.")
       return
@@ -200,10 +198,10 @@ open class Springs @Inject constructor(private val _context: ApplicationContext)
                              includeNonSingletons: Boolean = true,
                              allowEagerInit: Boolean = true): T? {
     val beans = getBeansByType(beanClass, includeNonSingletons, allowEagerInit)
-    if (beans.size > 0)
+    if (beans.isNotEmpty())
       return beans.first()
     else
-      return null
+      return null as? T
   }
 
   @Synchronized
@@ -274,7 +272,7 @@ open class Springs @Inject constructor(private val _context: ApplicationContext)
     if (bean != null)
       return bean
 
-    registerBean<T>(registBeanClass.name, registBeanClass, scope)
+    registerBean(registBeanClass.name, registBeanClass, scope)
     return context.getBean(registBeanClass)
   }
 
