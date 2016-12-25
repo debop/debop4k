@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.csv
@@ -58,7 +57,7 @@ class CSVParser(val format: CSVFormat = DEFAULT_CSVFORMAT) {
       var pos: Int = 0
       val buflen = buf.size
 
-      if (buf.size > 0 && buf[0] == '\uFEFF') {
+      if (buf.isNotEmpty() && buf[0] == '\uFEFF') {
         pos++
       }
 

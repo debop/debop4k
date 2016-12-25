@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.core.result
@@ -263,7 +262,7 @@ class ResultKotlinTest {
 
     assertThat(value1).isEqualTo(574)
     assertThat(error1).isNull()
-    assertThat(value2).isNull()
+    assertThat(value2?.invoke()).isNull()
     assertThat(error2).isInstanceOf(IllegalStateException::class.java)
   }
 

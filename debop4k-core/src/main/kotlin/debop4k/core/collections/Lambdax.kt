@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 //
@@ -94,28 +93,28 @@ fun <K, V> MutableMap<K, V>.replace(key: K, value: V): V?
     = (this as java.util.Map<K, V>).replace(key, value)
 
 
-fun <K, V> MutableMap<K, V>.computeIfAbsent(key: K, mappingFunction: Function<in K, out V?>): V?
+fun <K, V> MutableMap<K, V>.computeIfAbsent(key: K, mappingFunction: Function<in K, out V>): V
     = (this as java.util.Map<K, V>).computeIfAbsent(key, mappingFunction)
 
-inline fun <K, V> MutableMap<K, V>.computeIfAbsent(key: K, crossinline mappingFunction: (K) -> V?): V?
-    = (this as java.util.Map<K, V>).computeIfAbsent(key, Function { mappingFunction(it) })
+inline fun <K, V> MutableMap<K, V>.computeIfAbsent(key: K, crossinline mappingFunction: (K) -> V): V
+    = (this as java.util.Map<K, V>).computeIfAbsent(key, { k -> mappingFunction(k) })
 
 fun <K, V> MutableMap<K, V>.computeIfPresent(key: K, remappingFunction: BiFunction<in K, in V, out V?>): V?
     = (this as java.util.Map<K, V>).computeIfPresent(key, remappingFunction)
 
 inline fun <K, V> MutableMap<K, V>.computeIfPresent(key: K, crossinline remappingFunction: (K, V) -> V?): V?
-    = (this as java.util.Map<K, V>).computeIfPresent(key, BiFunction { k, v -> remappingFunction(k, v) })
+    = (this as java.util.Map<K, V>).computeIfPresent(key, { k, v -> remappingFunction(k, v) })
 
 
 fun <K, V> MutableMap<K, V>.compute(key: K, remappingFunction: BiFunction<in K, in V?, out V?>): V?
     = (this as java.util.Map<K, V>).compute(key, remappingFunction)
 
 inline fun <K, V> MutableMap<K, V>.compute(key: K, crossinline remappingFunction: (K, V?) -> V?): V?
-    = (this as java.util.Map<K, V>).compute(key, BiFunction { k, v -> remappingFunction(k, v) })
+    = (this as java.util.Map<K, V>).compute(key, { k, v -> remappingFunction(k, v) })
 
 
 fun <K, V> MutableMap<K, V>.merge(key: K, value: V, remappingFunction: BiFunction<in V, in V, out V?>): V?
     = (this as java.util.Map<K, V>).merge(key, value, remappingFunction)
 
 inline fun <K, V> MutableMap<K, V>.merge(key: K, value: V, crossinline remappingFunction: (V, V) -> V?): V?
-    = (this as java.util.Map<K, V>).merge(key, value, BiFunction { oldValue, newValue -> remappingFunction(oldValue, newValue) })
+    = (this as java.util.Map<K, V>).merge(key, value, { oldValue, newValue -> remappingFunction(oldValue, newValue) })

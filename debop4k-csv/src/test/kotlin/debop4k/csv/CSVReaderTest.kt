@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.csv
@@ -20,10 +19,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
 import org.slf4j.LoggerFactory
-import java.io.File
-import java.io.FileReader
-import java.io.PrintWriter
-import java.io.StringReader
+import java.io.*
 import java.nio.charset.Charset
 import java.nio.charset.UnsupportedCharsetException
 import java.util.*
@@ -81,8 +77,12 @@ class CSVReaderTest {
   }
 
   @Test fun shouldThrowUnsupportedEncodingException() {
+    val csvpath = "src/test/resources/hash-separated-dollor-quote.csv"
+
     assertThatThrownBy {
-      CSVReader.open("src/test/resources/hash-separated-dollor-quote.csv", cs = Charset.forName("unknown")).use { reader ->
+      val unknown = "unknown"
+
+      CSVReader.open(csvpath, cs = Charset.forName(unknown)).use { reader ->
         val map = reader.allWithHeaders()
         assertThat(map[0]["Foo "]).isEqualTo("a")
       }

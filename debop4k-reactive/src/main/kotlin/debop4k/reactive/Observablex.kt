@@ -84,7 +84,7 @@ fun <T> Observable<T>.onError(block: (Throwable) -> Unit): Observable<T> = doOnE
 fun <T> Observable<T>.firstOrNull(): Observable<T?> = this.firstOrDefault(null)
 fun <T> BlockingObservable<T>.firstOrNull(): T = this.firstOrDefault(null)
 
-fun <T> Observable<T>.onErrorReturnNull(): Observable<T?> = this.onErrorReturn<T> { null }
+fun <T> Observable<T>.onErrorReturnNull(): Observable<T?> = this.onErrorReturn({ null as? T })
 
 inline fun <T, R> Observable<T>.lift(crossinline operator: (Subscriber<in R>) -> Subscriber<in T>): Observable<R> {
   return this.lift { operator(it!!) }

@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 rootProject.name = 'debop4k-parent'
@@ -29,7 +28,7 @@ include 'debop4k-data-mongodb'
 include 'debop4k-data-mybatis'
 include 'debop4k-data-orm'
 
-include 'debop4k-http'
+//include 'debop4k-http'
 include 'debop4k-reactive'
 include 'debop4k-redis'
 include 'debop4k-science'

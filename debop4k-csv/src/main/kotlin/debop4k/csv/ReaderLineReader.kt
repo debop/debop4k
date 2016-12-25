@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.csv
@@ -40,7 +39,7 @@ class ReaderLineReader(val reader: Reader) : LineReader {
       val c = bufferedReader.read()
 
       if (c == -1) {
-        if (sb.length == 0) {
+        if (sb.isEmpty()) {
           return null
         } else {
           break@loop
@@ -55,9 +54,9 @@ class ReaderLineReader(val reader: Reader) : LineReader {
         bufferedReader.mark(1)
         val c2 = bufferedReader.read()
         when (c2) {
-          -1 -> break@loop
+          -1           -> break@loop
           '\n'.toInt() -> sb.append('\n')
-          else -> bufferedReader.reset()
+          else         -> bufferedReader.reset()
         }
       }
     } while (true)

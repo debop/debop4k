@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.core.collections.permutations
@@ -75,7 +74,7 @@ class StreamTest : AbstractPermutationTest() {
     val numbers = numbers(1).take(20)
     val min = stackedStream(numbers).min { a, b -> a - b }
 
-    assertThat(min).isEqualTo(Optional.of(expectedElements.min()))
+    assertThat(min).isEqualTo(Optional.of(expectedElements.min()!!))
   }
 
 }

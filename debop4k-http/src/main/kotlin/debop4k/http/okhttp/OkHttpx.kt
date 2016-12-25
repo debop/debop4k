@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 @file:JvmName("OkHttpx")
 
@@ -55,7 +54,7 @@ fun OkHttpClient.execute(request: Request, retryCount: Int = 3): Response {
       .withBackoff(FirstRetryNoDelayBackoff(FixedIntervalBackoff(100)))
 
   val call = newCall(request)
-  val future = retryExecutor.getWithRetry { ctx ->
+  val future = retryExecutor.getWithRetry {
     call.execute()
   }
 

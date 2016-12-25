@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.csv
@@ -26,8 +25,8 @@ import java.util.*
  * CSV Reader
  * @author debop sunghyouk.bae@gmail.com
  */
-class CSVReader(val lineReader: LineReader,
-                val format: CSVFormat = DEFAULT_CSVFORMAT) : Closeable {
+class CSVReader @JvmOverloads constructor(val lineReader: LineReader,
+                                          val format: CSVFormat = DEFAULT_CSVFORMAT) : Closeable {
 
   private val parser = CSVParser(format)
   private val log = LoggerFactory.getLogger(javaClass)
@@ -72,7 +71,7 @@ class CSVReader(val lineReader: LineReader,
         _next = readNext()
         (_next != null) && (_next != EMPTY_STRINGLIST)
       }
-      else -> true
+      else                   -> true
     }
 
     override fun next(): List<String> = when (_next) {
