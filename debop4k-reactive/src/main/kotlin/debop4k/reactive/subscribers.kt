@@ -16,6 +16,7 @@
 
 package debop4k.reactive
 
+import debop4k.core.loggerOf
 import rx.SingleSubscriber
 import rx.Subscriber
 import rx.exceptions.OnErrorNotImplementedException
@@ -23,6 +24,27 @@ import rx.observers.SerializedSubscriber
 import rx.subscriptions.Subscriptions
 import java.util.*
 
+/**
+ * [FunctionSubscriber] 를 생성합니다.
+ */
+fun <T> subscriber(): FunctionSubscriber<T> = FunctionSubscriber<T>()
+
+/**
+ * [FunctionSingleSubscriber] 를 생성합니다.
+ */
+fun <T> singleSubscriber(): FunctionSingleSubscriber<T> = FunctionSingleSubscriber<T>()
+
+/**
+ * [Subscriber]를 Single thread 에서 수행하도록 합니다.
+ */
+fun <T> Subscriber<T>.synchronized(): Subscriber<T> = SerializedSubscriber(this)
+
+fun Subscriber<*>.add(unsubscribe: () -> Unit) = add(Subscriptions.create(unsubscribe))
+
+
+/**
+ * Function 을 지정할 수 있는 [Subscriber]
+ */
 class FunctionSubscriber<T>() : Subscriber<T>() {
 
   private val onCompletedFunctions = ArrayList<() -> Unit>()
@@ -73,11 +95,17 @@ class FunctionSubscriber<T>() : Subscriber<T>() {
   }
 }
 
+/**
+ * 함수로 작업을 수행하는 [SingleSubscriber]
+ */
 class FunctionSingleSubscriber<T>() : SingleSubscriber<T>() {
+  private val log = loggerOf(javaClass)
+
   private val onSuccessFunctions = arrayListOf<(T) -> Unit>()
   private val onErrorFunctions = arrayListOf<(Throwable) -> Unit>()
 
   override fun onSuccess(value: T): Unit = onSuccessFunctions.forEach { it(value) }
+
   override fun onError(error: Throwable?): Unit {
     val err = error ?: RuntimeException("Unknown exception")
     return err.let { ex ->
@@ -90,10 +118,12 @@ class FunctionSingleSubscriber<T>() : SingleSubscriber<T>() {
   }
 
   fun onSuccess(onSuccessFunc: (T) -> Unit): FunctionSingleSubscriber<T> = copy {
+    log.trace("add onSuccessFunction")
     onSuccessFunctions.add(onSuccessFunc)
   }
 
   fun onError(onErrorFunc: (Throwable) -> Unit): FunctionSingleSubscriber<T> = copy {
+    log.trace("add onErrorFunction")
     onErrorFunctions.add(onErrorFunc)
   }
 
@@ -108,6 +138,9 @@ class FunctionSingleSubscriber<T>() : SingleSubscriber<T>() {
   }
 }
 
+/**
+ * 함수로 [Subscriber]를 갱신하는 클래스
+ */
 class FunctionSubscriberModifier<T>(functionSubscriber: FunctionSubscriber<T> = subscriber()) {
   var subscriber: FunctionSubscriber<T> = functionSubscriber
     private set
@@ -129,6 +162,9 @@ class FunctionSubscriberModifier<T>(functionSubscriber: FunctionSubscriber<T> = 
   }
 }
 
+/**
+ * 함수로 [SingleSubscriber]를 갱신하는 클래스
+ */
 class FunctionSingleSubscriberModifier<T>(functionSubscriber: FunctionSingleSubscriber<T> = singleSubscriber()) {
   var subscriber: FunctionSingleSubscriber<T> = functionSubscriber
     private set
@@ -142,8 +178,3 @@ class FunctionSingleSubscriberModifier<T>(functionSubscriber: FunctionSingleSubs
   }
 }
 
-fun <T> subscriber(): FunctionSubscriber<T> = FunctionSubscriber<T>()
-fun <T> singleSubscriber(): FunctionSingleSubscriber<T> = FunctionSingleSubscriber<T>()
-
-fun <T> Subscriber<T>.synchronized(): Subscriber<T> = SerializedSubscriber(this)
-fun Subscriber<*>.add(unsubscribe: () -> Unit) = add(Subscriptions.create(unsubscribe))

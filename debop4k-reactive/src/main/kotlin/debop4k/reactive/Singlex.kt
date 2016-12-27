@@ -20,15 +20,17 @@ import rx.*
 import java.util.concurrent.*
 import java.util.function.*
 
-fun <T> single(body: (SingleSubscriber<in T>) -> Unit): Single<T> = Single.create(body)
-fun <T> singleOf(value: T): Single<T> = Single.just(value)
+fun <T> single(body: (SingleSubscriber<in T>) -> Unit): Single<T> =
+    Single.create(body)
+
+fun <T> singleOf(value: T): Single<T>
+    = Single.just(value)
+
 fun <T> Future<out T>.toSingle(): Single<out T> = Single.from(this)
 fun <T> Callable<out T>.toSingle(): Single<out T> = Single.fromCallable { this.call() }
-fun <T> Function0<T>.toSingle(): Single<T> = Single.fromCallable { this.invoke() }
+fun <T> Function0<T>.toSingle(): Single<out T> = Single.fromCallable { this.invoke() }
 fun <T> Throwable.toSingle(): Single<T> = Single.error(this)
-
-// for Java 8
-fun <T> Supplier<T>.toSingle(): Single<T> = Single.fromCallable { this.get() }
+fun <T> Supplier<out T>.toSingle(): Single<out T> = Single.fromCallable { this.get() }
 
 inline fun <T> Single<T>.subscribeWith(body: FunctionSingleSubscriberModifier<T>.() -> Unit): Subscription {
   val modifier = FunctionSingleSubscriberModifier(singleSubscriber<T>())

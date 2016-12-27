@@ -12,22 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:JvmName("Cassandrax")
 
-@file:JvmName("BeanFactoryx")
+package debop4k.data.cassandra
 
-package debop4k.spring.beans
-
-import org.springframework.beans.factory.BeanFactory
-
-@Suppress("UNCHECKED_CAST")
-operator fun <T> BeanFactory.get(name: String): T?
-    = getBean(name) as? T
-
-operator fun <T> BeanFactory.get(requiredType: Class<T>): T
-    = getBean(requiredType)
-
-operator fun <T> BeanFactory.get(name: String, requiredType: Class<T>): T?
-    = getBean(name, requiredType)
-
-operator fun BeanFactory.get(name: String, vararg args: Any): Any?
-    = getBean(name, *args)
+/**
+ * Cassandrax
+ * @author sunghyouk.bae@gmail.com
+ */

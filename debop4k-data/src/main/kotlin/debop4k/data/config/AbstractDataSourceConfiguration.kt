@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.data.config
@@ -23,10 +22,7 @@ import debop4k.data.DataSources
 import debop4k.data.jdbc.JdbcDao
 import net.sf.log4jdbc.Log4jdbcProxyDataSource
 import org.springframework.beans.factory.config.ConfigurableBeanFactory
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Primary
-import org.springframework.context.annotation.Profile
-import org.springframework.context.annotation.Scope
+import org.springframework.context.annotation.*
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
@@ -36,6 +32,7 @@ import javax.sql.DataSource
 
 /**
  * [DataSource] Component를 제공하는 Spring Configuration 입니다.
+ *
  * @author sunghyouk.bae@gmail.com
  */
 abstract class AbstractDataSourceConfiguration {

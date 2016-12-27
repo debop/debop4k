@@ -47,4 +47,5 @@ include 'debop4k-web-scalatra'
 include 'debop4k-web-sparkjava'
 
 include 'debop4k-examples'
+include 'debop4k-data-cassandra'
 

@@ -11,7 +11,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package debop4k.data.config
@@ -24,13 +23,16 @@ import javax.inject.Inject
 import javax.sql.DataSource
 
 /**
- * [DataSource]를 Bean 으로 제공하고, [Flyway] 를 이용하여 Database 를 Setup 해주는 Spring Configuration 입니다.
+ * [DataSource]를 Bean 으로 제공하고, [Flyway] 를 이용하여
+ * Database 를 Setup 해주는 Spring Configuration 입니다.
+ *
  * @author sunghyouk.bae@gmail.com
  */
 abstract class AbstractFlywayDataSourceConfiguration : AbstractDataSourceConfiguration() {
 
   private val log = loggerOf(javaClass)
 
+  /** DataSource */
   @Inject val dataSource: DataSource = uninitialized()
 
   /**

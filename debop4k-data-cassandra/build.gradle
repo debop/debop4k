@@ -13,21 +13,14 @@
  * limitations under the License.
  */
 
-@file:JvmName("BeanFactoryx")
+dependencies {
+    compile project(":debop4k-data")
+    compile "com.fasterxml.uuid:java-uuid-generator"
 
-package debop4k.spring.beans
-
-import org.springframework.beans.factory.BeanFactory
-
-@Suppress("UNCHECKED_CAST")
-operator fun <T> BeanFactory.get(name: String): T?
-    = getBean(name) as? T
-
-operator fun <T> BeanFactory.get(requiredType: Class<T>): T
-    = getBean(requiredType)
-
-operator fun <T> BeanFactory.get(name: String, requiredType: Class<T>): T?
-    = getBean(name, requiredType)
-
-operator fun BeanFactory.get(name: String, vararg args: Any): Any?
-    = getBean(name, *args)
+    compile "com.datastax.cassandra:cassandra-driver-core:3.1.2"
+    compile "com.datastax.cassandra:cassandra-driver-mapping:3.1.2"
+    compile "com.datastax.cassandra:cassandra-driver-extras:3.1.2"
+    
+    compile "com.datastax.cassandra:cassandra-driver-dse:2.1.9"
+    compile "org.springframework.data:spring-data-cassandra:1.4.6.RELEASE"
+}

@@ -1,11 +1,10 @@
 /*
- * Copyright 2016 Sunghyouk Bae<sunghyouk.bae@gmail.com>
- *
+ * Copyright (c) 2016. Sunghyouk Bae <sunghyouk.bae@gmail.com>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,6 +17,7 @@
 
 package debop4k.reactive.utils
 
+import debop4k.core.loggerOf
 import rx.Observable
 import rx.schedulers.Schedulers
 
@@ -35,7 +35,9 @@ object RxAssertions {
     return RxAssertions.ObservableAssertions<T>(observable)
   }
 
-  class ObservableAssertions<T>(val observable: Observable<T>) {
+  class ObservableAssertions<T>(observable: Observable<T>) {
+
+    private val log = loggerOf(javaClass)
 
     var result: MutableList<T> = arrayListOf()
     var error: Throwable? = null
@@ -52,7 +54,7 @@ object RxAssertions {
     fun completesSuccessfully(): RxAssertions.ObservableAssertions<T> {
       if (!completed || error != null) {
         if (error != null)
-          error?.printStackTrace()
+          error!!.printStackTrace()
         val msg = error?.toString() ?: "onComplet not called"
         throw AssertionFailedError("Observable has not completed successfully - cause: $msg")
       }
@@ -67,7 +69,7 @@ object RxAssertions {
 
     fun failsWithError(throwable: Throwable): RxAssertions.ObservableAssertions<T> {
       fails()
-      if (!throwable.equals(error))
+      if (throwable != error)
         throw AssertionFailedError("Observable has failed with a different error, expected is $throwable but thrown was $error")
 
       return this
@@ -94,7 +96,7 @@ object RxAssertions {
 
     fun emitsNothing(): RxAssertions.ObservableAssertions<T> {
       completesSuccessfully()
-      if (result.size > 0) {
+      if (result.isNotEmpty()) {
         throw AssertionFailedError("Observable has omitted ${result.size} items")
       }
       return this
