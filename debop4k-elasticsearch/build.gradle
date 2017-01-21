@@ -1,0 +1,6 @@
+dependencies {
+
+    compile project(":debop4k-core")
+
+    compile "org.elasticsearch:elasticsearch:2.4.4"
+}

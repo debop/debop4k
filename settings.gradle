@@ -33,7 +33,10 @@ include 'debop4k-data-kundera'
 
 //include 'debop4k-http'
 include 'debop4k-reactive'
+
 include 'debop4k-redis'
+include 'debop4k-elasticsearch'
+
 include 'debop4k-science'
 
 include 'debop4k-spring'
