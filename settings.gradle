@@ -23,10 +23,13 @@ include 'debop4k-csv'
 
 include 'debop4k-data'
 include 'debop4k-data-exposed'
-include 'debop4k-data-ignite'
 include 'debop4k-data-mongodb'
 include 'debop4k-data-mybatis'
 include 'debop4k-data-orm'
+
+include 'debop4k-data-ignite'
+include 'debop4k-data-cassandra'
+include 'debop4k-data-kundera'
 
 //include 'debop4k-http'
 include 'debop4k-reactive'
@@ -47,5 +50,5 @@ include 'debop4k-web-scalatra'
 include 'debop4k-web-sparkjava'
 
 include 'debop4k-examples'
-include 'debop4k-data-cassandra'
+
 

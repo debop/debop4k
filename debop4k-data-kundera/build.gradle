@@ -1,0 +1,7 @@
+dependencies {
+
+    compile project(":debop4k-core")
+
+    compile "com.impetus.kundera.client:kundera-cassandra:3.7"
+    compile "com.impetus.kundera.client:kundera-elastic-search:3.7"
+}

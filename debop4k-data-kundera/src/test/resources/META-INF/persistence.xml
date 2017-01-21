@@ -1,0 +1,25 @@
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
+
+  <persistence-unit name="cassandra">
+    <provider>com.impetus.kundera.KunderaPersistence</provider>
+    <class>debop4k.data.kundera.examples.model.Person</class>
+    <!-- Dummy of Lightweight transaction Native query return value. -->
+    <!--<class>models.TxResult</class>-->
+
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+      <property name="kundera.nodes" value="localhost"/>
+      <property name="kundera.port" value="9160"/>
+      <property name="kundera.keyspace" value="KunderaExamples"/>
+      <property name="kundera.dialect" value="cassandra"/>
+      <property name="kundera.ddl.auto.prepare" value="create-drop"/>
+      <property name="kundera.client.lookup.class" value="com.impetus.client.cassandra.thrift.ThriftClientFactory"/>
+      <!-- DSDriver 를 사용하려면 9042 port 를 사용해야 하고  DataStax Driver 를 lib에 추가해야 한다  -->
+      <!--<property name="kundera.client.lookup.class" value="com.impetus.kundera.client.cassandra.dsdriver.DSClientFactory"/>-->
+      <property name="kundera.show.query" value="true"/>
+    </properties>
+  </persistence-unit>
+</persistence>
