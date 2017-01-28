@@ -26,7 +26,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.springframework.build.gradle:propdeps-plugin:0.0.7"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version"
-        classpath "io.spring.gradle:dependency-management-plugin:0.6.1.RELEASE"
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.0.RC2"
     }
 }
 
@@ -128,10 +128,16 @@ subprojects {
             dependency "javax.cache:cache-api:$javax_cache_api_version"
 
             dependency "com.fasterxml.uuid:java-uuid-generator:3.1.4"
-            dependency "com.google.guava:guava:19.0"
             dependency "de.ruedigermoeller:fst:$fst_version"
             dependency "net.jpountz.lz4:lz4:$lz4_version"
             dependency "com.esotericsoftware:kryo:$kryo_version"
+
+            dependency "com.google.guava:guava:$guava_version"
+            dependency "org.eclipse.collections:eclipse-collections:$eclipse_collections_version"
+            dependency "org.eclipse.collections:eclipse-collections-forkjoin:$eclipse_collections_version"
+            dependency "it.unimi.dsi:fastutil:7.0.13"
+
+            dependency "com.google.code.gson:gson:2.8.0"
 
             dependency "org.lazyluke:log4jdbc-remix:0.2.7"
             dependency "org.mybatis:mybatis:$mybatis_version"
@@ -214,5 +220,5 @@ subprojects {
 defaultTasks 'clean', 'jar'
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.2.1'
+    gradleVersion = '3.3'
 }

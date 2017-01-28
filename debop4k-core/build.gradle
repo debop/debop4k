@@ -33,9 +33,10 @@ dependencies {
 
     compile "org.springframework:spring-context:$spring_version"
 
-    compile "com.google.guava:guava:$guava_version"
-    compile "org.eclipse.collections:eclipse-collections:$eclipse_collections_version"
-    compile "org.eclipse.collections:eclipse-collections-forkjoin:$eclipse_collections_version"
+    compile "com.google.guava:guava"
+    compile "org.eclipse.collections:eclipse-collections"
+    compile "org.eclipse.collections:eclipse-collections-forkjoin"
+    compile "it.unimi.dsi:fastutil"
 
     compile "joda-time:joda-time:$joda_time_version"
     compile "org.joda:joda-convert:$joda_convert_version"
@@ -53,7 +54,7 @@ dependencies {
     compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:$jackson_version"
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:$jackson_version"
 
-    compile "com.google.code.gson:gson:$gson_version"
+    compile "com.google.code.gson:gson"
     optional "com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:$gson_jodatime_serialisers_version"
 
     // Squareup
