@@ -29,8 +29,7 @@ import org.springframework.context.annotation.Configuration
 open class AsyncExConfiguration {
 
   @Bean
-  open fun tasks()
-      = task<Any?> {
+  open fun tasks() = task<Any?> {
     Thread.sleep(100)
     null
   }

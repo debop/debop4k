@@ -36,10 +36,10 @@ fun Locale?.getParent(): Locale? {
   if (this == null)
     return null
 
-  if (variant.length > 0 && (language.length > 0 || country.length > 0)) {
+  if (variant.isNotEmpty() && (language.isNotEmpty() || country.isNotEmpty())) {
     return Locale(language, country)
   }
-  if (country.length > 0)
+  if (country.isNotEmpty())
     return Locale(language)
 
   return null
@@ -86,19 +86,19 @@ fun calculateFilenamesForLocale(basename: String, locale: Locale): List<String> 
   val temp = StringBuilder(basename)
   temp.append("_")
 
-  if (language.length > 0) {
+  if (language.isNotEmpty()) {
     temp.append(language)
     results.add(0, temp.toString())
   }
 
   temp.append("_")
 
-  if (country.length > 0) {
+  if (country.isNotEmpty()) {
     temp.append(country)
     results.add(0, temp.toString())
   }
 
-  if (variant.length > 0 && (language.length > 0 || country.length > 0)) {
+  if (variant.isNotEmpty() && (language.isNotEmpty() || country.isNotEmpty())) {
     temp.append("_").append(variant)
     results.add(0, temp.toString())
   }

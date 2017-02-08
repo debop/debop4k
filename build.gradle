@@ -15,19 +15,19 @@
 
 buildscript {
 
-    repositories {
-        jcenter()
-        mavenCentral()
-        maven { url "https://plugins.gradle.org/m2/" }
-        maven { url "https://repo.spring.io/plugins-release" }
-        maven { url "https://dl.bintray.com/kotlin/kotlin-eap-1.1" }
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.springframework.build.gradle:propdeps-plugin:0.0.7"
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version"
-        classpath "io.spring.gradle:dependency-management-plugin:1.0.0.RC2"
-    }
+	repositories {
+		jcenter()
+		mavenCentral()
+		maven { url "https://plugins.gradle.org/m2/" }
+		maven { url "https://repo.spring.io/plugins-release" }
+		maven { url "https://dl.bintray.com/kotlin/kotlin-eap-1.1" }
+	}
+	dependencies {
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+		classpath "org.springframework.build.gradle:propdeps-plugin:0.0.7"
+		classpath "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version"
+		classpath "io.spring.gradle:dependency-management-plugin:1.0.0.RC2"
+	}
 }
 
 //if (project.hasProperty('prod')) {
@@ -38,187 +38,187 @@ buildscript {
 
 
 allprojects {
-    group = 'debop4k'
-    version = '0.3.0-SNAPSHOT'
+	group = 'debop4k'
+	version = '0.3.0-SNAPSHOT'
 }
 
 
 subprojects {
-    apply plugin: 'java'
-    apply plugin: 'kotlin'
-    apply plugin: 'maven-publish'
-    apply plugin: 'propdeps'
-    apply plugin: 'propdeps-maven'
-    apply plugin: 'propdeps-idea'
-    apply plugin: 'propdeps-eclipse'
-    apply plugin: "io.spring.dependency-management"
-    apply plugin: 'idea'
+	apply plugin: 'java'
+	apply plugin: 'kotlin'
+	apply plugin: 'maven-publish'
+	apply plugin: 'propdeps'
+	apply plugin: 'propdeps-maven'
+	apply plugin: 'propdeps-idea'
+	apply plugin: 'propdeps-eclipse'
+	apply plugin: "io.spring.dependency-management"
+	apply plugin: 'idea'
 
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+	sourceCompatibility = JavaVersion.VERSION_1_8
+	targetCompatibility = JavaVersion.VERSION_1_8
 
-    compileTestJava {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
+	compileTestJava {
+		sourceCompatibility = JavaVersion.VERSION_1_8
+		targetCompatibility = JavaVersion.VERSION_1_8
+	}
 
-    tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8'
-        options.incremental = true
-        options.compilerArgs << '-Xlint:unchecked'
-    }
+	tasks.withType(JavaCompile) {
+		options.encoding = 'UTF-8'
+		options.incremental = true
+		options.compilerArgs << '-Xlint:unchecked'
+	}
 
-    idea.module {
-        downloadJavadoc = false
-        downloadSources = true
-    }
+	idea.module {
+		downloadJavadoc = false
+		downloadSources = true
+	}
 
-    task packageSources(type: Jar) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
+	task packageSources(type: Jar) {
+		classifier = 'sources'
+		from sourceSets.main.allSource
+	}
 
-    compileJava.dependsOn processResources
+	compileJava.dependsOn processResources
 //    processResources.dependsOn cleanResources
 
-    artifacts.archives packageSources
+	artifacts.archives packageSources
 
-    test {
-        ignoreFailures false
-        // maxParallelForks 4
+	test {
+		ignoreFailures false
+		// maxParallelForks 4
 
-        // set heap size for the test JVM(s)
-        minHeapSize = "512m"
-        maxHeapSize = "8G"
-        jvmArgs "-XX:ReservedCodeCacheSize=2g"
-    }
+		// set heap size for the test JVM(s)
+		minHeapSize = "512m"
+		maxHeapSize = "8G"
+		jvmArgs "-XX:ReservedCodeCacheSize=2g"
+	}
 
-    repositories {
-        mavenLocal()
-        jcenter()
-        mavenCentral()
+	repositories {
+		mavenLocal()
+		jcenter()
+		mavenCentral()
 
-        maven { url "https://dl.bintray.com/kotlin/kotlin-eap-1.1" }
-        maven { url "http://dl.bintray.com/kotlin/exposed" }
-        maven { url "http://repo.spring.io/release" }
-        maven { url "http://download.osgeo.org/webdav/geotools" }
-        maven { url "http://maven.geotoolkit.org/" }
-        maven { url "https://code.lds.org/nexus/content/groups/main-repo" }
-        maven { url "https://artifacts.unidata.ucar.edu/content/repositories/unidata-releases" }
-        maven { url "https://maven.open-web.nl/content/groups/public/" }
-        maven { url "http://nexus.kesti.co.kr/content/groups/public" }
-    }
+		maven { url "https://dl.bintray.com/kotlin/kotlin-eap-1.1" }
+		maven { url "http://dl.bintray.com/kotlin/exposed" }
+		maven { url "http://repo.spring.io/release" }
+		maven { url "http://download.osgeo.org/webdav/geotools" }
+		maven { url "http://maven.geotoolkit.org/" }
+		maven { url "https://code.lds.org/nexus/content/groups/main-repo" }
+		maven { url "https://artifacts.unidata.ucar.edu/content/repositories/unidata-releases" }
+		maven { url "https://maven.open-web.nl/content/groups/public/" }
+		maven { url "http://nexus.kesti.co.kr/content/groups/public" }
+	}
 
-    dependencyManagement {
-        imports {
-            mavenBom "org.springframework.boot:spring-boot-dependencies:$spring_boot_version"
-        }
-        dependencies {
-            dependency "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-            dependency "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-            dependency "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
-            dependency "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+	dependencyManagement {
+		imports {
+			mavenBom "org.springframework.boot:spring-boot-dependencies:$spring_boot_version"
+		}
+		dependencies {
+			dependency "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+			dependency "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+			dependency "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+			dependency "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-            dependency "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
-            dependency "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+			dependency "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+			dependency "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 
-            dependency "org.jetbrains.exposed:exposed:$exposed_version"
-            dependency "org.jetbrains.exposed:spring-transaction:$exposed_version"
+			dependency "org.jetbrains.exposed:exposed:$exposed_version"
+			dependency "org.jetbrains.exposed:spring-transaction:$exposed_version"
 
-            dependency "javax.cache:cache-api:$javax_cache_api_version"
+			dependency "javax.cache:cache-api:$javax_cache_api_version"
 
-            dependency "com.fasterxml.uuid:java-uuid-generator:3.1.4"
-            dependency "de.ruedigermoeller:fst:$fst_version"
-            dependency "net.jpountz.lz4:lz4:$lz4_version"
-            dependency "com.esotericsoftware:kryo:$kryo_version"
+			dependency "com.fasterxml.uuid:java-uuid-generator:3.1.4"
+			dependency "de.ruedigermoeller:fst:$fst_version"
+			dependency "net.jpountz.lz4:lz4:$lz4_version"
+			dependency "com.esotericsoftware:kryo:$kryo_version"
 
-            dependency "com.google.guava:guava:$guava_version"
-            dependency "org.eclipse.collections:eclipse-collections:$eclipse_collections_version"
-            dependency "org.eclipse.collections:eclipse-collections-forkjoin:$eclipse_collections_version"
-            dependency "it.unimi.dsi:fastutil:7.0.13"
+			dependency "com.google.guava:guava:$guava_version"
+			dependency "org.eclipse.collections:eclipse-collections:$eclipse_collections_version"
+			dependency "org.eclipse.collections:eclipse-collections-forkjoin:$eclipse_collections_version"
+			dependency "it.unimi.dsi:fastutil:7.0.13"
 
-            dependency "com.google.code.gson:gson:2.8.0"
+			dependency "com.google.code.gson:gson:2.8.0"
 
-            dependency "org.lazyluke:log4jdbc-remix:0.2.7"
-            dependency "org.mybatis:mybatis:$mybatis_version"
-            dependency "org.mybatis:mybatis-spring:$mybatis_spring_version"
+			dependency "org.lazyluke:log4jdbc-remix:0.2.7"
+			dependency "org.mybatis:mybatis:$mybatis_version"
+			dependency "org.mybatis:mybatis-spring:$mybatis_spring_version"
 
-            dependency "com.squareup.okhttp3:okhttp:3.4.1"
-            dependency "com.squareup.okio:okio:1.9.0"
+			dependency "com.squareup.okhttp3:okhttp:3.4.1"
+			dependency "com.squareup.okio:okio:1.9.0"
 
-            dependency "org.redisson:redisson:$redisson_version"
+			dependency "org.redisson:redisson:$redisson_version"
 
-            dependency "com.zaxxer:HikariCP:2.5.1"
+			dependency "com.zaxxer:HikariCP:2.5.1"
 
-            dependency "org.apache.tomcat:tomcat-jdbc:8.5.5"
-            dependency "org.apache.tomcat:tomcat-juli:8.5.5"
+			dependency "org.apache.tomcat:tomcat-jdbc:8.5.5"
+			dependency "org.apache.tomcat:tomcat-juli:8.5.5"
 
-            dependency "org.assertj:assertj-core:3.5.2"
-            dependency "org.assertj:assertj-joda-time:2.0.0"
-            dependency "org.mockito:mockito-core:2.2.3"
-            dependency "org.mockito:mockito-all:2.0.2-beta"
+			dependency "org.assertj:assertj-core:3.5.2"
+			dependency "org.assertj:assertj-joda-time:2.0.0"
+			dependency "org.mockito:mockito-core:2.7.4"
+			dependency "org.mockito:mockito-all:2.0.2-beta"
 
-            dependency "org.ow2.asm:asm:5.0.4"
+			dependency "org.ow2.asm:asm:5.0.4"
 
-            dependency "com.h2database:h2:$h2_version"
-            dependency "mysql:mysql-connector-java:$mysql_connector_java_version"
-            dependency "org.postgresql:postgresql:9.4.1211.jre7"
+			dependency "com.h2database:h2:$h2_version"
+			dependency "mysql:mysql-connector-java:$mysql_connector_java_version"
+			dependency "org.postgresql:postgresql:9.4.1211.jre7"
 
-            dependency "org.slf4j:slf4j-api:$slf4j_version"
-            dependency "org.slf4j:jcl-over-slf4j:$slf4j_version"
-            dependency "org.slf4j:log4j-over-slf4j:$slf4j_version"
+			dependency "org.slf4j:slf4j-api:$slf4j_version"
+			dependency "org.slf4j:jcl-over-slf4j:$slf4j_version"
+			dependency "org.slf4j:log4j-over-slf4j:$slf4j_version"
 
-            dependency "org.springframework.boot:spring-boot-autoconfigure:$spring_boot_version"
-            dependency "org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version"
+			dependency "org.springframework.boot:spring-boot-autoconfigure:$spring_boot_version"
+			dependency "org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version"
 
-            dependency "org.springframework.security:spring-security-config:$spring_security_version"
-            dependency "org.springframework.security:spring-security-core:$spring_security_version"
-            dependency "org.springframework.security:spring-security-web:$spring_security_version"
-        }
-    }
+			dependency "org.springframework.security:spring-security-config:$spring_security_version"
+			dependency "org.springframework.security:spring-security-core:$spring_security_version"
+			dependency "org.springframework.security:spring-security-web:$spring_security_version"
+		}
+	}
 
-    dependencies {
-        compile "org.jetbrains.kotlin:kotlin-stdlib"
-        compile "org.jetbrains.kotlin:kotlin-stdlib-jre7"
-        compile "org.jetbrains.kotlin:kotlin-stdlib-jre8"
-        compile "org.jetbrains.kotlin:kotlin-reflect"
+	dependencies {
+		compile "org.jetbrains.kotlin:kotlin-stdlib"
+		compile "org.jetbrains.kotlin:kotlin-stdlib-jre7"
+		compile "org.jetbrains.kotlin:kotlin-stdlib-jre8"
+		compile "org.jetbrains.kotlin:kotlin-reflect"
 
-        testCompile "org.jetbrains.kotlin:kotlin-test"
-        testCompile "org.jetbrains.kotlin:kotlin-test-junit"
+		testCompile "org.jetbrains.kotlin:kotlin-test"
+		testCompile "org.jetbrains.kotlin:kotlin-test-junit"
 
-        compile "org.slf4j:slf4j-api:$slf4j_version"
-        compile "ch.qos.logback:logback-classic:$logback_version"
-        compile "javax.inject:javax.inject:$javax_inject_version"
+		compile "org.slf4j:slf4j-api:$slf4j_version"
+		compile "ch.qos.logback:logback-classic:$logback_version"
+		compile "javax.inject:javax.inject:$javax_inject_version"
 
-        // for Java code
-        provided "org.projectlombok:lombok:$lombok_version"
+		// for Java code
+		provided "org.projectlombok:lombok:$lombok_version"
 
-        testCompile "junit:junit:$junit_version"
-        testCompile "com.carrotsearch:junit-benchmarks:0.7.2"
-        testCompile "io.kotlintest:kotlintest:$kotlintest_version"
+		testCompile "junit:junit:$junit_version"
+		testCompile "com.carrotsearch:junit-benchmarks:0.7.2"
+		testCompile "io.kotlintest:kotlintest:$kotlintest_version"
 
-        testCompile "org.assertj:assertj-core"
-        testCompile "org.assertj:assertj-joda-time"
+		testCompile "org.assertj:assertj-core"
+		testCompile "org.assertj:assertj-joda-time"
 
-        testCompile "org.mockito:mockito-all"
-        testCompile "com.nhaarman:mockito-kotlin:0.12.0"
-        testCompile "com.jayway.awaitility:awaitility:1.7.0"
+		testCompile "org.mockito:mockito-all"
+		testCompile "com.nhaarman:mockito-kotlin:0.12.0"
+		testCompile "com.jayway.awaitility:awaitility:1.7.0"
 
-        testCompile("org.springframework:spring-test:$spring_version")
-        testCompile("org.springframework.boot:spring-boot-starter-test:$spring_boot_version") {
-            exclude(module: 'commons-logging')
-            exclude(module: 'spring-test')
-        }
-    }
+		testCompile("org.springframework:spring-test:$spring_version")
+		testCompile("org.springframework.boot:spring-boot-starter-test:$spring_boot_version") {
+			exclude(module: 'commons-logging')
+			exclude(module: 'spring-test')
+		}
+	}
 
-    // Spring Boot AutoConfigure 처리
-    // http://docs.spring.io/spring-boot/docs/1.3.5.RELEASE/reference/html/configuration-metadata.html#configuration-metadata-annotation-processor
-    compileJava.dependsOn(processResources)
-    compileKotlin.dependsOn(processResources)
+	// Spring Boot AutoConfigure 처리
+	// http://docs.spring.io/spring-boot/docs/1.3.5.RELEASE/reference/html/configuration-metadata.html#configuration-metadata-annotation-processor
+	compileJava.dependsOn(processResources)
+	compileKotlin.dependsOn(processResources)
 }
 
 defaultTasks 'clean', 'jar'
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.3'
+	gradleVersion = '3.3'
 }

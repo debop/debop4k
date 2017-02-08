@@ -27,9 +27,8 @@ import org.eclipse.collections.impl.factory.SortedSets
 import org.eclipse.collections.impl.list.mutable.FastList
 import org.eclipse.collections.impl.map.mutable.UnifiedMap
 import org.eclipse.collections.impl.set.mutable.UnifiedSet
-import java.lang.IllegalStateException
 import java.util.*
-import java.util.concurrent.atomic.*
+import java.util.concurrent.atomic.AtomicReference
 
 fun <T> Iterator<T>.toList(): List<T> {
   return ArrayList<T>().apply {
@@ -45,19 +44,19 @@ fun <T> Iterator<T>.toMutableList(): MutableList<T> {
 
 fun <T> Iterable<T>.size(): Int = when (this) {
   is Collection<*> -> this.size
-  else             -> this.count()
+  else -> this.count()
 }
 
 fun <T> Iterable<T>.headOrNull(): T? = when (this) {
   is List ->
     if (this.isNotEmpty()) this[0] else null
-  else    ->
+  else ->
     if (!none()) this.iterator().next() else null
 }
 
 fun <T> Iterable<T>.lastOrNull(): T? = when (this) {
   is List -> if (this.isNotEmpty()) this[this.lastIndex] else null
-  else    -> if (!none()) this.last() else null
+  else -> if (!none()) this.last() else null
 }
 
 
@@ -101,7 +100,7 @@ fun Iterable<*>.asDoubleArray(): DoubleArray {
   return array
 }
 
-fun <T> Collection<T>.head(): T? = if (this.size > 0) this.elementAt(0) else null
+fun <T> Collection<T>.head(): T? = if (this.isNotEmpty()) this.elementAt(0) else null
 fun <T> Collection<T>.tail(): List<T> = this.drop(1)
 
 infix fun <T> T.prependTo(list: List<T>): List<T> = listOf(this) + list
@@ -423,7 +422,7 @@ fun <K, V> Map<K, V>.toUnifiedMap(): UnifiedMap<K, V> {
     return this
 
   val map = UnifiedMap.newMap<K, V>()
-  if (this.size > 0) {
+  if (this.isNotEmpty()) {
     for ((k, v) in this) {
       map.put(k, v)
     }
