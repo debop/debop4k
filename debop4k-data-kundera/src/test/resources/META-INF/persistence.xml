@@ -6,18 +6,20 @@
   <persistence-unit name="cassandra">
     <provider>com.impetus.kundera.KunderaPersistence</provider>
     <class>debop4k.data.kundera.examples.model.Person</class>
+    <class>debop4k.data.kundera.examples.model.collection.BlogPost</class>
     <!-- Dummy of Lightweight transaction Native query return value. -->
     <!--<class>models.TxResult</class>-->
 
-    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="kundera.nodes" value="localhost"/>
       <property name="kundera.port" value="9160"/>
       <property name="kundera.keyspace" value="KunderaExamples"/>
       <property name="kundera.dialect" value="cassandra"/>
-      <property name="kundera.ddl.auto.prepare" value="create-drop"/>
+      <property name="kundera.ddl.auto.prepare" value="create"/>
       <property name="kundera.client.lookup.class" value="com.impetus.client.cassandra.thrift.ThriftClientFactory"/>
       <property name="kundera.show.query" value="true"/>
+      <property name="index.home.dir" value="./lucene"/>
     </properties>
   </persistence-unit>
 </persistence>

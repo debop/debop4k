@@ -35,7 +35,7 @@ fun ByteArray.deleteBOM(defaultCharset: Charset): Tuple2<Int, Charset> {
 }
 
 fun ByteArray.withoutBomArray(defaultCharset: Charset = Charsets.UTF_8): Tuple2<ByteArray, Charset> {
-  val bom = this.copyOf(4)
+//  val bom = this.copyOf(4)
   val (skipSize, charset) = deleteBOM(defaultCharset)
   val array = if (skipSize > 0) Arrays.copyOfRange(this, skipSize, size) else this
   return tupleOf(array, charset)

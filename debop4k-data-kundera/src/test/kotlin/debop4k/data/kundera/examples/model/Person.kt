@@ -8,7 +8,7 @@ import javax.persistence.*
  * @author sunghyouk.bae@gmail.com
  */
 @Entity
-@Table(name = "Person", schema = "KunderaExamples@cassandra")
+@Table(name = "Person")
 class Person {
 
   @Id

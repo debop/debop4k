@@ -2,6 +2,9 @@ dependencies {
 
     compile project(":debop4k-core")
 
+    compile group: 'com.impetus.kundera.core', name: 'fallback-impl', version: '3.7'
+
+    compile "com.impetus.kundera.client:kundera-data-as-object:3.7"
     compile "com.impetus.kundera.client:kundera-cassandra:3.7"
     compile "com.impetus.kundera.client:kundera-elastic-search:3.7"
 }

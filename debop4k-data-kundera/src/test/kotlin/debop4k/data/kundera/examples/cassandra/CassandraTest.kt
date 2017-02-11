@@ -13,11 +13,6 @@ class CassandraTest : AbstractKunderaTest() {
 
   @Test
   fun testEmf() {
-    val emf = Persistence.createEntityManagerFactory("cassandra")
-    val em = emf.createEntityManager()
-
-    val tx = em.transaction
-    tx.begin()
 
     val p = Person().apply {
       id = "2"
@@ -25,15 +20,17 @@ class CassandraTest : AbstractKunderaTest() {
       age = 23
     }
 
-    em.persist(p)
-    em.flush()
-    em.clear()
+    val emf = Persistence.createEntityManagerFactory("cassandra")
+    val em = emf.createEntityManager()
 
+    val tx = em.transaction
+    tx.begin()
+    em.persist(p)
     tx.commit()
 
-    tx.begin()
-    val p2 = em.createQuery("select p from Person p", Person::class.java).singleResult
+    em.clear()
 
+    val p2 = em.createQuery("select p from Person p", Person::class.java).singleResult
     println("name=${p2.name}")
 
     em.close()
