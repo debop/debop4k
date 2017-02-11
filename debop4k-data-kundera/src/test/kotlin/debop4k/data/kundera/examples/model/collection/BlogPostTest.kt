@@ -30,22 +30,33 @@ class BlogPostTest : AbstractKunderaTest() {
 
   @Test
   fun saveBlogPost() {
-    val post = BlogPost().apply {
+    val post1 = BlogPost().apply {
       postId = 1
       body = "kundera with cassandra"
       addTag("nosql")
       addTag("cassandra")
       addTag("kundera")
     }
+    val post2 = BlogPost().apply {
+      postId = 2
+      body = "kundera with cassandra second edition"
+      addTag("cassandra")
+      addTag("kundera")
+    }
 
     em.transaction.begin()
-    em.persist(post)
+    em.persist(post1)
+    em.persist(post2)
     em.transaction.commit()
 
     em.clear()
-    val post1 = em.find(BlogPost::class.java, 1)
-    assertThat(post1).isNotNull()
-    assertThat(post1.tags).contains("nosql", "cassandra")
+    val loaded = em.find(BlogPost::class.java, 1)
+    assertThat(loaded).isNotNull()
+    assertThat(loaded.tags).contains("nosql", "cassandra")
+
+    val loaded2 = em.find(BlogPost::class.java, 2)
+    assertThat(loaded2).isNotNull()
+    assertThat(loaded.tags).contains("cassandra", "kundera")
 
     val q = em.createQuery("select p from BlogPost p")
     val allPosts = q.resultList as List<BlogPost>
@@ -55,9 +66,9 @@ class BlogPostTest : AbstractKunderaTest() {
 
     val qt = em.createQuery("select p from BlogPost p where p.tags = :tags")
     qt.setParameter("tags", "nosql")
-    val posts = qt.resultList
+    val posts = qt.resultList as List<BlogPost>
     assertThat(posts).isNotNull
     assertThat(posts).hasSize(1)
-    posts.forEach { println("post=$it") }
+    posts.forEach { println("post=$it, tags=${it.tags}") }
   }
 }

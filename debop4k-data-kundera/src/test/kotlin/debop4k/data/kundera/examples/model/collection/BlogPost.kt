@@ -24,9 +24,10 @@ class BlogPost {
   var body: String? = uninitialized()
 
   @Column(name = "tags")
-  var tags: java.util.HashSet<String>? = Sets.newHashSet()
+  var tags: java.util.HashSet<String> = Sets.newHashSet()
+//  var tags: MutableSet<String> = Sets.newHashSet()
 
   fun addTag(tag: String) {
-    tags?.add(tag)
+    tags.add(tag)
   }
 }
