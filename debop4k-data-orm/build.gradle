@@ -64,6 +64,8 @@ dependencies {
     provided("com.querydsl:querydsl-apt:$querydsl_version") {
         exclude(module: 'hibernate-jpa-2.0-api')
     }
+
+    compile "org.jinq:jinq-jpa:1.8.17"
 }
 
 sourceSets {

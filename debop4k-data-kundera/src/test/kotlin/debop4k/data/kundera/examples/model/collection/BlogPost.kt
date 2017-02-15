@@ -23,6 +23,7 @@ class BlogPost {
   @Column(name = "body")
   var body: String? = uninitialized()
 
+  @ElementCollection
   @Column(name = "tags")
   var tags: java.util.HashSet<String> = Sets.newHashSet()
 //  var tags: MutableSet<String> = Sets.newHashSet()

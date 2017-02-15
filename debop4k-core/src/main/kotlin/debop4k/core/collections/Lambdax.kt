@@ -17,7 +17,7 @@
 // NOTE: Java 8 Stream 기능을 지원하는 기능인데, Stream 을 제외한 lambda Functionx 은 굳이 필요없다.
 //
 @file:JvmName("Lambdax")
-@file:Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "UNCHECKED_CAST")
+@file:Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "UNCHECKED_CAST", "EXTENSION_SHADOWED_BY_MEMBER")
 
 package debop4k.core.collections
 
