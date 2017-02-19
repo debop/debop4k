@@ -82,5 +82,5 @@ open class TimeCalendar @JvmOverloads constructor(val cfg: TimeCalendarConfig = 
       = weekOfYear(moment)
 
   override fun startOfYearWeek(weekyear: Int, weekOfWeekyear: Int): DateTime
-      = startOfYearWeek(weekyear, weekOfWeekyear)
+      = debop4k.timeperiod.utils.startOfYearWeek(weekyear, weekOfWeekyear)
 }

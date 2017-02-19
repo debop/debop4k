@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 
-@file:JvmName("RxAssertions")
-
 package debop4k.reactive.utils
 
 import debop4k.core.loggerOf

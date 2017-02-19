@@ -106,7 +106,7 @@ public abstract class AbstractTreeEntity<T extends TreeEntity<T>, TId extends Se
   public ToStringHelper buildStringHelper() {
     return super.buildStringHelper()
                 .add("getParent", parent)
-                .add("nodeParent", nodePosition);
+                .add("nodePosition", nodePosition);
   }
 
   private static final long serialVersionUID = -7981217533182101670L;

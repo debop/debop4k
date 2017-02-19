@@ -21,7 +21,7 @@ debop4k:
 
 
   hibernate:
-    mapped-pakage-names:
+    mapped-package-names:
       - debop4k.data.orm.model
       - debop4k.data.orm.mapping
 

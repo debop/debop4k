@@ -39,14 +39,14 @@ public class HibernateProperties {
 
   public static final String PREFIX = "debop4k.hibernate";
 
-  private String[] mappedPakageNames;
+  private String[] mappedPackageNames;
 
   public String[] getMappedPackageNames() {
-    return mappedPakageNames.clone();
+    return mappedPackageNames.clone();
   }
 
   public void setMappedPackageNames(String[] packageNames) {
-    mappedPakageNames = packageNames.clone();
+    mappedPackageNames = packageNames.clone();
   }
 
   private String dialect = JdbcDrivers.DIALECT_H2;
