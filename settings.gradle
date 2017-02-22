@@ -31,7 +31,7 @@ include 'debop4k-data-ignite'
 include 'debop4k-data-cassandra'
 include 'debop4k-data-kundera'
 
-//include 'debop4k-http'
+include 'debop4k-http'
 include 'debop4k-reactive'
 
 include 'debop4k-redis'

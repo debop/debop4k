@@ -87,11 +87,8 @@ task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates
 }
 
 compileJava {
-    dependsOn
-    generateQueryDSL
-    source
-    generateQueryDSL.destinationDir
-
+    dependsOn generateQueryDSL
+    source += generateQueryDSL.destinationDir
 }
 
 compileGeneratedJava {

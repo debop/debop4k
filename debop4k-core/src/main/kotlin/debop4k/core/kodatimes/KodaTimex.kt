@@ -26,9 +26,11 @@ import java.lang.Exception
 import java.sql.Timestamp
 import java.util.*
 
+@JvmField
 val EPOCH: DateTime = DateTime(0)
 
 // yyyy-MM-dd'T'HH:mm:ss.SSSZZ
+@JvmField
 val JODA_DEFAULT_DATETIME_FORMATTER: DateTimeFormatter = ISODateTimeFormat.dateTime()
 
 /** 기본 [DateTimeFormatter] */
@@ -312,13 +314,13 @@ fun DateTime.toTimestampZoneText(): TimestampZoneText = TimestampZoneText(this)
 infix fun DateTime?.min(that: DateTime?): DateTime? {
   if (this == null) return that
   if (that == null) return this
-  return if (this.compareTo(that) < 0) this else that
+  return if (this < that) this else that
 }
 
 infix fun DateTime?.max(that: DateTime?): DateTime? {
   if (this == null) return that
   if (that == null) return this
-  return if (this.compareTo(that) > 0) this else that
+  return if (this > that) this else that
 }
 
 fun DateTime.monthInterval(): Interval {
@@ -416,8 +418,8 @@ operator fun Duration.times(multiplicand: Long): Duration = this.multipliedBy(mu
 
 fun Duration.isZero(): Boolean = this.millis == 0L
 
-infix fun Duration.min(that: Duration): Duration = if (this.compareTo(that) < 0) this else that
-infix fun Duration.max(that: Duration): Duration = if (this.compareTo(that) > 0) this else that
+infix fun Duration.min(that: Duration): Duration = if (this < that) this else that
+infix fun Duration.max(that: Duration): Duration = if (this > that) this else that
 
 /**
  * [Period] extensions

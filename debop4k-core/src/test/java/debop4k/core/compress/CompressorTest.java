@@ -73,7 +73,7 @@ public class CompressorTest extends AbstractCoreTest {
       assertThat(decompressedBytes.length).isGreaterThan(0);
 
       String decompressedText = Stringx.toUtf8String(decompressedBytes);
-      assertThat(decompressedText).isEqualTo(decompressedText);
+      assertThat(decompressedText).isEqualTo(text);
     }
   }
 

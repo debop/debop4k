@@ -17,23 +17,26 @@
 
 package debop4k.core.functional
 
-interface GetterOperation<K, V> {
+@FunctionalInterface
+interface GetterOperation<in K, out V> {
   val getter: (K) -> V
   operator fun get(key: K): V = getter(key)
 }
 
 class GetterOperationImpl<K, V>(override val getter: (K) -> V) : GetterOperation<K, V>
 
-interface SetterOperation<K, V> {
+@FunctionalInterface
+interface SetterOperation<in K, in V> {
+
   val setter: (K, V) -> Unit
+
   operator fun set(key: K, value: V) {
     setter(key, value)
   }
 }
 
-class SetterOperationImpl<K, V>(override val setter: (K, V) -> Unit) : SetterOperation<K, V>
+class SetterOperationImpl<in K, in V>(override val setter: (K, V) -> Unit) : SetterOperation<K, V>
 
-class GetterSetterOperation<K, V>(override val getter: (K) -> V,
-                                  override val setter: (K, V) -> Unit) :
-    GetterOperation<K, V>,
-    SetterOperation<K, V>
+class GetterSetterOperation<in K, V>(override val getter: (K) -> V,
+                                     override val setter: (K, V) -> Unit)
+  : GetterOperation<K, V>, SetterOperation<K, V>

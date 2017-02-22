@@ -70,7 +70,7 @@ public class JpaAutoConfiguration extends HikariDataSourceAutoConfiguration {
     log.info("EntityManagerFactory 생성을 시작합니다...");
 
     LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
-    String[] packageNames = hibernateProps.getMappedPakageNames();
+    String[] packageNames = hibernateProps.getMappedPackageNames();
     if (packageNames != null && packageNames.length > 0) {
       log.debug("JPA용 엔티티를 스캔합니다. packageNames={}", Arrays.toString(packageNames));
       factoryBean.setPackagesToScan(packageNames);
