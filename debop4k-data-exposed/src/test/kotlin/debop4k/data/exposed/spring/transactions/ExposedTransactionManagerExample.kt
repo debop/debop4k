@@ -49,7 +49,7 @@ open class ExposedTransactionManagerExample : AbstractExposedTest() {
   fun testConnection() {
     val pm = ctx.getBean(PlatformTransactionManager::class.java)
     if (pm !is SpringTransactionManager)
-      error("Wrong txManager instance: ${pm.javaClass}")
+      error("Wrong txManager instance: ${pm::class.java}")
 
     SchemaUtils.create(t1)
 
